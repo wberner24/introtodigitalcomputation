@@ -473,7 +473,7 @@
       <p>You are now looking at the bottom of the stack. Transistors become gates. Gates become circuits. Circuits become an ALU. The ALU executes instructions. Instructions run your software. This chain — from physics to programs — is what Chapter 2 meant when it said "everything else is built on top of that."</p>
 
       <div class="note">
-        <strong>Want to go deeper?</strong> If this section sparked something for you, look up <em>NAND to Tetris</em> (nand2tetris.org) — a free online course that walks you through building an entire general-purpose computer from primitive NAND gates up through an operating system. Your instructor has it on the slides for a reason.
+        <strong>Want to go deeper?</strong> If this section sparked something for you, check out <a href="https://www.nand2tetris.org" target="_blank" rel="noopener"><em>NAND to Tetris</em></a> — a free online course that walks you through building an entire general-purpose computer from primitive NAND gates up through an operating system.
       </div>
 
       <h2>Clock Speed</h2>
@@ -613,14 +613,13 @@
       <p><strong>Pipelining</strong> overlaps the execution stages of consecutive instructions. While instruction 2 is being decoded, instruction 3 is being fetched — and instruction 1 is executing. Multiple instructions are in-flight simultaneously, each at a different stage of the pipeline. The individual stages don't get faster, but the throughput — instructions completed per second — increases dramatically.</p>
 
       <!-- SVG: Pipeline vs sequential execution -->
-      <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <rect width="680" height="210" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+      <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="230" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Sequential vs. Pipelined Execution</text>
 
         <!-- Clock tick labels -->
         <text x="100" y="38" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">CLOCK</text>
         <line x1="140" y1="32" x2="660" y2="32" stroke="#EDE9DF" stroke-width="1"/>
-        <!-- Ticks at x=140,200,260,320,380,440,500,560,620 (spacing=60) -->
         <line x1="140" y1="28" x2="140" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="200" y1="28" x2="200" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="260" y1="28" x2="260" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
@@ -640,9 +639,9 @@
         <text x="560" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">8</text>
         <text x="620" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">9</text>
 
-        <!-- SEQUENTIAL (top half) -->
+        <!-- SEQUENTIAL -->
         <text x="30" y="65" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8A857C">SEQ.</text>
-        <!-- Instr 1: cycles 1-3 (F=140-200, D=200-260, E=260-320) -->
+        <!-- Instr 1: cycles 1–3 -->
         <text x="100" y="82" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 1</text>
         <rect x="140" y="68" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
         <text x="169" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
@@ -650,7 +649,7 @@
         <text x="229" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
         <rect x="260" y="68" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="289" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
-        <!-- Instr 2: cycles 4-6 -->
+        <!-- Instr 2: cycles 4–6 -->
         <text x="100" y="102" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 2</text>
         <rect x="320" y="88" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
         <text x="349" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
@@ -658,13 +657,12 @@
         <text x="409" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
         <rect x="440" y="88" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="469" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
-        <!-- 9 cycles for 2 instructions label -->
         <text x="400" y="118" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#C1440E">2 instructions require 6 clock cycles</text>
 
         <!-- Divider -->
         <line x1="20" y1="126" x2="660" y2="126" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="4,3"/>
 
-        <!-- PIPELINED (bottom half) -->
+        <!-- PIPELINED -->
         <text x="30" y="148" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8A857C">PIPE.</text>
         <!-- Instr 1 -->
         <text x="100" y="162" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 1</text>
@@ -674,24 +672,25 @@
         <text x="229" y="161" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
         <rect x="260" y="148" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="289" y="161" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
-        <!-- Instr 2 — starts 1 cycle later -->
-        <text x="100" y="182" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 2</text>
-        <rect x="200" y="168" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
-        <text x="229" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
-        <rect x="260" y="168" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
-        <text x="289" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
-        <rect x="320" y="168" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
-        <text x="349" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+        <!-- Instr 2 -->
+        <text x="100" y="180" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 2</text>
+        <rect x="200" y="166" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="229" y="179" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="260" y="166" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="289" y="179" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="320" y="166" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="349" y="179" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
         <!-- Instr 3 -->
-        <text x="100" y="202" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 3</text>
-        <rect x="260" y="188" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
-        <text x="289" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
-        <rect x="320" y="188" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
-        <text x="349" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
-        <rect x="380" y="188" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
-        <text x="409" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+        <text x="100" y="198" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 3</text>
+        <rect x="260" y="184" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="289" y="197" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="320" y="184" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="349" y="197" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="380" y="184" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="409" y="197" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
 
-        <text x="400" y="205" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles — stages overlap</text>
+        <!-- Caption — safely below all blocks (last block bottom = 184+18=202) -->
+        <text x="340" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles — stages overlap</text>
       </svg>
 
       <h3>The Problem with Pipelining: Branch Instructions</h3>
