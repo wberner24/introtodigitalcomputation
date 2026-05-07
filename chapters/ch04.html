@@ -785,51 +785,6 @@
 
       <p>What's changed recently is that ARM has arrived in territory that used to belong exclusively to x86. Apple's M-series chips — powering every Mac since 2020 — are ARM-based and deliver performance that matches or beats x86 chips at a fraction of the power draw. Major cloud providers now offer ARM-based server instances (AWS Graviton, for example) at lower cost per unit of compute. This is not a niche development — it's a fundamental shift in the server market that IT professionals need to understand.</p>
 
-      <!-- SVG: x86 vs ARM comparison -->
-      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">x86 vs. ARM: The Key Tradeoffs</text>
-
-        <!-- Headers -->
-        <rect x="20"  y="32" width="300" height="24" rx="4" fill="#1D4E7A"/>
-        <rect x="360" y="32" width="300" height="24" rx="4" fill="#1a6b4a"/>
-        <text x="170" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">x86 / x86-64 (CISC)</text>
-        <text x="510" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">ARM (RISC)</text>
-
-        <!-- Rows -->
-        <rect x="20"  y="58" width="300" height="22" fill="#F5F2EB"/>
-        <rect x="360" y="58" width="300" height="22" fill="#F5F2EB"/>
-        <text x="30"  y="73" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Complex instruction set</text>
-        <text x="370" y="73" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Simple, reduced instruction set</text>
-
-        <rect x="20"  y="82" width="300" height="22" fill="#FDFAF4"/>
-        <rect x="360" y="82" width="300" height="22" fill="#FDFAF4"/>
-        <text x="30"  y="97" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Higher power draw / more heat</text>
-        <text x="370" y="97" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Lower power / runs cooler</text>
-
-        <rect x="20"  y="106" width="300" height="22" fill="#F5F2EB"/>
-        <rect x="360" y="106" width="300" height="22" fill="#F5F2EB"/>
-        <text x="30"  y="121" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Intel &amp; AMD (desktops, servers)</text>
-        <text x="370" y="121" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Apple, Qualcomm, AWS Graviton</text>
-
-        <rect x="20"  y="130" width="300" height="22" fill="#FDFAF4"/>
-        <rect x="360" y="130" width="300" height="22" fill="#FDFAF4"/>
-        <text x="30"  y="145" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Legacy: decades of x86 software</text>
-        <text x="370" y="145" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">All smartphones, Apple Silicon, cloud</text>
-
-        <rect x="20"  y="154" width="300" height="22" fill="#F5F2EB"/>
-        <rect x="360" y="154" width="300" height="22" fill="#F5F2EB"/>
-        <text x="30"  y="169" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Dominant in traditional enterprise IT</text>
-        <text x="370" y="169" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Growing fast in servers and cloud</text>
-
-        <!-- Divider -->
-        <line x1="340" y1="32" x2="340" y2="176" stroke="#D8D2C6" stroke-width="1"/>
-      </svg>
-
-      <div class="note">
-        <strong>Software compatibility matters.</strong> When you choose an ARM-based cloud instance or an Apple Silicon Mac for a software project, you need to confirm that your software stack supports ARM. Most modern software does — but legacy enterprise applications, some Windows software running under emulation, and older virtualization tools sometimes don't. Architecture isn't just a hardware decision; it's a software compatibility decision.
-      </div>
-
       <!-- YouTube embed: RISC vs CISC - David Patterson on Lex Fridman -->
       <div style="margin:28px 0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border-dark);box-shadow:0 2px 12px rgba(26,24,20,0.08);">
         <div style="background:var(--ink);padding:10px 16px;display:flex;align-items:center;gap:10px;">
