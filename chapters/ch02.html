@@ -277,67 +277,85 @@
         <!-- Q1 -->
         <div class="quiz-question" id="q1">
           <div class="q-text">1. What physical component stores a single bit in a modern processor?</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="Your answer" id="q1-input">
-            <button class="btn btn-check" onclick="checkQ('q1', ['transistor', 'atransistor'])">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ('q1', 'Think about the electronic switch discussed in the first section.')">Hint</button>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1', this, false)"><span class="mc-letter">A</span> Capacitor</button>
+            <button class="mc-option" onclick="checkMC('q1', this, true)"><span class="mc-letter">B</span> Transistor</button>
+            <button class="mc-option" onclick="checkMC('q1', this, false)"><span class="mc-letter">C</span> Resistor</button>
+            <button class="mc-option" onclick="checkMC('q1', this, false)"><span class="mc-letter">D</span> Diode</button>
           </div>
-          <div class="q-feedback" id="q1-feedback"></div>
+          <div class="mc-feedback" id="q1-feedback"></div>
         </div>
 
         <!-- Q2 -->
         <div class="quiz-question" id="q2">
-          <div class="q-text">2. A transistor is described as <em>volatile</em>. What does that mean in practical terms?</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="Your answer" id="q2-input">
-            <button class="btn btn-check" onclick="checkQ('q2', ['itlosesdatawithoutpower','dataislostwithoutpower','itneedspower','losesinformationwithoutpower','dataislostwhenpowerisoff','itforgetswithoutpower'])">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ('q2', 'What happens to the state of a transistor when you cut the power?')">Hint</button>
+          <div class="q-text">2. RAM is described as <em>volatile</em>. What does that mean in practical terms?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2', this, false)"><span class="mc-letter">A</span> It stores data permanently, even without power.</button>
+            <button class="mc-option" onclick="checkMC('q2', this, false)"><span class="mc-letter">B</span> It operates at variable speeds depending on load.</button>
+            <button class="mc-option" onclick="checkMC('q2', this, true)"><span class="mc-letter">C</span> It loses its data when power is removed.</button>
+            <button class="mc-option" onclick="checkMC('q2', this, false)"><span class="mc-letter">D</span> It can only be written once.</button>
           </div>
-          <div class="q-feedback" id="q2-feedback"></div>
+          <div class="mc-feedback" id="q2-feedback"></div>
         </div>
 
         <!-- Q3 -->
         <div class="quiz-question" id="q3">
-          <div class="q-text">3. Which physical representation is used by a hard disk drive?</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="Your answer" id="q3-input">
-            <button class="btn btn-check" onclick="checkQ('q3', ['magnetic','magnetism'])">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ('q3', 'HDDs use spinning platters coated in a material with a useful two-state property.')">Hint</button>
+          <div class="q-text">3. Which physical representation does a hard disk drive use to store bits?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3', this, false)"><span class="mc-letter">A</span> Electrical voltage states</button>
+            <button class="mc-option" onclick="checkMC('q3', this, false)"><span class="mc-letter">B</span> Optical pits and lands</button>
+            <button class="mc-option" onclick="checkMC('q3', this, true)"><span class="mc-letter">C</span> Magnetic pole orientations</button>
+            <button class="mc-option" onclick="checkMC('q3', this, false)"><span class="mc-letter">D</span> Laser pulse sequences</button>
           </div>
-          <div class="q-feedback" id="q3-feedback"></div>
+          <div class="mc-feedback" id="q3-feedback"></div>
         </div>
 
         <!-- Q4 -->
         <div class="quiz-question" id="q4">
           <div class="q-text">4. Why do computers use binary (two states) rather than decimal (ten states)?</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="Your answer" id="q4-input">
-            <button class="btn btn-check" onclick="checkQ('q4', ['twostatesaremorereli able','twostatesarereliable','twostatestoleratnoise','twostatesarefaulttolerant','noisemakestenstateshardtodistinguish','itismorereliable','morereliable','reliable','faulttolerant','twostatesaresimpler'])">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ('q4', 'Think about electrical noise and what happens when you try to distinguish ten precise voltage levels.')">Hint</button>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4', this, false)"><span class="mc-letter">A</span> Binary math is simpler for humans to learn.</button>
+            <button class="mc-option" onclick="checkMC('q4', this, false)"><span class="mc-letter">B</span> Binary processors use less electricity than decimal ones.</button>
+            <button class="mc-option" onclick="checkMC('q4', this, true)"><span class="mc-letter">C</span> Two voltage states are far more reliable to distinguish than ten, especially in the presence of electrical noise.</button>
+            <button class="mc-option" onclick="checkMC('q4', this, false)"><span class="mc-letter">D</span> Decimal computers were tried but proved too expensive to manufacture.</button>
           </div>
-          <div class="q-feedback" id="q4-feedback"></div>
+          <div class="mc-feedback" id="q4-feedback"></div>
         </div>
 
         <!-- Q5 -->
         <div class="quiz-question" id="q5">
-          <div class="q-text">5. A CD stores bits using pits and lands read by a laser. What type of data representation is this?</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="Your answer" id="q5-input">
-            <button class="btn btn-check" onclick="checkQ('q5', ['optical'])">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ('q5', 'Consider which of the three physical categories involves light.')">Hint</button>
+          <div class="q-text">5. A CD stores bits using pits and lands read by a laser. Which category of physical representation is this?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5', this, false)"><span class="mc-letter">A</span> Electrical</button>
+            <button class="mc-option" onclick="checkMC('q5', this, false)"><span class="mc-letter">B</span> Magnetic</button>
+            <button class="mc-option" onclick="checkMC('q5', this, true)"><span class="mc-letter">C</span> Optical</button>
+            <button class="mc-option" onclick="checkMC('q5', this, false)"><span class="mc-letter">D</span> Thermal</button>
           </div>
-          <div class="q-feedback" id="q5-feedback"></div>
+          <div class="mc-feedback" id="q5-feedback"></div>
         </div>
 
         <!-- Q6 -->
         <div class="quiz-question" id="q6">
-          <div class="q-text">6. Rank the following from fastest to slowest: magnetic HDD, transistor (RAM), optical disc.</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="e.g. transistor, HDD, optical" id="q6-input">
-            <button class="btn btn-check" onclick="checkQ('q6', ['transistorhdDoptical','transistormagneticoptical','transistorrhddoptical','transistor,hdd,optical','transistor,magnetic,optical','ram,hdd,optical','transistorharddriveoptical'])">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ('q6', 'Recall the comparison table. Which representation is the fastest? Which is the slowest?')">Hint</button>
+          <div class="q-text">6. Ranked from fastest to slowest, which order is correct?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">A</span> Optical disc → Magnetic HDD → Transistor (RAM)</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">B</span> Magnetic HDD → Transistor (RAM) → Optical disc</button>
+            <button class="mc-option" onclick="checkMC('q6', this, true)"><span class="mc-letter">C</span> Transistor (RAM) → Magnetic HDD → Optical disc</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">D</span> Transistor (RAM) → Optical disc → Magnetic HDD</button>
           </div>
-          <div class="q-feedback" id="q6-feedback"></div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. A processor is rated at 4.0 GHz. What does this mean?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">A</span> It can store 4 gigabytes of data.</button>
+            <button class="mc-option" onclick="checkMC('q7', this, true)"><span class="mc-letter">B</span> Its internal clock completes 4 billion cycles per second.</button>
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">C</span> It draws 4 gigawatts of power under load.</button>
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">D</span> It can transmit data at 4 gigabits per second.</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
         </div>
 
       </div>
@@ -362,25 +380,18 @@
 <script src="../widgets/transistor-toggle.js"></script>
 
 <script>
-  // ── Shared answer checker for this chapter ─────────────────
-  function checkQ(id, accepted) {
-    const input = document.getElementById(id + '-input');
-    const fb    = document.getElementById(id + '-feedback');
-    const val   = input.value.trim().toLowerCase().replace(/[\s,.\-]/g, '');
-    if (!val) {
-      fb.className = 'q-feedback hint';
-      fb.textContent = 'Enter an answer above.';
-      return;
-    }
-    const match = accepted.map(a => a.toLowerCase().replace(/[\s,.\-]/g, '')).includes(val);
-    fb.className = match ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = match ? '✓ Correct!' : '✗ Not quite — try rephrasing, or use the hint.';
-  }
-
-  function hintQ(id, hintText) {
-    const fb = document.getElementById(id + '-feedback');
-    fb.className = 'q-feedback hint';
-    fb.textContent = hintText;
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(', true)'))
+        b.classList.add('revealed');
+    });
+    fb.className  = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
   }
 </script>
 

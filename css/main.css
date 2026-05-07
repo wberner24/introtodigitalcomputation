@@ -822,6 +822,122 @@ body {
   .converter-arrow { transform: rotate(90deg); }
 }
 
+/* ── Multiple Choice ────────────────────────────────────────── */
+.mc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mc-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 14px;
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--ink);
+  width: 100%;
+}
+
+.mc-option:hover:not(:disabled) {
+  border-color: var(--green);
+  background: var(--green-light);
+}
+
+.mc-option .mc-letter {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  background: var(--bg-alt);
+  border: 1px solid var(--border-dark);
+  border-radius: 3px;
+  padding: 2px 7px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.15s;
+  color: var(--ink-mid);
+}
+
+.mc-option:hover:not(:disabled) .mc-letter {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+.mc-option.correct {
+  border-color: var(--green);
+  background: var(--green-light);
+  cursor: default;
+}
+
+.mc-option.correct .mc-letter {
+  background: var(--green);
+  border-color: var(--green);
+  color: white;
+}
+
+.mc-option.incorrect {
+  border-color: #c0392b;
+  background: #fdf0f0;
+  cursor: default;
+}
+
+.mc-option.incorrect .mc-letter {
+  background: #c0392b;
+  border-color: #c0392b;
+  color: white;
+}
+
+.mc-option.revealed {
+  border-color: var(--green);
+  background: var(--green-light);
+  cursor: default;
+  opacity: 0.75;
+}
+
+.mc-option:disabled {
+  cursor: default;
+}
+
+.mc-feedback {
+  margin-top: 10px;
+  font-size: 0.88rem;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  display: none;
+  line-height: 1.5;
+}
+
+.mc-feedback.correct {
+  display: block;
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.mc-feedback.incorrect {
+  display: block;
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.mc-feedback.hint {
+  display: block;
+  background: var(--blue-light);
+  color: var(--blue);
+  border: 1px solid rgba(29,78,122,0.2);
+}
+
 /* ── Comparison Table ───────────────────────────────────────── */
 .comparison-table {
   width: 100%;

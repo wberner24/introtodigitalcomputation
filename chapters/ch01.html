@@ -371,70 +371,95 @@
           <span class="practice-title">Chapter 1 Exercises</span>
         </div>
 
-        <!-- Q1 -->
+        <!-- Q1 — text input: exact answer -->
         <div class="quiz-question" id="q1">
           <div class="q-text">1. Convert <span class="bin">1000</span> (binary) to decimal.</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q1-input">
-            <button class="btn btn-check" onclick="checkQ1()">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ1()">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q1', ['8'], '✓ Correct! 1×8 = 8.', 'Place values for 4-bit numbers: 8, 4, 2, 1. The digit 1 is in the 8s place only.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q1', 'Place values for 4-bit numbers: 8, 4, 2, 1. The digit 1 is in the 8s place only.')">Hint</button>
           </div>
           <div class="q-feedback" id="q1-feedback"></div>
         </div>
 
-        <!-- Q2 -->
+        <!-- Q2 — text input: exact answer -->
         <div class="quiz-question" id="q2">
           <div class="q-text">2. Convert <span class="bin">1101</span> (binary) to decimal.</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q2-input">
-            <button class="btn btn-check" onclick="checkQ2()">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ2()">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q2', ['13'], '✓ Correct! 8+4+0+1 = 13.', '1101: the 1s are in the 8s, 4s, and 1s places. Add those up.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q2', '1101: the 1s are in the 8s, 4s, and 1s places. Add those up.')">Hint</button>
           </div>
           <div class="q-feedback" id="q2-feedback"></div>
         </div>
 
-        <!-- Q3 -->
+        <!-- Q3 — text input: exact answer -->
         <div class="quiz-question" id="q3">
           <div class="q-text">3. Convert <span class="bin">0111</span> (binary) to decimal.</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q3-input">
-            <button class="btn btn-check" onclick="checkQ3()">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ3()">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q3', ['7'], '✓ Correct! 0+4+2+1 = 7. Leading zeros have no effect.', '0111 is the same as 111. The 1s are in the 4s, 2s, and 1s places.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q3', '0111 is the same as 111. The 1s are in the 4s, 2s, and 1s places.')">Hint</button>
           </div>
           <div class="q-feedback" id="q3-feedback"></div>
         </div>
 
-        <!-- Q4 -->
+        <!-- Q4 — text input: exact answer -->
         <div class="quiz-question" id="q4">
           <div class="q-text">4. Convert <span class="dec">9</span> (decimal) to binary.</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q4-input">
-            <button class="btn btn-check" onclick="checkQ4()">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ4()">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q4', ['1001'], '✓ Correct! 9 = 8+1 → 1001.', '9 ≥ 8 → place a 1. Remainder 1. Skip 4 and 2. 1 ≥ 1 → place a 1.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q4', '9 ≥ 8 → place a 1. Remainder 1. Skip 4 and 2. 1 ≥ 1 → place a 1.')">Hint</button>
           </div>
           <div class="q-feedback" id="q4-feedback"></div>
         </div>
 
-        <!-- Q5 -->
+        <!-- Q5 — text input: exact answer -->
         <div class="quiz-question" id="q5">
           <div class="q-text">5. Convert <span class="dec">14</span> (decimal) to binary.</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q5-input">
-            <button class="btn btn-check" onclick="checkQ5()">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ5()">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q5', ['1110'], '✓ Correct! 14 = 8+4+2 → 1110.', '14 ≥ 8 → 1, remainder 6. 6 ≥ 4 → 1, remainder 2. 2 ≥ 2 → 1, remainder 0. 0 &lt; 1 → 0.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q5', '14 ≥ 8 → 1, remainder 6. 6 ≥ 4 → 1, remainder 2. 2 ≥ 2 → 1, remainder 0.')">Hint</button>
           </div>
           <div class="q-feedback" id="q5-feedback"></div>
         </div>
 
-        <!-- Q6 — Conceptual -->
+        <!-- Q6 — multiple choice: conceptual -->
         <div class="quiz-question" id="q6">
-          <div class="q-text">6. How many unique values can be represented with 4 bits? (Enter a number.)</div>
-          <div class="q-input-row">
-            <input type="text" placeholder="Your answer" id="q6-input">
-            <button class="btn btn-check" onclick="checkQ6()">Check</button>
-            <button class="btn btn-ghost" onclick="hintQ6()">Hint</button>
+          <div class="q-text">6. How many unique values can be represented with 4 bits?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">A</span> 4 — one value per bit</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">B</span> 8 — two to the third power</button>
+            <button class="mc-option" onclick="checkMC('q6', this, true)"><span class="mc-letter">C</span> 16 — two to the fourth power</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">D</span> 32 — two to the fifth power</button>
           </div>
-          <div class="q-feedback" id="q6-feedback"></div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <!-- Q7 — multiple choice: conceptual -->
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. The word <em>binary</em> comes from the Latin <em>bis</em>. What does <em>bis</em> mean?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">A</span> Small</button>
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">B</span> Fast</button>
+            <button class="mc-option" onclick="checkMC('q7', this, true)"><span class="mc-letter">C</span> Twice</button>
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">D</span> Digital</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <!-- Q8 — multiple choice: conceptual -->
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. Which of the following best describes the difference between a <em>continuous</em> and a <em>discrete</em> system?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8', this, false)"><span class="mc-letter">A</span> Continuous systems are faster; discrete systems are slower.</button>
+            <button class="mc-option" onclick="checkMC('q8', this, true)"><span class="mc-letter">B</span> Continuous systems have infinitely divisible values; discrete systems have distinct, countable units.</button>
+            <button class="mc-option" onclick="checkMC('q8', this, false)"><span class="mc-letter">C</span> Continuous systems use binary; discrete systems use decimal.</button>
+            <button class="mc-option" onclick="checkMC('q8', this, false)"><span class="mc-letter">D</span> Continuous systems are analog; discrete systems always use base-2.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
         </div>
 
       </div>
@@ -459,97 +484,41 @@
 <script src="../widgets/binary-converter.js"></script>
 
 <script>
-  // ── Practice problem answer checkers ──────────────────────
-  function checkQ1() {
-    const el = document.getElementById('q1');
-    const input = document.getElementById('q1-input');
-    const fb = document.getElementById('q1-feedback');
-    const val = input.value.trim();
-    fb.className = val === '8' ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = val === '8'
-      ? '✓ Correct! 1×8 = 8.'
-      : '✗ Not quite. Think: which place values have a 1?';
-  }
-  function hintQ1() {
-    const fb = document.getElementById('q1-feedback');
-    fb.className = 'q-feedback hint';
-    fb.textContent = 'Place values for 4-bit numbers: 8, 4, 2, 1. The digit 1 is in the 8s place only.';
+  // ── Text input checker ─────────────────────────────────────
+  function checkText(id, accepted, successMsg, hintMsg) {
+    const input = document.getElementById(id + '-input');
+    const fb    = document.getElementById(id + '-feedback');
+    const val   = input.value.trim().replace(/^0+(?=\d)/, ''); // strip leading zeros
+    if (!val) { fb.className = 'q-feedback hint'; fb.textContent = 'Enter an answer above.'; return; }
+    const match = accepted.includes(val);
+    fb.className = match ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = match ? successMsg : '✗ Not quite — try again, or use the hint.';
   }
 
-  function checkQ2() {
-    const el = document.getElementById('q2');
-    const input = document.getElementById('q2-input');
-    const fb = document.getElementById('q2-feedback');
-    const val = input.value.trim();
-    fb.className = val === '13' ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = val === '13'
-      ? '✓ Correct! 8+4+0+1 = 13.'
-      : '✗ Not quite. Try working through each place value.';
-  }
-  function hintQ2() {
-    const fb = document.getElementById('q2-feedback');
+  function hintText(id, hintMsg) {
+    const fb = document.getElementById(id + '-feedback');
     fb.className = 'q-feedback hint';
-    fb.textContent = '1101: the 1s are in the 8s, 4s, and 1s places. Add those up.';
+    fb.textContent = hintMsg;
   }
 
-  function checkQ3() {
-    const input = document.getElementById('q3-input');
-    const fb = document.getElementById('q3-feedback');
-    const val = input.value.trim();
-    fb.className = val === '7' ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = val === '7'
-      ? '✓ Correct! 0+4+2+1 = 7. (Leading zero has no effect.)'
-      : '✗ Not quite. Remember: leading zeros are ignored.';
-  }
-  function hintQ3() {
-    const fb = document.getElementById('q3-feedback');
-    fb.className = 'q-feedback hint';
-    fb.textContent = '0111 is the same as 111. The 1s are in the 4s, 2s, and 1s places.';
-  }
-
-  function checkQ4() {
-    const input = document.getElementById('q4-input');
-    const fb = document.getElementById('q4-feedback');
-    const val = input.value.trim().replace(/^0+/, '') || '0';
-    fb.className = val === '1001' ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = val === '1001'
-      ? '✓ Correct! 9 = 8+1 → 1001.'
-      : '✗ Not quite. Start: what is the largest power of 2 that fits into 9?';
-  }
-  function hintQ4() {
-    const fb = document.getElementById('q4-feedback');
-    fb.className = 'q-feedback hint';
-    fb.textContent = '9 ≥ 8, so place a 1 in the 8s spot. 9−8 = 1. 1 < 4, so 4s = 0. 1 < 2, so 2s = 0. 1 ≥ 1, so 1s = 1.';
-  }
-
-  function checkQ5() {
-    const input = document.getElementById('q5-input');
-    const fb = document.getElementById('q5-feedback');
-    const val = input.value.trim().replace(/^0+/, '') || '0';
-    fb.className = val === '1110' ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = val === '1110'
-      ? '✓ Correct! 14 = 8+4+2 → 1110.'
-      : '✗ Not quite. 14 = 8 + ? Try the algorithm step by step.';
-  }
-  function hintQ5() {
-    const fb = document.getElementById('q5-feedback');
-    fb.className = 'q-feedback hint';
-    fb.textContent = '14 ≥ 8 → 1, remainder 6. 6 ≥ 4 → 1, remainder 2. 2 ≥ 2 → 1, remainder 0. 0 < 1 → 0.';
-  }
-
-  function checkQ6() {
-    const input = document.getElementById('q6-input');
-    const fb = document.getElementById('q6-feedback');
-    const val = input.value.trim();
-    fb.className = val === '16' ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = val === '16'
-      ? '✓ Correct! 2⁴ = 16 unique values (0 through 15).'
-      : '✗ Not quite. Hint: with n bits you can represent 2ⁿ values.';
-  }
-  function hintQ6() {
-    const fb = document.getElementById('q6-feedback');
-    fb.className = 'q-feedback hint';
-    fb.textContent = 'Each bit can be 0 or 1. With 4 bits you have 2×2×2×2 = ? combinations.';
+  // ── Multiple choice checker ────────────────────────────────
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    // Disable all options in this question
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect) b.classList.add('correct');
+      else if (b === btn && !isCorrect) {
+        b.classList.add('incorrect');
+        // Reveal the correct one
+        container.querySelectorAll('.mc-option').forEach(ob => {
+          if (ob.onclick.toString().includes('true')) ob.classList.add('revealed');
+        });
+      }
+    });
+    fb.className = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
   }
 </script>
 
