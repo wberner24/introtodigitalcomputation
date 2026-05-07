@@ -334,61 +334,63 @@
       </ul>
 
       <!-- SVG 1: Half Adder (standalone) -->
-      <svg viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <defs>
           <marker id="arr-ha" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
             <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
           </marker>
         </defs>
-        <rect width="400" height="270" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="200" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Half Adder</text>
+        <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Half Adder</text>
 
-        <rect x="18" y="32" width="364" height="230" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="200" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER</text>
-        <text x="200" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 single bits — outputs SUM and CARRY</text>
+        <rect x="18" y="30" width="644" height="150" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="340" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER  ·  Adds 2 single bits, outputs SUM and CARRY</text>
 
         <!-- Input labels -->
-        <text x="36" y="108" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
-        <text x="36" y="158" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">B</text>
+        <text x="36" y="82"  font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
+        <text x="36" y="122" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">B</text>
 
-        <!-- XOR gate: x=100,y=78 w=72 h=36 -->
-        <rect x="100" y="78" width="72" height="36" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
-        <text x="136" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">XOR</text>
+        <!-- XOR gate: x=90, y=58, w=72, h=34 -->
+        <rect x="90" y="58" width="72" height="34" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="126" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">XOR</text>
 
-        <!-- AND gate: x=100,y=136 w=72 h=36 -->
-        <rect x="100" y="136" width="72" height="36" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="136" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
+        <!-- AND gate: x=90, y=108, w=72, h=34 -->
+        <rect x="90" y="108" width="72" height="34" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="126" y="130" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
 
-        <!-- A wire → junction → XOR top (y=89) and AND top (y=147) -->
-        <line x1="50" y1="104" x2="70" y2="104" stroke="#B8B0A4" stroke-width="1.5"/>
-        <circle cx="70" cy="104" r="3" fill="#B8B0A4"/>
-        <line x1="70" y1="104" x2="70" y2="89"  stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="70" y1="89"  x2="100" y2="89"  stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="70" y1="104" x2="70" y2="147" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="70" y1="147" x2="100" y2="147" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- A wire: junction at x=62,y=78 → up to XOR top (y=67), down to AND top (y=117) -->
+        <line x1="50" y1="78"  x2="62" y2="78"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <circle cx="62" cy="78" r="3" fill="#B8B0A4"/>
+        <line x1="62" y1="78"  x2="62" y2="67"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="62" y1="67"  x2="90" y2="67"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="62" y1="78"  x2="62" y2="117" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="62" y1="117" x2="90" y2="117" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- B wire → junction → XOR bottom (y=107) and AND bottom (y=165) -->
-        <line x1="50" y1="154" x2="76" y2="154" stroke="#B8B0A4" stroke-width="1.5"/>
-        <circle cx="76" cy="154" r="3" fill="#B8B0A4"/>
-        <line x1="76" y1="154" x2="76" y2="107" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="76" y1="107" x2="100" y2="107" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="76" y1="154" x2="76" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="76" y1="165" x2="100" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- B wire: junction at x=68,y=120 → up to XOR bottom (y=83), down to AND bottom (y=133) -->
+        <line x1="50" y1="120" x2="68" y2="120" stroke="#B8B0A4" stroke-width="1.5"/>
+        <circle cx="68" cy="120" r="3" fill="#B8B0A4"/>
+        <line x1="68" y1="120" x2="68" y2="83"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="68" y1="83"  x2="90" y2="83"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="68" y1="120" x2="68" y2="133" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="68" y1="133" x2="90" y2="133" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- XOR output → SUM -->
-        <line x1="172" y1="96" x2="240" y2="96" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
-        <text x="246" y="100" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
-        <text x="246" y="113" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
+        <!-- XOR output (y=75) → SUM -->
+        <line x1="162" y1="75" x2="220" y2="75" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
+        <text x="226" y="79"  font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+        <text x="226" y="91"  font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
 
-        <!-- AND output → CARRY -->
-        <line x1="172" y1="154" x2="240" y2="154" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
-        <text x="246" y="158" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
-        <text x="246" y="171" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
+        <!-- AND output (y=125) → CARRY -->
+        <line x1="162" y1="125" x2="220" y2="125" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
+        <text x="226" y="129" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
+        <text x="226" y="141" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
 
-        <!-- Example box -->
-        <rect x="32" y="206" width="336" height="44" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="200" y="222" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Example: A=1, B=1</text>
-        <text x="200" y="238" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">SUM = 1 XOR 1 = 0     CARRY = 1 AND 1 = 1</text>
+        <!-- Example box: y=155, bottom=180, inside panel (30+150=180) ✓ -->
+        <rect x="310" y="55" width="350" height="120" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="485" y="80"  text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#4A4640">Truth table</text>
+        <text x="485" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=0, B=0 → SUM=0, CARRY=0</text>
+        <text x="485" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=0, B=1 → SUM=1, CARRY=0</text>
+        <text x="485" y="130" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=1, B=0 → SUM=1, CARRY=0</text>
+        <text x="485" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">A=1, B=1 → SUM=0, CARRY=1</text>
       </svg>
 
       <!-- SVG 2: Full Adder (standalone) -->
