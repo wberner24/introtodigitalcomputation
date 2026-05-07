@@ -107,10 +107,7 @@
       ? `<span class="step-line highlight">  ${parts.join(' + ')} = ${decimal}</span>`
       : `<span class="step-line highlight">  0 = 0</span>`;
 
-    const placeRow = bits.split('').map((b, i) => {
-      const place = Math.pow(2, n - 1 - i);
-      return `<span style="color:${b==='1'?'var(--accent-dark)':'var(--ink-light)';}">${b}</span>`;
-    }).join(' ');
+
 
     return {
       decimal,
