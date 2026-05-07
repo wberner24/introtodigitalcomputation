@@ -822,6 +822,46 @@ body {
   .converter-arrow { transform: rotate(90deg); }
 }
 
+/* ── Comparison Table ───────────────────────────────────────── */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 28px 0;
+  font-size: 0.88rem;
+}
+
+.comparison-table th {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--ink);
+  color: #fff;
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.comparison-table td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.45;
+  color: var(--ink-mid);
+}
+
+.comparison-table td strong {
+  color: var(--ink);
+}
+
+.comparison-table tr:nth-child(even) td {
+  background: var(--bg-alt);
+}
+
+.comparison-table tr:last-child td {
+  border-bottom: none;
+}
+
 /* ── Utility ────────────────────────────────────────────────── */
 .mt-0 { margin-top: 0; }
 .text-center { text-align: center; }
