@@ -5,8 +5,9 @@
 
 'use strict';
 
-// ── Widget Registry ──────────────────────────────────────────
-const widgets = {};
+// ── Global namespace (initialized early so widget scripts can register) ──
+window.IDC = window.IDC || { widgets: {} };
+const widgets = window.IDC.widgets;
 
 // ── Init on DOM Ready ────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
@@ -113,4 +114,4 @@ function revealAnswer(el, answer) {
 }
 
 // Export helpers for widget scripts
-window.IDC = { widgets, checkTextAnswer, revealAnswer, normalizeAnswer };
+Object.assign(window.IDC, { checkTextAnswer, revealAnswer, normalizeAnswer });

@@ -156,9 +156,8 @@
     };
   }
 
-  // Register widget
-  document.addEventListener('DOMContentLoaded', () => {
-    window.IDC.widgets['binary-converter'] = { render };
-  });
+  // Register widget immediately so main.js can find it on DOMContentLoaded
+  window.IDC = window.IDC || { widgets: {} };
+  window.IDC.widgets['binary-converter'] = { render };
 
 })();
