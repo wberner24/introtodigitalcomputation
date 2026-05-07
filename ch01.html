@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 1: Binary — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter active">
+        <span class="ch-num">01</span> Binary
+      </a>
+      <a href="ch02.html" class="nav-chapter">
+        <span class="ch-num">02</span> Physical Bits
+      </a>
+      <a href="ch03.html" class="nav-chapter">
+        <span class="ch-num">03</span> Data Representation
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter">
+        <span class="ch-num">04</span> Processors
+      </a>
+      <a href="ch05.html" class="nav-chapter">
+        <span class="ch-num">05</span> Memory &amp; Storage
+      </a>
+      <a href="ch06.html" class="nav-chapter">
+        <span class="ch-num">06</span> I/O &amp; System Architecture
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter">
+        <span class="ch-num">07</span> System vs. Application Software
+      </a>
+      <a href="ch08.html" class="nav-chapter">
+        <span class="ch-num">08</span> Operating Systems
+      </a>
+      <a href="ch09.html" class="nav-chapter">
+        <span class="ch-num">09</span> File Systems &amp; Directory Services
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter">
+        <span class="ch-num">10</span> Networking Fundamentals
+      </a>
+      <a href="ch11.html" class="nav-chapter">
+        <span class="ch-num">11</span> Network Architecture &amp; Communication
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter">
+        <span class="ch-num">12</span> System Administration
+      </a>
+      <a href="ch13.html" class="nav-chapter">
+        <span class="ch-num">13</span> Virtualization &amp; Cloud
+      </a>
+      <a href="ch14.html" class="nav-chapter">
+        <span class="ch-num">14</span> Putting It All Together
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      &copy; 2025 Wade Berner<br>
+      Southern Illinois University Edwardsville
+    </div>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main class="main-content">
+
+    <!-- Chapter Header -->
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 01 · Unit 1: Foundations</div>
+      <h1 class="chapter-title">Binary</h1>
+      <div class="chapter-deco">01010</div>
+      <p class="chapter-intro">What does it mean for information to be <em>digital</em>? We start at the very beginning — with fingers, toes, and the surprisingly deep idea of counting itself — and work our way up to the number system that makes modern computing possible.</p>
+    </header>
+
+    <!-- Prose -->
+    <article class="prose">
+
+      <p>What is digital computation? First, what is <em>digital</em>? And further — what is a <em>digit</em>?</p>
+
+      <p>According to the Oxford Dictionary, a digit is:</p>
+
+      <blockquote style="border-left: 3px solid var(--border-dark); padding-left: 20px; margin: 20px 0; color: var(--ink-mid); font-style: italic;">
+        A finger (including the thumb) or a toe.
+      </blockquote>
+
+      <p>Okay, there's actually a more immediately relevant definition:</p>
+
+      <blockquote style="border-left: 3px solid var(--border-dark); padding-left: 20px; margin: 20px 0; color: var(--ink-mid); font-style: italic;">
+        Any of the numerals from 0 to 9, especially when forming part of a number.
+      </blockquote>
+
+      <p>But I promised first-principles, so let's start with the fingers and toes. Stick with me here.</p>
+
+      <p>Note that your fingers and toes are generally viewed as <strong>atomic units</strong>, especially when used to count. This means they can't be meaningfully divided into smaller parts for the purpose of counting. Of course they <em>can</em> be physically divided — at the joint, into skin and bone and blood, into cells, into molecules, into atoms. But atoms themselves aren't truly atomic either, as J. Robert Oppenheimer would grimly confirm. Some things, it turns out, can always be divided further.</p>
+
+      <p>This gets at something fundamental. Some things are <strong>infinitely divisible</strong> into smaller and smaller parts. We call these things <strong>continuous</strong>, or <em>smooth</em>. The real numbers possess this trait. Consider:</p>
+
+      <p><em>What's the "next" number after 1.3?</em></p>
+
+      <p>You might say 1.4. But you skipped 1.35. That skipped 1.345. Which skipped 1.3449, and so on, <em>ad infinitum</em>.</p>
+
+      <div class="definition">
+        <div class="def-term">Continuous</div>
+        <p>A set of values is <strong>continuous</strong> (or <em>smooth</em>) if there is no smallest step between values — you can always subdivide further. The real numbers are continuous. Temperature on an analog thermometer is continuous.</p>
+      </div>
+
+      <div class="definition">
+        <div class="def-term">Discrete</div>
+        <p>A set of values is <strong>discrete</strong> (or <em>digital</em>) if it consists of distinct, countable units with no values between them. Integers are discrete. Fingers are discrete. You can have 3 fingers or 4 fingers, but not 3.7 fingers.</p>
+      </div>
+
+      <p>So: fingers and toes, when used to count the integers, are <strong>digits</strong> — and that maps directly onto the second Oxford definition. A digit is a discrete counting unit. <strong>Digital</strong>, then, refers to the representation of information using discrete digits.</p>
+
+      <p>That's nothing new — you've been doing it since kindergarten.</p>
+
+      <h2>Decimal vs. Binary</h2>
+
+      <p>In principle, a digital computer could use all ten digits (0–9) to represent numbers, just as you and I do. Such a computer would operate in the <strong>decimal</strong> system — from the Latin <em>decem</em>, meaning "ten." Decimal is also called <strong>base-10</strong>.</p>
+
+      <p>Modern digital computers, however, don't use ten digits. They use only two: <strong>0</strong> and <strong>1</strong>. This is the <strong>binary</strong> system — from Latin <em>bis</em>, meaning "twice." Binary is also called <strong>base-2</strong>.</p>
+
+      <div class="note">
+        <strong>Why binary?</strong> We'll answer this in depth in Chapter 2, when we explore how bits exist physically inside a computer. The short version: an electronic switch is either <em>on</em> or <em>off</em>. Two states. That's binary. It's not a design preference — it's a physical reality.
+      </div>
+
+      <p>In other words, binary and decimal are both subsets of the broader concept of <em>digital</em>. Binary just happens to use the smallest possible number of digits: two.</p>
+
+      <p>All numbers, pictures, sounds, words, and other kinds of data stored or processed by a computer are ultimately represented using just 0 and 1. For now, let's focus on numbers.</p>
+
+      <h2>Counting in Decimal</h2>
+
+      <p>Take out a piece of paper and write the decimal numbers from 0 to 10 in a vertical column. It may seem silly, but the pattern we're about to identify is the whole game.</p>
+
+      <p>Notice what happens when you reach 10. You need a new "place." In this new place, you still only get the same digits (0–9), but now they're worth more — ten times more, to be exact. We call this worth-more-ness <strong>place value</strong>.</p>
+
+      <table class="place-table" style="margin: 28px auto;">
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td>
+          <td>0</td>
+        </tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>1</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>2</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>3</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>4</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>5</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>6</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>7</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>8</td></tr>
+        <tr class="row-digit"><td style="color:var(--ink-light);">·</td><td>9</td></tr>
+        <tr class="row-digit"><td>1</td><td>0</td></tr>
+        <tr class="row-place"><td>10s</td><td>1s</td></tr>
+        <tr class="row-power"><td>10¹</td><td>10⁰</td></tr>
+      </table>
+
+      <h3>The Counting Algorithm</h3>
+
+      <p>Let's make explicit what you've been doing intuitively since childhood:</p>
+
+      <ol>
+        <li>Start with 0 in the rightmost place.</li>
+        <li>Increment the rightmost digit until you run out of digits.</li>
+        <li>When you run out, increment the next place to the left and reset the rightmost place to 0.</li>
+        <li>Repeat as needed.</li>
+      </ol>
+
+      <p>That algorithm works for <em>any</em> base system. The only thing that changes is how many digits you get before you "run out" and need a new place.</p>
+
+      <h2>Counting in Binary</h2>
+
+      <p>Now apply the same algorithm with only two digits — 0 and 1 — and place values that are powers of 2 instead of powers of 10.</p>
+
+      <p>Below are the binary representations of zero through ten (i.e., "none" through "all your fingers"):</p>
+
+      <table class="place-table" style="margin: 28px auto;">
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td>
+          <td style="color:var(--ink-light);">·</td>
+          <td style="color:var(--ink-light);">·</td>
+          <td>0</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td style="color:var(--ink-light);">·</td><td style="color:var(--ink-light);">·</td><td>1</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td style="color:var(--ink-light);">·</td><td>1</td><td>0</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td style="color:var(--ink-light);">·</td><td>1</td><td>1</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td>1</td><td>0</td><td>0</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td>1</td><td>0</td><td>1</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td>1</td><td>1</td><td>0</td>
+        </tr>
+        <tr class="row-digit">
+          <td style="color:var(--ink-light);">·</td><td>1</td><td>1</td><td>1</td>
+        </tr>
+        <tr class="row-digit">
+          <td>1</td><td>0</td><td>0</td><td>0</td>
+        </tr>
+        <tr class="row-digit">
+          <td>1</td><td>0</td><td>0</td><td>1</td>
+        </tr>
+        <tr class="row-digit">
+          <td class="bit-1">1</td><td>0</td><td class="bit-1">1</td><td>0</td>
+        </tr>
+        <tr class="row-place">
+          <td>8s</td><td>4s</td><td>2s</td><td>1s</td>
+        </tr>
+        <tr class="row-power">
+          <td>2³</td><td>2²</td><td>2¹</td><td>2⁰</td>
+        </tr>
+      </table>
+
+      <p>The last row — <span class="bin">1010</span> — is the number we call "ten" (all your fingers). In decimal that's <span class="dec">10</span>. Same number, different representation. The <em>concept</em> of ten doesn't change; only the notation does.</p>
+
+      <h2>Translating Binary to Decimal</h2>
+
+      <p>To translate a binary number to decimal, use place values — exactly as you do in decimal, just with powers of 2.</p>
+
+      <p>Let's translate <span class="bin">1100</span>:</p>
+
+      <table class="place-table" style="margin: 28px auto;">
+        <tr class="row-digit">
+          <td class="bit-1">1</td>
+          <td class="bit-1">1</td>
+          <td>0</td>
+          <td>0</td>
+        </tr>
+        <tr class="row-place">
+          <td>8</td><td>4</td><td>2</td><td>1</td>
+        </tr>
+        <tr class="row-power">
+          <td>2³</td><td>2²</td><td>2¹</td><td>2⁰</td>
+        </tr>
+      </table>
+
+      <ul>
+        <li>1 × 8 = <strong>8</strong></li>
+        <li>1 × 4 = <strong>4</strong></li>
+        <li>0 × 2 = 0</li>
+        <li>0 × 1 = 0</li>
+      </ul>
+
+      <p>8 + 4 + 0 + 0 = <strong>12</strong></p>
+
+      <p>Therefore: <span class="bin">1100</span> (base-2) = <span class="dec">12</span> (base-10). There are <span class="bin">1100</span> eggs in a dozen.</p>
+
+      <div class="note">
+        <strong>Leading zeros:</strong> Just like in decimal, leading zeros have no effect. <span class="bin">0101</span> = <span class="bin">101</span> = <span class="dec">5</span>.
+      </div>
+
+      <h2>Translating Decimal to Binary</h2>
+
+      <p>Going the other direction uses a simple greedy algorithm: find the largest power of 2 that fits, place a 1 there, subtract, and repeat with the remainder.</p>
+
+      <h3>The Algorithm</h3>
+      <ol>
+        <li>List binary place values (powers of 2) up to your number.</li>
+        <li>Find the largest place value ≤ your number. Write a 1 there.</li>
+        <li>Subtract that place value from your number.</li>
+        <li>Repeat with the remainder.</li>
+        <li>Fill all unused places with 0.</li>
+      </ol>
+
+      <p>Let's convert <span class="dec">11</span> to binary:</p>
+
+      <table class="place-table" style="margin: 28px auto;">
+        <tr class="row-digit">
+          <td class="bit-1">1</td>
+          <td>0</td>
+          <td class="bit-1">1</td>
+          <td class="bit-1">1</td>
+        </tr>
+        <tr class="row-place">
+          <td>8</td><td>4</td><td>2</td><td>1</td>
+        </tr>
+        <tr class="row-power">
+          <td>2³</td><td>2²</td><td>2¹</td><td>2⁰</td>
+        </tr>
+      </table>
+
+      <ul>
+        <li>11 ≥ 8 → place a <strong>1</strong>. Remainder: 11 − 8 = 3.</li>
+        <li>3 &lt; 4 → place a <strong>0</strong>.</li>
+        <li>3 ≥ 2 → place a <strong>1</strong>. Remainder: 3 − 2 = 1.</li>
+        <li>1 ≥ 1 → place a <strong>1</strong>. Remainder: 1 − 1 = 0.</li>
+      </ul>
+
+      <p>Result: <span class="dec">11</span> (base-10) = <span class="bin">1011</span> (base-2).</p>
+
+      <!-- ── Widget ── -->
+      <div data-widget="binary-converter"></div>
+
+      <h2>Bits, Bytes, and Bigger Numbers</h2>
+
+      <p>A single binary digit — a 0 or a 1 — is called a <strong>bit</strong> (short for <strong>bi</strong>nary digi<strong>t</strong>). The examples above used 4 bits. With 4 bits, the largest number you can represent is <span class="bin">1111</span> = <span class="dec">15</span>.</p>
+
+      <p>For larger numbers, you simply need more bits. With 8 bits:</p>
+
+      <table class="place-table" style="margin: 28px auto;">
+        <tr class="row-digit">
+          <td class="bit-1">1</td><td class="bit-1">1</td><td class="bit-1">1</td><td class="bit-1">1</td>
+          <td class="bit-1">1</td><td class="bit-1">1</td><td class="bit-1">1</td><td class="bit-1">1</td>
+        </tr>
+        <tr class="row-place">
+          <td>128</td><td>64</td><td>32</td><td>16</td>
+          <td>8</td><td>4</td><td>2</td><td>1</td>
+        </tr>
+        <tr class="row-power">
+          <td>2⁷</td><td>2⁶</td><td>2⁵</td><td>2⁴</td>
+          <td>2³</td><td>2²</td><td>2¹</td><td>2⁰</td>
+        </tr>
+      </table>
+
+      <p><span class="bin">11111111</span> = 128+64+32+16+8+4+2+1 = <span class="dec">255</span>. Eight bits all set to 1 gives you 255 — the largest value representable in 8 bits.</p>
+
+      <p>Eight bits grouped together have a special name: a <strong>byte</strong>. You'll encounter bytes constantly in IT work — file sizes, memory capacity, network speeds — all measured in bytes or multiples thereof. We'll go deeper on bytes in Chapter 3.</p>
+
+      <h2>What About Everything Else?</h2>
+
+      <p>We've said computers represent <em>all</em> information using only 0s and 1s. Numbers, sure — but what about text? Images? Sound?</p>
+
+      <p>The short version: computers represent everything <em>as numbers</em>, and then represent those numbers in binary.</p>
+
+      <p>For example, in a system called <strong>ASCII</strong> (American Standard Code for Information Interchange), every English character is assigned a number. The uppercase letter <strong>A</strong> is ASCII value <span class="dec">65</span>. There's no deep reason for this — humans simply decided that A = 65 when ASCII was designed in the 1960s.</p>
+
+      <p><span class="dec">65</span> in binary? <span class="bin">1000001</span>.</p>
+
+      <p>So when you press <kbd style="font-family:var(--font-mono);background:var(--bg-alt);border:1px solid var(--border-dark);padding:1px 6px;border-radius:3px;">A</kbd> on your keyboard, your computer sees: <span class="bin">1000001</span>.</p>
+
+      <p>But wait — if 65 = <span class="bin">1000001</span> and "A" = <span class="bin">1000001</span>, how does the computer know which it's dealing with? That's where <strong>data types</strong> come in — context that tells the computer <em>how to interpret</em> a pattern of bits. We'll cover this in Chapter 3.</p>
+
+      <div class="note">
+        <strong>Looking ahead:</strong> The byte value 255 will reappear constantly. IP addresses, color values, permission masks — all of them involve 8-bit numbers bounded by 0 and 255. Once you know why, you'll never have to memorize it.
+      </div>
+
+      <!-- ── Practice Problems ── -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Practice</span>
+          <span class="practice-title">Chapter 1 Exercises</span>
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. Convert <span class="bin">1000</span> (binary) to decimal.</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q1-input">
+            <button class="btn btn-check" onclick="checkQ1()">Check</button>
+            <button class="btn btn-ghost" onclick="hintQ1()">Hint</button>
+          </div>
+          <div class="q-feedback" id="q1-feedback"></div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. Convert <span class="bin">1101</span> (binary) to decimal.</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q2-input">
+            <button class="btn btn-check" onclick="checkQ2()">Check</button>
+            <button class="btn btn-ghost" onclick="hintQ2()">Hint</button>
+          </div>
+          <div class="q-feedback" id="q2-feedback"></div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. Convert <span class="bin">0111</span> (binary) to decimal.</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q3-input">
+            <button class="btn btn-check" onclick="checkQ3()">Check</button>
+            <button class="btn btn-ghost" onclick="hintQ3()">Hint</button>
+          </div>
+          <div class="q-feedback" id="q3-feedback"></div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. Convert <span class="dec">9</span> (decimal) to binary.</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q4-input">
+            <button class="btn btn-check" onclick="checkQ4()">Check</button>
+            <button class="btn btn-ghost" onclick="hintQ4()">Hint</button>
+          </div>
+          <div class="q-feedback" id="q4-feedback"></div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. Convert <span class="dec">14</span> (decimal) to binary.</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q5-input">
+            <button class="btn btn-check" onclick="checkQ5()">Check</button>
+            <button class="btn btn-ghost" onclick="hintQ5()">Hint</button>
+          </div>
+          <div class="q-feedback" id="q5-feedback"></div>
+        </div>
+
+        <!-- Q6 — Conceptual -->
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. How many unique values can be represented with 4 bits? (Enter a number.)</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q6-input">
+            <button class="btn btn-check" onclick="checkQ6()">Check</button>
+            <button class="btn btn-ghost" onclick="hintQ6()">Hint</button>
+          </div>
+          <div class="q-feedback" id="q6-feedback"></div>
+        </div>
+
+      </div>
+
+      <!-- Chapter Nav -->
+      <nav class="chapter-nav-footer">
+        <a href="../index.html">
+          <span class="nav-direction">← Back to</span>
+          <span class="nav-title">Table of Contents</span>
+        </a>
+        <a href="ch02.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">Physical Bits</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/binary-converter.js"></script>
+
+<script>
+  // ── Practice problem answer checkers ──────────────────────
+  function checkQ1() {
+    const el = document.getElementById('q1');
+    const input = document.getElementById('q1-input');
+    const fb = document.getElementById('q1-feedback');
+    const val = input.value.trim();
+    fb.className = val === '8' ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = val === '8'
+      ? '✓ Correct! 1×8 = 8.'
+      : '✗ Not quite. Think: which place values have a 1?';
+  }
+  function hintQ1() {
+    const fb = document.getElementById('q1-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = 'Place values for 4-bit numbers: 8, 4, 2, 1. The digit 1 is in the 8s place only.';
+  }
+
+  function checkQ2() {
+    const el = document.getElementById('q2');
+    const input = document.getElementById('q2-input');
+    const fb = document.getElementById('q2-feedback');
+    const val = input.value.trim();
+    fb.className = val === '13' ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = val === '13'
+      ? '✓ Correct! 8+4+0+1 = 13.'
+      : '✗ Not quite. Try working through each place value.';
+  }
+  function hintQ2() {
+    const fb = document.getElementById('q2-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = '1101: the 1s are in the 8s, 4s, and 1s places. Add those up.';
+  }
+
+  function checkQ3() {
+    const input = document.getElementById('q3-input');
+    const fb = document.getElementById('q3-feedback');
+    const val = input.value.trim();
+    fb.className = val === '7' ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = val === '7'
+      ? '✓ Correct! 0+4+2+1 = 7. (Leading zero has no effect.)'
+      : '✗ Not quite. Remember: leading zeros are ignored.';
+  }
+  function hintQ3() {
+    const fb = document.getElementById('q3-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = '0111 is the same as 111. The 1s are in the 4s, 2s, and 1s places.';
+  }
+
+  function checkQ4() {
+    const input = document.getElementById('q4-input');
+    const fb = document.getElementById('q4-feedback');
+    const val = input.value.trim().replace(/^0+/, '') || '0';
+    fb.className = val === '1001' ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = val === '1001'
+      ? '✓ Correct! 9 = 8+1 → 1001.'
+      : '✗ Not quite. Start: what is the largest power of 2 that fits into 9?';
+  }
+  function hintQ4() {
+    const fb = document.getElementById('q4-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = '9 ≥ 8, so place a 1 in the 8s spot. 9−8 = 1. 1 < 4, so 4s = 0. 1 < 2, so 2s = 0. 1 ≥ 1, so 1s = 1.';
+  }
+
+  function checkQ5() {
+    const input = document.getElementById('q5-input');
+    const fb = document.getElementById('q5-feedback');
+    const val = input.value.trim().replace(/^0+/, '') || '0';
+    fb.className = val === '1110' ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = val === '1110'
+      ? '✓ Correct! 14 = 8+4+2 → 1110.'
+      : '✗ Not quite. 14 = 8 + ? Try the algorithm step by step.';
+  }
+  function hintQ5() {
+    const fb = document.getElementById('q5-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = '14 ≥ 8 → 1, remainder 6. 6 ≥ 4 → 1, remainder 2. 2 ≥ 2 → 1, remainder 0. 0 < 1 → 0.';
+  }
+
+  function checkQ6() {
+    const input = document.getElementById('q6-input');
+    const fb = document.getElementById('q6-feedback');
+    const val = input.value.trim();
+    fb.className = val === '16' ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = val === '16'
+      ? '✓ Correct! 2⁴ = 16 unique values (0 through 15).'
+      : '✗ Not quite. Hint: with n bits you can represent 2ⁿ values.';
+  }
+  function hintQ6() {
+    const fb = document.getElementById('q6-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = 'Each bit can be 0 or 1. With 4 bits you have 2×2×2×2 = ? combinations.';
+  }
+</script>
+
+</body>
+</html>
