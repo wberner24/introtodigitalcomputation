@@ -3,7 +3,7 @@
 
 **Author:** Wade Berner  
 **Institution:** Southern Illinois University Edwardsville  
-**Course:** ITEC 121
+**Course:** CMIS 310
 
 ---
 
@@ -64,4 +64,4 @@ Hosted via GitHub Pages:
 
 ## License
 
-&copy; 2025 Wade Berner. All rights reserved.
+&copy; 2026 Wade Berner. All rights reserved.
