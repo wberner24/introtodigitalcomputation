@@ -1071,6 +1071,135 @@
         </div>
       </a>
 
+      <h2>Beyond the CPU: GPUs and TPUs</h2>
+
+      <p>Everything in this chapter has described a general-purpose CPU — a processor designed to run any kind of sequential computation quickly. But not all problems are sequential, and not all workloads benefit from the CPU's architecture. Two specialized processor types have become essential to modern computing: <strong>GPUs</strong> and <strong>TPUs</strong>.</p>
+
+      <h3>GPUs: Massive Parallelism</h3>
+
+      <p>A <strong>Graphics Processing Unit</strong> was originally designed to render images. Rendering a frame means computing the color of millions of pixels simultaneously — each pixel's calculation is independent of the others, so there's no reason to do them one at a time. A CPU with 16 high-performance cores can tackle 16 things at once. An NVIDIA H100 GPU has over 16,000 smaller cores operating simultaneously.</p>
+
+      <p>The tradeoff is specialization. A GPU core is far simpler than a CPU core — no deep pipeline, no branch prediction, no out-of-order execution. It's optimized for one thing: performing the same simple arithmetic operation on a large array of numbers in parallel. For that task, it is orders of magnitude faster than a CPU. For most other tasks, the CPU wins.</p>
+
+      <p>This same strength turns out to be exactly what modern AI needs. Training a neural network reduces to enormous numbers of matrix multiplications — exactly the kind of embarrassingly parallel arithmetic a GPU excels at. That's why GPU clusters power virtually every AI training workload today. The hardware existed; the workload arrived.</p>
+
+      <!-- SVG: CPU vs GPU core comparison -->
+      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="160" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">CPU vs. GPU: Different Philosophies</text>
+
+        <!-- CPU panel -->
+        <rect x="18" y="32" width="300" height="114" rx="6" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="168" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">CPU  ·  Few powerful cores</text>
+        <!-- 8 large core boxes in 2 rows -->
+        <rect x="30"  y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="96"  y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="162" y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="228" y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="30"  y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="96"  y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="162" y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <rect x="228" y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="168" y="148" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">8 complex cores — fast at any task</text>
+
+        <!-- GPU panel -->
+        <rect x="362" y="32" width="300" height="114" rx="6" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="512" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">GPU  ·  Thousands of simple cores</text>
+        <!-- Many tiny core dots in a grid -->
+        <rect x="374" y="58" width="276" height="74" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <!-- 10×5 grid of tiny squares -->
+        <!-- Row 1 -->
+        <rect x="380" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="406" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="432" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="458" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="484" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="510" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="536" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="562" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="588" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="614" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <!-- Row 2 -->
+        <rect x="380" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="406" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="432" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="458" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="484" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="510" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="536" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="562" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="588" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="614" y="80" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <!-- Row 3 -->
+        <rect x="380" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="406" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="432" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="458" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="484" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="510" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="536" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="562" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="588" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="614" y="96" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <!-- Row 4 -->
+        <rect x="380" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="406" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="432" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="458" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="484" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="510" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="536" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="562" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="588" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <rect x="614" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
+        <text x="512" y="148" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Thousands of simple cores — fast at parallel math</text>
+      </svg>
+
+      <h3>TPUs: Even More Specialized</h3>
+
+      <p>A <strong>Tensor Processing Unit</strong> takes specialization further. Google designed the TPU in 2016 specifically to accelerate the matrix multiplications that neural networks require — it doesn't even try to be a general-purpose chip. Where a GPU is versatile enough to run games, simulations, and video processing as well as AI, a TPU does essentially one thing: multiply large matrices of numbers together as fast as physically possible.</p>
+
+      <p>The payoff is efficiency. For AI training and inference workloads, TPUs deliver more computation per watt than a GPU, at lower cost per operation at scale. Google's internal AI workloads — Search, Translate, Maps, Gmail — all run on TPUs. Cloud providers now offer TPU instances alongside GPU and CPU instances, and choosing among them is a real infrastructure decision for AI-heavy applications.</p>
+
+      <div class="comparison-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Processor</th>
+              <th>Core count</th>
+              <th>Strength</th>
+              <th>Weakness</th>
+              <th>Typical use</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>CPU</strong></td>
+              <td>4–128</td>
+              <td>Sequential tasks, complex logic</td>
+              <td>Slow at massive parallelism</td>
+              <td>Operating systems, general software</td>
+            </tr>
+            <tr>
+              <td><strong>GPU</strong></td>
+              <td>1,000s</td>
+              <td>Parallel math, graphics</td>
+              <td>Inefficient for sequential work</td>
+              <td>Rendering, AI training, simulations</td>
+            </tr>
+            <tr>
+              <td><strong>TPU</strong></td>
+              <td>Custom matrix units</td>
+              <td>Neural network math</td>
+              <td>Only useful for ML workloads</td>
+              <td>AI training and inference at scale</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The broader point is architectural: the right processor depends entirely on the workload. A CPU running a database handles thousands of independent queries — parallelism matters, but so does complex branching logic. A GPU rendering a game frame runs millions of nearly-identical shader calculations in lockstep. A TPU training a language model multiplies billion-element matrices over and over. Same underlying physics, radically different designs optimized for different problems.</p>
+
       <!-- ── Practice Problems ── -->
       <div class="practice-block">
         <div class="practice-header">
@@ -1186,6 +1315,17 @@
             <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> Only when liquid cooling is installed.</button>
           </div>
           <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q11">
+          <div class="q-text">11. Why are GPUs well-suited for AI training workloads, even though they were originally designed for graphics?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">A</span> GPUs run at much higher clock speeds than CPUs.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">B</span> AI workloads require complex branching logic that GPUs handle better.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,true)"><span class="mc-letter">C</span> Both graphics and AI training reduce to massive parallel matrix math — the same operation run simultaneously on thousands of values.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">D</span> GPUs have larger caches than CPUs, which speeds up memory access for large datasets.</button>
+          </div>
+          <div class="mc-feedback" id="q11-feedback"></div>
         </div>
 
       </div>
