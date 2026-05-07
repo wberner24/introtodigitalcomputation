@@ -125,11 +125,10 @@
           font-size: 1rem;
           font-weight: 700;
           background: var(--ink);
-          color: white;
+          color: white !important;
           padding: 5px 14px;
           border-radius: 6px;
           letter-spacing: 0.08em;
-          transition: color 0.12s;
         }
 
         .rgb-label-note {
@@ -327,8 +326,10 @@
       const hexFull = `#${decToHex(R)}${decToHex(G)}${decToHex(B)}`;
 
       container.querySelector('#rgb-swatch').style.background = color;
-      container.querySelector('#rgb-hex-badge').textContent = hexFull;
-      container.querySelector('#rgb-hex-badge').style.color = (R + G + B > 380) ? '#1A1814' : 'white';
+      const badge = container.querySelector('#rgb-hex-badge');
+      badge.textContent = hexFull;
+      badge.style.color = 'white';
+      badge.style.background = 'var(--ink)';
 
       ['R','G','B'].forEach(ch => {
         const v = state[ch];

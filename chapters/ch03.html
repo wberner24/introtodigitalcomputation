@@ -378,35 +378,399 @@
 
       <h2>Representing Sound</h2>
 
-      <p>Sound is a continuous wave — a fluctuation in air pressure your ears detect. Continuous means infinitely divisible. So how does a discrete, digital machine store something continuous?</p>
+      <p>Sound is pressure. When a speaker cone pushes forward, it compresses the air in front of it; when it pulls back, it creates a region of lower pressure. Those compressions and rarefactions travel outward as a wave, and when they reach your eardrum, you hear sound. The wave has a shape — a smooth, continuous curve that varies over time.</p>
 
-      <p>The answer is <strong>sampling</strong>: measure the wave's amplitude at regular intervals and record each measurement as a number. Think of it like a flipbook animation — a smooth motion becomes a series of still frames. If the frames are taken fast enough, you perceive smooth motion. Same principle for audio: sample fast enough, and the ear perceives continuous sound.</p>
+      <p>The simplest sound wave is a <strong>sine wave</strong>: a perfectly smooth, repeating oscillation. Real sounds — a voice, a guitar, a recording of rain — are vastly more complex, but they're all built from combinations of sine waves at different frequencies and amplitudes. This is the underlying math of audio, and it's why the sine wave is the right place to start.</p>
 
-      <p>CD-quality audio uses 44,100 samples per second (44.1 kHz). Each sample is a 16-bit number. For stereo (two channels):</p>
+      <!-- SVG: Sine wave with labeled amplitude and frequency -->
+      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">A Sound Wave (Sine Wave)</text>
+
+        <!-- Axes -->
+        <line x1="40" y1="95" x2="650" y2="95" stroke="#D8D2C6" stroke-width="1"/>
+        <line x1="40" y1="20" x2="40"  y2="170" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="655" y="99" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">time →</text>
+        <text x="8"   y="50" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C" transform="rotate(-90,14,95)">pressure</text>
+
+        <!-- Sine wave path (two full cycles) -->
+        <path d="M40,95
+          C80,95 90,30 130,30
+          C170,30 180,95 220,95
+          C260,95 270,160 310,160
+          C350,160 360,95 400,95
+          C440,95 450,30 490,30
+          C530,30 540,95 580,95
+          C610,95 620,130 640,140"
+          fill="none" stroke="#1D4E7A" stroke-width="2.5" stroke-linecap="round"/>
+
+        <!-- Amplitude annotation -->
+        <line x1="130" y1="30" x2="130" y2="95" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <line x1="124" y1="30" x2="136" y2="30" stroke="#C1440E" stroke-width="1.5"/>
+        <line x1="124" y1="95" x2="136" y2="95" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="140" y="58" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#C1440E" font-weight="600">Amplitude</text>
+        <text x="140" y="70" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">(loudness)</text>
+
+        <!-- Frequency annotation — one full cycle -->
+        <line x1="40"  y1="175" x2="400" y2="175" stroke="#1a6b4a" stroke-width="1.5"/>
+        <line x1="40"  y1="170" x2="40"  y2="180" stroke="#1a6b4a" stroke-width="1.5"/>
+        <line x1="400" y1="170" x2="400" y2="180" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="220" y="172" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1a6b4a" font-weight="600">1 cycle (period)</text>
+        <text x="220" y="184" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">Frequency = cycles per second (Hz) — pitch</text>
+
+        <!-- Zero crossing label -->
+        <text x="45" y="88" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">0</text>
+      </svg>
+
+      <p>Two properties define a sound wave. <strong>Amplitude</strong> is the height of the wave — how much the pressure varies. We perceive amplitude as <em>loudness</em>. <strong>Frequency</strong> is how many complete cycles occur per second, measured in <strong>Hertz (Hz)</strong>. We perceive frequency as <em>pitch</em>. Middle A on a piano vibrates at 440 Hz. A bass guitar note might be 80 Hz. A dog whistle is above 20,000 Hz — beyond the range of human hearing.</p>
+
+      <p>The problem for a digital computer is that both amplitude and frequency are continuous. The wave doesn't snap between values; it flows smoothly. So how does a discrete machine capture it?</p>
+
+      <h3>Sampling: Slicing the Continuous into Discrete</h3>
+
+      <p>The answer is <strong>sampling</strong>: take a measurement of the wave's amplitude at regular intervals, and record each measurement as a number. It's the audio equivalent of the flipbook — a smooth motion becomes a series of still frames. If the frames are close enough together, the eye (or in this case, the ear) perceives continuous motion.</p>
+
+      <!-- SVG: Continuous wave vs digital samples -->
+      <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="220" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Analog Wave → Digital Samples</text>
+
+        <!-- Left panel: analog -->
+        <rect x="14" y="28" width="308" height="170" rx="6" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="168" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">ANALOG (CONTINUOUS)</text>
+        <line x1="28" y1="110" x2="310" y2="110" stroke="#D8D2C6" stroke-width="1"/>
+        <path d="M28,110 C55,110 65,55 95,55 C125,55 135,110 165,110 C195,110 205,165 235,165 C265,165 275,110 310,110"
+          fill="none" stroke="#1D4E7A" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="168" y="192" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Smooth, infinite precision</text>
+
+        <!-- Right panel: digital samples -->
+        <rect x="358" y="28" width="308" height="170" rx="6" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="512" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">DIGITAL (SAMPLED)</text>
+        <line x1="372" y1="110" x2="654" y2="110" stroke="#D8D2C6" stroke-width="1"/>
+
+        <!-- Ghost wave for reference -->
+        <path d="M372,110 C399,110 409,55 439,55 C469,55 479,110 509,110 C539,110 549,165 579,165 C609,165 619,110 654,110"
+          fill="none" stroke="#D8D2C6" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+        <!-- Sample bars (stem plot) at intervals -->
+        <!-- Sample points correspond to wave positions -->
+        <line x1="385" y1="110" x2="385" y2="103" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="385" cy="103" r="4" fill="#C1440E"/>
+
+        <line x1="415" y1="110" x2="415" y2="67"  stroke="#C1440E" stroke-width="2"/>
+        <circle cx="415" cy="67"  r="4" fill="#C1440E"/>
+
+        <line x1="445" y1="110" x2="445" y2="55"  stroke="#C1440E" stroke-width="2"/>
+        <circle cx="445" cy="55"  r="4" fill="#C1440E"/>
+
+        <line x1="475" y1="110" x2="475" y2="77"  stroke="#C1440E" stroke-width="2"/>
+        <circle cx="475" cy="77"  r="4" fill="#C1440E"/>
+
+        <line x1="505" y1="110" x2="505" y2="110" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="505" cy="110" r="4" fill="#C1440E"/>
+
+        <line x1="535" y1="110" x2="535" y2="143" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="535" cy="143" r="4" fill="#C1440E"/>
+
+        <line x1="565" y1="110" x2="565" y2="165" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="565" cy="165" r="4" fill="#C1440E"/>
+
+        <line x1="595" y1="110" x2="595" y2="153" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="595" cy="153" r="4" fill="#C1440E"/>
+
+        <line x1="625" y1="110" x2="625" y2="110" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="625" cy="110" r="4" fill="#C1440E"/>
+
+        <line x1="648" y1="110" x2="648" y2="100" stroke="#C1440E" stroke-width="2"/>
+        <circle cx="648" cy="100" r="4" fill="#C1440E"/>
+
+        <text x="512" y="192" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Each dot = one sample = one number stored</text>
+
+        <!-- Arrow between panels -->
+        <text x="340" y="118" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="18" fill="#B8B0A4">→</text>
+      </svg>
+
+      <p>Each sample is just a number — the amplitude of the wave at that instant, stored as a binary integer. Two parameters control how faithfully the digital version captures the original:</p>
+
+      <p><strong>Sample rate</strong> is how many measurements we take per second, expressed in Hz or kHz. The higher the sample rate, the more precisely the digital version tracks the original wave's shape. There's a mathematical principle called the <strong>Nyquist theorem</strong> that says you need to sample at least twice the highest frequency you want to capture. Human hearing tops out around 20,000 Hz, so a sample rate of at least 40,000 Hz is needed to capture the full audible range — which is exactly why CD audio uses 44,100 Hz (44.1 kHz). The extra headroom above 40,000 gives engineers room for filtering.</p>
+
+      <p><strong>Bit depth</strong> is how many bits are used to store each sample — how precisely each amplitude measurement is recorded. CD audio uses 16-bit samples, giving 2¹⁶ = 65,536 possible amplitude values. More bits means a wider dynamic range — the difference between the quietest and loudest sounds that can be faithfully represented. Professional studio audio often uses 24-bit depth (16 million possible values) to preserve detail during recording and mixing.</p>
+
+      <!-- SVG: Sample rate vs bit depth comparison -->
+      <svg viewBox="0 0 680 175" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="175" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Sample Rate vs. Bit Depth</text>
+
+        <!-- Headers -->
+        <rect x="18"  y="30" width="304" height="20" rx="3" fill="#1D4E7A"/>
+        <rect x="358" y="30" width="304" height="20" rx="3" fill="#5b2d8e"/>
+        <text x="170" y="44" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="white">SAMPLE RATE (Hz / kHz)</text>
+        <text x="510" y="44" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="white">BIT DEPTH (bits per sample)</text>
+
+        <!-- Left content -->
+        <text x="28" y="68"  font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Controls <strong>time resolution</strong> — how closely spaced</text>
+        <text x="28" y="82"  font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">the measurements are along the time axis.</text>
+        <text x="28" y="100" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">8 kHz    — telephone quality</text>
+        <text x="28" y="114" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">44.1 kHz — CD quality (standard)</text>
+        <text x="28" y="128" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">96 kHz   — high-res audio</text>
+        <text x="28" y="150" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Higher rate → more faithful wave shape → larger file</text>
+
+        <!-- Right content -->
+        <text x="368" y="68"  font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Controls <strong>amplitude resolution</strong> — how many</text>
+        <text x="368" y="82"  font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">discrete loudness levels can be represented.</text>
+        <text x="368" y="100" font-family="'JetBrains Mono',monospace" font-size="9" fill="#5b2d8e">8-bit  — 256 values     (old games, voice)</text>
+        <text x="368" y="114" font-family="'JetBrains Mono',monospace" font-size="9" fill="#5b2d8e">16-bit — 65,536 values  (CD standard)</text>
+        <text x="368" y="128" font-family="'JetBrains Mono',monospace" font-size="9" fill="#5b2d8e">24-bit — 16.7M values   (studio recording)</text>
+        <text x="368" y="150" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">More bits → wider dynamic range → larger file</text>
+
+        <!-- Divider -->
+        <line x1="340" y1="30" x2="340" y2="165" stroke="#D8D2C6" stroke-width="1"/>
+      </svg>
+
+      <p>Put the two together for CD-quality stereo audio:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;">
-        44,100 × 16 bits × 2 channels = 1,411,200 bits/sec ≈ <strong>10 MB per minute</strong>
+        44,100 samples/sec × 16 bits/sample × 2 channels = 1,411,200 bits/sec ≈ <strong>10 MB per minute</strong>
       </p>
 
-      <p>One minute of uncompressed CD audio is about 10 MB. A 3-minute song is ~30 MB uncompressed. The same song as an MP3 is 3–5 MB. The difference is compression.</p>
+      <p>One minute of uncompressed CD audio is about 10 MB. A 3-minute song is roughly 30 MB uncompressed. The same song as an MP3 is typically 3–5 MB. That difference — from 30 MB to 4 MB — is the work of compression, which we'll cover shortly.</p>
 
-      <h2>Images, Video, and Why Compression Exists</h2>
+      <h2>Representing Images and Video</h2>
 
-      <p>A 4,000×3,000 pixel smartphone photo at 3 bytes per pixel:</p>
+      <p>We established earlier that a color image is a grid of pixels, each stored as three bytes (R, G, B). The file size math follows directly: multiply pixels by bytes per pixel.</p>
+
+      <p>A smartphone photo at 4,000 × 3,000 pixels:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;">
-        4,000 × 3,000 × 3 bytes = 36,000,000 bytes ≈ <strong>36 MB uncompressed</strong>
+        4,000 × 3,000 pixels × 3 bytes/pixel = 36,000,000 bytes ≈ <strong>36 MB uncompressed</strong>
       </p>
 
-      <p>Your phone saves it as a 3–5 MB JPEG. The difference is <strong>compression</strong> — algorithms that eliminate redundancy to reduce file size. JPEG is <em>lossy</em>: some information is discarded, but the result is visually indistinguishable to most people.</p>
+      <p>Your phone saves that as a 3–5 MB JPEG. We'll get to exactly how in a moment.</p>
 
-      <p>Video is images in sequence — typically 24 to 60 frames per second:</p>
+      <p>Video is images in sequence. Film traditionally runs at 24 frames per second; broadcast television at 30; modern gaming and high-frame-rate video at 60 or even 120. Each frame is a complete image. Multiply the per-frame size by the frame rate:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;">
         36 MB/frame × 30 frames/sec = 1,080 MB/sec ≈ <strong>1 GB every second</strong>
       </p>
 
-      <p>That's why uncompressed video is impractical, why formats like H.264 exist, and why your 2-hour movie fits on a disc rather than a warehouse of drives. Compression is one of computing's most important ideas, and it's motivated entirely by this arithmetic.</p>
+      <p>A 2-hour movie at that rate would require over 7 terabytes of raw storage. That's clearly impractical — which is why compression isn't optional for video. It's a fundamental requirement.</p>
+
+      <!-- SVG: Image resolution and file size comparison -->
+      <svg viewBox="0 0 680 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="185" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Resolution, Color Depth, and File Size</text>
+
+        <!-- Header row -->
+        <rect x="14" y="28" width="652" height="20" rx="3" fill="#1A1814"/>
+        <text x="100" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Format</text>
+        <text x="230" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Resolution</text>
+        <text x="355" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Pixels</text>
+        <text x="475" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">× 3 bytes</text>
+        <text x="600" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Uncompressed</text>
+
+        <!-- Row 1 -->
+        <rect x="14" y="50" width="652" height="22" fill="#F5F2EB"/>
+        <text x="100" y="65" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">HD Video Frame</text>
+        <text x="230" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">1,920 × 1,080</text>
+        <text x="355" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">2,073,600</text>
+        <text x="475" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">6,220,800</text>
+        <text x="600" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">≈ 6 MB</text>
+
+        <!-- Row 2 -->
+        <rect x="14" y="74" width="652" height="22" fill="#FDFAF4"/>
+        <text x="100" y="89" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">4K Video Frame</text>
+        <text x="230" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">3,840 × 2,160</text>
+        <text x="355" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">8,294,400</text>
+        <text x="475" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">24,883,200</text>
+        <text x="600" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">≈ 24 MB</text>
+
+        <!-- Row 3 -->
+        <rect x="14" y="98" width="652" height="22" fill="#F5F2EB"/>
+        <text x="100" y="113" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">12 MP Smartphone Photo</text>
+        <text x="230" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">4,000 × 3,000</text>
+        <text x="355" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">12,000,000</text>
+        <text x="475" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">36,000,000</text>
+        <text x="600" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#C1440E">≈ 36 MB</text>
+
+        <!-- Row 4 -->
+        <rect x="14" y="122" width="652" height="22" fill="#FDFAF4"/>
+        <text x="100" y="137" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">4K @ 30fps (1 second)</text>
+        <text x="230" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">3,840 × 2,160 × 30</text>
+        <text x="355" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">248,832,000</text>
+        <text x="475" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">746,496,000</text>
+        <text x="600" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#C1440E">≈ 720 MB/sec</text>
+
+        <text x="340" y="175" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Without compression, modern video is completely impractical to store or transmit.</text>
+      </svg>
+
+      <h2>Compression: Making Big Data Small</h2>
+
+      <p>Compression is the art of representing the same information using fewer bits. It's not magic — it exploits <em>redundancy</em>. Real-world data, it turns out, is deeply redundant. A photo of a blue sky contains millions of pixels that are nearly the same color. A song has long stretches of similar waveforms. A video has consecutive frames where most of the image hasn't changed at all. Compression algorithms find and eliminate that redundancy.</p>
+
+      <p>There are two fundamental types of compression, and the distinction matters enormously in practice.</p>
+
+      <p><strong>Lossless compression</strong> reduces file size without discarding any information. Decompress the file and you get back every single original bit — the result is mathematically identical to what you started with. The tradeoff: lossless compression ratios are modest, typically 2:1 to 4:1. Examples include PNG for images, FLAC for audio, and ZIP for general files.</p>
+
+      <p><strong>Lossy compression</strong> achieves much higher compression ratios by permanently discarding information that humans are unlikely to notice. The decompressed file is <em>not</em> identical to the original — it's an approximation. The art is in choosing what to throw away. Examples include JPEG for images, MP3 for audio, and H.264/HEVC for video.</p>
+
+      <!-- SVG: Lossless vs lossy compression diagram -->
+      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="200" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Lossless vs. Lossy Compression</text>
+
+        <!-- LOSSLESS row -->
+        <text x="26" y="50" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">LOSSLESS</text>
+
+        <!-- Original file -->
+        <rect x="26" y="56" width="90" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="71" y="71" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#1a6b4a">ORIGINAL</text>
+        <text x="71" y="84" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">36 MB</text>
+
+        <!-- Arrow compress -->
+        <line x1="118" y1="76" x2="155" y2="76" stroke="#1a6b4a" stroke-width="1.5" marker-end="url(#arr3g)"/>
+        <text x="136" y="70" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#1a6b4a">compress</text>
+
+        <!-- Compressed -->
+        <rect x="157" y="56" width="90" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="202" y="71" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#1a6b4a">COMPRESSED</text>
+        <text x="202" y="84" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">18 MB</text>
+
+        <!-- Arrow decompress -->
+        <line x1="249" y1="76" x2="286" y2="76" stroke="#1a6b4a" stroke-width="1.5" marker-end="url(#arr3g)"/>
+        <text x="267" y="70" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#1a6b4a">decompress</text>
+
+        <!-- Restored -->
+        <rect x="288" y="56" width="90" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="333" y="71" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#1a6b4a">RESTORED</text>
+        <text x="333" y="84" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">36 MB</text>
+
+        <!-- Identical badge -->
+        <rect x="392" y="62" width="144" height="28" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="464" y="74" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1a6b4a">✓ Bit-for-bit identical</text>
+        <text x="464" y="85" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">to original</text>
+
+        <text x="550" y="74" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">PNG · FLAC · ZIP</text>
+
+        <defs>
+          <marker id="arr3g" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#1a6b4a"/>
+          </marker>
+          <marker id="arr3r" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#C1440E"/>
+          </marker>
+        </defs>
+
+        <!-- Divider -->
+        <line x1="20" y1="112" x2="660" y2="112" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- LOSSY row -->
+        <text x="26" y="132" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">LOSSY</text>
+
+        <!-- Original file -->
+        <rect x="26" y="138" width="90" height="40" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="71" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8C3009">ORIGINAL</text>
+        <text x="71" y="166" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8C3009">36 MB</text>
+
+        <!-- Arrow compress -->
+        <line x1="118" y1="158" x2="155" y2="158" stroke="#C1440E" stroke-width="1.5" marker-end="url(#arr3r)"/>
+        <text x="136" y="152" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#C1440E">compress</text>
+
+        <!-- Compressed -->
+        <rect x="157" y="138" width="90" height="40" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="202" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8C3009">COMPRESSED</text>
+        <text x="202" y="166" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8C3009">3 MB</text>
+
+        <!-- Arrow decompress -->
+        <line x1="249" y1="158" x2="286" y2="158" stroke="#C1440E" stroke-width="1.5" marker-end="url(#arr3r)"/>
+        <text x="267" y="152" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#C1440E">decompress</text>
+
+        <!-- Approximation -->
+        <rect x="288" y="138" width="90" height="40" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="333" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8C3009">APPROX.</text>
+        <text x="333" y="166" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8C3009">~36 MB</text>
+
+        <!-- Not identical badge -->
+        <rect x="392" y="144" width="144" height="28" rx="4" fill="#F0E6DF" stroke="#C1440E" stroke-width="1"/>
+        <text x="464" y="156" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8C3009">✗ Not identical —</text>
+        <text x="464" y="167" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">perceptually similar</text>
+
+        <text x="550" y="156" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">JPEG · MP3 · H.264</text>
+      </svg>
+
+      <p>How does lossy compression decide what to throw away? It exploits the limits of human perception. JPEG, for example, converts image data into frequency components (a mathematical technique called the Discrete Cosine Transform) and then discards high-frequency detail that the human visual system is less sensitive to. A smooth blue sky compresses beautifully because the high-frequency information is nearly zero — there's almost nothing to discard. A photo of tree bark compresses poorly because every pixel is genuinely different from its neighbors.</p>
+
+      <p>MP3 audio compression works similarly, using a model of human hearing called a <strong>psychoacoustic model</strong>. It identifies sounds that would be masked by louder nearby sounds — the way a loud bass note makes it harder to hear a quiet high note at the same moment — and discards the masked data. The listener's brain fills in the gaps. Done well, most people cannot distinguish an MP3 from uncompressed audio in normal listening conditions. Done poorly (at very low bitrates), the artifacts become audible — the "underwater" sound of a badly compressed MP3.</p>
+
+      <p>Video compression goes even further by exploiting temporal redundancy — the fact that consecutive frames in a video are usually very similar. Rather than storing every frame as a complete image, formats like H.264 store a keyframe (a full image) followed by a series of <em>delta frames</em> that only encode what changed. A person talking against a static background has thousands of nearly-identical pixels per frame — only the mouth moves. There's no need to resend those static pixels 30 times per second. This is why a 2-hour movie fits on a 50 GB Blu-ray disc rather than requiring 5,000 GB of raw storage.</p>
+
+      <!-- SVG: Video keyframe vs delta frame -->
+      <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="170" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Video Compression: Keyframes and Delta Frames</text>
+
+        <!-- Keyframe -->
+        <rect x="20" y="32" width="110" height="80" rx="5" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="75" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1D4E7A">KEYFRAME</text>
+        <!-- Simple face icon -->
+        <circle cx="75" cy="78" r="22" fill="#fff" stroke="#1D4E7A" stroke-width="1.5"/>
+        <circle cx="68" cy="72" r="3" fill="#1D4E7A"/>
+        <circle cx="82" cy="72" r="3" fill="#1D4E7A"/>
+        <path d="M66,84 Q75,91 84,84" fill="none" stroke="#1D4E7A" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="75" y="124" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">Full image stored</text>
+        <text x="75" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#1D4E7A">~300 KB</text>
+
+        <!-- Arrows and delta frames -->
+        <line x1="132" y1="72" x2="158" y2="72" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr3b)"/>
+        <defs>
+          <marker id="arr3b" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
+          </marker>
+        </defs>
+
+        <!-- Delta frame 1 -->
+        <rect x="160" y="32" width="110" height="80" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="215" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8C3009">DELTA FRAME</text>
+        <!-- Only changed area highlighted - mouth area -->
+        <circle cx="215" cy="78" r="22" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1"/>
+        <circle cx="208" cy="72" r="3" fill="#D8D2C6"/>
+        <circle cx="222" cy="72" r="3" fill="#D8D2C6"/>
+        <!-- Different mouth -->
+        <rect x="205" y="82" width="20" height="10" rx="3" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="215" y="124" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">Only changes stored</text>
+        <text x="215" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8C3009">~8 KB</text>
+
+        <line x1="272" y1="72" x2="298" y2="72" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr3b)"/>
+
+        <!-- Delta frame 2 -->
+        <rect x="300" y="32" width="110" height="80" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2"/>
+        <text x="355" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8C3009">DELTA FRAME</text>
+        <circle cx="355" cy="78" r="22" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1"/>
+        <circle cx="348" cy="72" r="3" fill="#D8D2C6"/>
+        <circle cx="362" cy="72" r="3" fill="#D8D2C6"/>
+        <path d="M346,84 Q355,88 364,84" fill="none" stroke="#C1440E" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="355" y="124" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">Only changes stored</text>
+        <text x="355" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8C3009">~12 KB</text>
+
+        <line x1="412" y1="72" x2="438" y2="72" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr3b)"/>
+
+        <!-- New keyframe -->
+        <rect x="440" y="32" width="110" height="80" rx="5" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="495" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1D4E7A">KEYFRAME</text>
+        <circle cx="495" cy="78" r="22" fill="#fff" stroke="#1D4E7A" stroke-width="1.5"/>
+        <circle cx="488" cy="72" r="3" fill="#1D4E7A"/>
+        <circle cx="502" cy="72" r="3" fill="#1D4E7A"/>
+        <path d="M486,82 Q495,90 504,82" fill="none" stroke="#1D4E7A" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="495" y="124" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">New reference frame</text>
+        <text x="495" y="136" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#1D4E7A">~300 KB</text>
+
+        <text x="610" y="72" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C" transform="translate(0,0)">Keyframes every</text>
+        <text x="610" y="84" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">few seconds;</text>
+        <text x="610" y="96" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">deltas between.</text>
+      </svg>
+
+      <div class="note">
+        <strong>Why compression settings matter in IT.</strong> When you're configuring a video surveillance system, choosing a streaming bitrate for a corporate webcast, setting backup compression on a file server, or specifying storage for a media archive, you're making compression decisions. The lossless/lossy distinction, bitrate, and codec choice all have direct implications for storage cost, bandwidth consumption, and quality. These aren't decisions that only developers make — they're everyday IT infrastructure decisions.
+      </div>
 
       <h2>Data Types: The Full Picture</h2>
 
