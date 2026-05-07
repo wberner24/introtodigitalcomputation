@@ -219,104 +219,93 @@
       <p>There are a handful of fundamental gate types. Each one has a well-defined rule — a <strong>truth table</strong> — that specifies what output it produces for every possible combination of inputs.</p>
 
       <!-- SVG: Logic gates and truth tables -->
-      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <defs>
-          <marker id="arr-gate" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
-          </marker>
-        </defs>
-        <rect width="680" height="340" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+      <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="380" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Fundamental Logic Gates</text>
-
-        <!-- Column headers -->
         <text x="90"  y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">GATE</text>
-        <text x="220" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">RULE</text>
-        <text x="430" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">TRUTH TABLE</text>
+        <text x="250" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">RULE</text>
+        <text x="490" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">TRUTH TABLE</text>
         <line x1="16" y1="44" x2="664" y2="44" stroke="#D8D2C6" stroke-width="1"/>
 
-        <!-- ── NOT ── row y=50–105 -->
-        <rect x="16" y="48" width="648" height="56" rx="0" fill="#F5F2EB"/>
-        <!-- Gate box -->
-        <rect x="28" y="56" width="124" height="40" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
-        <text x="90"  y="73" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">NOT</text>
-        <text x="90"  y="87" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">1 input</text>
-        <!-- Rule -->
+        <!-- NOT row: y=44 to 104 (60px) -->
+        <rect x="16" y="44" width="648" height="60" fill="#F5F2EB"/>
+        <rect x="28" y="52" width="124" height="44" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="90" y="72" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">NOT</text>
+        <text x="90" y="87" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">1 input</text>
         <text x="175" y="68" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Inverts the input.</text>
-        <text x="175" y="82" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">0 in → 1 out    1 in → 0 out</text>
-        <!-- Truth table -->
-        <rect x="370" y="52" width="48" height="18" rx="2" fill="#1A1814"/>
-        <text x="394" y="64" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">IN</text>
-        <rect x="422" y="52" width="48" height="18" rx="2" fill="#1A1814"/>
-        <text x="446" y="64" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
-        <text x="394" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text>
-        <text x="446" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">1</text>
-        <text x="394" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text>
-        <text x="446" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">0</text>
+        <text x="175" y="83" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">0 in&#160;&#8594;&#160;1 out&#160;&#160;&#160;&#160;1 in&#160;&#8594;&#160;0 out</text>
+        <rect x="430" y="50" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="454" y="62" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">IN</text>
+        <rect x="484" y="50" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="508" y="62" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="454" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text>
+        <text x="508" y="78" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">1</text>
+        <text x="454" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text>
+        <text x="508" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">0</text>
 
-        <!-- ── AND ── row y=106–177 -->
-        <rect x="16" y="105" width="648" height="72" rx="0" fill="#FDFAF4"/>
-        <rect x="28" y="113" width="124" height="56" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="90"  y="135" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1a6b4a">AND</text>
-        <text x="90"  y="150" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
-        <text x="90"  y="162" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Output: 1 only if</text>
-        <!-- Rule -->
-        <text x="175" y="128" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 only when BOTH inputs are 1.</text>
-        <text x="175" y="142" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Any 0 input produces a 0 output.</text>
-        <text x="175" y="160" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: masking, filtering bits</text>
-        <!-- Truth table 2-input -->
-        <rect x="370" y="109" width="36" height="16" rx="2" fill="#1A1814"/>
-        <text x="388" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
-        <rect x="410" y="109" width="36" height="16" rx="2" fill="#1A1814"/>
-        <text x="428" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
-        <rect x="450" y="109" width="48" height="16" rx="2" fill="#1A1814"/>
-        <text x="474" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
-        <!-- rows -->
-        <text x="388" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
-        <text x="388" y="151" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="151" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="151" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
-        <text x="388" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
-        <text x="388" y="177" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="177" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="177" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">1</text>
+        <!-- AND row: y=104 to 192 (88px) -->
+        <rect x="16" y="104" width="648" height="88" fill="#FDFAF4"/>
+        <rect x="28" y="110" width="124" height="76" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="90" y="132" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1a6b4a">AND</text>
+        <text x="90" y="148" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
+        <text x="90" y="162" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Output 1 only if</text>
+        <text x="90" y="176" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">both inputs are 1</text>
+        <text x="175" y="124" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 only when BOTH inputs are 1.</text>
+        <text x="175" y="138" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Any 0 input produces a 0 output.</text>
+        <text x="175" y="156" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: masking, filtering bits</text>
+        <rect x="410" y="108" width="40" height="16" rx="2" fill="#1A1814"/>
+        <text x="430" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
+        <rect x="456" y="108" width="40" height="16" rx="2" fill="#1A1814"/>
+        <text x="476" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
+        <rect x="502" y="108" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="526" y="120" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="430" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="476" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="526" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="430" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="476" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="526" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="430" y="168" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="476" y="168" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="526" y="168" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="430" y="183" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="476" y="183" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="526" y="183" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">1</text>
 
-        <!-- ── OR ── row y=178–249 -->
-        <rect x="16" y="178" width="648" height="72" rx="0" fill="#F5F2EB"/>
-        <rect x="28" y="186" width="124" height="56" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
-        <text x="90"  y="208" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">OR</text>
-        <text x="90"  y="223" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
-        <!-- Rule -->
-        <text x="175" y="202" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 when AT LEAST ONE input is 1.</text>
-        <text x="175" y="216" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 0 only when both inputs are 0.</text>
-        <text x="175" y="234" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: combining flags, set operations</text>
-        <!-- Truth table -->
-        <rect x="370" y="182" width="36" height="16" rx="2" fill="#1A1814"/>
-        <text x="388" y="194" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
-        <rect x="410" y="182" width="36" height="16" rx="2" fill="#1A1814"/>
-        <text x="428" y="194" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
-        <rect x="450" y="182" width="48" height="16" rx="2" fill="#1A1814"/>
-        <text x="474" y="194" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
-        <text x="388" y="211" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="211" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="211" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
-        <text x="388" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
-        <text x="388" y="237" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="237" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="237" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
-        <text x="388" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
+        <!-- OR row: y=192 to 280 (88px) -->
+        <rect x="16" y="192" width="648" height="88" fill="#F5F2EB"/>
+        <rect x="28" y="198" width="124" height="76" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="90" y="220" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">OR</text>
+        <text x="90" y="236" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
+        <text x="90" y="250" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Output 0 only if</text>
+        <text x="90" y="264" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">both inputs are 0</text>
+        <text x="175" y="212" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 when AT LEAST ONE input is 1.</text>
+        <text x="175" y="226" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 0 only when both inputs are 0.</text>
+        <text x="175" y="244" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: combining flags, set operations</text>
+        <rect x="410" y="196" width="40" height="16" rx="2" fill="#1A1814"/>
+        <text x="430" y="208" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
+        <rect x="456" y="196" width="40" height="16" rx="2" fill="#1A1814"/>
+        <text x="476" y="208" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
+        <rect x="502" y="196" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="526" y="208" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="430" y="226" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="476" y="226" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="526" y="226" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="430" y="241" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="476" y="241" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="526" y="241" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
+        <text x="430" y="256" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="476" y="256" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="526" y="256" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
+        <text x="430" y="271" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="476" y="271" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="526" y="271" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
 
-        <!-- ── XOR ── row y=251–322 -->
-        <rect x="16" y="252" width="648" height="72" rx="0" fill="#FDFAF4"/>
-        <rect x="28" y="260" width="124" height="56" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
-        <text x="90"  y="282" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#8C3009">XOR</text>
-        <text x="90"  y="297" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
-        <!-- Rule -->
-        <text x="175" y="276" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 when inputs are DIFFERENT.</text>
-        <text x="175" y="290" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 0 when inputs are the same.</text>
-        <text x="175" y="308" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: binary addition, encryption</text>
-        <!-- Truth table -->
-        <rect x="370" y="256" width="36" height="16" rx="2" fill="#1A1814"/>
-        <text x="388" y="268" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
-        <rect x="410" y="256" width="36" height="16" rx="2" fill="#1A1814"/>
-        <text x="428" y="268" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
-        <rect x="450" y="256" width="48" height="16" rx="2" fill="#1A1814"/>
-        <text x="474" y="268" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
-        <text x="388" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
-        <text x="388" y="298" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="298" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="298" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">1</text>
-        <text x="388" y="311" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="311" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="311" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">1</text>
-        <text x="388" y="324" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="324" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="324" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <!-- XOR row: y=280 to 368 (88px) -->
+        <rect x="16" y="280" width="648" height="88" fill="#FDFAF4"/>
+        <rect x="28" y="286" width="124" height="76" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="90" y="308" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#8C3009">XOR</text>
+        <text x="90" y="324" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
+        <text x="90" y="338" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Output 1 when</text>
+        <text x="90" y="352" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">inputs differ</text>
+        <text x="175" y="300" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 when inputs are DIFFERENT.</text>
+        <text x="175" y="314" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 0 when inputs are the same.</text>
+        <text x="175" y="332" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: binary addition, encryption</text>
+        <rect x="410" y="284" width="40" height="16" rx="2" fill="#1A1814"/>
+        <text x="430" y="296" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
+        <rect x="456" y="284" width="40" height="16" rx="2" fill="#1A1814"/>
+        <text x="476" y="296" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
+        <rect x="502" y="284" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="526" y="296" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="430" y="314" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="476" y="314" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="526" y="314" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="430" y="329" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="476" y="329" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="526" y="329" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">1</text>
+        <text x="430" y="344" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="476" y="344" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="526" y="344" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">1</text>
+        <text x="430" y="359" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="476" y="359" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="526" y="359" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <line x1="16" y1="368" x2="664" y2="368" stroke="#D8D2C6" stroke-width="1"/>
       </svg>
 
       <p>These four gates — NOT, AND, OR, XOR — plus one more called NAND (Not-AND, which outputs 0 only when both inputs are 1) are sufficient to build any digital circuit that can ever exist. This is not an overstatement. Every calculation your computer performs, every piece of data it stores, every comparison it makes — all of it can be reduced to combinations of these five gate types.</p>
@@ -339,92 +328,140 @@
       </ul>
 
       <!-- SVG: Half adder and full adder -->
-      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+      <svg viewBox="0 0 680 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <defs>
           <marker id="arr-circ" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
             <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
           </marker>
         </defs>
-        <rect width="680" height="260" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <rect width="680" height="270" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">From Gates to Circuits: Half Adder and Full Adder</text>
 
-        <!-- ── HALF ADDER (left panel) ── -->
-        <rect x="18" y="32" width="298" height="210" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- ══ HALF ADDER (left panel) ══ -->
+        <rect x="18" y="32" width="298" height="230" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
         <text x="167" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER</text>
         <text x="167" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 single bits</text>
 
-        <!-- Inputs A, B -->
-        <text x="38" y="112" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">A</text>
-        <text x="38" y="152" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">B</text>
-        <line x1="50" y1="109" x2="90" y2="109" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="50" y1="149" x2="90" y2="149" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- Input labels -->
+        <text x="36" y="108" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
+        <text x="36" y="158" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">B</text>
 
-        <!-- XOR gate box -->
-        <rect x="92" y="86" width="68" height="32" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
-        <text x="126" y="106" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">XOR</text>
-        <!-- Wire from A,B into XOR -->
-        <line x1="72" y1="109" x2="72" y2="102" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="3,2"/>
-        <line x1="72" y1="102" x2="92" y2="102" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="72" y1="149" x2="72" y2="114" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="3,2"/>
-        <line x1="72" y1="114" x2="92" y2="114" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- XOR gate box: x=100,y=78 w=72 h=36 — inputs at y=89 (top) and y=107 (bottom) -->
+        <rect x="100" y="78" width="72" height="36" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="136" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">XOR</text>
 
-        <!-- AND gate box -->
-        <rect x="92" y="136" width="68" height="32" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="126" y="156" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
-        <!-- Wire from A,B into AND -->
-        <line x1="80" y1="109" x2="80" y2="143" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="3,2"/>
-        <line x1="80" y1="143" x2="92" y2="143" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="84" y1="149" x2="92" y2="156" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- AND gate box: x=100,y=136 w=72 h=36 — inputs at y=147 (top) and y=165 (bottom) -->
+        <rect x="100" y="136" width="72" height="36" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="136" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
 
-        <!-- Output arrows -->
-        <line x1="160" y1="102" x2="220" y2="102" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="226" y="106" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
-        <text x="226" y="118" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
+        <!-- A input wire: comes in from left, hits junction at x=70,y=104 -->
+        <line x1="50" y1="104" x2="70" y2="104" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- Junction dot A -->
+        <circle cx="70" cy="104" r="3" fill="#B8B0A4"/>
+        <!-- A → XOR top input (y=89): go up from junction, then right -->
+        <line x1="70" y1="104" x2="70" y2="89" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="70" y1="89" x2="100" y2="89" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- A → AND top input (y=147): go down from junction, then right -->
+        <line x1="70" y1="104" x2="70" y2="147" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="70" y1="147" x2="100" y2="147" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <line x1="160" y1="152" x2="220" y2="152" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="226" y="156" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
-        <text x="226" y="168" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
+        <!-- B input wire: comes in from left, hits junction at x=76,y=154 -->
+        <line x1="50" y1="154" x2="76" y2="154" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- Junction dot B -->
+        <circle cx="76" cy="154" r="3" fill="#B8B0A4"/>
+        <!-- B → XOR bottom input (y=107): go up from junction, then right -->
+        <line x1="76" y1="154" x2="76" y2="107" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="76" y1="107" x2="100" y2="107" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- B → AND bottom input (y=165): go down from junction, then right -->
+        <line x1="76" y1="154" x2="76" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="76" y1="165" x2="100" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- Example -->
-        <rect x="32" y="196" width="270" height="36" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="167" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Example: A=1, B=1</text>
-        <text x="167" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">SUM = 1 XOR 1 = 0    CARRY = 1 AND 1 = 1</text>
+        <!-- XOR output: center of XOR right edge at y=96, goes right to SUM -->
+        <line x1="172" y1="96" x2="218" y2="96" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="224" y="100" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+        <text x="224" y="113" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
 
-        <!-- ── FULL ADDER (right panel) ── -->
-        <rect x="364" y="32" width="298" height="210" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- AND output: center of AND right edge at y=154, goes right to CARRY -->
+        <line x1="172" y1="154" x2="218" y2="154" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="224" y="158" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
+        <text x="224" y="171" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
+
+        <!-- Example box -->
+        <rect x="32" y="206" width="270" height="44" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="167" y="222" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Example: A=1, B=1</text>
+        <text x="167" y="238" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">SUM = 1 XOR 1 = 0   CARRY = 1 AND 1 = 1</text>
+
+        <!-- ══ FULL ADDER (right panel) ══ -->
+        <rect x="364" y="32" width="298" height="230" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
         <text x="513" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">FULL ADDER</text>
         <text x="513" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 bits + carry-in from previous column</text>
 
-        <!-- Three inputs -->
-        <text x="376" y="96"  font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">A</text>
-        <text x="376" y="112" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">B</text>
-        <text x="376" y="128" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#5b2d8e">Cin</text>
+        <!-- Input labels -->
+        <text x="374" y="100" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">A</text>
+        <text x="374" y="118" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">B</text>
+        <text x="372" y="168" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">Cin</text>
 
-        <!-- Two half-adder blocks inside -->
-        <rect x="410" y="76" width="80" height="36" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="450" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder</text>
-        <text x="450" y="107" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(A, B)</text>
+        <!-- HA1 box: x=418,y=74, w=78,h=38. Top input y=85, bottom input y=101, SUM out y=85, CARRY out y=101 -->
+        <rect x="418" y="74" width="78" height="38" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="457" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder 1</text>
+        <text x="457" y="105" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(A, B)</text>
 
-        <rect x="410" y="130" width="80" height="36" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="450" y="149" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder</text>
-        <text x="450" y="161" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(sum, Cin)</text>
+        <!-- HA2 box: x=418,y=140, w=78,h=38. Top input y=151, bottom input y=167, SUM out y=151, CARRY out y=167 -->
+        <rect x="418" y="140" width="78" height="38" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="457" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder 2</text>
+        <text x="457" y="171" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(sum1, Cin)</text>
 
-        <!-- OR gate for carry out -->
-        <rect x="510" y="104" width="56" height="28" rx="5" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
-        <text x="538" y="122" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#5b2d8e">OR</text>
+        <!-- OR box: x=522,y=100, w=50,h=34. Inputs y=111 (top) and y=125 (bottom), output at center y=117 -->
+        <rect x="522" y="100" width="50" height="34" rx="5" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="547" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">OR</text>
 
-        <!-- Outputs -->
-        <line x1="490" y1="148" x2="594" y2="148" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="600" y="152" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+        <!-- A wire: x=388,y=97 → right to HA1 top input at x=418,y=85 -->
+        <line x1="388" y1="97" x2="404" y2="97" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="404" y1="97" x2="404" y2="85" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="404" y1="85" x2="418" y2="85" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <line x1="566" y1="118" x2="594" y2="118" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="600" y="122" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">Cout</text>
-        <text x="600" y="134" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(carry out)</text>
+        <!-- B wire: x=388,y=115 → right to HA1 bottom input at x=418,y=101 -->
+        <line x1="388" y1="115" x2="408" y2="115" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="408" y1="115" x2="408" y2="101" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="408" y1="101" x2="418" y2="101" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- Example -->
-        <rect x="378" y="196" width="270" height="36" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="513" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Eight full adders chained = 8-bit adder circuit</text>
-        <text x="513" y="224" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">This is literally how your CPU adds numbers</text>
+        <!-- HA1 SUM output (y=85) → right, then down to HA2 top input (y=151) -->
+        <line x1="496" y1="85" x2="508" y2="85" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="508" y1="85" x2="508" y2="151" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="508" y1="151" x2="418" y2="151" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- Label "sum1" on this wire -->
+        <text x="510" y="118" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">sum1</text>
+
+        <!-- HA1 CARRY output (y=101) → right to OR top input (y=111) -->
+        <line x1="496" y1="101" x2="514" y2="101" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="514" y1="101" x2="514" y2="111" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="514" y1="111" x2="522" y2="111" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="497" y="99" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c1</text>
+
+        <!-- Cin wire: x=392,y=165 → right to HA2 bottom input (y=167) -->
+        <line x1="392" y1="165" x2="412" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="412" y1="165" x2="412" y2="167" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="412" y1="167" x2="418" y2="167" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- HA2 CARRY output (y=167) → right then up to OR bottom input (y=125) -->
+        <line x1="496" y1="167" x2="518" y2="167" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="518" y1="167" x2="518" y2="125" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="518" y1="125" x2="522" y2="125" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="497" y="178" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c2</text>
+
+        <!-- HA2 SUM output (y=151) → arrow right → final SUM -->
+        <line x1="496" y1="151" x2="574" y2="151" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="580" y="155" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+
+        <!-- OR output (center y=117) → arrow right → Cout -->
+        <line x1="572" y1="117" x2="595" y2="117" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="601" y="121" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">Cout</text>
+        <text x="601" y="133" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(carry out)</text>
+
+        <!-- Example box -->
+        <rect x="378" y="206" width="270" height="44" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="513" y="222" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Eight full adders chained = 8-bit adder circuit</text>
+        <text x="513" y="238" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">This is literally how your CPU adds numbers</text>
       </svg>
 
       <p>A <strong>full adder</strong> extends the half adder by also accepting a <em>carry-in</em> from the previous column — exactly as you carry digits in pencil-and-paper addition. A full adder is built from two half adders plus an OR gate. And here's the payoff: chain eight full adders together and you have an 8-bit adder — a circuit that can add any two 8-bit numbers and produce an 8-bit result with a carry-out. That is literally how your CPU's ALU adds numbers. The same principle scales to 32-bit and 64-bit adders.</p>
@@ -650,7 +687,7 @@
         <rect x="380" y="188" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="409" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
 
-        <text x="400" y="210" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles — stages overlap</text>
+        <text x="400" y="205" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles — stages overlap</text>
       </svg>
 
       <h3>The Problem with Pipelining: Branch Instructions</h3>
@@ -998,43 +1035,35 @@
         <!-- Trend line (approximate exponential curve on log scale = straight line) -->
         <line x1="80" y1="155" x2="620" y2="48" stroke="#D8D2C6" stroke-width="1.5" stroke-dasharray="6,3"/>
 
-        <!-- Data points (x = year mapped to 80-620, y = log-scaled transistor count mapped to 30-160) -->
-        <!-- Intel 4004 1971: 2,300 ~log=3.36 → y≈155 -->
+        <!-- Data points -->
+        <!-- Intel 4004 1971 -->
         <circle cx="84"  cy="155" r="4" fill="#1D4E7A"/>
-        <text x="90"  cy="155" y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">4004 (2.3K)</text>
-
-        <!-- Intel 8086 1978: 29,000 ~log=4.46 → y≈143 -->
+        <text x="92"  y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">4004 (2.3K)</text>
+        <!-- Intel 8086 1978 -->
         <circle cx="150" cy="144" r="4" fill="#1D4E7A"/>
-
-        <!-- Intel 286 1982: 134K → y≈138 -->
+        <!-- Intel 286 1982 -->
         <circle cx="186" cy="138" r="4" fill="#1D4E7A"/>
-
-        <!-- Pentium 1993: 3.1M → y≈125 -->
+        <!-- Pentium 1993 -->
         <circle cx="276" cy="126" r="4" fill="#1D4E7A"/>
-        <text x="282" y="123" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Pentium (3.1M)</text>
-
-        <!-- Pentium 4 2000: 42M → y≈114 -->
+        <text x="284" y="124" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Pentium (3.1M)</text>
+        <!-- Pentium 4 2000 -->
         <circle cx="348" cy="115" r="4" fill="#1a6b4a"/>
-
-        <!-- Core 2 Duo 2006: 291M → y≈106 -->
+        <!-- Core 2 Duo 2006 -->
         <circle cx="402" cy="107" r="4" fill="#1a6b4a"/>
-
-        <!-- Sandy Bridge 2011: 1.16B → y≈97 -->
+        <!-- Sandy Bridge 2011 -->
         <circle cx="456" cy="98"  r="4" fill="#1a6b4a"/>
-        <text x="462" y="96" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Sandy Bridge (1.16B)</text>
-
-        <!-- Skylake 2015: 1.75B → y≈94 -->
-        <circle cx="492" cy="94"  r="4" fill="#C1440E"/>
-
-        <!-- Apple M1 2020: 16B → y≈80 -->
-        <circle cx="534" cy="80"  r="4" fill="#C1440E"/>
-        <text x="540" y="77" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Apple M1 (16B)</text>
-
-        <!-- Apple M3 2023: 25B → y≈75 -->
+        <text x="464" y="95" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Sandy Bridge (1.16B)</text>
+        <!-- Skylake 2015 -->
+        <circle cx="492" cy="92"  r="4" fill="#C1440E"/>
+        <!-- Apple M1 2020: label moved LEFT to avoid overlap with M3 -->
+        <circle cx="534" cy="82"  r="4" fill="#C1440E"/>
+        <text x="472" y="80" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">M1 (16B)</text>
+        <line x1="488" y1="80" x2="532" y2="82" stroke="#D8D2C6" stroke-width="0.8"/>
+        <!-- Apple M3 2023: label above -->
         <circle cx="570" cy="72"  r="5" fill="#C1440E"/>
         <text x="576" y="70" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#C1440E" font-weight="700">M3 (25B)</text>
 
-        <text x="340" y="190" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Each step up the y-axis represents a 1,000× increase in transistor count.</text>
+        <text x="340" y="188" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Each step up the y-axis represents a 1,000&#215; increase in transistor count.</text>
       </svg>
 
       <p>Moore's Law has two important companions. <strong>Rock's Law</strong> (named for Arthur Rock, an early Intel investor) observes that the cost of a chip fabrication facility doubles roughly every four years. A state-of-the-art fab today costs over $20 billion to build — so much that only a handful of companies in the world (TSMC, Samsung, Intel) can afford to operate them.</p>
