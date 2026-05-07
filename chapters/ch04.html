@@ -73,13 +73,7 @@
 
       <p>Step three: <strong>Execute</strong>. The operation happens. Numbers get added, memory gets read or written, comparisons get made. When it's done, the program counter advances to the next instruction, and the loop starts over.</p>
 
-      <p>That's it. Fetch, decode, execute. Every app you've ever used, every website you've ever visited, every video you've ever streamed — all of it reduced to this three-step loop, executing billions of times per second.</p>
-
-      <p>Let's make this concrete. The widget below takes a real three-line Python program, shows the four assembly instructions the CPU actually executes, and lets you step through each stage one at a time. Watch the registers and memory update as the program runs.</p>
-
-      <div data-widget="fde-cycle"></div>
-
-      <p>Notice what happened: memory started completely empty. The first two instructions — <code>STORE 5, [0x10]</code> and <code>STORE 3, [0x11]</code> — are what Python's <code>a = 5</code> and <code>b = 3</code> compile down to. Only after those values exist in memory can the LOAD instructions bring them into registers for the ALU to use. The program counter stepped from <span class="hex">0x00</span> to <span class="hex">0x06</span> — one address per instruction, in strict sequence. That is the machine's perspective on three lines of Python.</p>
+      <p>That's it. Fetch, decode, execute. Every app you've ever used, every website you've ever visited, every video you've ever streamed — all of it reduced to this three-step loop, executing billions of times per second. We'll come back to this loop once we've covered what instructions actually look like — at that point the cycle will make much more sense stepped through with a real example.</p>
 
       <h2>Inside the CPU</h2>
 
@@ -207,6 +201,14 @@
       </ul>
 
       <p>Every program you've ever run — every if statement, every loop, every function call — is ultimately compiled down into sequences of these simple instruction types. The ALU executes the arithmetic and logic instructions directly. The control unit handles data movement and branches. Together, they implement the full complexity of modern software from this tiny vocabulary.</p>
+
+      <h3>Putting It Together: The FDE Cycle on a Real Program</h3>
+
+      <p>Now that you know what instructions are — opcodes, operands, LOAD, STORE, ADD — the fetch-decode-execute cycle is worth seeing in action. The widget below compiles a three-line Python program into six assembly instructions and lets you step through every stage. Memory starts completely empty; every value is written by the program itself. Watch how the program counter, registers, and memory addresses change with each step.</p>
+
+      <div data-widget="fde-cycle"></div>
+
+      <p>A few things to notice. First, memory started blank — nothing exists until a STORE instruction puts it there. Python's <code>a = 5</code> is not a declaration; it is an instruction that writes a value to a physical memory address. Second, the ALU never touched memory directly — data had to be LOADed into registers first, operated on, then STOREd back. Registers are the ALU's only workspace. Third, the program counter incremented by one for every instruction, stepping mechanically from <span class="hex">0x00</span> to <span class="hex">0x06</span>. No instruction was skipped, reordered, or anticipated — just the loop, six times in a row.</p>
 
       <h2>Word Size</h2>
 
