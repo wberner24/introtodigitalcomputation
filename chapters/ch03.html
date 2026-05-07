@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 3: Data Representation — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter">
+        <span class="ch-num">01</span> Binary
+      </a>
+      <a href="ch02.html" class="nav-chapter">
+        <span class="ch-num">02</span> Physical Bits
+      </a>
+      <a href="ch03.html" class="nav-chapter active">
+        <span class="ch-num">03</span> Data Representation
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter">
+        <span class="ch-num">04</span> Processors
+      </a>
+      <a href="ch05.html" class="nav-chapter">
+        <span class="ch-num">05</span> Memory &amp; Storage
+      </a>
+      <a href="ch06.html" class="nav-chapter">
+        <span class="ch-num">06</span> I/O &amp; System Architecture
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter">
+        <span class="ch-num">07</span> System vs. Application Software
+      </a>
+      <a href="ch08.html" class="nav-chapter">
+        <span class="ch-num">08</span> Operating Systems
+      </a>
+      <a href="ch09.html" class="nav-chapter">
+        <span class="ch-num">09</span> File Systems &amp; Directory Services
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter">
+        <span class="ch-num">10</span> Networking Fundamentals
+      </a>
+      <a href="ch11.html" class="nav-chapter">
+        <span class="ch-num">11</span> Network Architecture &amp; Communication
+      </a>
+    </div>
+
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter">
+        <span class="ch-num">12</span> System Administration
+      </a>
+      <a href="ch13.html" class="nav-chapter">
+        <span class="ch-num">13</span> Virtualization &amp; Cloud
+      </a>
+      <a href="ch14.html" class="nav-chapter">
+        <span class="ch-num">14</span> Putting It All Together
+      </a>
+    </div>
+
+    <div class="sidebar-footer">
+      &copy; 2026 Wade Berner<br>
+      Southern Illinois University Edwardsville
+    </div>
+  </nav>
+
+  <!-- ── Main ── -->
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 03 · Unit 1: Foundations</div>
+      <h1 class="chapter-title">Data Representation</h1>
+      <div class="chapter-deco">01000001</div>
+      <p class="chapter-intro">You now know that computers store everything as 1s and 0s. But <em>everything</em> is a big word. Numbers, sure. But what about the letter A? A photograph? A song? This chapter is where that question finally gets its full answer.</p>
+    </header>
+
+    <article class="prose">
+
+      <p>At the end of Chapter 1, we noted that computers represent all information — not just numbers, but text, images, sound, everything — as binary values. And then we said "more on that later." Later is now.</p>
+
+      <p>The short version, which we'll spend this entire chapter unpacking: <em>everything is a number, and every number is binary</em>. Pictures are numbers. Letters are numbers. Colors are numbers. The song playing through your earbuds right now is a very long sequence of numbers. Once you accept that, the rest of this chapter is just working out the details.</p>
+
+      <h2>Grouping Bits: The Byte</h2>
+
+      <p>A single bit — a <span class="bin">0</span> or a <span class="bin">1</span> — isn't very useful on its own. It can only represent two states. That's enough for a light switch, but not enough for much else.</p>
+
+      <p>From the earliest days of computing, engineers settled on grouping bits together into fixed-size chunks. The standard chunk that stuck is eight bits, and we call it a <strong>byte</strong>.</p>
+
+      <div class="definition">
+        <div class="def-term">Byte</div>
+        <p>A group of 8 bits. The standard unit of digital information. With 8 bits, a byte can represent 2⁸ = 256 unique values (0 through 255).</p>
+      </div>
+
+      <p>Why 8? Partly history, partly convenience. Eight is a power of 2, which plays nicely with binary arithmetic. And 256 values — 0 through 255 — turned out to be just enough to cover the English alphabet in both cases, digits, punctuation, and basic control characters. More on that in a moment.</p>
+
+      <p>From bytes, we build larger units. You've seen all of these before — now you know what they actually mean:</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Symbol</th>
+            <th>Approximate Size</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Kilobyte</strong></td>
+            <td><code>KB</code></td>
+            <td>1,024 bytes</td>
+            <td>A short text message</td>
+          </tr>
+          <tr>
+            <td><strong>Megabyte</strong></td>
+            <td><code>MB</code></td>
+            <td>1,024 KB ≈ 1 million bytes</td>
+            <td>A high-res photo</td>
+          </tr>
+          <tr>
+            <td><strong>Gigabyte</strong></td>
+            <td><code>GB</code></td>
+            <td>1,024 MB ≈ 1 billion bytes</td>
+            <td>A feature film (compressed)</td>
+          </tr>
+          <tr>
+            <td><strong>Terabyte</strong></td>
+            <td><code>TB</code></td>
+            <td>1,024 GB ≈ 1 trillion bytes</td>
+            <td>A large hard drive</td>
+          </tr>
+          <tr>
+            <td><strong>Petabyte</strong></td>
+            <td><code>PB</code></td>
+            <td>1,024 TB</td>
+            <td>A large data center storage pool</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Bits vs. bytes — don't get burned.</strong> Storage is measured in bytes (B, capital). Network speeds are measured in bits per second (b, lowercase). When your internet provider advertises "100 Mbps," that's megabits, not megabytes. A 100 Mbps connection transfers about 12.5 MB per second. This distinction trips up IT professionals regularly — now you won't be one of them.
+      </div>
+
+      <h2>Representing Integers</h2>
+
+      <p>We've actually been doing this since Chapter 1 — representing numbers in binary. But now that we have the concept of a byte, we can be more precise about it.</p>
+
+      <p>With 8 bits, you can represent integers from 0 to 255. With 16 bits, 0 to 65,535. With 32 bits, 0 to 4,294,967,295 — roughly 4.3 billion. With 64 bits, a number so large it doesn't come up much in everyday life (about 18.4 quintillion).</p>
+
+      <p>The formula is simple: <strong>n bits → 2ⁿ possible values → 0 through 2ⁿ − 1</strong>.</p>
+
+      <p>This matters more than it might seem. Consider IPv4 addresses — the addresses that identify every device on the internet. They're 32-bit numbers, which means there are exactly 2³² ≈ 4.3 billion possible addresses. When the internet was designed in the 1970s, that sounded like more than enough. It wasn't. IPv4 address exhaustion is a real problem we're still dealing with today, which is why IPv6 uses 128-bit addresses (2¹²⁸ is a number with 39 digits — we're not running out of those anytime soon).</p>
+
+      <p>Integer overflow is another practical consequence. If a program uses a 32-bit integer to count something and that count exceeds ~4.3 billion, the value wraps back around to zero. This is not theoretical — it has caused real outages and even a few famous software failures. The arithmetic doesn't lie; the data type just runs out of room.</p>
+
+      <h2>Representing Text: ASCII</h2>
+
+      <p>Numbers have an obvious binary representation. But what about the letter A? There's no natural binary encoding for a letter — someone had to make one up.</p>
+
+      <p>In 1963, a committee of American engineers did exactly that. They created the <strong>American Standard Code for Information Interchange</strong>, or <strong>ASCII</strong> — a table that maps every English character to a number between 0 and 127.</p>
+
+      <p>The table wasn't derived from anything. It was just a decision. The engineers sat down and said: uppercase A will be 65. Uppercase B will be 66. Lowercase a will be 97. The digit zero will be 48. The space character will be 32. And so on.</p>
+
+      <p>So when you type the word <strong>Hi</strong>, your computer stores:</p>
+
+      <table class="place-table" style="margin: 24px auto; font-size: 0.85rem;">
+        <tr class="row-digit">
+          <td style="padding: 8px 20px;">H</td>
+          <td style="padding: 8px 20px;">i</td>
+        </tr>
+        <tr class="row-place">
+          <td>72</td>
+          <td>105</td>
+        </tr>
+        <tr class="row-power">
+          <td><span class="bin">01001000</span></td>
+          <td><span class="bin">01101001</span></td>
+        </tr>
+      </table>
+
+      <p>Two characters, two bytes, 16 bits. That's it. A text file is nothing more than a sequence of these numbers, one per character.</p>
+
+      <h3>The Limits of ASCII — and the Rise of Unicode</h3>
+
+      <p>ASCII covered English just fine. The rest of the world, not so much. 128 values leaves no room for accented characters, non-Latin alphabets, or anything outside the American keyboard. Japanese, Arabic, Chinese, emoji — none of it fits.</p>
+
+      <p>The solution is <strong>Unicode</strong>, a far more ambitious project that assigns a unique number to every character in every writing system on earth — over 149,000 characters and counting, including emoji. The concept is the same as ASCII: every character is a number. The numbers are just much bigger.</p>
+
+      <p><strong>UTF-8</strong> is the most common way Unicode is actually stored. It's clever: ASCII characters are stored identically to plain ASCII (one byte each), while less common characters use two, three, or four bytes as needed. This means an English text file encoded in UTF-8 is the same size as an ASCII file, while still supporting every character on the planet. It's the dominant text encoding on the web and in most modern systems.</p>
+
+      <div class="note">
+        <strong>When encoding goes wrong.</strong> You've probably seen garbled text like <em>â€™</em> where an apostrophe should be, or boxes with question marks where a character should display. That's almost always an encoding mismatch — a file was written in one encoding (say, UTF-8) and read in another (say, Latin-1). The bits are the same; the interpretation is wrong. Same bit pattern, different data type — exactly the problem we flagged at the end of Chapter 1.
+      </div>
+
+      <h2>Representing Images: Pixels and Bitmaps</h2>
+
+      <p>Let's start with the simplest possible image: pure black and white. No color, no shades of gray — just on or off, black or white, for each dot in the image.</p>
+
+      <p>This is called a <strong>monochrome bitmap</strong>. Each dot — called a <strong>pixel</strong> (short for "picture element") — is represented by exactly one bit: <span class="bin">1</span> for black, <span class="bin">0</span> for white. A row of 8 pixels is one byte. A grid of 8×8 pixels is 8 bytes — 64 bits of image data.</p>
+
+      <div class="definition">
+        <div class="def-term">Pixel</div>
+        <p>The smallest unit of a digital image. Short for "picture element." In a monochrome image, one pixel = one bit. In a color image, one pixel = multiple bytes. Every digital image — from a smartphone photo to a billboard — is a grid of pixels.</p>
+      </div>
+
+      <p>The interactive widget below is an 8×8 monochrome bitmap. Each cell is one pixel, one bit. Click to toggle pixels on and off — watch the binary row values update on the right as you paint.</p>
+
+      <!-- ── Bitmap Widget ── -->
+      <div data-widget="bitmap-explorer"></div>
+
+      <p>This is literally how early computer graphics worked. The fonts on the first personal computers were 8×8 bitmaps — one byte per row, eight rows per character. Simple, and effective.</p>
+
+      <p>Of course, a black-and-white 8×8 grid isn't going to win any photography awards. To represent the images we actually use, we need more bits per pixel, and a lot more pixels.</p>
+
+      <h2>From Black and White to Color: RGB</h2>
+
+      <p>Here's a question: how does a computer represent the color red?</p>
+
+      <p>The answer comes from how human vision works. Your eyes have three types of color receptors, sensitive to red, green, and blue light respectively. Every color you can perceive is some mixture of these three signals. Computer screens exploit exactly this — they pack each pixel with three tiny lights: one red, one green, one blue. By varying the brightness of each, they can produce any color the human eye can see.</p>
+
+      <p>This system is called <strong>RGB</strong> (Red, Green, Blue). Each of the three channels — R, G, and B — is assigned a value from 0 (off) to 255 (full brightness). One byte per channel, three bytes per pixel.</p>
+
+      <div class="definition">
+        <div class="def-term">RGB Color Model</div>
+        <p>A system for representing color as three values — Red, Green, Blue — each ranging from 0 to 255. Three bytes (24 bits) per pixel. 256 × 256 × 256 = 16,777,216 possible colors, which exceeds what the human eye can distinguish.</p>
+      </div>
+
+      <p>Some examples to make this concrete:</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Color</th>
+            <th>Red</th>
+            <th>Green</th>
+            <th>Blue</th>
+            <th>Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Pure red</strong></td>
+            <td>255</td>
+            <td>0</td>
+            <td>0</td>
+            <td><span style="display:inline-block;width:20px;height:20px;background:rgb(255,0,0);border-radius:3px;vertical-align:middle;border:1px solid var(--border-dark);"></span></td>
+          </tr>
+          <tr>
+            <td><strong>Pure green</strong></td>
+            <td>0</td>
+            <td>255</td>
+            <td>0</td>
+            <td><span style="display:inline-block;width:20px;height:20px;background:rgb(0,255,0);border-radius:3px;vertical-align:middle;border:1px solid var(--border-dark);"></span></td>
+          </tr>
+          <tr>
+            <td><strong>Pure blue</strong></td>
+            <td>0</td>
+            <td>0</td>
+            <td>255</td>
+            <td><span style="display:inline-block;width:20px;height:20px;background:rgb(0,0,255);border-radius:3px;vertical-align:middle;border:1px solid var(--border-dark);"></span></td>
+          </tr>
+          <tr>
+            <td><strong>White</strong></td>
+            <td>255</td>
+            <td>255</td>
+            <td>255</td>
+            <td><span style="display:inline-block;width:20px;height:20px;background:rgb(255,255,255);border-radius:3px;vertical-align:middle;border:1px solid var(--border-dark);"></span></td>
+          </tr>
+          <tr>
+            <td><strong>Black</strong></td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td><span style="display:inline-block;width:20px;height:20px;background:rgb(0,0,0);border-radius:3px;vertical-align:middle;border:1px solid var(--border-dark);"></span></td>
+          </tr>
+          <tr>
+            <td><strong>This textbook's orange</strong></td>
+            <td>193</td>
+            <td>68</td>
+            <td>14</td>
+            <td><span style="display:inline-block;width:20px;height:20px;background:rgb(193,68,14);border-radius:3px;vertical-align:middle;border:1px solid var(--border-dark);"></span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Hexadecimal: A Better Way to Write Bytes</h2>
+
+      <p>Here's a practical problem. If you're a web designer and you want to specify an exact color, you need to communicate three numbers between 0 and 255. Writing <code>rgb(193, 68, 14)</code> works, but it's verbose. Developers long ago settled on a more compact notation: <strong>hexadecimal</strong>, or hex.</p>
+
+      <p>Let's build up to hex from scratch, the same way we did with binary in Chapter 1. No shortcuts.</p>
+
+      <p>You already know two number bases. <strong>Decimal</strong> is base-10 — ten digits (0–9), place values that are powers of 10. <strong>Binary</strong> is base-2 — two digits (0–1), place values that are powers of 2. <strong>Hexadecimal</strong> is base-16 — sixteen digits, place values that are powers of 16.</p>
+
+      <p>The obvious question: what are the sixteen digits?</p>
+
+      <p>Decimal only needs ten symbols: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9. Binary only needs two: 0, 1. Hex needs sixteen. We only have ten numeric symbols, so we borrow the first six letters of the alphabet. The sixteen hex digits are:</p>
+
+      <table class="place-table" style="margin: 24px auto;">
+        <tr class="row-digit">
+          <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
+          <td>8</td><td>9</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td>
+        </tr>
+        <tr class="row-place">
+          <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td>
+          <td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td>
+        </tr>
+      </table>
+
+      <p>A = 10. B = 11. C = 12. D = 13. E = 14. F = 15. After F, you've used all sixteen digits and need a new place — just like decimal rolls over at 10, and binary rolls over at 2. In hex, you roll over at 16.</p>
+
+      <p>So counting in hex goes: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, 10, 11, 12 ... 19, 1A, 1B ... 1F, 20, 21 ...</p>
+
+      <p>Place values in hex are powers of 16. The ones place is 16⁰ = 1. The sixteens place is 16¹ = 16. The two-fifty-sixes place is 16² = 256. And so on.</p>
+
+      <h3>Why Hex and Bytes Are a Perfect Match</h3>
+
+      <p>Here's the beautiful thing: one byte — 8 bits — can be represented by exactly <em>two</em> hex digits. Always. Let's see why.</p>
+
+      <p>One hex digit can represent values 0–15, which is 4 bits (2⁴ = 16). Two hex digits can represent values 0–255, which is exactly 8 bits (2⁸ = 256). So every possible byte value — every number from 0 to 255 — maps to exactly one two-digit hex value from <code>00</code> to <code>FF</code>.</p>
+
+      <p>Let's translate our textbook orange (193, 68, 14) to hex:</p>
+
+      <table class="comparison-table" style="margin: 24px 0;">
+        <thead>
+          <tr>
+            <th>Channel</th>
+            <th>Decimal</th>
+            <th>Hex Calculation</th>
+            <th>Hex</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Red</strong></td>
+            <td>193</td>
+            <td>193 ÷ 16 = 12 remainder 1 → C1</td>
+            <td><code>C1</code></td>
+          </tr>
+          <tr>
+            <td><strong>Green</strong></td>
+            <td>68</td>
+            <td>68 ÷ 16 = 4 remainder 4 → 44</td>
+            <td><code>44</code></td>
+          </tr>
+          <tr>
+            <td><strong>Blue</strong></td>
+            <td>14</td>
+            <td>14 ÷ 16 = 0 remainder 14 → 0E</td>
+            <td><code>0E</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>Concatenate those three two-digit hex values and prefix with a hash sign: <code>#C1440E</code>. That is this textbook's exact orange, in the notation used by every web browser, design tool, and CSS stylesheet on the planet.</p>
+
+      <p>To read a hex color code, just reverse the process. Take <code>#FF5733</code>:</p>
+      <ul>
+        <li><code>FF</code> = 15×16 + 15 = 255 → Red channel at full brightness</li>
+        <li><code>57</code> = 5×16 + 7 = 87 → Green channel at about a third</li>
+        <li><code>33</code> = 3×16 + 3 = 51 → Blue channel at about a fifth</li>
+      </ul>
+
+      <p>Result: a saturated orange-red. <span style="display:inline-block;width:16px;height:16px;background:#FF5733;border-radius:2px;vertical-align:middle;margin:0 4px;border:1px solid var(--border-dark);"></span> Now when you see a hex color code, you're not looking at magic — you're looking at three bytes.</p>
+
+      <div class="note">
+        <strong>Hex beyond colors.</strong> Hexadecimal shows up constantly in IT work — memory addresses, MAC addresses, error codes, hash values, network packet dumps. Any time you see a string of 0–9 and A–F values, that's hex. The skill of reading it is genuinely useful.
+      </div>
+
+      <h2>Putting It Together: The Byte Inspector</h2>
+
+      <p>Here's a widget that makes the data types idea tangible. Eight bits. Three different interpretations. The bits don't change — only what we decide they <em>mean</em>.</p>
+
+      <!-- ── Byte Inspector Widget ── -->
+      <div data-widget="byte-inspector"></div>
+
+      <p>This is exactly what we meant at the end of Chapter 1 when we said "that's where data types come in." The bit pattern <span class="bin">01000001</span> is 65 as an integer, "A" as an ASCII character, and a particular shade of dark gray as a color channel value. Same bits. Different types, different meanings.</p>
+
+      <h2>Representing Sound</h2>
+
+      <p>Sound is a wave — a continuous fluctuation in air pressure that your ears detect. Continuous, as we established in Chapter 1, means infinitely divisible. So how does a computer — a discrete, digital machine — store something continuous?</p>
+
+      <p>The answer is <strong>sampling</strong>: measuring the wave's amplitude at regular intervals and recording each measurement as a number.</p>
+
+      <p>Think of it like a flipbook animation. A smooth motion becomes a series of still images. If the images are taken frequently enough, the human eye perceives smooth motion. The same trick works for sound: if you sample the waveform frequently enough, the human ear perceives continuous audio.</p>
+
+      <p>CD-quality audio uses a <strong>sample rate</strong> of 44,100 samples per second (44.1 kHz). Each sample is a 16-bit number — one of 65,536 possible amplitude values. For stereo audio (two channels), that's:</p>
+
+      <p style="text-align:center; font-family: var(--font-mono); background: var(--bg-alt); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); margin: 20px 0;">
+        44,100 samples/sec × 16 bits/sample × 2 channels = 1,411,200 bits/sec ≈ <strong>10 MB per minute</strong>
+      </p>
+
+      <p>One minute of uncompressed CD audio is about 10 MB. A typical 3-minute song is about 30 MB uncompressed. An MP3 file of the same song is typically 3–5 MB — the difference is compression, which we'll touch on shortly.</p>
+
+      <h2>Representing Images and Video: File Size Math</h2>
+
+      <p>Now that we understand pixels and RGB, let's do some file size math. A smartphone photo might be 4,000 × 3,000 pixels. Each pixel is 3 bytes (one per RGB channel). That's:</p>
+
+      <p style="text-align:center; font-family: var(--font-mono); background: var(--bg-alt); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); margin: 20px 0;">
+        4,000 × 3,000 pixels × 3 bytes/pixel = 36,000,000 bytes ≈ <strong>36 MB uncompressed</strong>
+      </p>
+
+      <p>Your phone's camera app saves that photo as a 3–5 MB JPEG. The difference — from 36 MB down to 4 MB — is <strong>compression</strong>: algorithms that find and eliminate redundancy in the data to reduce file size. The image loses some information in the process (JPEG is <em>lossy</em>), but the result is visually indistinguishable to most people.</p>
+
+      <p>Video is images played in sequence — typically 24 to 60 frames per second. That same 12-megapixel image, played at 30 frames per second, would be:</p>
+
+      <p style="text-align:center; font-family: var(--font-mono); background: var(--bg-alt); padding: 14px; border-radius: var(--radius); border: 1px solid var(--border); margin: 20px 0;">
+        36 MB/frame × 30 frames/sec = 1,080 MB/sec ≈ <strong>1 GB every second</strong>
+      </p>
+
+      <p>That's why uncompressed video is impractical, why formats like H.264 and HEVC exist, and why your 2-hour movie fits on a Blu-ray disc rather than requiring a warehouse full of hard drives. Compression is one of the most important ideas in all of computing, and it's motivated entirely by the arithmetic we just did.</p>
+
+      <h2>Data Types: The Full Picture</h2>
+
+      <p>We've now seen four different things that a string of bits can represent: an integer, a text character, a color value, and an audio sample. In every case, the bits themselves are just bits — what matters is the agreed-upon rule for interpreting them.</p>
+
+      <p>That rule is what programmers call a <strong>data type</strong>. When a program declares a variable as an <code>int</code>, it's telling the computer: treat these 32 bits as an integer. When it declares a <code>char</code>, it's saying: treat this byte as an ASCII character. When it stores an RGB value, it's treating three bytes as a color.</p>
+
+      <p>The computer doesn't inherently know the difference. It just stores bits. The meaning — and the responsibility for getting it right — belongs to the software.</p>
+
+      <p>This is a theme that will echo throughout the rest of this book. Hardware stores bits. Software assigns meaning. The boundary between them is where most of the interesting problems in computer science live.</p>
+
+      <!-- ── Practice Problems ── -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Practice</span>
+          <span class="practice-title">Chapter 3 Exercises</span>
+        </div>
+
+        <!-- Q1 — text input: exact -->
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. How many unique values can a single byte represent? (Enter a number.)</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q1-input">
+            <button class="btn btn-check" onclick="checkText('q1', ['256'], '✓ Correct! 2⁸ = 256 values (0 through 255).', 'A byte is 8 bits. Each bit doubles the number of possible combinations.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q1', 'A byte is 8 bits. Each bit doubles the number of possible combinations.')">Hint</button>
+          </div>
+          <div class="q-feedback" id="q1-feedback"></div>
+        </div>
+
+        <!-- Q2 — MC: conceptual -->
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. Your internet provider advertises a 500 Mbps connection. A friend says you should be able to download 500 MB per second. Are they right?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2', this, false)"><span class="mc-letter">A</span> Yes — 500 Mbps means 500 megabytes per second.</button>
+            <button class="mc-option" onclick="checkMC('q2', this, true)"><span class="mc-letter">B</span> No — 500 Mbps is megabits, not megabytes. That's about 62.5 MB/sec.</button>
+            <button class="mc-option" onclick="checkMC('q2', this, false)"><span class="mc-letter">C</span> No — 500 Mbps means 500 kilobytes per second.</button>
+            <button class="mc-option" onclick="checkMC('q2', this, false)"><span class="mc-letter">D</span> It depends on the type of file being downloaded.</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <!-- Q3 — text input: exact -->
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. What is the decimal ASCII value of the uppercase letter A?</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q3-input">
+            <button class="btn btn-check" onclick="checkText('q3', ['65'], '✓ Correct! ASCII 65 = uppercase A.', 'This was mentioned in both Chapter 1 and Chapter 3. Check the ASCII section.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q3', 'This was introduced in Chapter 1 and revisited here. It\'s the example we use throughout the book.')">Hint</button>
+          </div>
+          <div class="q-feedback" id="q3-feedback"></div>
+        </div>
+
+        <!-- Q4 — MC: conceptual -->
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. Why did ASCII need to be replaced by Unicode?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4', this, false)"><span class="mc-letter">A</span> ASCII used too many bytes per character, making it inefficient.</button>
+            <button class="mc-option" onclick="checkMC('q4', this, false)"><span class="mc-letter">B</span> ASCII was proprietary and companies had to pay to use it.</button>
+            <button class="mc-option" onclick="checkMC('q4', this, true)"><span class="mc-letter">C</span> ASCII only covered English characters — it had no support for other languages, symbols, or emoji.</button>
+            <button class="mc-option" onclick="checkMC('q4', this, false)"><span class="mc-letter">D</span> ASCII was incompatible with binary and needed to be redesigned.</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <!-- Q5 — text input: exact hex conversion -->
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. What is the decimal value of the hex digit <code>F</code>?</div>
+          <div class="q-input-row">
+            <input type="text" placeholder="Your answer" id="q5-input">
+            <button class="btn btn-check" onclick="checkText('q5', ['15'], '✓ Correct! F is the largest single hex digit, representing 15.', 'Hex digits go 0–9, then A=10, B=11, C=12, D=13, E=14, F=?')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q5', 'Hex digits go 0–9, then A=10, B=11, C=12, D=13, E=14, F=?')">Hint</button>
+          </div>
+          <div class="q-feedback" id="q5-feedback"></div>
+        </div>
+
+        <!-- Q6 — text input: exact hex conversion -->
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. The hex color code <code>#FF0000</code> — what color is it?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">A</span> White</button>
+            <button class="mc-option" onclick="checkMC('q6', this, true)"><span class="mc-letter">B</span> Red</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">C</span> Black</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">D</span> Blue</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <!-- Q7 — MC: conceptual -->
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. An uncompressed 4000×3000 pixel RGB photo is approximately 36 MB. The same photo saved as a JPEG is 4 MB. What accounts for the difference?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">A</span> JPEG uses fewer colors than RGB.</button>
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">B</span> JPEG stores pixels as 1-bit values instead of 3 bytes.</button>
+            <button class="mc-option" onclick="checkMC('q7', this, true)"><span class="mc-letter">C</span> Compression algorithms reduce file size by eliminating redundancy in the data.</button>
+            <button class="mc-option" onclick="checkMC('q7', this, false)"><span class="mc-letter">D</span> JPEG reduces the image resolution to fit a smaller file size.</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <!-- Q8 — MC: synthesis -->
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. The bit pattern <span class="bin">01000001</span> could represent the integer 65, the letter "A", or a dark gray color channel. What determines which interpretation is correct?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8', this, false)"><span class="mc-letter">A</span> The operating system automatically detects the correct meaning.</button>
+            <button class="mc-option" onclick="checkMC('q8', this, false)"><span class="mc-letter">B</span> The value itself — certain numbers can only mean certain things.</button>
+            <button class="mc-option" onclick="checkMC('q8', this, true)"><span class="mc-letter">C</span> The data type assigned by the software tells the computer how to interpret the bits.</button>
+            <button class="mc-option" onclick="checkMC('q8', this, false)"><span class="mc-letter">D</span> The physical storage medium determines the interpretation.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+      </div>
+
+      <!-- Chapter Nav -->
+      <nav class="chapter-nav-footer">
+        <a href="ch02.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 2: Physical Bits</span>
+        </a>
+        <a href="ch04.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">Processors</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/bitmap-explorer.js"></script>
+<script src="../widgets/byte-inspector.js"></script>
+
+<script>
+  function checkText(id, accepted, successMsg, hintMsg) {
+    const input = document.getElementById(id + '-input');
+    const fb    = document.getElementById(id + '-feedback');
+    const val   = input.value.trim().replace(/^0+(?=\d)/, '');
+    if (!val) { fb.className = 'q-feedback hint'; fb.textContent = 'Enter an answer above.'; return; }
+    const match = accepted.includes(val);
+    fb.className = match ? 'q-feedback correct' : 'q-feedback incorrect';
+    fb.textContent = match ? successMsg : '✗ Not quite — try again, or use the hint.';
+  }
+
+  function hintText(id, hintMsg) {
+    const fb = document.getElementById(id + '-feedback');
+    fb.className = 'q-feedback hint';
+    fb.textContent = hintMsg;
+  }
+
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(', true)'))
+        b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>
