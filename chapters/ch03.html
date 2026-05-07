@@ -361,6 +361,10 @@
       <p>Result: <span style="display:inline-block;width:14px;height:14px;background:#FF5733;border-radius:2px;vertical-align:middle;margin:0 3px;border:1px solid var(--border-dark);"></span> a saturated orange-red. When you see a hex color code, you're not looking at magic — you're looking at three bytes.</p>
 
       <div class="note">
+        <strong>#C1440E is not one hex number — it's three.</strong> A common point of confusion: a CSS color code like <code>#C1440E</code> looks like a single six-digit hex number, but it's actually three two-digit hex values concatenated — <span class="hex">C1</span> (Red), <span class="hex">44</span> (Green), <span class="hex">0E</span> (Blue). The <code>#</code> prefix is a web convention that signals "this is a color code," not a general hex notation. When hex values appear elsewhere in computing — memory addresses, error codes, MAC addresses — they're written with a <code>0x</code> prefix instead. So <code>0xC1</code> is the number <span class="dec">193</span> in hex; <code>#C1440E</code> is a color made of three such bytes. Same digits, different packaging, different prefix to tell them apart.
+      </div>
+
+      <div class="note">
         <strong>Hex beyond colors.</strong> Hexadecimal appears constantly in IT work — memory addresses, MAC addresses, error codes, cryptographic hashes, network packet dumps. Any time you see a string of 0–9 and A–F values, that's hex. The ability to read it fluently is a genuinely useful professional skill.
       </div>
 
