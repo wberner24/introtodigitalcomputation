@@ -324,6 +324,28 @@ body {
   font-size: 0.9em;
 }
 
+.hex {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #1a6b4a;
+  background: #e0f2ea;
+  border: 1px solid rgba(26,107,74,0.22);
+  border-radius: 3px;
+  padding: 0.05em 0.3em;
+  font-size: 0.9em;
+}
+
+.uni {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #5b2d8e;
+  background: #ede4f7;
+  border: 1px solid rgba(91,45,142,0.22);
+  border-radius: 3px;
+  padding: 0.05em 0.3em;
+  font-size: 0.9em;
+}
+
 /* ── Definition Callout ─────────────────────────────────────── */
 .definition {
   background: var(--bg-card);
