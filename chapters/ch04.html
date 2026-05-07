@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 4: Processors — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter active"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 04 · Unit 2: Hardware</div>
+      <h1 class="chapter-title">Processors</h1>
+      <div class="chapter-deco">CPU</div>
+      <p class="chapter-intro">The CPU is often called the "brain" of the computer. That's not wrong, but it's not quite right either. A brain is mysterious and creative. A CPU is something simpler — and in a way, more impressive. It does exactly one thing, over and over, billions of times per second.</p>
+    </header>
+
+    <article class="prose">
+
+      <p>We've spent three chapters building up to this moment. We know what bits are, how they exist physically, and how they represent every kind of information. Now it's time to ask: what actually <em>processes</em> all those bits?</p>
+
+      <p>The answer is the <strong>Central Processing Unit</strong>, or <strong>CPU</strong>. And the first thing to understand about a CPU is that it doesn't do anything complicated. It executes instructions — one at a time, in sequence, at extraordinary speed. The complexity we experience as "computing" is nothing more than a very long sequence of very simple operations executed very fast.</p>
+
+      <h2>The CPU's One Job: Fetch, Decode, Execute</h2>
+
+      <p>Every CPU ever built — from the chip in a 1970s pocket calculator to the latest processor in a data center — operates on the same fundamental loop. It has three steps, and it repeats them for every single instruction a program contains.</p>
+
+      <p>Step one: <strong>Fetch</strong>. The CPU retrieves the next instruction from memory. It knows where to look because it maintains a register called the <strong>program counter</strong> — a pointer that always holds the memory address of the next instruction to execute.</p>
+
+      <p>Step two: <strong>Decode</strong>. The instruction arrives as a pattern of bits. The control unit interprets those bits to figure out what operation is being requested — is this an addition? A memory read? A comparison? — and prepares the relevant parts of the CPU to carry it out.</p>
+
+      <p>Step three: <strong>Execute</strong>. The operation happens. Numbers get added, memory gets read or written, comparisons get made. When it's done, the program counter advances to the next instruction, and the loop starts over.</p>
+
+      <p>That's it. Fetch, decode, execute. Every app you've ever used, every website you've ever visited, every video you've ever streamed — all of it reduced to this three-step loop, executing billions of times per second.</p>
+
+      <div data-widget="fde-cycle"></div>
+
+      <h2>Inside the CPU</h2>
+
+      <p>The CPU isn't a monolith — it's a collection of specialized components that work together to execute that loop. The three main ones are worth knowing.</p>
+
+      <p>The <strong>Control Unit (CU)</strong> is the coordinator. It manages the fetch and decode steps, reads instructions from memory, interprets them, and orchestrates the rest of the CPU accordingly. It doesn't do math — it directs traffic.</p>
+
+      <p>The <strong>Arithmetic Logic Unit (ALU)</strong> is where computation actually happens. The ALU performs mathematical operations (addition, subtraction, multiplication) and logical operations (AND, OR, NOT, comparisons). When a program adds two numbers, that addition physically happens in the ALU, built from the transistors and logic gates we discussed in Chapters 2 and 3.</p>
+
+      <p>The <strong>Registers</strong> are the CPU's working memory — a small set of extremely fast storage locations that live directly on the processor chip. Registers hold the values the CPU is actively working with: the current instruction, the numbers being added, the result of a calculation. There are typically between 8 and 32 general-purpose registers in a modern CPU, each holding one word of data (32 or 64 bits). They're fast because they're right there on the chip — no waiting for data to travel from RAM.</p>
+
+      <!-- SVG: CPU internal anatomy -->
+      <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="240" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="24" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">Inside the CPU</text>
+
+        <!-- CPU chip outline -->
+        <rect x="30" y="36" width="500" height="170" rx="10" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="2" stroke-dasharray="6,3"/>
+        <text x="280" y="218" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">CPU Die</text>
+
+        <!-- Control Unit -->
+        <rect x="50" y="56" width="140" height="70" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="120" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">CONTROL</text>
+        <text x="120" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">UNIT</text>
+        <text x="120" y="114" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fetch &amp; Decode</text>
+
+        <!-- ALU -->
+        <rect x="220" y="56" width="140" height="70" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="290" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">ARITHMETIC</text>
+        <text x="290" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">LOGIC UNIT</text>
+        <text x="290" y="114" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Execute / Calculate</text>
+
+        <!-- Registers -->
+        <rect x="50" y="146" width="310" height="44" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="205" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">REGISTERS</text>
+        <text x="205" y="180" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fast on-chip storage · R1 R2 R3 ... · Program Counter</text>
+
+        <!-- Arrows CU → ALU -->
+        <line x1="190" y1="91" x2="218" y2="91" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <!-- Arrows CU ↔ Registers -->
+        <line x1="120" y1="126" x2="120" y2="144" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <!-- Arrows ALU ↔ Registers -->
+        <line x1="290" y1="126" x2="290" y2="144" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+        <defs>
+          <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
+          </marker>
+        </defs>
+
+        <!-- Memory (outside CPU) -->
+        <rect x="560" y="80" width="100" height="60" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="610" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">MEMORY</text>
+        <text x="610" y="118" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">(RAM)</text>
+        <!-- Arrow CPU ↔ Memory -->
+        <line x1="532" y1="110" x2="558" y2="110" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr4r)"/>
+        <line x1="558" y1="118" x2="532" y2="118" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr4r)"/>
+        <defs>
+          <marker id="arr4r" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#C1440E"/>
+          </marker>
+        </defs>
+        <text x="545" y="108" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">instructions</text>
+        <text x="545" y="130" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">data</text>
+      </svg>
+
+      <h2>Clock Speed</h2>
+
+      <p>In Chapter 2, we introduced clock speed as the frequency at which a CPU's internal oscillator ticks. Let's unpack what that actually means for performance.</p>
+
+      <p>Each tick of the clock is an opportunity to complete one stage of the fetch-decode-execute cycle. A processor running at <strong>3.0 GHz</strong> completes 3 billion ticks per second. With a simplified model where each instruction takes 3 clock cycles (fetch, decode, execute), that's roughly 1 billion instructions per second — though in reality, modern processors use pipelining and other tricks to approach much higher throughput.</p>
+
+      <!-- SVG: Clock cycle timeline -->
+      <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="160" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Clock Cycles and the FDE Pipeline</text>
+
+        <!-- Clock ticks -->
+        <text x="20" y="44" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">CLOCK</text>
+        <line x1="70" y1="38" x2="650" y2="38" stroke="#D8D2C6" stroke-width="1"/>
+        <!-- Tick marks -->
+        <line x1="70"  y1="32" x2="70"  y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="130" y1="32" x2="130" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="190" y1="32" x2="190" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="250" y1="32" x2="250" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="310" y1="32" x2="310" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="370" y1="32" x2="370" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="430" y1="32" x2="430" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="490" y1="32" x2="490" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="550" y1="32" x2="550" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="610" y1="32" x2="610" y2="44" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- Tick labels -->
+        <text x="70"  y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">1</text>
+        <text x="130" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">2</text>
+        <text x="190" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">3</text>
+        <text x="250" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">4</text>
+        <text x="310" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">5</text>
+        <text x="370" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">6</text>
+        <text x="430" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">7</text>
+        <text x="490" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">8</text>
+        <text x="550" y="54" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">9</text>
+
+        <!-- Instruction 1 FDE blocks -->
+        <text x="20" y="78" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">INSTR 1</text>
+        <rect x="70"  y="62" width="58" height="22" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="99"  y="77" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1D4E7A">FETCH</text>
+        <rect x="130" y="62" width="58" height="22" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="159" y="77" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#5b2d8e">DECODE</text>
+        <rect x="190" y="62" width="58" height="22" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="219" y="77" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1a6b4a">EXECUTE</text>
+
+        <!-- Instruction 2 FDE blocks -->
+        <text x="20" y="112" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">INSTR 2</text>
+        <rect x="250" y="96" width="58" height="22" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="279" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1D4E7A">FETCH</text>
+        <rect x="310" y="96" width="58" height="22" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="339" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#5b2d8e">DECODE</text>
+        <rect x="370" y="96" width="58" height="22" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="399" y="111" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1a6b4a">EXECUTE</text>
+
+        <!-- Instruction 3 FDE blocks -->
+        <text x="20" y="146" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">INSTR 3</text>
+        <rect x="430" y="130" width="58" height="22" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="459" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1D4E7A">FETCH</text>
+        <rect x="490" y="130" width="58" height="22" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="519" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#5b2d8e">DECODE</text>
+        <rect x="550" y="130" width="58" height="22" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="579" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1a6b4a">EXECUTE</text>
+      </svg>
+
+      <p>So if clock speed is so important, why not just keep cranking it up? In the early 2000s, that's exactly what Intel and AMD were doing — racing past 1 GHz, 2 GHz, 3 GHz. Then around 2004, they hit a wall.</p>
+
+      <p>The problem is heat. Faster transistors switch faster, but they also dissipate more power as heat. Beyond roughly 4 GHz with conventional silicon, chips start generating so much heat that they become unreliable or outright melt. You can pour more power into a processor, but at some point it becomes a space heater that incidentally does some computing.</p>
+
+      <div class="note">
+        <strong>Clock speed isn't everything.</strong> A 3.0 GHz processor with a smarter architecture can easily outperform a 4.0 GHz processor on real workloads. Modern CPUs execute multiple instructions per clock cycle using techniques like out-of-order execution and branch prediction. Clock speed tells you the tempo; it doesn't tell you how much work gets done per beat.
+      </div>
+
+      <h2>Cores: Width Over Speed</h2>
+
+      <p>When the clock speed wall appeared, the industry's solution was elegant in its simplicity: instead of making one processor faster, put multiple processors on the same chip. Each processor — called a <strong>core</strong> — has its own control unit, ALU, and registers. A four-core chip has four independent fetch-decode-execute loops running simultaneously.</p>
+
+      <div class="definition">
+        <div class="def-term">Core</div>
+        <p>An independent processing unit within a CPU. Each core has its own control unit, ALU, and registers, and can execute instructions independently. A quad-core processor has four cores; an octa-core has eight.</p>
+      </div>
+
+      <p>This is the difference between making a single worker faster versus hiring more workers. Beyond a certain point, one faster worker doesn't help much — more workers in parallel do.</p>
+
+      <p>But there's a catch: not all work benefits equally from parallelism. Some tasks are inherently sequential — step B can't start until step A finishes. Running a spreadsheet calculation that depends on previous results, rendering a single video frame, or booting an operating system all have sequential dependencies that extra cores can't accelerate. Other tasks are <em>embarrassingly parallel</em> — rendering many video frames at once, serving thousands of simultaneous web requests, training an AI model across a large dataset — and scale beautifully with additional cores.</p>
+
+      <p>As an IT professional, this distinction matters when specifying hardware. A database server handling thousands of concurrent queries needs many cores. A developer's workstation running a single compile job cares more about single-core clock speed. There's no universally "best" processor — only the right processor for the workload.</p>
+
+      <!-- SVG: Single core vs multi-core -->
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="180" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">One Fast Worker vs. Many Workers</text>
+
+        <!-- Single core -->
+        <rect x="30" y="38" width="270" height="120" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="165" y="56" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">SINGLE-CORE · 4.0 GHz</text>
+        <!-- One big core -->
+        <rect x="60" y="66" width="180" height="70" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="150" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1D4E7A">CORE 1</text>
+        <text x="150" y="112" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">4.0 GHz</text>
+        <text x="165" y="150" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">One instruction stream at 4.0 GHz</text>
+
+        <!-- Quad core -->
+        <rect x="380" y="38" width="270" height="120" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="515" y="56" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">QUAD-CORE · 3.0 GHz</text>
+        <!-- Four smaller cores -->
+        <rect x="392" y="64" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="450" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 1 · 3GHz</text>
+        <rect x="516" y="64" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="574" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 2 · 3GHz</text>
+        <rect x="392" y="108" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="450" y="126" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 3 · 3GHz</text>
+        <rect x="516" y="108" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="574" y="126" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 4 · 3GHz</text>
+        <text x="515" y="160" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Four parallel instruction streams at 3.0 GHz</text>
+
+        <!-- VS label -->
+        <text x="340" y="106" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="14" font-weight="700" fill="#B8B0A4">VS</text>
+      </svg>
+
+      <h2>Cache: The Speed Bridge</h2>
+
+      <p>Here's a problem. Modern CPUs can execute instructions at staggering speeds, but they need data and instructions to be fed to them continuously. If a core has to wait for data to arrive from main memory (RAM) every time it needs it, it sits idle — wasting billions of cycles.</p>
+
+      <p>The fundamental issue is the speed gap between a CPU and RAM. A CPU register can be read in a single clock cycle. Main memory takes hundreds of clock cycles to respond. That's like a chef who can plate a dish in one second but has to wait three minutes for an ingredient to arrive from a warehouse down the street every time they need something.</p>
+
+      <p>The solution is <strong>cache</strong> — a small, very fast pool of memory built directly onto the CPU chip. Cache stores copies of frequently used data and instructions so the CPU can access them quickly without waiting for RAM. It operates on a simple principle: if you needed something recently, you're likely to need it again soon (<em>temporal locality</em>), and if you needed data at one memory address, you'll probably need nearby addresses too (<em>spatial locality</em>).</p>
+
+      <div class="definition">
+        <div class="def-term">Cache</div>
+        <p>A small, fast memory pool located on or near the CPU chip that stores frequently accessed data. Dramatically reduces the time the CPU spends waiting for data from main memory. Organized in levels (L1, L2, L3) by speed and size.</p>
+      </div>
+
+      <p>Cache is organized in levels — L1, L2, and L3 — each trading speed for size:</p>
+
+      <!-- SVG: Memory hierarchy pyramid -->
+      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="260" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">The Memory Hierarchy</text>
+
+        <!-- L1 Cache - apex -->
+        <polygon points="340,36 280,80 400,80" fill="#1D4E7A" stroke="none"/>
+        <text x="340" y="64" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="white">L1</text>
+
+        <!-- L2 Cache -->
+        <polygon points="280,82 220,126 460,126 400,82" fill="#2a5f94" stroke="none"/>
+        <text x="340" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="white">L2 CACHE</text>
+
+        <!-- L3 Cache -->
+        <polygon points="220,128 150,176 530,176 460,128" fill="#3a7abf" stroke="none"/>
+        <text x="340" y="156" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">L3 CACHE</text>
+
+        <!-- RAM -->
+        <polygon points="150,178 80,226 600,226 530,178" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="340" y="206" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#8C3009">MAIN MEMORY (RAM)</text>
+
+        <!-- Right side labels -->
+        <text x="550" y="62"  font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">32–64 KB · ~1 cycle</text>
+        <text x="480" y="110" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2a5f94">256 KB–1 MB · ~4 cycles</text>
+        <text x="545" y="158" font-family="'JetBrains Mono',monospace" font-size="9" fill="#3a7abf">8–64 MB · ~40 cycles</text>
+        <text x="570" y="208" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8C3009">8–128 GB · ~200 cycles</text>
+
+        <!-- Left side labels -->
+        <text x="10" y="62"  text-anchor="start" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Fastest</text>
+        <text x="10" y="208" text-anchor="start" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Slowest</text>
+        <line x1="28" y1="66" x2="28" y2="212" stroke="#D8D2C6" stroke-width="1" marker-end="url(#arr4)"/>
+
+        <text x="340" y="248" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Closer to the CPU = faster and smaller. Further away = slower and larger.</text>
+      </svg>
+
+      <p><strong>L1 cache</strong> is the smallest and fastest — typically 32–64 KB, accessible in a single clock cycle. There's usually one L1 cache per core. <strong>L2 cache</strong> is larger (256 KB–1 MB) and a few cycles slower, still per-core in most designs. <strong>L3 cache</strong> is shared across all cores on the chip — much larger (8–64 MB on modern desktop processors) but slower than L1 or L2.</p>
+
+      <p>When the CPU needs data, it checks L1 first. If the data isn't there (a <em>cache miss</em>), it checks L2, then L3, then finally RAM. Each level down is dramatically slower. A program with good <em>cache locality</em> — one that accesses memory in predictable patterns that cache can anticipate — can run several times faster than one that thrashes through random memory locations.</p>
+
+      <div class="note">
+        <strong>Why cache size matters on spec sheets.</strong> When comparing processors, a larger L3 cache often means better real-world performance for workloads that deal with large datasets — databases, video editing, virtual machines. It's not as flashy as clock speed or core count, but for many server workloads it's just as important.
+      </div>
+
+      <h2>CPU Architectures: x86 vs. ARM</h2>
+
+      <p>Everything we've discussed so far — fetch, decode, execute, cores, cache — is universal to all CPUs. But the specific instruction set a CPU understands varies by architecture. The two dominant families today are <strong>x86</strong> and <strong>ARM</strong>, and as an IT professional you will encounter both constantly.</p>
+
+      <p>An <strong>instruction set architecture (ISA)</strong> is the complete vocabulary of instructions a CPU can execute — the specific binary patterns it recognizes and the operations they trigger. Think of it as the CPU's native language. Software compiled for x86 won't run natively on an ARM processor, any more than a book written in French can be read by someone who only speaks Japanese.</p>
+
+      <p><strong>x86</strong> (and its 64-bit extension, x86-64 or AMD64) is the architecture behind virtually every desktop PC, laptop, and server for the past four decades. Intel and AMD are the two manufacturers. It's a <strong>CISC</strong> architecture — Complex Instruction Set Computing — meaning it has a large, rich vocabulary of instructions, some of which do quite a lot of work in a single step. This makes it powerful but relatively power-hungry.</p>
+
+      <p><strong>ARM</strong> takes the opposite philosophy. It's a <strong>RISC</strong> architecture — Reduced Instruction Set Computing — with a smaller, simpler vocabulary of instructions. Simpler instructions mean simpler circuits, which means lower power consumption and less heat. For decades ARM dominated mobile and embedded devices for exactly this reason — your phone's processor has always been ARM.</p>
+
+      <p>What's changed recently is that ARM has arrived in territory that used to belong exclusively to x86. Apple's M-series chips — powering every Mac since 2020 — are ARM-based and deliver performance that matches or beats x86 chips at a fraction of the power draw. Major cloud providers now offer ARM-based server instances (AWS Graviton, for example) at lower cost per unit of compute. This is not a niche development — it's a fundamental shift in the server market that IT professionals need to understand.</p>
+
+      <!-- SVG: x86 vs ARM comparison -->
+      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">x86 vs. ARM: The Key Tradeoffs</text>
+
+        <!-- Headers -->
+        <rect x="20"  y="32" width="300" height="24" rx="4" fill="#1D4E7A"/>
+        <rect x="360" y="32" width="300" height="24" rx="4" fill="#1a6b4a"/>
+        <text x="170" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">x86 / x86-64 (CISC)</text>
+        <text x="510" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">ARM (RISC)</text>
+
+        <!-- Rows -->
+        <rect x="20"  y="58" width="300" height="22" fill="#F5F2EB"/>
+        <rect x="360" y="58" width="300" height="22" fill="#F5F2EB"/>
+        <text x="30"  y="73" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Complex instruction set</text>
+        <text x="370" y="73" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Simple, reduced instruction set</text>
+
+        <rect x="20"  y="82" width="300" height="22" fill="#FDFAF4"/>
+        <rect x="360" y="82" width="300" height="22" fill="#FDFAF4"/>
+        <text x="30"  y="97" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Higher power draw / more heat</text>
+        <text x="370" y="97" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Lower power / runs cooler</text>
+
+        <rect x="20"  y="106" width="300" height="22" fill="#F5F2EB"/>
+        <rect x="360" y="106" width="300" height="22" fill="#F5F2EB"/>
+        <text x="30"  y="121" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Intel &amp; AMD (desktops, servers)</text>
+        <text x="370" y="121" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Apple, Qualcomm, AWS Graviton</text>
+
+        <rect x="20"  y="130" width="300" height="22" fill="#FDFAF4"/>
+        <rect x="360" y="130" width="300" height="22" fill="#FDFAF4"/>
+        <text x="30"  y="145" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Legacy: decades of x86 software</text>
+        <text x="370" y="145" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">All smartphones, Apple Silicon, cloud</text>
+
+        <rect x="20"  y="154" width="300" height="22" fill="#F5F2EB"/>
+        <rect x="360" y="154" width="300" height="22" fill="#F5F2EB"/>
+        <text x="30"  y="169" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Dominant in traditional enterprise IT</text>
+        <text x="370" y="169" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Growing fast in servers and cloud</text>
+
+        <!-- Divider -->
+        <line x1="340" y1="32" x2="340" y2="176" stroke="#D8D2C6" stroke-width="1"/>
+      </svg>
+
+      <div class="note">
+        <strong>Software compatibility matters.</strong> When you choose an ARM-based cloud instance or an Apple Silicon Mac for a software project, you need to confirm that your software stack supports ARM. Most modern software does — but legacy enterprise applications, some Windows software running under emulation, and older virtualization tools sometimes don't. Architecture isn't just a hardware decision; it's a software compatibility decision.
+      </div>
+
+      <h2>Reading a CPU Spec Sheet</h2>
+
+      <p>Everything in this chapter comes together when you're staring at a CPU specification and need to make a purchasing decision. Let's decode a realistic example.</p>
+
+      <!-- SVG: Annotated CPU spec sheet -->
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="280" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Reading a CPU Spec: Example</text>
+
+        <!-- Spec card -->
+        <rect x="30" y="34" width="280" height="220" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="170" y="54" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="11" font-weight="700" fill="#1A1814">Intel Core i7-13700K</text>
+
+        <text x="46" y="76"  font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Cores</text>
+        <text x="295" y="76"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">16 (8P + 8E)</text>
+
+        <text x="46" y="96"  font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Base Clock</text>
+        <text x="295" y="96"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">3.4 GHz</text>
+
+        <text x="46" y="116" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Boost Clock</text>
+        <text x="295" y="116" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">5.4 GHz</text>
+
+        <text x="46" y="136" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">L1 Cache</text>
+        <text x="295" y="136" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">80 KB / core</text>
+
+        <text x="46" y="156" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">L2 Cache</text>
+        <text x="295" y="156" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">24 MB total</text>
+
+        <text x="46" y="176" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">L3 Cache</text>
+        <text x="295" y="176" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">30 MB shared</text>
+
+        <text x="46" y="196" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">TDP</text>
+        <text x="295" y="196" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">125W</text>
+
+        <text x="46" y="216" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Architecture</text>
+        <text x="295" y="216" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">x86-64 (Raptor Lake)</text>
+
+        <text x="46" y="236" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Process Node</text>
+        <text x="295" y="236" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1A1814">Intel 7 (10nm)</text>
+
+        <!-- Divider lines -->
+        <line x1="40" y1="82"  x2="300" y2="82"  stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="102" x2="300" y2="102" stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="122" x2="300" y2="122" stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="142" x2="300" y2="142" stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="162" x2="300" y2="162" stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="182" x2="300" y2="182" stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="202" x2="300" y2="202" stroke="#D8D2C6" stroke-width="0.5"/>
+        <line x1="40" y1="222" x2="300" y2="222" stroke="#D8D2C6" stroke-width="0.5"/>
+
+        <!-- Annotations -->
+        <!-- Cores annotation -->
+        <line x1="312" y1="76" x2="350" y2="76" stroke="#1a6b4a" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="352" y="62" width="294" height="28" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="362" y="73" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a"><tspan font-weight="700">8P = performance cores</tspan>, 8E = efficiency cores.</text>
+        <text x="362" y="84" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">Hybrid design: heavy tasks → P-cores, background → E-cores.</text>
+
+        <!-- Boost clock annotation -->
+        <line x1="312" y1="116" x2="350" y2="116" stroke="#5b2d8e" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="352" y="102" width="294" height="28" rx="4" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="362" y="113" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#5b2d8e"><tspan font-weight="700">Boost = max speed under load</tspan>, base = sustained speed.</text>
+        <text x="362" y="124" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#5b2d8e">Boost only possible when thermal headroom allows.</text>
+
+        <!-- TDP annotation -->
+        <line x1="312" y1="196" x2="350" y2="196" stroke="#C1440E" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="352" y="182" width="294" height="28" rx="4" fill="#F0E6DF" stroke="#C1440E" stroke-width="1"/>
+        <text x="362" y="193" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009"><tspan font-weight="700">TDP (Thermal Design Power)</tspan> = heat a cooler must handle.</text>
+        <text x="362" y="204" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">125W requires a serious heatsink or liquid cooling solution.</text>
+
+        <!-- Process annotation -->
+        <line x1="312" y1="236" x2="350" y2="236" stroke="#1D4E7A" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="352" y="222" width="294" height="28" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="362" y="233" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A"><tspan font-weight="700">Process node</tspan> = transistor size. Smaller = more transistors,</text>
+        <text x="362" y="244" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">less power, more performance per mm² of silicon.</text>
+      </svg>
+
+      <p>A few terms from this spec sheet deserve extra attention. <strong>Base clock</strong> is the sustained speed the chip runs at indefinitely. <strong>Boost clock</strong> is the maximum speed it can reach for short bursts when temperatures allow — the chip throttles back if it gets too hot. <strong>TDP (Thermal Design Power)</strong> measures heat output in watts and determines what cooling solution you need. A 125W TDP chip in a server rack is an entirely different thermal problem than a 15W laptop chip — both factors matter when you're specifying hardware for a real environment.</p>
+
+      <p>The "8P + 8E" notation on this chip's core count reflects a newer design trend: <strong>heterogeneous cores</strong>. Performance cores (P-cores) are large, fast, and power-hungry, designed for demanding tasks. Efficiency cores (E-cores) are smaller and slower but use a fraction of the power, handling background work. The operating system decides which workload goes where. This is now common in both Intel and Apple Silicon designs.</p>
+
+      <!-- ── Practice Problems ── -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Practice</span>
+          <span class="practice-title">Chapter 4 Exercises</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. What are the three stages of the fetch-decode-execute cycle, in order?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Read, Process, Write</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">B</span> Load, Execute, Store</button>
+            <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">C</span> Fetch, Decode, Execute</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> Input, Calculate, Output</button>
+          </div>
+          <div class="mc-feedback" id="q1-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. Which component of the CPU performs mathematical and logical operations?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Control Unit</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> Arithmetic Logic Unit (ALU)</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> Registers</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Cache</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. Why did CPU manufacturers stop simply increasing clock speed to improve performance around 2004?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Software stopped being able to use faster clock speeds.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> The cost of manufacturing faster chips became prohibitive.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">C</span> Higher clock speeds generate too much heat, making chips unreliable or dangerous.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Clock speed improvements stopped providing any performance gains.</button>
+          </div>
+          <div class="mc-feedback" id="q3-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. A database server handles thousands of simultaneous user queries. Which processor configuration would serve it better?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> A single-core processor with the highest possible clock speed.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">B</span> A many-core processor, since concurrent queries can be handled in parallel.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> The total number of cores and clock speed don't matter — only cache size does.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> ARM processors only, since x86 doesn't support multi-threaded workloads.</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. In the memory hierarchy, which level of cache is the fastest?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">A</span> L1 — smallest and closest to the CPU core</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> L2 — a good middle ground between speed and size</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> L3 — largest, so it holds the most data ready to use</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> RAM — it's closest to the operating system</button>
+          </div>
+          <div class="mc-feedback" id="q5-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. What is the key architectural difference between x86 and ARM processors?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> x86 processors use binary; ARM processors use a different number system.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> ARM processors are always faster than x86 processors.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> x86 uses a complex instruction set (CISC) and is more power-hungry; ARM uses a reduced set (RISC) and is more power-efficient.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> x86 is for consumer devices; ARM is exclusively for enterprise servers.</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. A CPU spec lists a base clock of 3.4 GHz and a boost clock of 5.4 GHz. Under what conditions would the chip run at 5.4 GHz?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> Always — 5.4 GHz is its normal operating speed.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> Only when running ARM-compiled software.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">C</span> In short bursts when the chip is cool enough — it throttles back if temperatures rise too high.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> Only when liquid cooling is installed.</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+      </div>
+
+      <nav class="chapter-nav-footer">
+        <a href="ch03.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 3: Data Representation</span>
+        </a>
+        <a href="ch05.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">Memory &amp; Storage</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/fde-cycle.js"></script>
+
+<script>
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>
