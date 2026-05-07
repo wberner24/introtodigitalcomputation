@@ -88,58 +88,60 @@
       <p>The <strong>Registers</strong> are the CPU's working memory — a small set of extremely fast storage locations that live directly on the processor chip. Registers hold the values the CPU is actively working with: the current instruction, the numbers being added, the result of a calculation. There are typically between 8 and 32 general-purpose registers in a modern CPU, each holding one word of data (32 or 64 bits). They're fast because they're right there on the chip — no waiting for data to travel from RAM.</p>
 
       <!-- SVG: CPU internal anatomy -->
-      <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <rect width="680" height="240" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+      <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <defs>
+          <marker id="arr4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#B8B0A4"/>
+          </marker>
+          <marker id="arr4r" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#C1440E"/>
+          </marker>
+        </defs>
+
+        <rect width="680" height="250" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="24" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">Inside the CPU</text>
 
-        <!-- CPU chip outline -->
-        <rect x="30" y="36" width="500" height="170" rx="10" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="2" stroke-dasharray="6,3"/>
-        <text x="280" y="218" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">CPU Die</text>
+        <!-- CPU chip outline — well inside the viewBox -->
+        <rect x="24" y="36" width="480" height="180" rx="10" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="2" stroke-dasharray="6,3"/>
+        <text x="264" y="228" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">CPU Die</text>
 
-        <!-- Control Unit -->
-        <rect x="50" y="56" width="140" height="70" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
-        <text x="120" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">CONTROL</text>
-        <text x="120" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">UNIT</text>
-        <text x="120" y="114" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fetch &amp; Decode</text>
+        <!-- Control Unit — left column, vertically centered in chip -->
+        <rect x="48" y="62" width="148" height="72" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="122" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">CONTROL</text>
+        <text x="122" y="103" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">UNIT</text>
+        <text x="122" y="120" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fetch &amp; Decode</text>
 
-        <!-- ALU -->
-        <rect x="220" y="56" width="140" height="70" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="290" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">ARITHMETIC</text>
-        <text x="290" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">LOGIC UNIT</text>
-        <text x="290" y="114" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Execute / Calculate</text>
+        <!-- Arrow CU → ALU (horizontal, centered on boxes) -->
+        <line x1="198" y1="98" x2="228" y2="98" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
 
-        <!-- Registers -->
-        <rect x="50" y="146" width="310" height="44" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
-        <text x="205" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">REGISTERS</text>
-        <text x="205" y="180" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fast on-chip storage · R1 R2 R3 ... · Program Counter</text>
+        <!-- ALU — right column -->
+        <rect x="230" y="62" width="148" height="72" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="304" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">ARITHMETIC</text>
+        <text x="304" y="103" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">LOGIC UNIT</text>
+        <text x="304" y="120" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Execute / Calculate</text>
 
-        <!-- Arrows CU → ALU -->
-        <line x1="190" y1="91" x2="218" y2="91" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
-        <!-- Arrows CU ↔ Registers -->
-        <line x1="120" y1="126" x2="120" y2="144" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
-        <!-- Arrows ALU ↔ Registers -->
-        <line x1="290" y1="126" x2="290" y2="144" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <!-- Arrows down to Registers -->
+        <line x1="122" y1="136" x2="122" y2="158" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
+        <line x1="304" y1="136" x2="304" y2="158" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
 
-        <defs>
-          <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
-          </marker>
-        </defs>
+        <!-- Registers — full width at bottom of chip -->
+        <rect x="48" y="160" width="430" height="44" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="263" y="178" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">REGISTERS</text>
+        <text x="263" y="194" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fast on-chip storage  ·  R1  R2  R3  ...  ·  Program Counter</text>
 
-        <!-- Memory (outside CPU) -->
-        <rect x="560" y="80" width="100" height="60" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
-        <text x="610" y="104" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">MEMORY</text>
-        <text x="610" y="118" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">(RAM)</text>
-        <!-- Arrow CPU ↔ Memory -->
-        <line x1="532" y1="110" x2="558" y2="110" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr4r)"/>
-        <line x1="558" y1="118" x2="532" y2="118" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr4r)"/>
-        <defs>
-          <marker id="arr4r" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L7,3 z" fill="#C1440E"/>
-          </marker>
-        </defs>
-        <text x="545" y="108" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">instructions</text>
-        <text x="545" y="130" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">data</text>
+        <!-- Memory box — outside CPU, right side, with comfortable margin -->
+        <rect x="558" y="76" width="102" height="62" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="609" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">MEMORY</text>
+        <text x="609" y="117" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">(RAM)</text>
+
+        <!-- CPU ↔ Memory arrows: two separate lines with labels above/below -->
+        <!-- Instructions arrow: CPU → Memory (top line) -->
+        <line x1="506" y1="96" x2="556" y2="96" stroke="#C1440E" stroke-width="1.5" marker-end="url(#arr4r)"/>
+        <text x="530" y="90" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8C3009">fetch instr.</text>
+
+        <!-- Data arrow: Memory → CPU (bottom line) -->
+        <line x1="556" y1="112" x2="506" y2="112" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr4r)"/>
+        <text x="530" y="126" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8C3009">load/store data</text>
       </svg>
 
       <h2>Clock Speed</h2>
@@ -230,35 +232,44 @@
       <p>As an IT professional, this distinction matters when specifying hardware. A database server handling thousands of concurrent queries needs many cores. A developer's workstation running a single compile job cares more about single-core clock speed. There's no universally "best" processor — only the right processor for the workload.</p>
 
       <!-- SVG: Single core vs multi-core -->
-      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <rect width="680" height="180" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">One Fast Worker vs. Many Workers</text>
 
-        <!-- Single core -->
-        <rect x="30" y="38" width="270" height="120" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="165" y="56" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">SINGLE-CORE · 4.0 GHz</text>
-        <!-- One big core -->
-        <rect x="60" y="66" width="180" height="70" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="2"/>
-        <text x="150" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1D4E7A">CORE 1</text>
-        <text x="150" y="112" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">4.0 GHz</text>
-        <text x="165" y="150" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">One instruction stream at 4.0 GHz</text>
+        <!-- Single-core panel -->
+        <rect x="18" y="34" width="252" height="130" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="144" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">SINGLE-CORE  ·  4.0 GHz</text>
 
-        <!-- Quad core -->
-        <rect x="380" y="38" width="270" height="120" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="515" y="56" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">QUAD-CORE · 3.0 GHz</text>
-        <!-- Four smaller cores -->
-        <rect x="392" y="64" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="450" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 1 · 3GHz</text>
-        <rect x="516" y="64" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="574" y="82" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 2 · 3GHz</text>
-        <rect x="392" y="108" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="450" y="126" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 3 · 3GHz</text>
-        <rect x="516" y="108" width="116" height="38" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="574" y="126" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 4 · 3GHz</text>
-        <text x="515" y="160" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Four parallel instruction streams at 3.0 GHz</text>
+        <!-- One large core box, centered in panel -->
+        <rect x="46" y="60" width="196" height="72" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="144" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#1D4E7A">CORE 1</text>
+        <text x="144" y="110" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">4.0 GHz</text>
+
+        <text x="144" y="154" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">One instruction stream</text>
 
         <!-- VS label -->
         <text x="340" y="106" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="14" font-weight="700" fill="#B8B0A4">VS</text>
+
+        <!-- Quad-core panel — starts at x=410, ends at x=662, width=252 -->
+        <rect x="410" y="34" width="252" height="130" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="536" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">QUAD-CORE  ·  3.0 GHz</text>
+
+        <!-- Four cores: 2×2 grid, each 108w × 40h, with 8px gap -->
+        <!-- Row 1 -->
+        <rect x="422" y="60" width="108" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="476" y="84" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 1  3 GHz</text>
+
+        <rect x="542" y="60" width="108" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="596" y="84" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 2  3 GHz</text>
+
+        <!-- Row 2 -->
+        <rect x="422" y="108" width="108" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="476" y="132" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 3  3 GHz</text>
+
+        <rect x="542" y="108" width="108" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="596" y="132" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 4  3 GHz</text>
+
+        <text x="536" y="154" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Four parallel instruction streams</text>
       </svg>
 
       <h2>Cache: The Speed Bridge</h2>
