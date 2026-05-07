@@ -333,142 +333,206 @@
         <li>An <strong>AND gate</strong> produces the carry bit (1 only when both inputs are 1)</li>
       </ul>
 
-      <!-- SVG: Half adder and full adder -->
-      <svg viewBox="0 0 780 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+      <!-- SVG 1: Half Adder (standalone) -->
+      <svg viewBox="0 0 400 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <defs>
-          <marker id="arr-circ" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <marker id="arr-ha" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
             <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
           </marker>
         </defs>
-        <rect width="780" height="270" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="390" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">From Gates to Circuits: Half Adder and Full Adder</text>
+        <rect width="400" height="270" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="200" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Half Adder</text>
 
-        <!-- ══ HALF ADDER (left panel) ══ -->
-        <rect x="18" y="32" width="298" height="230" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="167" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER</text>
-        <text x="167" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 single bits</text>
+        <rect x="18" y="32" width="364" height="230" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="200" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER</text>
+        <text x="200" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 single bits — outputs SUM and CARRY</text>
 
         <!-- Input labels -->
         <text x="36" y="108" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
         <text x="36" y="158" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">B</text>
 
-        <!-- XOR gate box: x=100,y=78 w=72 h=36 — inputs at y=89 (top) and y=107 (bottom) -->
+        <!-- XOR gate: x=100,y=78 w=72 h=36 -->
         <rect x="100" y="78" width="72" height="36" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
         <text x="136" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">XOR</text>
 
-        <!-- AND gate box: x=100,y=136 w=72 h=36 — inputs at y=147 (top) and y=165 (bottom) -->
+        <!-- AND gate: x=100,y=136 w=72 h=36 -->
         <rect x="100" y="136" width="72" height="36" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="136" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
 
-        <!-- A input wire: comes in from left, hits junction at x=70,y=104 -->
+        <!-- A wire → junction → XOR top (y=89) and AND top (y=147) -->
         <line x1="50" y1="104" x2="70" y2="104" stroke="#B8B0A4" stroke-width="1.5"/>
-        <!-- Junction dot A -->
         <circle cx="70" cy="104" r="3" fill="#B8B0A4"/>
-        <!-- A → XOR top input (y=89): go up from junction, then right -->
-        <line x1="70" y1="104" x2="70" y2="89" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="70" y1="89" x2="100" y2="89" stroke="#B8B0A4" stroke-width="1.5"/>
-        <!-- A → AND top input (y=147): go down from junction, then right -->
+        <line x1="70" y1="104" x2="70" y2="89"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="70" y1="89"  x2="100" y2="89"  stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="70" y1="104" x2="70" y2="147" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="70" y1="147" x2="100" y2="147" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- B input wire: comes in from left, hits junction at x=76,y=154 -->
+        <!-- B wire → junction → XOR bottom (y=107) and AND bottom (y=165) -->
         <line x1="50" y1="154" x2="76" y2="154" stroke="#B8B0A4" stroke-width="1.5"/>
-        <!-- Junction dot B -->
         <circle cx="76" cy="154" r="3" fill="#B8B0A4"/>
-        <!-- B → XOR bottom input (y=107): go up from junction, then right -->
         <line x1="76" y1="154" x2="76" y2="107" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="76" y1="107" x2="100" y2="107" stroke="#B8B0A4" stroke-width="1.5"/>
-        <!-- B → AND bottom input (y=165): go down from junction, then right -->
         <line x1="76" y1="154" x2="76" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="76" y1="165" x2="100" y2="165" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- XOR output: center of XOR right edge at y=96, goes right to SUM -->
-        <line x1="172" y1="96" x2="218" y2="96" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="224" y="100" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
-        <text x="224" y="113" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
+        <!-- XOR output → SUM -->
+        <line x1="172" y1="96" x2="240" y2="96" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
+        <text x="246" y="100" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+        <text x="246" y="113" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
 
-        <!-- AND output: center of AND right edge at y=154, goes right to CARRY -->
-        <line x1="172" y1="154" x2="218" y2="154" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="224" y="158" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
-        <text x="224" y="171" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
+        <!-- AND output → CARRY -->
+        <line x1="172" y1="154" x2="240" y2="154" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
+        <text x="246" y="158" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
+        <text x="246" y="171" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
 
         <!-- Example box -->
-        <rect x="32" y="206" width="270" height="44" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="167" y="222" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Example: A=1, B=1</text>
-        <text x="167" y="238" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">SUM = 1 XOR 1 = 0   CARRY = 1 AND 1 = 1</text>
+        <rect x="32" y="206" width="336" height="44" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="200" y="222" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Example: A=1, B=1</text>
+        <text x="200" y="238" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">SUM = 1 XOR 1 = 0     CARRY = 1 AND 1 = 1</text>
+      </svg>
 
-        <!-- ══ FULL ADDER (right panel) ══ -->
-        <!-- Panel: x=364,y=32, w=406,h=230 → right edge x=770, 10px margin from viewBox -->
-        <rect x="364" y="32" width="406" height="230" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="567" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">FULL ADDER</text>
-        <text x="567" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 bits + carry-in from previous column</text>
+      <!-- SVG 2: Full Adder (standalone) -->
+      <!--
+        LAYOUT (all coordinates verified before coding):
 
-        <!-- Input labels -->
-        <text x="374" y="97"  font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">A</text>
-        <text x="374" y="113" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">B</text>
-        <text x="372" y="170" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">Cin</text>
+        ViewBox: 680 × 220
 
-        <!-- HA1: x=410,y=74, w=84,h=38 → right edge x=494 -->
-        <rect x="410" y="74" width="84" height="38" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="452" y="93"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder 1</text>
-        <text x="452" y="105" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(A, B)</text>
+        HA1 box:  x=80,  y=55,  w=110, h=50  right=190   A-input y=68,  B-input y=90,  SUM-out y=68,  CARRY-out y=90
+        HA2 box:  x=310, y=95,  w=110, h=50  right=420   sum1-input y=108, Cin-input y=130, SUM-out y=108, CARRY-out y=130
+        OR box:   x=470, y=55,  w=70,  h=50  right=540   top-input y=68,  bot-input y=92,  output y=80
 
-        <!-- HA2: x=410,y=148, w=84,h=38 → right edge x=494 -->
-        <rect x="410" y="148" width="84" height="38" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="452" y="167" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder 2</text>
-        <text x="452" y="179" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(sum1, Cin)</text>
+        Wire routing:
+          A   (label x=18,y=66):  x=32,y=65 → x=60,y=65 → y=68 → x=80  (HA1 A-input)
+          B   (label x=18,y=92):  x=32,y=91 → x=65,y=91 → y=90 → x=80  (HA1 B-input)
+          Cin (label x=18,y=160): x=32,y=160 → x=65,y=160 → y=130 → x=310 (HA2 Cin-input)
 
-        <!-- OR: x=560,y=100, w=50,h=36 → right edge x=610, center y=118 -->
-        <rect x="560" y="100" width="50" height="36" rx="5" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
-        <text x="585" y="122" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">OR</text>
+          HA1 SUM (x=190,y=68) → x=210,y=68 → y=108 → x=310  [LANE x=210, label "sum1" at x=213,y=90]
+          HA1 CARRY (x=190,y=90) → x=225,y=90 → y=68 → x=470  [LANE x=225, label "c1" at x=228,y=88]
+            NOTE: y=90→y=68 goes UP (CARRY goes to OR top input). x=225 is between HA1 right (190) and HA2 left (310). Clear of sum1 lane (x=210). ✓
 
-        <!-- ── INPUT WIRES ── -->
-        <line x1="388" y1="94"  x2="402" y2="94"  stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="402" y1="94"  x2="402" y2="85"  stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="402" y1="85"  x2="410" y2="85"  stroke="#B8B0A4" stroke-width="1.5"/>
+          HA2 CARRY (x=420,y=130) → x=445,y=130 → y=92 → x=470  [LANE x=445, label "c2" at x=448,y=128]
+            NOTE: y=130→y=92 goes UP (CARRY goes to OR bottom input). x=445 is between HA2 right (420) and OR left (470). ✓
 
-        <line x1="388" y1="110" x2="406" y2="110" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="406" y1="110" x2="406" y2="103" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="406" y1="103" x2="410" y2="103" stroke="#B8B0A4" stroke-width="1.5"/>
+          HA2 SUM (x=420,y=108) → arrow to x=560, label "SUM" at x=566
+            NOTE: y=108 is below OR box bottom (y=55+50=105). y=108 > 105. CLEAR ✓
 
-        <line x1="388" y1="167" x2="398" y2="167" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="398" y1="167" x2="398" y2="177" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="398" y1="177" x2="410" y2="177" stroke="#B8B0A4" stroke-width="1.5"/>
+          OR output (x=540,y=80) → arrow to x=560, label "Cout" at x=566
+            NOTE: y=80, well above SUM wire (y=108). No crossing. ✓
 
-        <!-- ── INTERNAL WIRES: 3 lanes at x=504, x=520, x=536 ── -->
-        <!-- Lane 1 (sum1): HA1 SUM (y=85) → down → HA2 top input (y=159) -->
-        <line x1="494" y1="85"  x2="504" y2="85"  stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="504" y1="85"  x2="504" y2="159" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="504" y1="159" x2="410" y2="159" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="507" y="136" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">sum1</text>
+        Cross-check — does c1 horizontal (y=68, x=225→470) cross HA2 box (x=310–420, y=95–145)? 
+          y=68 < HA2 top (y=95). CLEAR ✓
+        Does Cin wire (y=160→130, x=65) cross HA1 box (x=80–190, y=55–105)?
+          x=65 < HA1 left (x=80). CLEAR ✓
+        Does HA2 SUM arrow (y=108, x=420→560) cross OR box (x=470–540, y=55–105)?
+          y=108 > OR bottom (y=105). CLEAR ✓ (just 3px — add extra safety: drop SUM to y=112)
 
-        <!-- Lane 2 (c1): HA1 CARRY (y=103) → right → down → OR top input (y=111) -->
-        <line x1="494" y1="103" x2="520" y2="103" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="520" y1="103" x2="520" y2="111" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="520" y1="111" x2="560" y2="111" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="500" y="101" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c1</text>
+        Updated: HA2 SUM-out y=112, Cin-input y=134, HA2 CARRY-out y=134
+        HA2 box y=95,h=50→bottom=145. sum1-input y=108, Cin-input y=132.
+        HA2 SUM arrow at y=112 vs OR bottom at y=105: still only 7px. Move OR down:
+        
+        FINAL SAFE LAYOUT:
+          HA1: x=80, y=45, w=110, h=50  → bottom=95.  A-in y=58, B-in y=80, SUM-out y=58, CARRY-out y=80
+          HA2: x=310, y=115, w=110, h=50 → bottom=165. sum1-in y=128, Cin-in y=150, SUM-out y=128, CARRY-out y=150
+          OR:  x=470, y=45, w=70, h=50  → bottom=95.  top-in y=58, bot-in y=82, output y=70
 
-        <!-- Lane 3 (c2): HA2 CARRY (y=177) → right → up → OR bottom input (y=125) -->
-        <line x1="494" y1="177" x2="536" y2="177" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="536" y1="177" x2="536" y2="125" stroke="#B8B0A4" stroke-width="1.5"/>
-        <line x1="536" y1="125" x2="560" y2="125" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="500" y="193" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c2</text>
+          HA1 SUM (y=58) → x=210,y=58 → y=128 → x=310  label "sum1" x=213,y=95 (midpoint 58→128=93)
+          HA1 CARRY (y=80) → x=225,y=80 → y=58 → x=470  label "c1" x=228,y=78
+            y=80→y=58: goes UP. x=225→x=470: passes OVER HA2 (y=115–165) since y=58 < 115. ✓
+
+          HA2 CARRY (y=150) → x=445,y=150 → y=82 → x=470  label "c2" x=448,y=148
+          HA2 SUM (y=128) → arrow x=420→575  label "SUM" x=581
+            y=128 vs OR bottom y=95: y=128 > 95. ✓
+          OR output (y=70) → arrow x=540→575  label "Cout" x=581
+
+          Cin wire: x=32,y=170 → x=65,y=170 → y=150 → x=310
+            x=65 < HA1 left (80). ✓
+
+          ViewBox height: HA2 bottom=165, need room for Cin label. Use height=200.
+      -->
+      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <defs>
+          <marker id="arr-fa" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
+          </marker>
+        </defs>
+        <rect width="680" height="200" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Full Adder</text>
+        <text x="340" y="38" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Two half adders + OR gate — adds 2 bits plus a carry-in</text>
+
+        <!-- ── BOXES ── -->
+        <!-- HA1: x=80, y=45, w=110, h=50, bottom=95 -->
+        <rect x="80" y="45" width="110" height="50" rx="6" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="135" y="67" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A4640">Half Adder 1</text>
+        <text x="135" y="82" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">inputs: A, B</text>
+
+        <!-- HA2: x=310, y=115, w=110, h=50, bottom=165 -->
+        <rect x="310" y="115" width="110" height="50" rx="6" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="365" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A4640">Half Adder 2</text>
+        <text x="365" y="152" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">inputs: sum1, Cin</text>
+
+        <!-- OR: x=470, y=45, w=70, h=50, bottom=95 -->
+        <rect x="470" y="45" width="70" height="50" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="505" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#5b2d8e">OR</text>
+
+        <!-- ── INPUT LABELS & WIRES ── -->
+        <!-- A: label y=56, wire at y=58 → HA1 A-input (top third of HA1) -->
+        <text x="18" y="61" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
+        <line x1="32" y1="58" x2="60" y2="58" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="60" y1="58" x2="60" y2="58" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="60" y1="58" x2="80" y2="58" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- B: label y=83, wire at y=80 → HA1 B-input (bottom third of HA1) -->
+        <text x="18" y="83" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">B</text>
+        <line x1="32" y1="80" x2="65" y2="80" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="65" y1="80" x2="80" y2="80" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- Cin: label y=173, wire at y=150 → HA2 Cin-input (bottom third of HA2) -->
+        <!-- x=65 is left of HA1 (x=80), so no crossing with HA1 -->
+        <text x="18" y="173" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">Cin</text>
+        <line x1="40" y1="170" x2="65" y2="170" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="65" y1="170" x2="65" y2="150" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="65" y1="150" x2="310" y2="150" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- ── INTERNAL WIRES ── -->
+
+        <!-- HA1 SUM-out (x=190, y=58) → lane x=210 → down to y=128 → right to HA2 sum1-input (x=310, y=128) -->
+        <!-- Lane x=210. Vertical: y=58 down to y=128. Passes through gap between HA1 bottom (y=95) and HA2 top (y=115). CLEAR. -->
+        <line x1="190" y1="58"  x2="210" y2="58"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="210" y1="58"  x2="210" y2="128" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="210" y1="128" x2="310" y2="128" stroke="#B8B0A4" stroke-width="1.5"/>
+        <!-- "sum1" label: midpoint of vertical is y=(58+128)/2=93, sits in the 20px gap between HA1 bottom (95) and label is just above -->
+        <text x="214" y="91" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">sum1</text>
+
+        <!-- HA1 CARRY-out (x=190, y=80) → lane x=225 → UP to y=58 → right to OR top-input (x=470, y=58) -->
+        <!-- Lane x=225. y=80 → y=58 (UP 22px). Horizontal at y=58 goes x=225→470.
+             Does y=58 horizontal cross HA2 (x=310-420, y=115-165)? y=58 < 115. CLEAR. -->
+        <line x1="190" y1="80"  x2="225" y2="80"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="225" y1="80"  x2="225" y2="58"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="225" y1="58"  x2="470" y2="58"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="228" y="78" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c1</text>
+
+        <!-- HA2 CARRY-out (x=420, y=150) → lane x=445 → UP to y=82 → right to OR bot-input (x=470, y=82) -->
+        <!-- Lane x=445. Between HA2 right (420) and OR left (470). y=150 → y=82 (UP 68px). CLEAR of all boxes. -->
+        <line x1="420" y1="150" x2="445" y2="150" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="445" y1="150" x2="445" y2="82"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="445" y1="82"  x2="470" y2="82"  stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="448" y="148" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c2</text>
 
         <!-- ── OUTPUT WIRES ── -->
-        <!-- HA2 SUM (y=159) → arrow right. y=159 clears OR bottom (y=136) by 23px. Label ends ~x=660 < 770 ✓ -->
-        <line x1="494" y1="159" x2="630" y2="159" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="636" y="163" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+        <!-- HA2 SUM-out (x=420, y=128) → arrow right to SUM label -->
+        <!-- y=128 vs OR bottom y=95: 128 > 95, CLEAR of OR box. -->
+        <line x1="420" y1="128" x2="568" y2="128" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-fa)"/>
+        <text x="575" y="132" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#8C3009">SUM</text>
 
-        <!-- OR output (y=118) → arrow right. Label ends ~x=730 < 770 ✓ -->
-        <line x1="610" y1="118" x2="630" y2="118" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
-        <text x="636" y="122" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">Cout</text>
-        <text x="636" y="134" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(carry out)</text>
+        <!-- OR output (x=540, y=70) → arrow right to Cout label -->
+        <line x1="540" y1="70"  x2="568" y2="70"  stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-fa)"/>
+        <text x="575" y="74" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">Cout</text>
+        <text x="575" y="86" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(carry out)</text>
 
-        <!-- Example box -->
-        <rect x="378" y="206" width="378" height="44" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="567" y="222" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Eight full adders chained = 8-bit adder circuit</text>
-        <text x="567" y="238" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">This is literally how your CPU adds numbers</text>
+        <!-- Bottom caption -->
+        <text x="340" y="192" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Eight full adders chained = 8-bit adder circuit — this is literally how your CPU adds numbers</text>
       </svg>
+
 
       <p>A <strong>full adder</strong> extends the half adder by also accepting a <em>carry-in</em> from the previous column — exactly as you carry digits in pencil-and-paper addition. A full adder is built from two half adders plus an OR gate. And here's the payoff: chain eight full adders together and you have an 8-bit adder — a circuit that can add any two 8-bit numbers and produce an 8-bit result with a carry-out. That is literally how your CPU's ALU adds numbers. The same principle scales to 32-bit and 64-bit adders.</p>
 
