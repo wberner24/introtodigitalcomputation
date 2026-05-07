@@ -79,7 +79,7 @@
 
       <div data-widget="fde-cycle"></div>
 
-      <p>Notice what happened: the Python variable <code>a</code> doesn't exist as far as the CPU is concerned — there are only memory addresses. <code>a = 5</code> means "store the value 5 at address <span class="hex">0x10</span>." <code>c = a + b</code> compiles into two instructions: an ADD that puts the result in a register, and a STORE that writes that register's value to memory. The program counter advanced from <span class="hex">0x00</span> to <span class="hex">0x04</span> — one address per instruction. That's the machine's perspective on your code.</p>
+      <p>Notice what happened: memory started completely empty. The first two instructions — <code>STORE 5, [0x10]</code> and <code>STORE 3, [0x11]</code> — are what Python's <code>a = 5</code> and <code>b = 3</code> compile down to. Only after those values exist in memory can the LOAD instructions bring them into registers for the ALU to use. The program counter stepped from <span class="hex">0x00</span> to <span class="hex">0x06</span> — one address per instruction, in strict sequence. That is the machine's perspective on three lines of Python.</p>
 
       <h2>Inside the CPU</h2>
 
