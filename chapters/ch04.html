@@ -144,6 +144,297 @@
         <text x="530" y="126" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8C3009">load/store data</text>
       </svg>
 
+      <h2>Instructions: What the CPU Actually Executes</h2>
+
+      <p>We've said the CPU "executes instructions," but what is an instruction, exactly? Let's be precise.</p>
+
+      <p>An instruction is a single, atomic command to the CPU — the smallest unit of work it can perform. A program written in Python or Java contains thousands of lines of human-readable code, but before it runs, a compiler or interpreter translates all of that into a sequence of binary instructions the CPU can actually execute. Each one is just a pattern of bits.</p>
+
+      <p>Every instruction has two parts. The <strong>opcode</strong> (operation code) is a group of bits at the start that encodes <em>what</em> to do — add, compare, jump to a different instruction, load data from memory. The <strong>operands</strong> are the remaining bits that encode <em>what data to do it to</em> — either the data itself, or the register or memory address where the data lives.</p>
+
+      <!-- SVG: Instruction anatomy -->
+      <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <defs>
+          <marker id="arr-inst" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L8,3 z" fill="#B8B0A4"/>
+          </marker>
+        </defs>
+        <rect width="680" height="130" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Anatomy of a 16-bit Instruction: ADD R1, R2</text>
+
+        <!-- Bit groups -->
+        <!-- Opcode: bits 15-12 (4 bits) -->
+        <rect x="40"  y="36" width="120" height="44" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="100" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1D4E7A">0110</text>
+        <text x="100" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 15–12</text>
+
+        <!-- Operand 1: bits 11-8 (4 bits) -->
+        <rect x="168" y="36" width="120" height="44" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="228" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1a6b4a">0001</text>
+        <text x="228" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 11–8</text>
+
+        <!-- Operand 2: bits 7-4 (4 bits) -->
+        <rect x="296" y="36" width="120" height="44" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="356" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1a6b4a">0010</text>
+        <text x="356" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 7–4</text>
+
+        <!-- Unused: bits 3-0 -->
+        <rect x="424" y="36" width="120" height="44" rx="4" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="484" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#B8B0A4">0000</text>
+        <text x="484" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#B8B0A4">bits 3–0 (unused)</text>
+
+        <!-- Labels below -->
+        <text x="100" y="100" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#1D4E7A">OPCODE</text>
+        <text x="100" y="113" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">What to do: ADD</text>
+
+        <text x="292" y="100" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#1a6b4a">OPERANDS</text>
+        <text x="292" y="113" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">What data to use: Register 1, Register 2</text>
+      </svg>
+
+      <p>Modern CPUs support dozens or hundreds of different instruction types. A few fundamental categories are worth knowing:</p>
+
+      <ul>
+        <li><strong>Data movement</strong> — <code>MOVE</code>, <code>LOAD</code>, <code>STORE</code>: copy data between registers, or between registers and memory.</li>
+        <li><strong>Arithmetic</strong> — <code>ADD</code>, <code>SUB</code>, <code>MUL</code>: perform mathematical operations on values in registers.</li>
+        <li><strong>Logic</strong> — <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code>: perform bitwise operations on individual bits within a value.</li>
+        <li><strong>Comparison</strong> — <code>CMP</code>: compare two values and set flags in a status register that other instructions can check.</li>
+        <li><strong>Branch/Jump</strong> — <code>JMP</code>, <code>JZ</code>, <code>JNE</code>: change which instruction executes next, conditionally or unconditionally. This is how <code>if</code> statements and loops are implemented at the hardware level.</li>
+        <li><strong>Halt</strong> — <code>HALT</code>: stop execution.</li>
+      </ul>
+
+      <p>Every program you've ever run — every if statement, every loop, every function call — is ultimately compiled down into sequences of these simple instruction types. The ALU executes the arithmetic and logic instructions directly. The control unit handles data movement and branches. Together, they implement the full complexity of modern software from this tiny vocabulary.</p>
+
+      <h2>Word Size</h2>
+
+      <p>CPUs don't process data one bit at a time — that would be impossibly slow. Instead, they work with fixed-size chunks of bits called <strong>words</strong>. The word size is the natural unit of data the CPU processes in a single operation, and it matches the width of the CPU's general-purpose registers.</p>
+
+      <p>Modern CPUs are <strong>64-bit</strong>, meaning their registers hold 64 bits at a time, they process 64-bit values in a single instruction, and memory addresses are 64 bits wide. This is why your operating system is called "64-bit Windows" or "64-bit Linux." Earlier systems were 32-bit — which is why 32-bit operating systems can only address about 4 GB of RAM (2³² bytes). On a 64-bit system, the theoretical address space is 2⁶⁴ bytes — about 18 exabytes. We won't be running out of that any time soon.</p>
+
+      <h2>Logic Gates: From Transistors to Computation</h2>
+
+      <p>We established in Chapter 2 that a transistor is an electrically controlled switch — on or off, representing <span class="bin">1</span> or <span class="bin">0</span>. But a single transistor can only hold one bit. How do you get from "a switch" to "an addition"?</p>
+
+      <p>The answer is <strong>logic gates</strong>. A logic gate is a small circuit built from two or more transistors that performs a logical operation on its inputs and produces a single output bit. Gates are the bridge between physical transistors and the logical operations the ALU needs to perform.</p>
+
+      <p>There are a handful of fundamental gate types. Each one has a well-defined rule — a <strong>truth table</strong> — that specifies what output it produces for every possible combination of inputs.</p>
+
+      <!-- SVG: Logic gates and truth tables -->
+      <svg viewBox="0 0 680 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <defs>
+          <marker id="arr-gate" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
+          </marker>
+        </defs>
+        <rect width="680" height="340" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Fundamental Logic Gates</text>
+
+        <!-- Column headers -->
+        <text x="90"  y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">GATE</text>
+        <text x="220" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">RULE</text>
+        <text x="430" y="40" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">TRUTH TABLE</text>
+        <line x1="16" y1="44" x2="664" y2="44" stroke="#D8D2C6" stroke-width="1"/>
+
+        <!-- ── NOT ── row y=50–105 -->
+        <rect x="16" y="48" width="648" height="56" rx="0" fill="#F5F2EB"/>
+        <!-- Gate box -->
+        <rect x="28" y="56" width="124" height="40" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="90"  y="73" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">NOT</text>
+        <text x="90"  y="87" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">1 input</text>
+        <!-- Rule -->
+        <text x="175" y="68" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Inverts the input.</text>
+        <text x="175" y="82" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">0 in → 1 out    1 in → 0 out</text>
+        <!-- Truth table -->
+        <rect x="370" y="52" width="48" height="18" rx="2" fill="#1A1814"/>
+        <text x="394" y="64" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">IN</text>
+        <rect x="422" y="52" width="48" height="18" rx="2" fill="#1A1814"/>
+        <text x="446" y="64" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="394" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text>
+        <text x="446" y="80" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">1</text>
+        <text x="394" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text>
+        <text x="446" y="96" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">0</text>
+
+        <!-- ── AND ── row y=106–177 -->
+        <rect x="16" y="105" width="648" height="72" rx="0" fill="#FDFAF4"/>
+        <rect x="28" y="113" width="124" height="56" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="90"  y="135" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1a6b4a">AND</text>
+        <text x="90"  y="150" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
+        <text x="90"  y="162" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Output: 1 only if</text>
+        <!-- Rule -->
+        <text x="175" y="128" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 only when BOTH inputs are 1.</text>
+        <text x="175" y="142" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Any 0 input produces a 0 output.</text>
+        <text x="175" y="160" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: masking, filtering bits</text>
+        <!-- Truth table 2-input -->
+        <rect x="370" y="109" width="36" height="16" rx="2" fill="#1A1814"/>
+        <text x="388" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
+        <rect x="410" y="109" width="36" height="16" rx="2" fill="#1A1814"/>
+        <text x="428" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
+        <rect x="450" y="109" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="474" y="121" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <!-- rows -->
+        <text x="388" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="138" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="388" y="151" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="151" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="151" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="388" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="164" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="388" y="177" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="177" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="177" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">1</text>
+
+        <!-- ── OR ── row y=178–249 -->
+        <rect x="16" y="178" width="648" height="72" rx="0" fill="#F5F2EB"/>
+        <rect x="28" y="186" width="124" height="56" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="90"  y="208" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">OR</text>
+        <text x="90"  y="223" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
+        <!-- Rule -->
+        <text x="175" y="202" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 when AT LEAST ONE input is 1.</text>
+        <text x="175" y="216" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 0 only when both inputs are 0.</text>
+        <text x="175" y="234" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: combining flags, set operations</text>
+        <!-- Truth table -->
+        <rect x="370" y="182" width="36" height="16" rx="2" fill="#1A1814"/>
+        <text x="388" y="194" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
+        <rect x="410" y="182" width="36" height="16" rx="2" fill="#1A1814"/>
+        <text x="428" y="194" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
+        <rect x="450" y="182" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="474" y="194" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="388" y="211" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="211" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="211" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="388" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
+        <text x="388" y="237" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="237" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="237" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
+        <text x="388" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="250" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">1</text>
+
+        <!-- ── XOR ── row y=251–322 -->
+        <rect x="16" y="252" width="648" height="72" rx="0" fill="#FDFAF4"/>
+        <rect x="28" y="260" width="124" height="56" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="90"  y="282" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#8C3009">XOR</text>
+        <text x="90"  y="297" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">2 inputs</text>
+        <!-- Rule -->
+        <text x="175" y="276" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 1 when inputs are DIFFERENT.</text>
+        <text x="175" y="290" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Output is 0 when inputs are the same.</text>
+        <text x="175" y="308" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">Used in: binary addition, encryption</text>
+        <!-- Truth table -->
+        <rect x="370" y="256" width="36" height="16" rx="2" fill="#1A1814"/>
+        <text x="388" y="268" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">A</text>
+        <rect x="410" y="256" width="36" height="16" rx="2" fill="#1A1814"/>
+        <text x="428" y="268" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">B</text>
+        <rect x="450" y="256" width="48" height="16" rx="2" fill="#1A1814"/>
+        <text x="474" y="268" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="white">OUT</text>
+        <text x="388" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="285" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+        <text x="388" y="298" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="428" y="298" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="298" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">1</text>
+        <text x="388" y="311" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="311" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">0</text><text x="474" y="311" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">1</text>
+        <text x="388" y="324" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="428" y="324" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#1D4E7A">1</text><text x="474" y="324" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#C1440E">0</text>
+      </svg>
+
+      <p>These four gates — NOT, AND, OR, XOR — plus one more called NAND (Not-AND, which outputs 0 only when both inputs are 1) are sufficient to build any digital circuit that can ever exist. This is not an overstatement. Every calculation your computer performs, every piece of data it stores, every comparison it makes — all of it can be reduced to combinations of these five gate types.</p>
+
+      <h2>From Gates to Circuits: Building an Adder</h2>
+
+      <p>A single gate is useful but limited. The real power emerges when you wire gates together into <strong>circuits</strong>. Let's trace exactly how addition happens inside the ALU — starting from individual bits.</p>
+
+      <p>Adding two single bits is simple. There are only four possible cases:</p>
+
+      <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;font-size:0.9rem;">
+        0 + 0 = 0 &nbsp;&nbsp;&nbsp; 0 + 1 = 1 &nbsp;&nbsp;&nbsp; 1 + 0 = 1 &nbsp;&nbsp;&nbsp; 1 + 1 = 10 (binary for 2 — sum=0, carry=1)
+      </p>
+
+      <p>Notice that 1 + 1 produces two output bits: a <strong>sum</strong> bit and a <strong>carry</strong> bit (the carry is what you "carry over" to the next column, just like carrying a 1 in decimal addition). A circuit that handles this is called a <strong>half adder</strong>, and it's built from exactly two gates:</p>
+
+      <ul>
+        <li>An <strong>XOR gate</strong> produces the sum bit (1 when inputs differ, 0 when same)</li>
+        <li>An <strong>AND gate</strong> produces the carry bit (1 only when both inputs are 1)</li>
+      </ul>
+
+      <!-- SVG: Half adder and full adder -->
+      <svg viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <defs>
+          <marker id="arr-circ" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L7,3 z" fill="#B8B0A4"/>
+          </marker>
+        </defs>
+        <rect width="680" height="260" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">From Gates to Circuits: Half Adder and Full Adder</text>
+
+        <!-- ── HALF ADDER (left panel) ── -->
+        <rect x="18" y="32" width="298" height="210" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="167" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER</text>
+        <text x="167" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 single bits</text>
+
+        <!-- Inputs A, B -->
+        <text x="38" y="112" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">A</text>
+        <text x="38" y="152" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">B</text>
+        <line x1="50" y1="109" x2="90" y2="109" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="50" y1="149" x2="90" y2="149" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- XOR gate box -->
+        <rect x="92" y="86" width="68" height="32" rx="5" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="126" y="106" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">XOR</text>
+        <!-- Wire from A,B into XOR -->
+        <line x1="72" y1="109" x2="72" y2="102" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="72" y1="102" x2="92" y2="102" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="72" y1="149" x2="72" y2="114" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="72" y1="114" x2="92" y2="114" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- AND gate box -->
+        <rect x="92" y="136" width="68" height="32" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
+        <text x="126" y="156" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
+        <!-- Wire from A,B into AND -->
+        <line x1="80" y1="109" x2="80" y2="143" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="3,2"/>
+        <line x1="80" y1="143" x2="92" y2="143" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="84" y1="149" x2="92" y2="156" stroke="#B8B0A4" stroke-width="1.5"/>
+
+        <!-- Output arrows -->
+        <line x1="160" y1="102" x2="220" y2="102" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="226" y="106" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+        <text x="226" y="118" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
+
+        <line x1="160" y1="152" x2="220" y2="152" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="226" y="156" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
+        <text x="226" y="168" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
+
+        <!-- Example -->
+        <rect x="32" y="196" width="270" height="36" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="167" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Example: A=1, B=1</text>
+        <text x="167" y="224" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">SUM = 1 XOR 1 = 0    CARRY = 1 AND 1 = 1</text>
+
+        <!-- ── FULL ADDER (right panel) ── -->
+        <rect x="364" y="32" width="298" height="210" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="513" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">FULL ADDER</text>
+        <text x="513" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Adds 2 bits + carry-in from previous column</text>
+
+        <!-- Three inputs -->
+        <text x="376" y="96"  font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">A</text>
+        <text x="376" y="112" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">B</text>
+        <text x="376" y="128" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#5b2d8e">Cin</text>
+
+        <!-- Two half-adder blocks inside -->
+        <rect x="410" y="76" width="80" height="36" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="450" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder</text>
+        <text x="450" y="107" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(A, B)</text>
+
+        <rect x="410" y="130" width="80" height="36" rx="5" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="450" y="149" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Half Adder</text>
+        <text x="450" y="161" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(sum, Cin)</text>
+
+        <!-- OR gate for carry out -->
+        <rect x="510" y="104" width="56" height="28" rx="5" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
+        <text x="538" y="122" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#5b2d8e">OR</text>
+
+        <!-- Outputs -->
+        <line x1="490" y1="148" x2="594" y2="148" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="600" y="152" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
+
+        <line x1="566" y1="118" x2="594" y2="118" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-circ)"/>
+        <text x="600" y="122" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">Cout</text>
+        <text x="600" y="134" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(carry out)</text>
+
+        <!-- Example -->
+        <rect x="378" y="196" width="270" height="36" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="513" y="210" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">Eight full adders chained = 8-bit adder circuit</text>
+        <text x="513" y="224" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">This is literally how your CPU adds numbers</text>
+      </svg>
+
+      <p>A <strong>full adder</strong> extends the half adder by also accepting a <em>carry-in</em> from the previous column — exactly as you carry digits in pencil-and-paper addition. A full adder is built from two half adders plus an OR gate. And here's the payoff: chain eight full adders together and you have an 8-bit adder — a circuit that can add any two 8-bit numbers and produce an 8-bit result with a carry-out. That is literally how your CPU's ALU adds numbers. The same principle scales to 32-bit and 64-bit adders.</p>
+
+      <p>You are now looking at the bottom of the stack. Transistors become gates. Gates become circuits. Circuits become an ALU. The ALU executes instructions. Instructions run your software. This chain — from physics to programs — is what Chapter 2 meant when it said "everything else is built on top of that."</p>
+
+      <div class="note">
+        <strong>Want to go deeper?</strong> If this section sparked something for you, look up <em>NAND to Tetris</em> (nand2tetris.org) — a free online course that walks you through building an entire general-purpose computer from primitive NAND gates up through an operating system. Your instructor has it on the slides for a reason.
+      </div>
+
       <h2>Clock Speed</h2>
 
       <p>In Chapter 2, we introduced clock speed as the frequency at which a CPU's internal oscillator ticks. Let's unpack what that actually means for performance.</p>
@@ -272,6 +563,104 @@
         <text x="536" y="154" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Four parallel instruction streams</text>
       </svg>
 
+      <h2>Pipelining: The Assembly Line</h2>
+
+      <p>In 1913, Henry Ford transformed automobile manufacturing with the moving assembly line. Instead of one worker building an entire car start to finish, he broke production into discrete stages — engine installation, wheel mounting, body painting — with each worker specializing in one stage. While one car was getting its wheels, the next car was getting its engine, and the one after that was getting its body. Multiple cars in production simultaneously, each at a different stage.</p>
+
+      <p>CPU designers had the same insight decades later. The fetch-decode-execute cycle has distinct stages. Why let a core sit idle during decode when it could already be fetching the next instruction?</p>
+
+      <p><strong>Pipelining</strong> overlaps the execution stages of consecutive instructions. While instruction 2 is being decoded, instruction 3 is being fetched — and instruction 1 is executing. Multiple instructions are in-flight simultaneously, each at a different stage of the pipeline. The individual stages don't get faster, but the throughput — instructions completed per second — increases dramatically.</p>
+
+      <!-- SVG: Pipeline vs sequential execution -->
+      <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="210" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Sequential vs. Pipelined Execution</text>
+
+        <!-- Clock tick labels -->
+        <text x="100" y="38" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">CLOCK</text>
+        <line x1="140" y1="32" x2="660" y2="32" stroke="#EDE9DF" stroke-width="1"/>
+        <!-- Ticks at x=140,200,260,320,380,440,500,560,620 (spacing=60) -->
+        <line x1="140" y1="28" x2="140" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="200" y1="28" x2="200" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="260" y1="28" x2="260" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="320" y1="28" x2="320" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="380" y1="28" x2="380" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="440" y1="28" x2="440" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="500" y1="28" x2="500" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="560" y1="28" x2="560" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <line x1="620" y1="28" x2="620" y2="36" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="140" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">1</text>
+        <text x="200" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">2</text>
+        <text x="260" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">3</text>
+        <text x="320" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">4</text>
+        <text x="380" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">5</text>
+        <text x="440" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">6</text>
+        <text x="500" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">7</text>
+        <text x="560" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">8</text>
+        <text x="620" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#B8B0A4">9</text>
+
+        <!-- SEQUENTIAL (top half) -->
+        <text x="30" y="65" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8A857C">SEQ.</text>
+        <!-- Instr 1: cycles 1-3 (F=140-200, D=200-260, E=260-320) -->
+        <text x="100" y="82" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 1</text>
+        <rect x="140" y="68" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="169" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="200" y="68" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="229" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="260" y="68" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="289" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+        <!-- Instr 2: cycles 4-6 -->
+        <text x="100" y="102" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 2</text>
+        <rect x="320" y="88" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="349" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="380" y="88" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="409" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="440" y="88" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="469" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+        <!-- 9 cycles for 2 instructions label -->
+        <text x="400" y="118" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#C1440E">2 instructions require 6 clock cycles</text>
+
+        <!-- Divider -->
+        <line x1="20" y1="126" x2="660" y2="126" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- PIPELINED (bottom half) -->
+        <text x="30" y="148" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8A857C">PIPE.</text>
+        <!-- Instr 1 -->
+        <text x="100" y="162" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 1</text>
+        <rect x="140" y="148" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="169" y="161" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="200" y="148" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="229" y="161" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="260" y="148" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="289" y="161" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+        <!-- Instr 2 — starts 1 cycle later -->
+        <text x="100" y="182" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 2</text>
+        <rect x="200" y="168" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="229" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="260" y="168" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="289" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="320" y="168" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="349" y="181" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+        <!-- Instr 3 -->
+        <text x="100" y="202" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 3</text>
+        <rect x="260" y="188" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
+        <text x="289" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
+        <rect x="320" y="188" width="58" height="18" rx="3" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1"/>
+        <text x="349" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
+        <rect x="380" y="188" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
+        <text x="409" y="201" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
+
+        <text x="400" y="210" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles — stages overlap</text>
+      </svg>
+
+      <h3>The Problem with Pipelining: Branch Instructions</h3>
+
+      <p>Pipelining works beautifully when instructions run in a straight sequence. But programs are full of <strong>branches</strong> — if/else statements, loops, function calls — where the next instruction depends on a condition that hasn't been evaluated yet. When the pipeline fetches instruction 3 while instruction 1 is still executing, it doesn't yet know whether instruction 1 will result in a branch to a completely different part of the program. If it does, all the prefetched work gets thrown away.</p>
+
+      <p>Modern CPUs address this with <strong>branch prediction</strong>: sophisticated algorithms that guess which way a branch will go before it executes, and speculatively fetch and execute along the predicted path. If the prediction is correct (modern predictors are right over 95% of the time), execution continues without a hiccup. If wrong, the speculative work is discarded and the pipeline restarts — a costly <em>pipeline flush</em>.</p>
+
+      <p>This is one reason why clock speed alone doesn't predict real-world performance. Two chips at the same GHz can have very different throughput depending on pipeline depth, prediction accuracy, and how well the software's branch patterns cooperate with the predictor.</p>
+
       <h2>Cache: The Speed Bridge</h2>
 
       <p>Here's a problem. Modern CPUs can execute instructions at staggering speeds, but they need data and instructions to be fed to them continuously. If a core has to wait for data to arrive from main memory (RAM) every time it needs it, it sits idle — wasting billions of cycles.</p>
@@ -387,6 +776,97 @@
         <strong>Software compatibility matters.</strong> When you choose an ARM-based cloud instance or an Apple Silicon Mac for a software project, you need to confirm that your software stack supports ARM. Most modern software does — but legacy enterprise applications, some Windows software running under emulation, and older virtualization tools sometimes don't. Architecture isn't just a hardware decision; it's a software compatibility decision.
       </div>
 
+      <!-- YouTube embed: RISC vs CISC - David Patterson on Lex Fridman -->
+      <div style="margin:28px 0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border-dark);box-shadow:0 2px 12px rgba(26,24,20,0.08);">
+        <div style="background:var(--ink);padding:10px 16px;display:flex;align-items:center;gap:10px;">
+          <span style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Video</span>
+          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">RISC vs. CISC — David Patterson on the Lex Fridman Podcast</span>
+        </div>
+        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;">
+          <iframe
+            src="https://www.youtube.com/embed/NNgdcn4Ux1k"
+            title="RISC vs CISC — David Patterson on Lex Fridman Podcast"
+            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <div style="padding:10px 16px;background:var(--bg-alt);border-top:1px solid var(--border);">
+          <p style="font-size:0.82rem;color:var(--ink-light);margin:0;font-family:var(--font-body);">David Patterson co-invented RISC architecture and won the Turing Award for it. This clip is a masterclass on the fundamental tradeoff from one of the people who shaped it.</p>
+        </div>
+      </div>
+
+      <!-- SVG: x86 vs ARM comparison table -->
+      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">x86 vs. ARM: The Key Tradeoffs</text>
+
+        <!-- Headers -->
+        <rect x="20"  y="32" width="300" height="24" rx="4" fill="#1D4E7A"/>
+        <rect x="360" y="32" width="300" height="24" rx="4" fill="#1a6b4a"/>
+        <text x="170" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">x86 / x86-64 (CISC)</text>
+        <text x="510" y="48" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="white">ARM (RISC)</text>
+
+        <!-- Rows -->
+        <rect x="20"  y="58" width="300" height="22" fill="#F5F2EB"/>
+        <rect x="360" y="58" width="300" height="22" fill="#F5F2EB"/>
+        <text x="30"  y="73" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Complex instruction set (~1000+ instructions)</text>
+        <text x="370" y="73" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Simple, reduced instruction set (~50 instructions)</text>
+
+        <rect x="20"  y="82" width="300" height="22" fill="#FDFAF4"/>
+        <rect x="360" y="82" width="300" height="22" fill="#FDFAF4"/>
+        <text x="30"  y="97" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Higher power draw / more heat</text>
+        <text x="370" y="97" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Lower power / runs cooler</text>
+
+        <rect x="20"  y="106" width="300" height="22" fill="#F5F2EB"/>
+        <rect x="360" y="106" width="300" height="22" fill="#F5F2EB"/>
+        <text x="30"  y="121" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Intel &amp; AMD (desktops, servers)</text>
+        <text x="370" y="121" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Apple, Qualcomm, AWS Graviton</text>
+
+        <rect x="20"  y="130" width="300" height="22" fill="#FDFAF4"/>
+        <rect x="360" y="130" width="300" height="22" fill="#FDFAF4"/>
+        <text x="30"  y="145" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Legacy: decades of x86 software</text>
+        <text x="370" y="145" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">All smartphones, Apple Silicon, cloud</text>
+
+        <rect x="20"  y="154" width="300" height="22" fill="#F5F2EB"/>
+        <rect x="360" y="154" width="300" height="22" fill="#F5F2EB"/>
+        <text x="30"  y="169" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Dominant in traditional enterprise IT</text>
+        <text x="370" y="169" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">Growing fast in servers and cloud</text>
+
+        <!-- Divider -->
+        <line x1="340" y1="32" x2="340" y2="176" stroke="#D8D2C6" stroke-width="1"/>
+      </svg>
+
+      <div class="note">
+        <strong>Software compatibility matters.</strong> When you choose an ARM-based cloud instance or an Apple Silicon Mac for a software project, you need to confirm that your software stack supports ARM. Most modern software does — but legacy enterprise applications, some Windows software running under emulation, and older virtualization tools sometimes don't. Architecture isn't just a hardware decision; it's a software compatibility decision.
+      </div>
+
+      <h2>Measuring Performance: MIPS, FLOPS, and Benchmarks</h2>
+
+      <p>Clock speed and core count are marketing numbers. They don't tell you how fast a processor will actually run your workload. For that, you need performance metrics — and an understanding of what they do and don't measure.</p>
+
+      <p><strong>MIPS</strong> (Millions of Instructions Per Second) measures how many instructions a processor completes per second. It sounds simple, but it's slippery: not all instructions take the same time, and a RISC chip executing 1,000 simple instructions may accomplish the same work as a CISC chip executing 100 complex ones. MIPS comparisons are only meaningful between chips with the same instruction set.</p>
+
+      <p><strong>FLOPS</strong> (Floating-Point Operations Per Second) measures specifically floating-point arithmetic — the kind used in scientific simulation, 3D graphics, machine learning, and video processing. Modern GPUs are rated in teraFLOPS (trillions of floating-point operations per second) because those workloads are exactly what they're designed for. When a cloud provider advertises a GPU instance for AI training, they'll quote FLOPS.</p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr><th>Metric</th><th>Stands For</th><th>What It Measures</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>MIPS</strong></td><td>Millions of Instructions/sec</td><td>Integer instruction throughput</td><td>General compute comparison (same ISA)</td></tr>
+          <tr><td><strong>MFLOPS</strong></td><td>Millions of Floating-Point ops/sec</td><td>Floating-point throughput</td><td>Scientific, financial, graphics workloads</td></tr>
+          <tr><td><strong>GFLOPS</strong></td><td>Billions of FP ops/sec</td><td>Same, larger scale</td><td>GPU benchmarking, AI inference</td></tr>
+          <tr><td><strong>TFLOPS</strong></td><td>Trillions of FP ops/sec</td><td>Same, larger scale</td><td>AI training, HPC</td></tr>
+        </tbody>
+      </table>
+
+      <p>The most honest measure of CPU performance is a <strong>benchmark</strong> — a standardized test that runs a realistic workload on the processor and measures actual throughput, latency, or both. Benchmarks can be synthetic (a constructed test designed to stress specific components) or real-world (running actual applications). Sites like PassMark, Cinebench, and Geekbench publish benchmark scores for hundreds of CPUs, and they're far more useful than spec sheet numbers when making purchasing decisions.</p>
+
+      <div class="note">
+        <strong>The benchmark trap.</strong> Benchmark scores are only meaningful when workloads match. A CPU that tops the single-threaded benchmark charts is the right choice for a developer workstation. It may be entirely wrong for a virtualization host running 50 concurrent VMs, where per-core performance matters less than total core count and memory bandwidth.
+      </div>
+
       <h2>Reading a CPU Spec Sheet</h2>
 
       <p>Everything in this chapter comes together when you're staring at a CPU specification and need to make a purchasing decision. Let's decode a realistic example.</p>
@@ -467,6 +947,94 @@
 
       <p>The "8P + 8E" notation on this chip's core count reflects a newer design trend: <strong>heterogeneous cores</strong>. Performance cores (P-cores) are large, fast, and power-hungry, designed for demanding tasks. Efficiency cores (E-cores) are smaller and slower but use a fraction of the power, handling background work. The operating system decides which workload goes where. This is now common in both Intel and Apple Silicon designs.</p>
 
+      <h2>Moore's Law and the Future of the CPU</h2>
+
+      <p>In 1965, Gordon Moore — co-founder of Intel — observed that the number of transistors on a chip was doubling approximately every two years, with no increase in cost. This observation, dubbed <strong>Moore's Law</strong>, turned out to be a remarkably accurate prediction for over five decades.</p>
+
+      <p>The implications were staggering. If transistor count doubles every two years at constant cost, then compute power doubles every two years for the same price. The Intel 4004 processor from 1971 had 2,300 transistors. A modern Apple M3 has over 25 billion. That's roughly 11 million times as many transistors in about 50 years — an almost incomprehensible compounding of capability.</p>
+
+      <!-- SVG: Moore's Law transistor count timeline -->
+      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="680" height="200" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Transistor Count Over Time (Moore's Law)</text>
+
+        <!-- Y axis label -->
+        <text x="16" y="110" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C" transform="rotate(-90,16,110)">Transistors (log scale)</text>
+
+        <!-- Axis lines -->
+        <line x1="60" y1="30" x2="60"  y2="160" stroke="#D8D2C6" stroke-width="1"/>
+        <line x1="60" y1="160" x2="660" y2="160" stroke="#D8D2C6" stroke-width="1"/>
+
+        <!-- Y axis labels (log scale approximate positions) -->
+        <text x="54" y="158" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10³</text>
+        <text x="54" y="132" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10⁶</text>
+        <text x="54" y="105" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10⁹</text>
+        <text x="54" y="78"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10¹²</text>
+
+        <!-- Gridlines -->
+        <line x1="60" y1="132" x2="660" y2="132" stroke="#EDE9DF" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="105" x2="660" y2="105" stroke="#EDE9DF" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="60" y1="78"  x2="660" y2="78"  stroke="#EDE9DF" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- X axis years -->
+        <text x="80"  y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">1970</text>
+        <text x="170" y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">1980</text>
+        <text x="260" y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">1990</text>
+        <text x="350" y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">2000</text>
+        <text x="440" y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">2010</text>
+        <text x="530" y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">2020</text>
+        <text x="620" y="173" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">2025</text>
+
+        <!-- Trend line (approximate exponential curve on log scale = straight line) -->
+        <line x1="80" y1="155" x2="620" y2="48" stroke="#D8D2C6" stroke-width="1.5" stroke-dasharray="6,3"/>
+
+        <!-- Data points (x = year mapped to 80-620, y = log-scaled transistor count mapped to 30-160) -->
+        <!-- Intel 4004 1971: 2,300 ~log=3.36 → y≈155 -->
+        <circle cx="84"  cy="155" r="4" fill="#1D4E7A"/>
+        <text x="90"  cy="155" y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">4004 (2.3K)</text>
+
+        <!-- Intel 8086 1978: 29,000 ~log=4.46 → y≈143 -->
+        <circle cx="150" cy="144" r="4" fill="#1D4E7A"/>
+
+        <!-- Intel 286 1982: 134K → y≈138 -->
+        <circle cx="186" cy="138" r="4" fill="#1D4E7A"/>
+
+        <!-- Pentium 1993: 3.1M → y≈125 -->
+        <circle cx="276" cy="126" r="4" fill="#1D4E7A"/>
+        <text x="282" y="123" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Pentium (3.1M)</text>
+
+        <!-- Pentium 4 2000: 42M → y≈114 -->
+        <circle cx="348" cy="115" r="4" fill="#1a6b4a"/>
+
+        <!-- Core 2 Duo 2006: 291M → y≈106 -->
+        <circle cx="402" cy="107" r="4" fill="#1a6b4a"/>
+
+        <!-- Sandy Bridge 2011: 1.16B → y≈97 -->
+        <circle cx="456" cy="98"  r="4" fill="#1a6b4a"/>
+        <text x="462" y="96" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Sandy Bridge (1.16B)</text>
+
+        <!-- Skylake 2015: 1.75B → y≈94 -->
+        <circle cx="492" cy="94"  r="4" fill="#C1440E"/>
+
+        <!-- Apple M1 2020: 16B → y≈80 -->
+        <circle cx="534" cy="80"  r="4" fill="#C1440E"/>
+        <text x="540" y="77" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">Apple M1 (16B)</text>
+
+        <!-- Apple M3 2023: 25B → y≈75 -->
+        <circle cx="570" cy="72"  r="5" fill="#C1440E"/>
+        <text x="576" y="70" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#C1440E" font-weight="700">M3 (25B)</text>
+
+        <text x="340" y="190" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Each step up the y-axis represents a 1,000× increase in transistor count.</text>
+      </svg>
+
+      <p>Moore's Law has two important companions. <strong>Rock's Law</strong> (named for Arthur Rock, an early Intel investor) observes that the cost of a chip fabrication facility doubles roughly every four years. A state-of-the-art fab today costs over $20 billion to build — so much that only a handful of companies in the world (TSMC, Samsung, Intel) can afford to operate them.</p>
+
+      <p>And Moore's Law itself is slowing. At 3–5 nanometer transistor sizes, we're approaching physical limits — transistors so small that quantum effects like electron tunneling cause unpredictable behavior. The doubling cadence has stretched from every 2 years to every 3–4 years. The industry has compensated with architectural innovations (better pipelines, heterogeneous cores, chiplets) and by expanding into 3D stacking — building transistor layers vertically rather than packing them tighter horizontally. But the era of "just shrink the transistor and double the performance" is largely over.</p>
+
+      <div class="note">
+        <strong>Why this matters for IT.</strong> For most of computing history, you could wait two years and buy a dramatically faster machine for the same price. That era is winding down. Hardware procurement decisions now require more careful thought — you can't always count on next year's hardware solving this year's performance problem at the same cost point.
+      </div>
+
       <!-- ── Practice Problems ── -->
       <div class="practice-block">
         <div class="practice-header">
@@ -486,69 +1054,102 @@
         </div>
 
         <div class="quiz-question" id="q2">
-          <div class="q-text">2. Which component of the CPU performs mathematical and logical operations?</div>
+          <div class="q-text">2. An instruction has two components: an opcode and operands. What does the opcode specify?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Control Unit</button>
-            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> Arithmetic Logic Unit (ALU)</button>
-            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> Registers</button>
-            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Cache</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">A</span> What operation to perform (e.g., ADD, LOAD, JMP)</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> Where the result should be stored in memory</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> The data values to be processed</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> How many clock cycles the instruction will take</button>
           </div>
           <div class="mc-feedback" id="q2-feedback"></div>
         </div>
 
         <div class="quiz-question" id="q3">
-          <div class="q-text">3. Why did CPU manufacturers stop simply increasing clock speed to improve performance around 2004?</div>
+          <div class="q-text">3. An AND gate has two inputs. Under what condition does it output a 1?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Software stopped being able to use faster clock speeds.</button>
-            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> The cost of manufacturing faster chips became prohibitive.</button>
-            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">C</span> Higher clock speeds generate too much heat, making chips unreliable or dangerous.</button>
-            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Clock speed improvements stopped providing any performance gains.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> When at least one input is 1</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">B</span> Only when both inputs are 1</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> When both inputs are 0</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> When the inputs are different</button>
           </div>
           <div class="mc-feedback" id="q3-feedback"></div>
         </div>
 
         <div class="quiz-question" id="q4">
-          <div class="q-text">4. A database server handles thousands of simultaneous user queries. Which processor configuration would serve it better?</div>
+          <div class="q-text">4. A half adder is built from which two gates?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> A single-core processor with the highest possible clock speed.</button>
-            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">B</span> A many-core processor, since concurrent queries can be handled in parallel.</button>
-            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> The total number of cores and clock speed don't matter — only cache size does.</button>
-            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> ARM processors only, since x86 doesn't support multi-threaded workloads.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> NOT and OR</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> AND and OR</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> XOR and AND</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> XOR and OR</button>
           </div>
           <div class="mc-feedback" id="q4-feedback"></div>
         </div>
 
         <div class="quiz-question" id="q5">
-          <div class="q-text">5. In the memory hierarchy, which level of cache is the fastest?</div>
+          <div class="q-text">5. Pipelining borrows its core idea from which historical analogy?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">A</span> L1 — smallest and closest to the CPU core</button>
-            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> L2 — a good middle ground between speed and size</button>
-            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> L3 — largest, so it holds the most data ready to use</button>
-            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> RAM — it's closest to the operating system</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> A relay race, where one runner hands off to the next</button>
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">B</span> Henry Ford's assembly line, where multiple stages proceed simultaneously</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> A library system, where books are fetched in alphabetical order</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> A telephone switchboard, where calls are routed to different operators</button>
           </div>
           <div class="mc-feedback" id="q5-feedback"></div>
         </div>
 
         <div class="quiz-question" id="q6">
-          <div class="q-text">6. What is the key architectural difference between x86 and ARM processors?</div>
+          <div class="q-text">6. Why did CPU manufacturers stop simply increasing clock speed to improve performance around 2004?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> x86 processors use binary; ARM processors use a different number system.</button>
-            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> ARM processors are always faster than x86 processors.</button>
-            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> x86 uses a complex instruction set (CISC) and is more power-hungry; ARM uses a reduced set (RISC) and is more power-efficient.</button>
-            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> x86 is for consumer devices; ARM is exclusively for enterprise servers.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Software stopped being able to use faster clock speeds.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> The cost of manufacturing faster chips became prohibitive.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> Higher clock speeds generate too much heat, making chips unreliable.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> Clock speed improvements stopped providing any performance gains.</button>
           </div>
           <div class="mc-feedback" id="q6-feedback"></div>
         </div>
 
         <div class="quiz-question" id="q7">
-          <div class="q-text">7. A CPU spec lists a base clock of 3.4 GHz and a boost clock of 5.4 GHz. Under what conditions would the chip run at 5.4 GHz?</div>
+          <div class="q-text">7. In the memory hierarchy, which level of cache is the fastest?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> Always — 5.4 GHz is its normal operating speed.</button>
-            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> Only when running ARM-compiled software.</button>
-            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">C</span> In short bursts when the chip is cool enough — it throttles back if temperatures rise too high.</button>
-            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> Only when liquid cooling is installed.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">A</span> L1 — smallest and closest to the CPU core</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> L2 — a good middle ground between speed and size</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> L3 — largest, so it holds the most data ready to use</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> RAM — it's closest to the operating system</button>
           </div>
           <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. What is the key architectural difference between x86 (CISC) and ARM (RISC)?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> x86 uses binary; ARM uses a different number system.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> ARM processors are always faster than x86.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> x86 has a large, complex instruction set and higher power draw; ARM has a small, simple set and is more power-efficient.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> x86 is only for consumer devices; ARM is exclusively for enterprise servers.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="q-text">9. Moore's Law predicts that transistor count on a chip doubles roughly every:</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> 6 months</button>
+            <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">B</span> 2 years</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">C</span> 10 years</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> 18 months, with a 50% cost reduction each time</button>
+          </div>
+          <div class="mc-feedback" id="q9-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="q-text">10. A CPU spec lists a base clock of 3.4 GHz and a boost clock of 5.4 GHz. Under what conditions would the chip run at 5.4 GHz?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> Always — 5.4 GHz is its normal operating speed.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> Only when running ARM-compiled software.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> In short bursts when the chip is cool enough — it throttles back if temperatures rise.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> Only when liquid cooling is installed.</button>
+          </div>
+          <div class="mc-feedback" id="q10-feedback"></div>
         </div>
 
       </div>
