@@ -75,7 +75,11 @@
 
       <p>That's it. Fetch, decode, execute. Every app you've ever used, every website you've ever visited, every video you've ever streamed — all of it reduced to this three-step loop, executing billions of times per second.</p>
 
+      <p>Let's make this concrete. The widget below takes a real three-line Python program, shows the four assembly instructions the CPU actually executes, and lets you step through each stage one at a time. Watch the registers and memory update as the program runs.</p>
+
       <div data-widget="fde-cycle"></div>
+
+      <p>Notice what happened: the Python variable <code>a</code> doesn't exist as far as the CPU is concerned — there are only memory addresses. <code>a = 5</code> means "store the value 5 at address <span class="hex">0x10</span>." <code>c = a + b</code> compiles into two instructions: an ADD that puts the result in a register, and a STORE that writes that register's value to memory. The program counter advanced from <span class="hex">0x00</span> to <span class="hex">0x04</span> — one address per instruction. That's the machine's perspective on your code.</p>
 
       <h2>Inside the CPU</h2>
 
