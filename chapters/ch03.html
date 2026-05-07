@@ -276,50 +276,8 @@
 
       <p>This system is <strong>RGB</strong>. Each channel — Red, Green, Blue — gets one byte: a value from <span class="dec">0</span> (off) to <span class="dec">255</span> (full brightness). Three bytes per pixel, 24 bits total.</p>
 
-      <!-- SVG: RGB pixel anatomy -->
-      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <rect width="680" height="200" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="340" y="26" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">Anatomy of One RGB Pixel</text>
-
-        <!-- Big color swatch -->
-        <rect x="30" y="44" width="80" height="80" rx="6" fill="rgb(193,68,14)" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="70" y="142" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">1 pixel</text>
-        <text x="70" y="153" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">3 bytes</text>
-
-        <!-- Arrow -->
-        <line x1="112" y1="84" x2="148" y2="84" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr)"/>
-        <defs>
-          <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 z" fill="#B8B0A4"/>
-          </marker>
-        </defs>
-
-        <!-- Three channel boxes -->
-        <!-- Red -->
-        <rect x="152" y="50" width="140" height="68" rx="6" fill="#fdf0f0" stroke="#c0392b" stroke-width="1.5"/>
-        <text x="222" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#c0392b">RED</text>
-        <text x="222" y="88" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="18" font-weight="700" fill="#c0392b">193</text>
-        <text x="222" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#c0392b">11000001</text>
-
-        <!-- Green -->
-        <rect x="304" y="50" width="140" height="68" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
-        <text x="374" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">GREEN</text>
-        <text x="374" y="88" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="18" font-weight="700" fill="#1a6b4a">68</text>
-        <text x="374" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1a6b4a">01000100</text>
-
-        <!-- Blue -->
-        <rect x="456" y="50" width="140" height="68" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
-        <text x="526" y="70" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">BLUE</text>
-        <text x="526" y="88" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="18" font-weight="700" fill="#1D4E7A">14</text>
-        <text x="526" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">00001110</text>
-
-        <!-- Hex result -->
-        <text x="340" y="152" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4A4640">Hex color code:</text>
-        <rect x="280" y="158" width="120" height="24" rx="4" fill="#1A1814"/>
-        <text x="340" y="175" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#C1440E">#C1440E</text>
-
-        <text x="340" y="194" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">This textbook's orange. Three bytes. 24 bits. One color.</text>
-      </svg>
+      <!-- RGB Mixer Widget -->
+      <div data-widget="rgb-mixer"></div>
 
       <div class="definition">
         <div class="def-term">RGB Color Model</div>
@@ -354,7 +312,7 @@
 
       <p>A = <span class="dec">10</span>. B = <span class="dec">11</span>. C = <span class="dec">12</span>. D = <span class="dec">13</span>. E = <span class="dec">14</span>. F = <span class="dec">15</span>. After F, you've exhausted all sixteen digits and need a new place — exactly like decimal rolls over after 9, or binary rolls over after 1. In hex, you roll over after F.</p>
 
-      <p>So counting in hex goes: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F, <span class="hex">10</span>, <span class="hex">11</span> ... <span class="hex">19</span>, <span class="hex">1A</span>, <span class="hex">1B</span> ... <span class="hex">1F</span>, <span class="hex">20</span> ...</p>
+      <p>So counting in hex goes: <span class="hex">0</span>, <span class="hex">1</span>, <span class="hex">2</span>, <span class="hex">3</span>, <span class="hex">4</span>, <span class="hex">5</span>, <span class="hex">6</span>, <span class="hex">7</span>, <span class="hex">8</span>, <span class="hex">9</span>, <span class="hex">A</span>, <span class="hex">B</span>, <span class="hex">C</span>, <span class="hex">D</span>, <span class="hex">E</span>, <span class="hex">F</span>, <span class="hex">10</span>, <span class="hex">11</span> ... <span class="hex">19</span>, <span class="hex">1A</span>, <span class="hex">1B</span> ... <span class="hex">1F</span>, <span class="hex">20</span> ...</p>
 
       <p>Place values in hex are powers of 16. The ones place is 16⁰ = <span class="dec">1</span>. The sixteens place is 16¹ = <span class="dec">16</span>. The two-fifty-sixes place is 16² = <span class="dec">256</span>.</p>
 
@@ -566,6 +524,7 @@
 <script src="../js/main.js"></script>
 <script src="../widgets/bitmap-explorer.js"></script>
 <script src="../widgets/byte-inspector.js"></script>
+<script src="../widgets/rgb-mixer.js"></script>
 
 <script>
   function checkText(id, accepted, successMsg, hintMsg) {
