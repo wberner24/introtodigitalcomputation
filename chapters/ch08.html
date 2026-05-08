@@ -118,6 +118,81 @@
         </tbody>
       </table>
 
+      <h2>Open Source vs. Closed Source</h2>
+
+      <p>One of the most meaningful distinctions in the OS table above isn't feature sets or market share — it's <em>who owns the code</em>. Windows and macOS are <strong>closed source</strong> (proprietary): the source code is private, owned by the vendor, and users receive only the compiled software. Linux is <strong>open source</strong>: the source code is publicly available, and anyone is free to read it, modify it, and distribute their own version under the terms of its license.</p>
+
+      <p>Open source does not mean free of charge. Red Hat Enterprise Linux, for example, is open source but sold with paid support contracts worth thousands of dollars per server per year. The important freedoms are access to the code and the right to modify it — not the price tag. The phrase often used is <em>"free as in freedom, not necessarily free as in beer."</em></p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Open Source</th>
+            <th>Closed Source (Proprietary)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Source code</td>
+            <td>Publicly available; auditable by anyone</td>
+            <td>Private; owned and controlled by the vendor</td>
+          </tr>
+          <tr>
+            <td>Cost</td>
+            <td>Often free; support contracts optional</td>
+            <td>License fees required; often per device or per user</td>
+          </tr>
+          <tr>
+            <td>Customization</td>
+            <td>Can be modified to fit any need</td>
+            <td>Limited to what the vendor provides</td>
+          </tr>
+          <tr>
+            <td>Vendor dependency</td>
+            <td>No single vendor; alternatives exist</td>
+            <td>Dependent on vendor roadmap, pricing, and continuity</td>
+          </tr>
+          <tr>
+            <td>Support</td>
+            <td>Community forums + optional paid support</td>
+            <td>Dedicated vendor support with SLAs</td>
+          </tr>
+          <tr>
+            <td>Security model</td>
+            <td>Code is publicly auditable; vulnerabilities can be found by anyone</td>
+            <td>Vendor controls patches; internal auditing only</td>
+          </tr>
+          <tr>
+            <td>Examples</td>
+            <td>Linux, Apache, MySQL, Python, Firefox</td>
+            <td>Windows, macOS, Oracle DB, Microsoft 365</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>From a business perspective, neither model is universally better — the right choice depends on the organization's priorities, technical capacity, and existing infrastructure.</p>
+
+      <p><strong>Organizations tend to choose open source when:</strong></p>
+      <ul>
+        <li><strong>Cost at scale is a concern.</strong> Deploying 500 Linux servers carries no per-seat license cost. The same deployment on Windows Server can run into hundreds of thousands of dollars in licensing alone.</li>
+        <li><strong>Customization is required.</strong> If the software doesn't do exactly what the business needs, an open source codebase can be forked and modified. A proprietary vendor's answer is "wait for the next release" — or "pay for a custom feature."</li>
+        <li><strong>Avoiding vendor lock-in is a priority.</strong> If a proprietary vendor raises prices, discontinues a product, or goes out of business, migrating away can be enormously disruptive. Open source alternatives ensure there is always an escape route.</li>
+        <li><strong>Security auditability matters.</strong> In regulated industries, some organizations need to verify what their software actually does. With open source, the code can be reviewed line by line.</li>
+      </ul>
+
+      <p><strong>Organizations tend to choose closed source when:</strong></p>
+      <ul>
+        <li><strong>Dedicated support and accountability are required.</strong> Open source software typically comes with no warranty and no SLA. If something breaks at 2 a.m., a paid vendor contract means there is someone contractually obligated to help fix it. For mission-critical systems, that accountability has real value.</li>
+        <li><strong>Ecosystem integration simplifies operations.</strong> A business already running Microsoft 365, Azure Active Directory, and Teams may find that Windows Server integrates far more smoothly than Linux alternatives — reducing IT labor even if licensing costs are higher.</li>
+        <li><strong>Regulatory compliance specifies vendor-supported software.</strong> Some industries (healthcare, finance, government) have compliance frameworks that require software to be on a vendor's official support lifecycle. Running an unsupported or community-maintained OS may not pass an audit.</li>
+        <li><strong>Internal technical capacity is limited.</strong> Open source flexibility comes with the expectation that someone on staff can configure, maintain, and troubleshoot it. Smaller organizations without dedicated Linux administrators may find that a managed, vendor-supported product reduces total operational cost even if the license fee is higher.</li>
+      </ul>
+
+      <div class="note">
+        <strong>In practice, most organizations use both.</strong> A company might run Linux on all its web servers (cost, scale, flexibility), Windows on employee desktops (support, integration, familiarity), an open source database like PostgreSQL for applications (cost, customization), and a proprietary ERP system (vendor support, compliance). The decision is made service by service, not once for the whole organization.
+      </div>
+
       <h2>Why Linux?</h2>
 
       <p>The desktop market share numbers above might make Linux look like a niche curiosity. That picture completely inverts the moment you look beyond personal computers:</p>
