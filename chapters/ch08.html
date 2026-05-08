@@ -212,8 +212,8 @@
       <p>Every operating system has a core component called the <strong>kernel</strong>. The kernel runs in a privileged execution mode called <em>kernel space</em>, with direct access to hardware. All other software — your browser, your shell, your scripts — runs in <em>user space</em>, with restricted hardware access. The boundary between them is enforced by the CPU itself.</p>
 
       <!-- SVG: Kernel / User Space Boundary -->
-      <svg viewBox="0 0 580 228" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:580px;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
-        <rect width="580" height="228" fill="#FDFAF4"/>
+      <svg viewBox="0 0 580 242" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:580px;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="580" height="242" fill="#FDFAF4"/>
 
         <!-- User Space band -->
         <rect x="10" y="8" width="560" height="86" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
@@ -258,7 +258,7 @@
         <text x="290" y="206" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="700" fill="#F5F2EB">HARDWARE — CPU · RAM · Storage · Network Card</text>
 
         <!-- Caption -->
-        <text x="290" y="222" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">User-space processes request hardware access via system calls. The kernel executes the request and returns the result.</text>
+        <text x="290" y="236" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">User-space processes request hardware access via system calls. The kernel executes the request and returns the result.</text>
       </svg>
 
       <p>When a user-space application needs hardware access — reading a file, sending data over the network, drawing to the screen — it makes a <strong>system call</strong>: a controlled handoff from user space to kernel space. The kernel executes the request with full hardware access, then returns the result to the application. The application never directly touches hardware; it always goes through the kernel.</p>
@@ -373,7 +373,7 @@
 
       <div class="widget-card" data-widget-name="Interactive">
         <div class="widget-title">Linux Shell Simulator</div>
-        <div class="widget-desc">A virtual Linux shell with a pre-populated filesystem. Commands execute against an in-browser filesystem — nothing runs on a real server.</div>
+        <div class="widget-desc">A virtual Linux shell with a pre-populated filesystem.</div>
         <div data-widget="shell-sim"></div>
       </div>
 
