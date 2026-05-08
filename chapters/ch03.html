@@ -198,49 +198,55 @@
       <p>And yes: emoji are Unicode characters. Every emoji you've ever sent has a Unicode code point, which means it has a number, which means it has a binary representation. Your 😂 is, at the machine level, just another pattern of bits.</p>
 
       <!-- SVG: Emoji Unicode diagram -->
-      <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
-        <rect width="680" height="230" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="340" y="26" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">Emoji as Unicode Code Points</text>
-        <text x="340" y="44" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#8A857C">Every emoji has a unique number. Every number becomes binary. Same system as "A" = 65.</text>
+      <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="760" height="230" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <text x="380" y="26" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">Emoji as Unicode Code Points</text>
+        <text x="380" y="44" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#8A857C">Every emoji has a unique number. Every number becomes binary. Same system as "A" = 65.</text>
 
-        <!-- Column headers -->
-        <text x="60"  y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">EMOJI</text>
-        <text x="180" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">NAME</text>
-        <text x="355" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">CODE POINT</text>
-        <text x="530" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">DECIMAL</text>
+        <!-- Column headers: EMOJI | NAME | CODE POINT | DECIMAL | BINARY -->
+        <!-- x centers:      50     170    310          430       590      -->
+        <text x="50"  y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">EMOJI</text>
+        <text x="170" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">NAME</text>
+        <text x="310" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">CODE POINT</text>
+        <text x="425" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#4A4640">DECIMAL</text>
+        <text x="600" y="68" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">BINARY</text>
 
-        <line x1="20" y1="72" x2="660" y2="72" stroke="#D8D2C6" stroke-width="1"/>
+        <line x1="20" y1="72" x2="740" y2="72" stroke="#D8D2C6" stroke-width="1"/>
 
-        <!-- Row 1: 😂 -->
-        <rect x="20" y="74" width="640" height="32" fill="#F5F2EB"/>
-        <text x="60"  y="95" text-anchor="middle" font-size="18">😂</text>
-        <text x="190" y="95" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Face with Tears of Joy</text>
-        <text x="355" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F602</text>
-        <text x="530" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128514</text>
+        <!-- Row 1: 😂  U+1F602 = 128514 = 0001_1111_0110_0000_0010 -->
+        <rect x="20" y="74" width="720" height="32" fill="#F5F2EB"/>
+        <text x="50"  y="95" text-anchor="middle" font-size="18">😂</text>
+        <text x="170" y="95" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Face with Tears of Joy</text>
+        <text x="310" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F602</text>
+        <text x="425" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128514</text>
+        <text x="600" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">1 1111 0110 0000 0010</text>
 
-        <!-- Row 2: ❤️ -->
-        <rect x="20" y="106" width="640" height="32" fill="#FDFAF4"/>
-        <text x="60"  y="127" text-anchor="middle" font-size="18">❤️</text>
-        <text x="190" y="127" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Red Heart</text>
-        <text x="355" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+2764</text>
-        <text x="530" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">10084</text>
+        <!-- Row 2: ❤️  U+2764 = 10084 = 10_0111_0110_0100 -->
+        <rect x="20" y="106" width="720" height="32" fill="#FDFAF4"/>
+        <text x="50"  y="127" text-anchor="middle" font-size="18">❤️</text>
+        <text x="170" y="127" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Red Heart</text>
+        <text x="310" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+2764</text>
+        <text x="425" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">10084</text>
+        <text x="600" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">10 0111 0110 0100</text>
 
-        <!-- Row 3: 🔥 -->
-        <rect x="20" y="138" width="640" height="32" fill="#F5F2EB"/>
-        <text x="60"  y="159" text-anchor="middle" font-size="18">🔥</text>
-        <text x="190" y="159" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Fire</text>
-        <text x="355" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F525</text>
-        <text x="530" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128293</text>
+        <!-- Row 3: 🔥  U+1F525 = 128293 = 1_1111_0101_0010_0101 -->
+        <rect x="20" y="138" width="720" height="32" fill="#F5F2EB"/>
+        <text x="50"  y="159" text-anchor="middle" font-size="18">🔥</text>
+        <text x="170" y="159" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Fire</text>
+        <text x="310" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F525</text>
+        <text x="425" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128293</text>
+        <text x="600" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">1 1111 0101 0010 0101</text>
 
-        <!-- Row 4: 👍 -->
-        <rect x="20" y="170" width="640" height="32" fill="#FDFAF4"/>
-        <text x="60"  y="191" text-anchor="middle" font-size="18">👍</text>
-        <text x="190" y="191" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Thumbs Up</text>
-        <text x="355" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F44D</text>
-        <text x="530" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128077</text>
+        <!-- Row 4: 👍  U+1F44D = 128077 = 1_1111_0100_0100_1101 -->
+        <rect x="20" y="170" width="720" height="32" fill="#FDFAF4"/>
+        <text x="50"  y="191" text-anchor="middle" font-size="18">👍</text>
+        <text x="170" y="191" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Thumbs Up</text>
+        <text x="310" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F44D</text>
+        <text x="425" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128077</text>
+        <text x="600" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">1 1111 0100 0100 1101</text>
 
-        <line x1="20" y1="202" x2="660" y2="202" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="340" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">U+ notation means "Unicode code point." The number after it is the decimal value. It all becomes binary in memory.</text>
+        <line x1="20" y1="202" x2="740" y2="202" stroke="#D8D2C6" stroke-width="1"/>
+        <text x="380" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">U+ notation means "Unicode code point." Binary shown as raw code point value, grouped in 4-bit nibbles.</text>
       </svg>
 
       <p>Unicode code points are written in a notation like <span class="uni">U+1F602</span>. That <span class="uni">1F602</span> is a hexadecimal number (more on hex shortly) — in decimal it's <span class="dec">128,514</span>. In binary it's a 17-bit number. Your phone stores that entire bit pattern every time you type 😂.</p>
