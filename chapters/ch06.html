@@ -139,6 +139,20 @@
         <strong>PCIe is backward compatible.</strong> A PCIe 4.0 SSD in a PCIe 3.0 slot will run at PCIe 3.0 speeds — still fully functional, just not at full rated speed. Mixing generations is common and safe. When building or upgrading a system, don't worry about mismatch causing damage; the devices will negotiate the highest speed both sides support.
       </div>
 
+      <div class="video-wrap">
+        <div class="video-header">
+          <span class="video-label">Video</span>
+          <span class="video-title">Do You Need More PCIe Lanes? — Linus Tech Tips</span>
+        </div>
+        <div class="video-frame">
+          <iframe src="https://www.youtube.com/embed/8zBkmrYpEx8"
+                  title="Do You Need More PCIe Lanes? — Linus Tech Tips"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+        </div>
+        <div class="video-caption">A practical walkthrough of how PCIe lanes are allocated across a real platform — GPU, NVMe, and chipset lanes included. Reinforces the lane count and chipset concepts from this section.</div>
+      </div>
+
       <h2>The Chipset</h2>
 
       <p>The CPU can't have unlimited PCIe lanes running directly to every device — each lane requires physical circuitry on the processor die, and die area is expensive and thermally constrained. The solution is the <strong>chipset</strong> — a separate chip on the motherboard that handles the connections that don't need the CPU's direct, maximum-bandwidth attention. On Intel platforms this chip is called the PCH, or Platform Controller Hub.</p>
