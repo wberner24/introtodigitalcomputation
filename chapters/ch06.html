@@ -89,6 +89,118 @@
 
       <p><strong>Serial</strong> transmission sends bits one at a time over a single pair of wires. This sounds slower — one bit at a time instead of 32 — but without the cross-wire interference problem, serial links can run at far higher frequencies. A serial link running at 16 GHz delivers 2 GB/s over just two wires. Multiply that by multiple lanes and you can beat a wide parallel bus while using far fewer physical connections and spending far less effort keeping signals clean.</p>
 
+      <svg viewBox="0 0 620 258" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:620px;margin:20px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <!-- Panel backgrounds -->
+        <rect x="0" y="0" width="310" height="258" fill="#F6F4F1"/>
+        <rect x="310" y="0" width="310" height="258" fill="#EEF3F8"/>
+        <line x1="310" y1="0" x2="310" y2="258" stroke="#D4CFC9" stroke-width="1"/>
+
+        <!-- === LEFT: PARALLEL === -->
+        <text x="155" y="21" text-anchor="middle" font-size="13" font-weight="700" fill="#1D4E7A">Parallel</text>
+        <text x="155" y="35" text-anchor="middle" font-size="9.5" fill="#5A5248">all 8 bits sent simultaneously</text>
+
+        <!-- Sender box -->
+        <rect x="12" y="50" width="40" height="130" fill="#DCE9F5" stroke="#1D4E7A" stroke-width="1.5" rx="3"/>
+        <text x="32" y="115" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="600" fill="#1D4E7A" transform="rotate(-90 32 115)">Sender</text>
+
+        <!-- Receiver box -->
+        <rect x="253" y="50" width="44" height="130" fill="#DFF0E8" stroke="#2E6B4F" stroke-width="1.5" rx="3"/>
+        <text x="275" y="115" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="600" fill="#2E6B4F" transform="rotate(-90 275 115)">Receiver</text>
+
+        <!-- 8 wires (bits: 1 0 1 1 0 1 0 0, top to bottom) -->
+        <!-- y positions: 63, 76, 89, 102, 115, 128, 141, 154 -->
+        <!-- bit 1 = 1 -->
+        <line x1="52" y1="63" x2="253" y2="63" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="57" y="67" font-size="7.5" fill="#1D4E7A" font-weight="700">1</text>
+        <!-- bit 2 = 0 -->
+        <line x1="52" y1="76" x2="253" y2="76" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="57" y="80" font-size="7.5" fill="#B8B0A4">0</text>
+        <!-- bit 3 = 1 -->
+        <line x1="52" y1="89" x2="253" y2="89" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="57" y="93" font-size="7.5" fill="#1D4E7A" font-weight="700">1</text>
+        <!-- bit 4 = 1 -->
+        <line x1="52" y1="102" x2="253" y2="102" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="57" y="106" font-size="7.5" fill="#1D4E7A" font-weight="700">1</text>
+        <!-- bit 5 = 0 -->
+        <line x1="52" y1="115" x2="253" y2="115" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="57" y="119" font-size="7.5" fill="#B8B0A4">0</text>
+        <!-- bit 6 = 1 -->
+        <line x1="52" y1="128" x2="253" y2="128" stroke="#1D4E7A" stroke-width="2"/>
+        <text x="57" y="132" font-size="7.5" fill="#1D4E7A" font-weight="700">1</text>
+        <!-- bit 7 = 0 -->
+        <line x1="52" y1="141" x2="253" y2="141" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="57" y="145" font-size="7.5" fill="#B8B0A4">0</text>
+        <!-- bit 8 = 0 -->
+        <line x1="52" y1="154" x2="253" y2="154" stroke="#B8B0A4" stroke-width="1.5"/>
+        <text x="57" y="158" font-size="7.5" fill="#B8B0A4">0</text>
+
+        <!-- Crosstalk lightning bolt between wires 4 (y=102) and 5 (y=115) -->
+        <path d="M148,100 L156,108 L148,110 L156,118" stroke="#C1440E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="161" y="108" font-size="8" fill="#C1440E" font-weight="600">crosstalk</text>
+        <!-- Arrow pointing to bolt -->
+        <line x1="158" y1="107" x2="163" y2="107" stroke="#C1440E" stroke-width="1"/>
+
+        <!-- Wire count -->
+        <text x="152" y="178" text-anchor="middle" font-size="9" font-weight="600" fill="#444">8 wires → 8 bits per clock cycle</text>
+
+        <!-- Downsides -->
+        <text x="14" y="198" font-size="8.5" fill="#8C3009">&#x2717; crosstalk between adjacent wires</text>
+        <text x="14" y="213" font-size="8.5" fill="#8C3009">&#x2717; skew: signals arrive at different times</text>
+        <text x="14" y="228" font-size="8.5" fill="#8C3009">&#x2717; frequency ceiling ~1–2 GHz in practice</text>
+
+        <!-- === RIGHT: SERIAL === -->
+        <text x="465" y="21" text-anchor="middle" font-size="13" font-weight="700" fill="#2E6B4F">Serial</text>
+        <text x="465" y="35" text-anchor="middle" font-size="9.5" fill="#5A5248">one bit at a time, 8 clock cycles</text>
+
+        <!-- Sender box -->
+        <rect x="318" y="84" width="40" height="60" fill="#DCE9F5" stroke="#1D4E7A" stroke-width="1.5" rx="3"/>
+        <text x="338" y="114" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="600" fill="#1D4E7A" transform="rotate(-90 338 114)">Sender</text>
+
+        <!-- Receiver box -->
+        <rect x="560" y="84" width="40" height="60" fill="#DFF0E8" stroke="#2E6B4F" stroke-width="1.5" rx="3"/>
+        <text x="580" y="114" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="600" fill="#2E6B4F" transform="rotate(-90 580 114)">Receiver</text>
+
+        <!-- Waveform background (x=358 to x=560, 202px wide, 8 cycles = 25.25px each) -->
+        <rect x="358" y="97" width="202" height="40" fill="white" stroke="#C8C4BE" stroke-width="1" rx="2"/>
+
+        <!-- Clock dividers at each 25.25px interval: ~383, 409, 434, 460, 485, 511, 535 -->
+        <line x1="383" y1="97" x2="383" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+        <line x1="409" y1="97" x2="409" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+        <line x1="434" y1="97" x2="434" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+        <line x1="460" y1="97" x2="460" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+        <line x1="485" y1="97" x2="485" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+        <line x1="511" y1="97" x2="511" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+        <line x1="535" y1="97" x2="535" y2="137" stroke="#D4CFC9" stroke-width="0.75" stroke-dasharray="2,2"/>
+
+        <!-- Waveform: bits 1,0,1,1,0,1,0,0 — HIGH=y=103, LOW=y=131 -->
+        <path d="M358,103 H383 V131 H409 V103 H434 H460 V131 H485 V103 H511 V131 H535 H560" stroke="#1D4E7A" stroke-width="2" fill="none" stroke-linejoin="square"/>
+
+        <!-- Bit labels below waveform -->
+        <text x="370" y="150" text-anchor="middle" font-size="8" fill="#1D4E7A" font-weight="700">1</text>
+        <text x="396" y="150" text-anchor="middle" font-size="8" fill="#B8B0A4">0</text>
+        <text x="421" y="150" text-anchor="middle" font-size="8" fill="#1D4E7A" font-weight="700">1</text>
+        <text x="447" y="150" text-anchor="middle" font-size="8" fill="#1D4E7A" font-weight="700">1</text>
+        <text x="472" y="150" text-anchor="middle" font-size="8" fill="#B8B0A4">0</text>
+        <text x="498" y="150" text-anchor="middle" font-size="8" fill="#1D4E7A" font-weight="700">1</text>
+        <text x="523" y="150" text-anchor="middle" font-size="8" fill="#B8B0A4">0</text>
+        <text x="547" y="150" text-anchor="middle" font-size="8" fill="#B8B0A4">0</text>
+
+        <!-- "1 cycle" bracket under first bit -->
+        <line x1="358" y1="156" x2="383" y2="156" stroke="#5A5248" stroke-width="1"/>
+        <line x1="358" y1="153" x2="358" y2="159" stroke="#5A5248" stroke-width="1"/>
+        <line x1="383" y1="153" x2="383" y2="159" stroke="#5A5248" stroke-width="1"/>
+        <text x="370" y="168" text-anchor="middle" font-size="7.5" fill="#5A5248">1 cycle</text>
+
+        <!-- Wire count -->
+        <text x="465" y="182" text-anchor="middle" font-size="9" font-weight="600" fill="#444">1 wire pair → 8 bits over 8 cycles</text>
+
+        <!-- Advantages -->
+        <text x="316" y="198" font-size="8.5" fill="#2E6B4F">&#x2713; no crosstalk — single wire pair</text>
+        <text x="316" y="213" font-size="8.5" fill="#2E6B4F">&#x2713; no skew — one signal path</text>
+        <text x="316" y="228" font-size="8.5" fill="#2E6B4F">&#x2713; runs at 16–32 GHz and beyond</text>
+        <text x="316" y="243" font-size="8.5" fill="#2E6B4F">&#x2713; scales via lanes (&#xD7;4, &#xD7;8, &#xD7;16)</text>
+      </svg>
+
       <p>This is why virtually every modern high-speed interface is serial: PCIe, USB, SATA, Thunderbolt, Ethernet, HDMI, DisplayPort. The shift is counterintuitive — more wires does not mean more bandwidth once you're operating at high frequencies. Cleaner signals beat wider buses.</p>
 
       <p>Old buses — ISA in the 1980s, PCI in the 1990s — were shared parallel buses: every device on the bus competed for the same wires at the same time. Modern PCIe replaced that model with dedicated point-to-point serial links, solving both the contention problem and the signal-integrity problem at once.</p>
