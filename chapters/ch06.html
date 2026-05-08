@@ -194,7 +194,7 @@
 
       <p>For display output, <strong>HDMI</strong> dominates TVs and the majority of monitors: it's the connector on virtually every consumer display made in the last decade. <strong>DisplayPort</strong> is preferred for high-refresh-rate gaming monitors and supports daisy-chaining multiple monitors from a single port. Both carry audio alongside video. Many modern laptops deliver display output over USB-C using <strong>DisplayPort Alt Mode</strong> — the physical USB-C cable carries a DisplayPort signal, so no separate video cable is needed. HDMI Alt Mode is less common but exists on some phones and tablets.</p>
 
-      <h2>Interrupts and DMA</h2>
+      <h2>Interrupts</h2>
 
       <p>In Chapter 4 we established that the CPU does exactly one thing: it executes the fetch-decode-execute loop, over and over, billions of times per second. That description was accurate, but it left out something important. If the CPU is busy executing instructions continuously, how does it know when a device needs attention? How does a keystroke get processed? How does an arriving network packet get noticed?</p>
 
@@ -286,11 +286,37 @@
 
       <p>The interrupt controller — called the APIC (Advanced Programmable Interrupt Controller) on modern x86 systems — manages the queue of incoming IRQs, assigns priorities, and delivers them to the appropriate CPU core. Higher-priority interrupts can preempt lower-priority ones. This hardware infrastructure is the foundation that the operating system builds on top of — Chapter 8 covers how the OS uses interrupts for process scheduling, device management, and system calls.</p>
 
-      <p><strong>DMA (Direct Memory Access)</strong> solves a different problem. Interrupts handle the notification challenge — the device tells the CPU something happened. But they create a new bottleneck when a device needs to transfer a large block of data. If reading a file from an NVMe SSD means the CPU must personally ferry every byte from the drive into RAM — loading it into a register, storing it at the target address, repeat — that's tens of thousands of instructions for a task that has nothing to do with the program's actual computation.</p>
+      <h3>Machine State</h3>
 
-      <p>A DMA controller lets a device write data directly into a designated region of RAM without involving the CPU at all. The CPU sets up the transfer — "copy X bytes from this SSD sector to this RAM address" — and then goes back to other work. The DMA controller owns the memory bus for the duration of the transfer, moving data autonomously. When done, it fires an interrupt to notify the CPU. The CPU never touched a single byte of the payload.</p>
+      <p>When an interrupt fires, the CPU can't simply abandon what it was doing — it needs to resume at precisely the right point afterward. That means every piece of the CPU's current working context has to be preserved before the ISR runs. This snapshot is called the <strong>machine state</strong> (also called the CPU context). It includes:</p>
 
-      <p>Modern systems use DMA for disk I/O, incoming network packets, GPU transfers, and audio buffers — essentially any bulk data movement. Without DMA, high-speed I/O would consume the majority of CPU cycles simply shuffling data around rather than processing it. The combination of interrupts (for notification) and DMA (for bulk transfer) is what makes it possible to saturate a fast NVMe drive or a 10 Gigabit Ethernet link without saturating the CPU at the same time.</p>
+      <ul>
+        <li><strong>General-purpose registers</strong> — the values in RAX, RBX, RCX, and the rest that the interrupted program was using as scratch space</li>
+        <li><strong>The program counter</strong> — the address of the next instruction that was about to execute</li>
+        <li><strong>The flags register</strong> — status bits set by the last arithmetic or comparison operation (zero flag, carry flag, sign flag, etc.) that a branch instruction may be about to read</li>
+      </ul>
+
+      <p>If any of these are overwritten by the ISR and not restored, the interrupted program will resume with corrupted data — wrong values in registers, the wrong next instruction, wrong branch behavior. The machine state save and restore must be exact.</p>
+
+      <h3>The Stack</h3>
+
+      <p>Machine state is saved to the <strong>stack</strong> — a region of RAM reserved for exactly this kind of temporary, ordered storage. The stack operates on a simple rule: <em>last in, first out</em>. Data is pushed onto the top, and the most recently pushed item is the first to come back off. The CPU maintains a dedicated register called the <strong>stack pointer</strong> (RSP on x86-64) that always holds the address of the current top of the stack.</p>
+
+      <p>When an interrupt fires, the sequence is:</p>
+
+      <ol>
+        <li>The CPU finishes the current instruction</li>
+        <li>It <strong>pushes</strong> the machine state — registers, program counter, flags — onto the stack, and the stack pointer advances to track the new top</li>
+        <li>The CPU jumps to the ISR and executes it</li>
+        <li>At the end of the ISR, a special return instruction <strong>pops</strong> the saved state back off the stack into the correct registers</li>
+        <li>Execution resumes at exactly the instruction that was about to run before the interrupt</li>
+      </ol>
+
+      <p>From the perspective of the interrupted program, the interrupt never happened. Every register holds exactly the value it held before; the program counter points to the right place; the flags are intact.</p>
+
+      <div class="note">
+        <strong>The stack is not just for interrupts.</strong> It is the same mechanism every function call uses. When your code calls a function, the return address and local variables are pushed onto the stack. When the function returns, they are popped off and execution resumes in the caller. Interrupts and function calls are structurally identical at the hardware level — both push state, execute something, and pop state on return. This is why deeply recursive programs can cause a <strong>stack overflow</strong>: enough nested calls fill the reserved stack region and the stack pointer runs out of space.
+      </div>
 
       <h2>System Architecture — The Full Picture</h2>
 
