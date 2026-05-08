@@ -249,7 +249,7 @@
         <text x="380" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">U+ notation means "Unicode code point." Binary shown as raw code point value, grouped in 4-bit nibbles.</text>
       </svg>
 
-      <p>Unicode code points are written in a notation like <span class="uni">U+1F602</span>. That <span class="uni">1F602</span> is a hexadecimal number (more on hex shortly) — in decimal it's <span class="dec">128,514</span>. In binary it's a 17-bit number. Your phone stores that entire bit pattern every time you type 😂.</p>
+      <p>Unicode code points are written in a notation like <span class="uni">U+1F602</span>. That <span class="uni">1F602</span> is a hexadecimal number (more on hex shortly) — in decimal it's <span class="dec">128,514</span>. In binary it's a 17-bit number: <span class="bin">1 1111 0110 0000 0010</span>. Every time you send 😂 in a text message, your phone transmits exactly that bit pattern across the network. Your friend's phone receives it, looks it up in the Unicode table, and renders the face. No magic — just a number, agreed upon by every device on earth.</p>
 
       <p><strong>UTF-8</strong> is the most common way Unicode is actually stored on disk and transmitted over the network. It's cleverly designed: ASCII characters use exactly one byte each (identical to plain ASCII), while less common characters use two, three, or four bytes as needed. An English text file in UTF-8 is the same size as in ASCII, while still supporting every character and emoji on the planet. It's the dominant encoding on the modern web.</p>
 
