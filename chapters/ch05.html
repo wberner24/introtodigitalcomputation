@@ -65,6 +65,20 @@
 
       <p>Understanding that tradeoff — and knowing which tier belongs in which situation — is a core competency for anyone who specifies, maintains, or troubleshoots IT systems.</p>
 
+      <h2>Primary vs. Secondary Storage</h2>
+
+      <p>Before we look at the full hierarchy, it helps to understand the most important conceptual split in the whole field: the difference between <strong>primary</strong> and <strong>secondary</strong> storage.</p>
+
+      <p><strong>Primary storage</strong> is memory the CPU can address directly — meaning the processor can issue a single instruction that reads or writes any location in it. Registers, cache, and RAM are all primary storage. Access is measured in nanoseconds, and the CPU talks to it constantly. The catch: primary storage is <em>volatile</em>. Cut the power and the contents disappear.</p>
+
+      <p><strong>Secondary storage</strong> is everything else — SSDs, hard drives, optical discs, magnetic tape. The CPU cannot read a file directly off a hard drive the way it reads from RAM. Instead, the operating system must first copy that data into RAM, and only then can the CPU operate on it. Secondary storage is non-volatile (data survives power-off) and orders of magnitude cheaper per gigabyte, but it requires that extra loading step before work can begin.</p>
+
+      <p>This distinction is one of the most useful mental models in IT troubleshooting. Almost every "why is this computer slow?" conversation traces back to a bottleneck somewhere on the path between secondary and primary storage — usually not enough RAM, or a slow drive that can't feed data into RAM fast enough. Knowing which tier is the chokepoint is half the battle.</p>
+
+      <div class="note">
+        <strong>Volatile vs. non-volatile tracks closely with primary vs. secondary — but not perfectly.</strong> RAM is primary and volatile; an SSD is secondary and non-volatile. A few technologies blur the boundary — Intel's Optane (now discontinued) offered byte-addressable persistent memory that sat between RAM and SSD in both speed and persistence. For now, treating "primary = fast + volatile" and "secondary = persistent + slower" is accurate enough for almost every practical situation.
+      </div>
+
       <h2>The Full Hierarchy</h2>
 
       <p>Let's start by laying out the complete picture. You've seen the top half of this in Chapter 4. Here it is extended all the way down.</p>
@@ -179,6 +193,26 @@
       <h2>RAM: Fast but Forgetful</h2>
 
       <p>When people say "memory," they usually mean RAM — Random Access Memory. It's what holds the operating system, your running applications, and any data those applications are actively using. It sits between the CPU cache and long-term storage on the hierarchy, and it's the tier you interact with most directly when you upgrade or spec a machine.</p>
+
+      <h3>What "Random Access" Actually Means</h3>
+
+      <p>"Random" here doesn't mean disorganized or arbitrary. It means any memory location can be reached in the <em>same amount of time</em>, regardless of what was accessed before. Jump from address 0 to address 4,000,000,000 — same latency as jumping from address 0 to address 1. The access time doesn't depend on where you were last.</p>
+
+      <p>Contrast this with a hard drive, where the read head has to physically travel across the platter to reach the target sector — accessing two addresses far apart on disk takes longer than accessing two adjacent sectors. Magnetic tape is even more extreme: purely sequential, like a cassette you have to fast-forward. RAM has neither of these constraints. It's a flat, uniformly fast address space.</p>
+
+      <p>RAM achieves this through its physical grid structure. Every DRAM chip organizes its cells into rows and columns, and every byte has a unique <strong>numeric address</strong> starting at zero. The memory controller — built into modern CPUs — translates any address into a row/column coordinate and opens that exact cell directly, no seeking required.</p>
+
+      <h3>Memory Addressing</h3>
+
+      <p>You saw memory addresses in Chapter 4: the FDE widget showed the program counter stepping through addresses <span class="hex">0x00</span>, <span class="hex">0x01</span>, <span class="hex">0x02</span>… and LOAD and STORE instructions specifying addresses like <span class="hex">0x10</span>. Those addresses are real — they're the numeric labels the CPU uses to identify every byte in RAM.</p>
+
+      <p>From the CPU's perspective, RAM is just one long array of bytes, each with its own address. A machine with 16 GB of RAM has addresses 0 through 17,179,869,183 — about 17 billion individually addressable bytes. The CPU can read or write any of them in a single instruction.</p>
+
+      <p>How wide those addresses can be determines the maximum RAM a system can hold. A <strong>32-bit</strong> processor has 32-bit addresses, giving a theoretical maximum of 2<sup>32</sup> bytes — exactly 4 GB. That's why 32-bit operating systems cap out at 4 GB of RAM, no matter how many sticks you install. A <strong>64-bit</strong> processor has 64-bit addresses: 2<sup>64</sup> bytes, or about 18 exabytes of theoretical address space. Current hardware doesn't come close to that ceiling — we're limited by the physical number of address pins on the CPU and memory modules — but for practical purposes, 64-bit systems have no meaningful RAM limit for the foreseeable future.</p>
+
+      <div class="note">
+        <strong>Hexadecimal and memory addresses.</strong> Memory addresses are almost always written in hexadecimal (hex) — the base-16 notation you encountered in Chapter 3. A 64-bit address like <span class="hex">0x00007FF8A3C40000</span> is far more compact than its decimal equivalent (140,708,220,649,472) and maps cleanly onto groups of four bits. Whenever you see <code>0x</code> in front of a number in a debugger, crash log, or system utility, you're looking at a memory address or offset.
+      </div>
 
       <div class="definition">
         <div class="def-term">RAM (Random Access Memory)</div>
