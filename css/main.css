@@ -475,6 +475,46 @@ body {
   line-height: 1.55;
 }
 
+/* ── Data Table ─────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 24px 0;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  box-shadow: 0 2px 8px rgba(26,24,20,0.06);
+}
+.data-table thead tr { background: var(--ink); }
+.data-table thead th {
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 0.71rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #F0EDE8;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  white-space: nowrap;
+}
+.data-table thead th:last-child { border-right: none; }
+.data-table tbody tr { border-top: 1px solid var(--border); }
+.data-table tbody tr:nth-child(odd)  { background: var(--bg-card); }
+.data-table tbody tr:nth-child(even) { background: var(--bg-alt); }
+.data-table tbody td {
+  padding: 9px 16px;
+  color: var(--ink-mid);
+  border-right: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  vertical-align: middle;
+  line-height: 1.4;
+}
+.data-table tbody td:last-child  { border-right: none; }
+.data-table tbody td:first-child  { font-weight: 700; color: var(--ink); }
+
 /* ── Note / Aside ───────────────────────────────────────────── */
 .note {
   background: var(--blue-light);
