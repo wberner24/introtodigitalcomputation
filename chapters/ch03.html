@@ -259,6 +259,10 @@
 
       <h2>Representing Images: Pixels and Bitmaps</h2>
 
+      <p>So far the pattern is holding up. Numbers are stored as binary directly. Text is stored as numbers — an arbitrary but agreed-upon assignment of a code point to every character. Both reduce to bits in the end. But what about something that doesn't feel like a number at all — like a photograph? Images seem fundamentally different. They have shape, color, spatial relationships between things. How do you turn a picture into a string of 1s and 0s?</p>
+
+      <p>The answer, as you might suspect by now, is more numbers. A lot of them.</p>
+
       <p>Let's start with the simplest possible image: pure black and white — no color, no shades of gray, just on or off for each dot.</p>
 
       <p>This is a <strong>monochrome bitmap</strong>. Each dot — called a <strong>pixel</strong> (short for "picture element") — is represented by exactly one bit: <span class="bin">1</span> for black, <span class="bin">0</span> for white. A row of 8 pixels is one byte. A grid of 8×8 pixels is 8 bytes — 64 bits of image data.</p>
