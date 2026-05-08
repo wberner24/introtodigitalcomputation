@@ -83,7 +83,15 @@
 
       <p><strong>Bandwidth</strong> is the product of bus width and clock speed. A 32-bit bus running at 100 MHz can theoretically transfer 400 MB/s. Doubling the width or doubling the clock speed doubles bandwidth — which is exactly why both approaches have been pursued over the decades. In practice, increasing width adds physical wires (and cost), while increasing clock speed raises power consumption and signal integrity challenges.</p>
 
-      <p>Old buses — ISA in the 1980s, PCI in the 1990s — were shared: every device on the bus competed for the same wires at the same time. Modern PCIe replaced the shared model with point-to-point links, giving each device its own dedicated connection to the CPU or chipset. No contention, no taking turns for the wire itself.</p>
+      <h3>Parallel vs. Serial</h3>
+
+      <p>There are two fundamental approaches to sending multiple bits between components. <strong>Parallel</strong> transmission sends several bits simultaneously — one wire per bit. A 32-bit parallel bus sends 32 bits in a single clock cycle. At low speeds this works well. But as clock frequencies climbed, parallel buses ran into two stubborn physical problems: <strong>crosstalk</strong>, where adjacent wires electrically interfere with each other, and <strong>skew</strong>, where signals on different wires arrive at slightly different times. Both effects worsen as frequency increases and as the bus gets wider. At high enough speeds, parallel buses corrupt their own data.</p>
+
+      <p><strong>Serial</strong> transmission sends bits one at a time over a single pair of wires. This sounds slower — one bit at a time instead of 32 — but without the cross-wire interference problem, serial links can run at far higher frequencies. A serial link running at 16 GHz delivers 2 GB/s over just two wires. Multiply that by multiple lanes and you can beat a wide parallel bus while using far fewer physical connections and spending far less effort keeping signals clean.</p>
+
+      <p>This is why virtually every modern high-speed interface is serial: PCIe, USB, SATA, Thunderbolt, Ethernet, HDMI, DisplayPort. The shift is counterintuitive — more wires does not mean more bandwidth once you're operating at high frequencies. Cleaner signals beat wider buses.</p>
+
+      <p>Old buses — ISA in the 1980s, PCI in the 1990s — were shared parallel buses: every device on the bus competed for the same wires at the same time. Modern PCIe replaced that model with dedicated point-to-point serial links, solving both the contention problem and the signal-integrity problem at once.</p>
 
       <h2>PCIe — The Expansion Bus</h2>
 
@@ -474,12 +482,12 @@
         </div>
 
         <div class="quiz-question" id="q6">
-          <div class="q-text">6. A large file is being copied from NVMe SSD to RAM. Which mechanism allows this to happen without consuming most of the CPU's time?</div>
+          <div class="q-text">6. When a CPU saves machine state before executing an ISR, which of the following is NOT part of what gets saved?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Interrupts — the CPU services an IRQ for each byte transferred.</button>
-            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> The memory bus — it transfers data autonomously without CPU involvement.</button>
-            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> DMA — the DMA controller moves data directly to RAM and notifies the CPU when done.</button>
-            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> The chipset caches the file internally before forwarding it to RAM.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> The values in the general-purpose registers.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> The program counter — the address of the next instruction to execute.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> The full contents of RAM at the moment of the interrupt.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> The flags register — status bits from the last arithmetic or comparison operation.</button>
           </div>
           <div class="mc-feedback" id="q6-feedback"></div>
         </div>
@@ -500,10 +508,32 @@
           <div class="mc-options">
             <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> A background process that periodically checks all devices for pending input.</button>
             <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> A hardware circuit in the CPU that routes incoming signals to the correct register.</button>
-            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> A DMA operation that transfers data to RAM in response to a device request.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> A polling loop the OS runs between CPU cycles to check device queues.</button>
             <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">D</span> A short handler routine the CPU runs in response to an IRQ, after which it restores its previous state and resumes what it was doing.</button>
           </div>
           <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="q-text">9. Why did high-speed interfaces like PCIe move from parallel to serial communication?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> Serial interfaces are cheaper to manufacture because they use fewer pins.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">B</span> At high frequencies, parallel buses suffer from crosstalk and skew that corrupt signals — serial links avoid both by using a single clean pair of wires.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">C</span> Parallel buses were limited to 32 bits wide, which was insufficient for modern workloads.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> Serial transmission is always faster than parallel because it operates at a higher voltage.</button>
+          </div>
+          <div class="mc-feedback" id="q9-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="q-text">10. A developer's recursive function crashes with a "stack overflow" error. What best explains what happened?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> The CPU ran out of registers to store the function's local variables.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> The OS detected an infinite loop and terminated the process to protect the CPU.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> Each function call pushes state onto the stack; without a termination condition, the calls nest until the reserved stack region is exhausted.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> Recursive functions bypass the interrupt controller, which causes the CPU to fault.</button>
+          </div>
+          <div class="mc-feedback" id="q10-feedback"></div>
         </div>
 
       </div>
