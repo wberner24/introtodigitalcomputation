@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 5: Memory &amp; Storage â€” Introduction to Digital Computation</title>
+  <title>Chapter 5: Memory &amp; Storage — Introduction to Digital Computation</title>
   <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
@@ -14,33 +14,33 @@
     <div class="sidebar-logo">
       <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
       <div class="book-subtitle">A First-Principles Approach</div>
-      <div class="book-author">Wade Berner Â· SIUE</div>
+      <div class="book-author">Wade Berner · SIUE</div>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 1 â€” Foundations</div>
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
       <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
       <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
       <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 2 â€” Hardware</div>
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
       <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
       <a href="ch05.html" class="nav-chapter active"><span class="ch-num">05</span> Memory &amp; Storage</a>
       <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 3 â€” Software</div>
+      <div class="nav-unit-label">Unit 3 — Software</div>
       <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
       <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
       <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 4 â€” Networks</div>
+      <div class="nav-unit-label">Unit 4 — Networks</div>
       <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
       <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 5 â€” Administration</div>
+      <div class="nav-unit-label">Unit 5 — Administration</div>
       <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
       <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
       <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
@@ -51,32 +51,32 @@
   <main class="main-content">
 
     <header class="chapter-header">
-      <div class="chapter-eyebrow">Chapter 05 Â· Unit 2: Hardware</div>
+      <div class="chapter-eyebrow">Chapter 05 · Unit 2: Hardware</div>
       <h1 class="chapter-title">Memory &amp; Storage</h1>
       <div class="chapter-deco">DRAM</div>
-      <p class="chapter-intro">A CPU that can't get data fast enough is just an expensive space heater. Everything the processor touches â€” instructions, inputs, results â€” has to live somewhere. This chapter is about where that somewhere is, what it costs, and why the answer is never just one place.</p>
+      <p class="chapter-intro">A CPU that can't get data fast enough is just an expensive space heater. Everything the processor touches — instructions, inputs, results — has to live somewhere. This chapter is about where that somewhere is, what it costs, and why the answer is never just one place.</p>
     </header>
 
     <article class="prose">
 
       <p>In Chapter 4 we introduced the memory hierarchy as a way to explain cache: the CPU needs data faster than RAM can deliver it, so we build small, fast pools of memory close to the processor. But we stopped at the L3 cache. That was only the top of the ladder.</p>
 
-      <p>The full hierarchy runs much deeper â€” from registers that live on the processor die itself, all the way down to magnetic tape libraries in climate-controlled vaults. Every tier in that hierarchy makes the same fundamental tradeoff: <strong>the faster it is, the smaller and more expensive it is</strong>. The slower it is, the cheaper and more capacious.</p>
+      <p>The full hierarchy runs much deeper — from registers that live on the processor die itself, all the way down to magnetic tape libraries in climate-controlled vaults. Every tier in that hierarchy makes the same fundamental tradeoff: <strong>the faster it is, the smaller and more expensive it is</strong>. The slower it is, the cheaper and more capacious.</p>
 
-      <p>Understanding that tradeoff â€” and knowing which tier belongs in which situation â€” is a core competency for anyone who specifies, maintains, or troubleshoots IT systems.</p>
+      <p>Understanding that tradeoff — and knowing which tier belongs in which situation — is a core competency for anyone who specifies, maintains, or troubleshoots IT systems.</p>
 
       <h2>Primary vs. Secondary Storage</h2>
 
       <p>Before we look at the full hierarchy, it helps to understand the most important conceptual split in the whole field: the difference between <strong>primary</strong> and <strong>secondary</strong> storage.</p>
 
-      <p><strong>Primary storage</strong> is memory the CPU can address directly â€” meaning the processor can issue a single instruction that reads or writes any location in it. Registers, cache, and RAM are all primary storage. Access is measured in nanoseconds, and the CPU talks to it constantly. The catch: primary storage is <em>volatile</em>. Cut the power and the contents disappear.</p>
+      <p><strong>Primary storage</strong> is memory the CPU can address directly — meaning the processor can issue a single instruction that reads or writes any location in it. Registers, cache, and RAM are all primary storage. Access is measured in nanoseconds, and the CPU talks to it constantly. The catch: primary storage is <em>volatile</em>. Cut the power and the contents disappear.</p>
 
-      <p><strong>Secondary storage</strong> is everything else â€” SSDs, hard drives, optical discs, magnetic tape. The CPU cannot read a file directly off a hard drive the way it reads from RAM. Instead, the operating system must first copy that data into RAM, and only then can the CPU operate on it. Secondary storage is non-volatile (data survives power-off) and orders of magnitude cheaper per gigabyte, but it requires that extra loading step before work can begin.</p>
+      <p><strong>Secondary storage</strong> is everything else — SSDs, hard drives, optical discs, magnetic tape. The CPU cannot read a file directly off a hard drive the way it reads from RAM. Instead, the operating system must first copy that data into RAM, and only then can the CPU operate on it. Secondary storage is non-volatile (data survives power-off) and orders of magnitude cheaper per gigabyte, but it requires that extra loading step before work can begin.</p>
 
-      <p>This distinction is one of the most useful mental models in IT troubleshooting. Almost every "why is this computer slow?" conversation traces back to a bottleneck somewhere on the path between secondary and primary storage â€” usually not enough RAM, or a slow drive that can't feed data into RAM fast enough. Knowing which tier is the chokepoint is half the battle.</p>
+      <p>This distinction is one of the most useful mental models in IT troubleshooting. Almost every "why is this computer slow?" conversation traces back to a bottleneck somewhere on the path between secondary and primary storage — usually not enough RAM, or a slow drive that can't feed data into RAM fast enough. Knowing which tier is the chokepoint is half the battle.</p>
 
       <div class="note">
-        <strong>Volatile vs. non-volatile tracks closely with primary vs. secondary â€” but not perfectly.</strong> RAM is primary and volatile; an SSD is secondary and non-volatile. A few technologies blur the boundary â€” Intel's Optane (now discontinued) offered byte-addressable persistent memory that sat between RAM and SSD in both speed and persistence. For now, treating "primary = fast + volatile" and "secondary = persistent + slower" is accurate enough for almost every practical situation.
+        <strong>Volatile vs. non-volatile tracks closely with primary vs. secondary — but not perfectly.</strong> RAM is primary and volatile; an SSD is secondary and non-volatile. A few technologies blur the boundary — Intel's Optane (now discontinued) offered byte-addressable persistent memory that sat between RAM and SSD in both speed and persistence. For now, treating "primary = fast + volatile" and "secondary = persistent + slower" is accurate enough for almost every practical situation.
       </div>
 
       <h2>The Full Hierarchy</h2>
@@ -110,7 +110,7 @@
         <text x="16" y="71" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">Registers</text>
         <text x="128" y="71" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">&lt; 1 ns</text>
         <text x="198" y="71" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">&lt; 1 KB</text>
-        <text x="308" y="71" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">â€”</text>
+        <text x="308" y="71" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">—</text>
         <text x="386" y="71" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">Yes</text>
 
         <!-- Row 2: L1 Cache -->
@@ -118,8 +118,8 @@
         <rect x="8" y="82" width="5" height="30" fill="#1D4E7A"/>
         <text x="16" y="101" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">L1 Cache</text>
         <text x="128" y="101" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">~1 ns</text>
-        <text x="198" y="101" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">32â€“128 KB</text>
-        <text x="308" y="101" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">â€”</text>
+        <text x="198" y="101" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">32–128 KB</text>
+        <text x="308" y="101" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">—</text>
         <text x="386" y="101" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">Yes</text>
 
         <!-- Row 3: L2 Cache -->
@@ -127,8 +127,8 @@
         <rect x="8" y="112" width="5" height="30" fill="#1D4E7A"/>
         <text x="16" y="131" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">L2 Cache</text>
         <text x="128" y="131" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">~5 ns</text>
-        <text x="198" y="131" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">256 KBâ€“2 MB</text>
-        <text x="308" y="131" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">â€”</text>
+        <text x="198" y="131" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">256 KB–2 MB</text>
+        <text x="308" y="131" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">—</text>
         <text x="386" y="131" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">Yes</text>
 
         <!-- Row 4: L3 Cache -->
@@ -136,8 +136,8 @@
         <rect x="8" y="142" width="5" height="30" fill="#1D4E7A"/>
         <text x="16" y="161" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">L3 Cache</text>
         <text x="128" y="161" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">~20 ns</text>
-        <text x="198" y="161" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">4â€“64 MB</text>
-        <text x="308" y="161" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">â€”</text>
+        <text x="198" y="161" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">4–64 MB</text>
+        <text x="308" y="161" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">—</text>
         <text x="386" y="161" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">Yes</text>
 
         <!-- Row 5: RAM -->
@@ -145,8 +145,8 @@
         <rect x="8" y="172" width="5" height="30" fill="#2E6B4F"/>
         <text x="16" y="191" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">RAM (DRAM)</text>
         <text x="128" y="191" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">~100 ns</text>
-        <text x="198" y="191" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">4 GBâ€“2 TB</text>
-        <text x="308" y="191" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">~$5â€“10/GB</text>
+        <text x="198" y="191" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">4 GB–2 TB</text>
+        <text x="308" y="191" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">~$5–10/GB</text>
         <text x="386" y="191" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#2E6B4F">Yes</text>
 
         <!-- Row 6: NVMe SSD -->
@@ -154,7 +154,7 @@
         <rect x="8" y="202" width="5" height="30" fill="#C1440E"/>
         <text x="16" y="221" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">NVMe SSD</text>
         <text x="128" y="221" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">~100 &#956;s</text>
-        <text x="198" y="221" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">256 GBâ€“8 TB</text>
+        <text x="198" y="221" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">256 GB–8 TB</text>
         <text x="308" y="221" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">~$0.10/GB</text>
         <text x="386" y="221" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#C1440E">No</text>
 
@@ -163,7 +163,7 @@
         <rect x="8" y="232" width="5" height="30" fill="#8C3009"/>
         <text x="16" y="251" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">HDD</text>
         <text x="128" y="251" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">~10 ms</text>
-        <text x="198" y="251" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">500 GBâ€“20 TB</text>
+        <text x="198" y="251" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">500 GB–20 TB</text>
         <text x="308" y="251" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">~$0.02/GB</text>
         <text x="386" y="251" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#C1440E">No</text>
 
@@ -172,7 +172,7 @@
         <rect x="8" y="262" width="5" height="30" fill="#8A857C"/>
         <text x="16" y="281" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#1A1814">Magnetic Tape</text>
         <text x="128" y="281" font-family="'JetBrains Mono',monospace" font-size="8.5" fill="#1A1814">seconds</text>
-        <text x="198" y="281" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">TBâ€“PB</text>
+        <text x="198" y="281" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">TB–PB</text>
         <text x="308" y="281" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1A1814">~$0.001/GB</text>
         <text x="386" y="281" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#C1440E">No</text>
 
@@ -180,10 +180,10 @@
         <line x1="8" y1="292" x2="452" y2="292" stroke="#D8D2C6" stroke-width="0.75"/>
 
         <!-- Footnote -->
-        <text x="230" y="309" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7" font-style="italic" fill="#8A857C">Approx. order-of-magnitude figures for consumer/enterprise hardware, 2024â€“2025.</text>
+        <text x="230" y="309" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7" font-style="italic" fill="#8A857C">Approx. order-of-magnitude figures for consumer/enterprise hardware, 2024–2025.</text>
       </svg>
 
-      <p>Notice two things about this table. First, the jump from RAM to NVMe SSD isn't a small step â€” it's roughly a <strong>1,000Ã— difference in latency</strong>. The jump from NVMe to HDD is another 100Ã— after that. Second, cost per gigabyte drops dramatically as you move down: RAM costs hundreds of times more per gigabyte than an HDD. The whole field of storage architecture is essentially a long negotiation with this table.</p>
+      <p>Notice two things about this table. First, the jump from RAM to NVMe SSD isn't a small step — it's roughly a <strong>1,000× difference in latency</strong>. The jump from NVMe to HDD is another 100× after that. Second, cost per gigabyte drops dramatically as you move down: RAM costs hundreds of times more per gigabyte than an HDD. The whole field of storage architecture is essentially a long negotiation with this table.</p>
 
       <p>To make those gaps concrete, here's an interactive look at the same data on a human timescale.</p>
 
@@ -192,44 +192,44 @@
 
       <h2>RAM: Fast but Forgetful</h2>
 
-      <p>When people say "memory," they usually mean RAM â€” Random Access Memory. It's what holds the operating system, your running applications, and any data those applications are actively using. It sits between the CPU cache and long-term storage on the hierarchy, and it's the tier you interact with most directly when you upgrade or spec a machine.</p>
+      <p>When people say "memory," they usually mean RAM — Random Access Memory. It's what holds the operating system, your running applications, and any data those applications are actively using. It sits between the CPU cache and long-term storage on the hierarchy, and it's the tier you interact with most directly when you upgrade or spec a machine.</p>
 
       <h3>What "Random Access" Actually Means</h3>
 
-      <p>"Random" here doesn't mean disorganized or arbitrary. It means any memory location can be reached in the <em>same amount of time</em>, regardless of what was accessed before. Jump from address 0 to address 4,000,000,000 â€” same latency as jumping from address 0 to address 1. The access time doesn't depend on where you were last.</p>
+      <p>"Random" here doesn't mean disorganized or arbitrary. It means any memory location can be reached in the <em>same amount of time</em>, regardless of what was accessed before. Jump from address 0 to address 4,000,000,000 — same latency as jumping from address 0 to address 1. The access time doesn't depend on where you were last.</p>
 
-      <p>Contrast this with a hard drive, where the read head has to physically travel across the platter to reach the target sector â€” accessing two addresses far apart on disk takes longer than accessing two adjacent sectors. Magnetic tape is even more extreme: purely sequential, like a cassette you have to fast-forward. RAM has neither of these constraints. It's a flat, uniformly fast address space.</p>
+      <p>Contrast this with a hard drive, where the read head has to physically travel across the platter to reach the target sector — accessing two addresses far apart on disk takes longer than accessing two adjacent sectors. Magnetic tape is even more extreme: purely sequential, like a cassette you have to fast-forward. RAM has neither of these constraints. It's a flat, uniformly fast address space.</p>
 
-      <p>RAM achieves this through its physical grid structure. Every DRAM chip organizes its cells into rows and columns, and every byte has a unique <strong>numeric address</strong> starting at zero. The memory controller â€” built into modern CPUs â€” translates any address into a row/column coordinate and opens that exact cell directly, no seeking required.</p>
+      <p>RAM achieves this through its physical grid structure. Every DRAM chip organizes its cells into rows and columns, and every byte has a unique <strong>numeric address</strong> starting at zero. The memory controller — built into modern CPUs — translates any address into a row/column coordinate and opens that exact cell directly, no seeking required.</p>
 
       <h3>Memory Addressing</h3>
 
-      <p>You saw memory addresses in Chapter 4: the FDE widget showed the program counter stepping through addresses <span class="hex">0x00</span>, <span class="hex">0x01</span>, <span class="hex">0x02</span>â€¦ and LOAD and STORE instructions specifying addresses like <span class="hex">0x10</span>. Those addresses are real â€” they're the numeric labels the CPU uses to identify every byte in RAM.</p>
+      <p>You saw memory addresses in Chapter 4: the FDE widget showed the program counter stepping through addresses <span class="hex">0x00</span>, <span class="hex">0x01</span>, <span class="hex">0x02</span>… and LOAD and STORE instructions specifying addresses like <span class="hex">0x10</span>. Those addresses are real — they're the numeric labels the CPU uses to identify every byte in RAM.</p>
 
-      <p>From the CPU's perspective, RAM is just one long array of bytes, each with its own address. A machine with 16 GB of RAM has addresses 0 through 17,179,869,183 â€” about 17 billion individually addressable bytes. The CPU can read or write any of them in a single instruction.</p>
+      <p>From the CPU's perspective, RAM is just one long array of bytes, each with its own address. A machine with 16 GB of RAM has addresses 0 through 17,179,869,183 — about 17 billion individually addressable bytes. The CPU can read or write any of them in a single instruction.</p>
 
-      <p>How wide those addresses can be determines the maximum RAM a system can hold. A <strong>32-bit</strong> processor has 32-bit addresses, giving a theoretical maximum of 2<sup>32</sup> bytes â€” exactly 4 GB. That's why 32-bit operating systems cap out at 4 GB of RAM, no matter how many sticks you install. A <strong>64-bit</strong> processor has 64-bit addresses: 2<sup>64</sup> bytes, or about 18 exabytes of theoretical address space. Current hardware doesn't come close to that ceiling â€” we're limited by the physical number of address pins on the CPU and memory modules â€” but for practical purposes, 64-bit systems have no meaningful RAM limit for the foreseeable future.</p>
+      <p>How wide those addresses can be determines the maximum RAM a system can hold. A <strong>32-bit</strong> processor has 32-bit addresses, giving a theoretical maximum of 2<sup>32</sup> bytes — exactly 4 GB. That's why 32-bit operating systems cap out at 4 GB of RAM, no matter how many sticks you install. A <strong>64-bit</strong> processor has 64-bit addresses: 2<sup>64</sup> bytes, or about 18 exabytes of theoretical address space. Current hardware doesn't come close to that ceiling — we're limited by the physical number of address pins on the CPU and memory modules — but for practical purposes, 64-bit systems have no meaningful RAM limit for the foreseeable future.</p>
 
       <div class="note">
-        <strong>Hexadecimal and memory addresses.</strong> Memory addresses are almost always written in hexadecimal (hex) â€” the base-16 notation you encountered in Chapter 3. A 64-bit address like <span class="hex">0x00007FF8A3C40000</span> is far more compact than its decimal equivalent (140,708,220,649,472) and maps cleanly onto groups of four bits. Whenever you see <code>0x</code> in front of a number in a debugger, crash log, or system utility, you're looking at a memory address or offset.
+        <strong>Hexadecimal and memory addresses.</strong> Memory addresses are almost always written in hexadecimal (hex) — the base-16 notation you encountered in Chapter 3. A 64-bit address like <span class="hex">0x00007FF8A3C40000</span> is far more compact than its decimal equivalent (140,708,220,649,472) and maps cleanly onto groups of four bits. Whenever you see <code>0x</code> in front of a number in a debugger, crash log, or system utility, you're looking at a memory address or offset.
       </div>
 
       <div class="definition">
         <div class="def-term">RAM (Random Access Memory)</div>
-        <p>The main working memory of a computer. Holds the operating system, running applications, and their active data. "Random access" means any byte can be retrieved in roughly the same time â€” unlike a tape, where earlier data takes longer to reach than nearby data. RAM is volatile: everything in it is lost when power is cut.</p>
+        <p>The main working memory of a computer. Holds the operating system, running applications, and their active data. "Random access" means any byte can be retrieved in roughly the same time — unlike a tape, where earlier data takes longer to reach than nearby data. RAM is volatile: everything in it is lost when power is cut.</p>
       </div>
 
-      <p>Nearly all RAM in modern computers is <strong>DRAM</strong> â€” Dynamic Random Access Memory. Understanding why the "dynamic" is there explains both why DRAM is fast and why it's volatile.</p>
+      <p>Nearly all RAM in modern computers is <strong>DRAM</strong> — Dynamic Random Access Memory. Understanding why the "dynamic" is there explains both why DRAM is fast and why it's volatile.</p>
 
-      <p>Each bit in DRAM is stored as a tiny electrical charge in a capacitor â€” essentially a microscopic bucket that holds electrons. A charged capacitor is a <span class="bin">1</span>; a discharged one is a <span class="bin">0</span>. Capacitors are small and cheap to manufacture at scale, which is why DRAM can pack billions of bits into a small module. But there's a catch: capacitors leak. Left alone, the charge slowly drains away, and the bit is lost. To prevent this, DRAM must be continuously <em>refreshed</em> â€” the memory controller reads every row and rewrites it thousands of times per second to replenish the charge. This is the "dynamic" in Dynamic RAM, and it's also why RAM is volatile: when power stops, so does the refresh cycle, and within milliseconds all the data is gone.</p>
+      <p>Each bit in DRAM is stored as a tiny electrical charge in a capacitor — essentially a microscopic bucket that holds electrons. A charged capacitor is a <span class="bin">1</span>; a discharged one is a <span class="bin">0</span>. Capacitors are small and cheap to manufacture at scale, which is why DRAM can pack billions of bits into a small module. But there's a catch: capacitors leak. Left alone, the charge slowly drains away, and the bit is lost. To prevent this, DRAM must be continuously <em>refreshed</em> — the memory controller reads every row and rewrites it thousands of times per second to replenish the charge. This is the "dynamic" in Dynamic RAM, and it's also why RAM is volatile: when power stops, so does the refresh cycle, and within milliseconds all the data is gone.</p>
 
       <div class="note">
-        <strong>SRAM vs. DRAM.</strong> The cache you learned about in Chapter 4 is built from <em>Static</em> RAM (SRAM), which stores bits using flip-flop transistor circuits instead of leaky capacitors. SRAM holds its state as long as power is applied â€” no refresh needed â€” which makes it faster. But SRAM takes 4â€“6 transistors per bit versus 1 for DRAM, making it far more expensive and less dense. Cache is measured in megabytes; DRAM is measured in gigabytes. They occupy very different spots on the speed-cost curve.
+        <strong>SRAM vs. DRAM.</strong> The cache you learned about in Chapter 4 is built from <em>Static</em> RAM (SRAM), which stores bits using flip-flop transistor circuits instead of leaky capacitors. SRAM holds its state as long as power is applied — no refresh needed — which makes it faster. But SRAM takes 4–6 transistors per bit versus 1 for DRAM, making it far more expensive and less dense. Cache is measured in megabytes; DRAM is measured in gigabytes. They occupy very different spots on the speed-cost curve.
       </div>
 
       <h3>DDR: Generations of Speed</h3>
 
-      <p>Modern DRAM is sold in the <strong>DDR</strong> standard â€” Double Data Rate. "Double data rate" means the chip transfers data on both the rising and falling edge of each clock cycle, effectively doubling throughput compared to sending data only once per cycle. Every few years, a new DDR generation raises the clock frequency, widens the data bus, or reduces operating voltage, delivering more bandwidth and better energy efficiency.</p>
+      <p>Modern DRAM is sold in the <strong>DDR</strong> standard — Double Data Rate. "Double data rate" means the chip transfers data on both the rising and falling edge of each clock cycle, effectively doubling throughput compared to sending data only once per cycle. Every few years, a new DDR generation raises the clock frequency, widens the data bus, or reduces operating voltage, delivering more bandwidth and better energy efficiency.</p>
 
       <table class="data-table">
         <thead>
@@ -245,21 +245,21 @@
           <tr>
             <td><strong>DDR3</strong></td>
             <td>2007</td>
-            <td>800â€“2133 MT/s</td>
+            <td>800–2133 MT/s</td>
             <td>1.5 V</td>
             <td>Older desktops, budget systems</td>
           </tr>
           <tr>
             <td><strong>DDR4</strong></td>
             <td>2014</td>
-            <td>2133â€“3200 MT/s</td>
+            <td>2133–3200 MT/s</td>
             <td>1.2 V</td>
-            <td>Most systems built 2016â€“2022</td>
+            <td>Most systems built 2016–2022</td>
           </tr>
           <tr>
             <td><strong>DDR5</strong></td>
             <td>2020</td>
-            <td>4800â€“8400+ MT/s</td>
+            <td>4800–8400+ MT/s</td>
             <td>1.1 V</td>
             <td>Current-generation desktops &amp; laptops</td>
           </tr>
@@ -273,11 +273,11 @@
         </tbody>
       </table>
 
-      <p>The "MT/s" unit stands for <em>megatransfers per second</em> â€” the number of data transfers happening per second, accounting for the double-data-rate trick. You'll also see speeds listed as "DDR5-4800" or "PC5-38400": the first number is MT/s, the second is theoretical peak bandwidth in MB/s. For practical IT purposes, just know that higher is faster, newer generations are more power-efficient, and <strong>DDR generations are not compatible with each other</strong> â€” a DDR4 module will not physically fit in a DDR5 slot.</p>
+      <p>The "MT/s" unit stands for <em>megatransfers per second</em> — the number of data transfers happening per second, accounting for the double-data-rate trick. You'll also see speeds listed as "DDR5-4800" or "PC5-38400": the first number is MT/s, the second is theoretical peak bandwidth in MB/s. For practical IT purposes, just know that higher is faster, newer generations are more power-efficient, and <strong>DDR generations are not compatible with each other</strong> — a DDR4 module will not physically fit in a DDR5 slot.</p>
 
       <h3>Physical Packaging: DIMM, SO-DIMM, and Soldered</h3>
 
-      <p>RAM doesn't come as a bare chip you install yourself â€” it comes packaged on a small printed circuit board that you slot into the motherboard. There are three main form factors, and which one you have determines whether you can upgrade your memory at all.</p>
+      <p>RAM doesn't come as a bare chip you install yourself — it comes packaged on a small printed circuit board that you slot into the motherboard. There are three main form factors, and which one you have determines whether you can upgrade your memory at all.</p>
 
       <!-- SVG: RAM form factors comparison -->
       <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -299,7 +299,7 @@
         <rect x="98" y="82" width="10" height="4" fill="#FDFAF4"/>
         <!-- Labels -->
         <text x="123" y="102" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="11" font-weight="700" fill="#1A1814">DIMM</text>
-        <text x="123" y="117" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" fill="#4A4640">133 mm Â· Desktop &amp; Server</text>
+        <text x="123" y="117" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" fill="#4A4640">133 mm · Desktop &amp; Server</text>
         <text x="123" y="130" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Removable / upgradeable</text>
         <!-- Dimension indicator -->
         <line x1="18" y1="148" x2="228" y2="148" stroke="#D8D2C6" stroke-width="1"/>
@@ -320,7 +320,7 @@
         <rect x="344" y="88" width="8" height="4" fill="#FDFAF4"/>
         <!-- Labels -->
         <text x="350" y="108" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="11" font-weight="700" fill="#1A1814">SO-DIMM</text>
-        <text x="350" y="123" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" fill="#4A4640">67 mm Â· Laptops</text>
+        <text x="350" y="123" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" fill="#4A4640">67 mm · Laptops</text>
         <text x="350" y="136" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Removable / upgradeable</text>
         <!-- Dimension indicator -->
         <line x1="285" y1="148" x2="415" y2="148" stroke="#D8D2C6" stroke-width="1"/>
@@ -335,7 +335,7 @@
         <line x1="510" y1="90" x2="682" y2="90" stroke="#3A4E2C" stroke-width="1"/>
         <line x1="510" y1="104" x2="682" y2="104" stroke="#3A4E2C" stroke-width="1"/>
         <line x1="510" y1="118" x2="682" y2="118" stroke="#3A4E2C" stroke-width="1"/>
-        <!-- 4 chips soldered directly (2Ã—2 grid) -->
+        <!-- 4 chips soldered directly (2×2 grid) -->
         <rect x="518" y="54" width="36" height="32" rx="3" fill="#1A1814"/>
         <rect x="562" y="54" width="36" height="32" rx="3" fill="#1A1814"/>
         <rect x="518" y="92" width="36" height="32" rx="3" fill="#1A1814"/>
@@ -350,22 +350,22 @@
         <text x="672" y="63" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="12" font-weight="700" fill="white">&#215;</text>
         <!-- Labels -->
         <text x="595" y="174" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="11" font-weight="700" fill="#1A1814">Soldered (LPDDR)</text>
-        <text x="595" y="189" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" fill="#4A4640">Ultrabooks Â· Phones Â· Apple Silicon</text>
+        <text x="595" y="189" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" fill="#4A4640">Ultrabooks · Phones · Apple Silicon</text>
         <!-- "No slot" label -->
-        <text x="595" y="139" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#C1440E">No slot â€” not upgradeable</text>
+        <text x="595" y="139" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#C1440E">No slot — not upgradeable</text>
       </svg>
 
-      <p>A <strong>DIMM</strong> (Dual Inline Memory Module) is the full-size stick used in desktop computers and servers. It slots into a dedicated memory socket on the motherboard â€” typically two to eight slots â€” making it straightforward to add or replace. Most desktop systems accept DIMMs, so upgrading RAM is usually as simple as buying a compatible stick and pushing it in.</p>
+      <p>A <strong>DIMM</strong> (Dual Inline Memory Module) is the full-size stick used in desktop computers and servers. It slots into a dedicated memory socket on the motherboard — typically two to eight slots — making it straightforward to add or replace. Most desktop systems accept DIMMs, so upgrading RAM is usually as simple as buying a compatible stick and pushing it in.</p>
 
-      <p>A <strong>SO-DIMM</strong> (Small Outline DIMM) is the laptop equivalent â€” physically half the length of a DIMM, using the same DDR standard but in a smaller package. Many laptops still use SO-DIMMs and include one or two slots, making them upgradeable. But check before you buy a laptop if upgradeability matters to you â€” this has become less common.</p>
+      <p>A <strong>SO-DIMM</strong> (Small Outline DIMM) is the laptop equivalent — physically half the length of a DIMM, using the same DDR standard but in a smaller package. Many laptops still use SO-DIMMs and include one or two slots, making them upgradeable. But check before you buy a laptop if upgradeability matters to you — this has become less common.</p>
 
       <p><strong>Soldered / LPDDR</strong> is the form factor that's increasingly common in thin laptops, smartphones, and Apple Silicon Macs: the memory chips are soldered directly to the motherboard, with no slot at all. LPDDR (Low Power DDR) variants run at lower voltages than standard DDR to extend battery life. The tradeoff is permanent: you get exactly as much RAM as the machine ships with, forever. There is no upgrade path. For IT procurement, this means choosing the right amount of RAM at purchase time is critical, because the decision is irreversible.</p>
 
       <figure class="chapter-photo">
         <img src="../img/ch05-ram-dimm.jpg" alt="A DDR5 RAM DIMM module showing the memory chips along the top edge and the gold edge connector along the bottom">
         <figcaption>
-          A DDR5 DIMM â€” the full-size desktop form factor. The gold-plated edge connector slots into the motherboard. The row of black chips along the top stores the actual DRAM cells. A notch in the connector (visible near the center) prevents the module from being inserted backwards or into an incompatible slot.
-          <span class="photo-credit">Photo by Rainer KnÃ¤pper (Smial) Â· <a href="https://commons.wikimedia.org/wiki/File:DDR5_SDRAM_IMGP6295_smial_wp.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> Â· Free Art License / GFDL</span>
+          A DDR5 DIMM — the full-size desktop form factor. The gold-plated edge connector slots into the motherboard. The row of black chips along the top stores the actual DRAM cells. A notch in the connector (visible near the center) prevents the module from being inserted backwards or into an incompatible slot.
+          <span class="photo-credit">Photo by Rainer Knäpper (Smial) · <a href="https://commons.wikimedia.org/wiki/File:DDR5_SDRAM_IMGP6295_smial_wp.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · Free Art License / GFDL</span>
         </figcaption>
       </figure>
 
@@ -395,7 +395,7 @@
           <tr>
             <td><strong>32 GB</strong></td>
             <td>Power users, developers, light video editing</td>
-            <td>Future-proofs a machine for 4â€“6 years; good default for IT specs</td>
+            <td>Future-proofs a machine for 4–6 years; good default for IT specs</td>
           </tr>
           <tr>
             <td><strong>64 GB+</strong></td>
@@ -405,13 +405,13 @@
         </tbody>
       </table>
 
-      <p>When a system runs short of RAM, it doesn't crash â€” it slows down dramatically. We'll explain exactly why when we get to virtual memory later in this chapter.</p>
+      <p>When a system runs short of RAM, it doesn't crash — it slows down dramatically. We'll explain exactly why when we get to virtual memory later in this chapter.</p>
 
       <h2>SSDs: Flash Storage</h2>
 
       <p>Back in Chapter 2, we mentioned solid-state drives in a note box and said: <em>they use floating-gate transistors that can trap charge even without power, and we'll cover them properly in Chapter 5.</em> That time has come.</p>
 
-      <p>An SSD stores data using a type of transistor with an extra layer called a <strong>floating gate</strong>. Unlike a normal transistor, which loses its charge state when power is removed, a floating gate is completely surrounded by insulating material. Electrons can be forced onto the gate using a high voltage pulse (a write operation), and because they're trapped by the insulator, they stay there indefinitely â€” even without power. To erase a bit, a reverse voltage pulse sweeps the electrons back off. This is how NAND flash memory achieves the holy grail: non-volatile, fast, and solid-state (no moving parts).</p>
+      <p>An SSD stores data using a type of transistor with an extra layer called a <strong>floating gate</strong>. Unlike a normal transistor, which loses its charge state when power is removed, a floating gate is completely surrounded by insulating material. Electrons can be forced onto the gate using a high voltage pulse (a write operation), and because they're trapped by the insulator, they stay there indefinitely — even without power. To erase a bit, a reverse voltage pulse sweeps the electrons back off. This is how NAND flash memory achieves the holy grail: non-volatile, fast, and solid-state (no moving parts).</p>
 
       <div class="definition">
         <div class="def-term">NAND Flash</div>
@@ -467,9 +467,9 @@
         </tbody>
       </table>
 
-      <p>The durability figures above â€” "3K writes" for TLC â€” refer to <em>program/erase cycles</em>: how many times a cell can be written and erased before it starts to fail. This is why SSDs have a finite lifespan measured in total bytes written (TBW), which you'll see on every SSD specification sheet. A 1 TB consumer TLC drive typically carries a 300â€“600 TBW warranty. For most users, normal workloads will never exhaust this before the drive becomes obsolete â€” but for write-intensive workloads like database logging, it's worth speccing accordingly.</p>
+      <p>The durability figures above — "3K writes" for TLC — refer to <em>program/erase cycles</em>: how many times a cell can be written and erased before it starts to fail. This is why SSDs have a finite lifespan measured in total bytes written (TBW), which you'll see on every SSD specification sheet. A 1 TB consumer TLC drive typically carries a 300–600 TBW warranty. For most users, normal workloads will never exhaust this before the drive becomes obsolete — but for write-intensive workloads like database logging, it's worth speccing accordingly.</p>
 
-      <p>SSDs manage wear automatically through <strong>wear leveling</strong>: the controller spreads writes evenly across all cells so no single area gets burned out while others sit idle. You don't configure this â€” it happens transparently â€” but it's why you shouldn't worry too much about TBW for normal business use.</p>
+      <p>SSDs manage wear automatically through <strong>wear leveling</strong>: the controller spreads writes evenly across all cells so no single area gets burned out while others sit idle. You don't configure this — it happens transparently — but it's why you shouldn't worry too much about TBW for normal business use.</p>
 
       <h3>NVMe vs. SATA: The Interface Matters</h3>
 
@@ -497,7 +497,7 @@
           <tr>
             <td><strong>Max sequential read</strong></td>
             <td>~550 MB/s</td>
-            <td>3,500â€“14,000+ MB/s</td>
+            <td>3,500–14,000+ MB/s</td>
           </tr>
           <tr>
             <td><strong>Typical latency</strong></td>
@@ -506,8 +506,8 @@
           </tr>
           <tr>
             <td><strong>Price premium</strong></td>
-            <td>â€”</td>
-            <td>Small (10â€“20% more)</td>
+            <td>—</td>
+            <td>Small (10–20% more)</td>
           </tr>
           <tr>
             <td><strong>Best for</strong></td>
@@ -517,41 +517,41 @@
         </tbody>
       </table>
 
-      <p>The SATA interface was designed in the early 2000s for spinning hard drives. It works fine for SSDs, but the bus maxes out at around 550 MB/s â€” far below what modern NAND flash can deliver. NVMe (Non-Volatile Memory Express) is a protocol purpose-built for flash storage, connecting directly to the CPU via PCIe lanes, the same high-speed bus used by graphics cards. The result is 5â€“10Ã— higher sequential throughput and meaningfully lower latency. For any system purchased today, NVMe is the default choice; SATA is mainly relevant when upgrading an older machine that lacks M.2 slots.</p>
+      <p>The SATA interface was designed in the early 2000s for spinning hard drives. It works fine for SSDs, but the bus maxes out at around 550 MB/s — far below what modern NAND flash can deliver. NVMe (Non-Volatile Memory Express) is a protocol purpose-built for flash storage, connecting directly to the CPU via PCIe lanes, the same high-speed bus used by graphics cards. The result is 5–10× higher sequential throughput and meaningfully lower latency. For any system purchased today, NVMe is the default choice; SATA is mainly relevant when upgrading an older machine that lacks M.2 slots.</p>
 
       <div class="note">
-        <strong>M.2 is a form factor, not an interface.</strong> M.2 is the small rectangular slot found in most modern laptops and motherboards â€” about the size of a stick of gum. An M.2 slot can carry either SATA or NVMe traffic. When you're speccing a drive, check that the M.2 slot on the motherboard supports NVMe (PCIe), not just SATA. A drive and slot can be physically compatible but limited to SATA speeds if the slot doesn't have PCIe lanes routed to it.
+        <strong>M.2 is a form factor, not an interface.</strong> M.2 is the small rectangular slot found in most modern laptops and motherboards — about the size of a stick of gum. An M.2 slot can carry either SATA or NVMe traffic. When you're speccing a drive, check that the M.2 slot on the motherboard supports NVMe (PCIe), not just SATA. A drive and slot can be physically compatible but limited to SATA speeds if the slot doesn't have PCIe lanes routed to it.
       </div>
 
       <h2>HDDs: Still Spinning</h2>
 
-      <p>We covered the physics of hard drives in Chapter 2 â€” magnetic orientations on spinning platters, read/write heads floating nanometers above the surface. Here we'll focus on the specs that show up in purchasing decisions and the reasons HDDs are still manufactured and purchased in enormous quantities despite being decades-old technology.</p>
+      <p>We covered the physics of hard drives in Chapter 2 — magnetic orientations on spinning platters, read/write heads floating nanometers above the surface. Here we'll focus on the specs that show up in purchasing decisions and the reasons HDDs are still manufactured and purchased in enormous quantities despite being decades-old technology.</p>
 
       <p>Two specs drive HDD performance more than any other:</p>
 
       <div class="definition">
         <div class="def-term">Spindle Speed (RPM)</div>
-        <p>How fast the platters spin, measured in revolutions per minute. Consumer drives run at 5400 RPM or 7200 RPM. Enterprise drives can reach 10,000â€“15,000 RPM. Higher RPM reduces <em>rotational latency</em> â€” the time the drive waits for the right part of the platter to spin under the read head.</p>
+        <p>How fast the platters spin, measured in revolutions per minute. Consumer drives run at 5400 RPM or 7200 RPM. Enterprise drives can reach 10,000–15,000 RPM. Higher RPM reduces <em>rotational latency</em> — the time the drive waits for the right part of the platter to spin under the read head.</p>
       </div>
 
       <div class="definition">
         <div class="def-term">Seek Time</div>
-        <p>The time required for the read/write head to physically move to the correct track on the platter. Typically 5â€“12 ms for consumer drives. Seek time is a function of mechanical physics and cannot be reduced the way clock speeds can â€” it's why HDDs have a hard floor on latency that SSDs don't.</p>
+        <p>The time required for the read/write head to physically move to the correct track on the platter. Typically 5–12 ms for consumer drives. Seek time is a function of mechanical physics and cannot be reduced the way clock speeds can — it's why HDDs have a hard floor on latency that SSDs don't.</p>
       </div>
 
-      <p>The sum of average seek time plus average rotational latency gives you the typical <em>access time</em> for a random read â€” usually 10â€“15 ms for a modern 7200 RPM drive. That 10 ms doesn't sound like much, but compare it to an NVMe SSD's 100 microseconds: the HDD is roughly 100Ã— slower for random access. For sequential reads (scanning a large file from start to finish), HDDs are much more competitive, since the head stays in roughly the same location as data streams off the platter.</p>
+      <p>The sum of average seek time plus average rotational latency gives you the typical <em>access time</em> for a random read — usually 10–15 ms for a modern 7200 RPM drive. That 10 ms doesn't sound like much, but compare it to an NVMe SSD's 100 microseconds: the HDD is roughly 100× slower for random access. For sequential reads (scanning a large file from start to finish), HDDs are much more competitive, since the head stays in roughly the same location as data streams off the platter.</p>
 
-      <p>Given that gap, why does anyone still buy HDDs? Cost per gigabyte. A 2 TB NVMe SSD costs around $100â€“$150. A 2 TB HDD costs around $50, and 20 TB HDDs are available for under $400. For storing video archives, backups, bulk data that isn't accessed randomly, or any workload that prioritizes capacity over speed, HDDs remain the rational choice â€” and will for the foreseeable future.</p>
+      <p>Given that gap, why does anyone still buy HDDs? Cost per gigabyte. A 2 TB NVMe SSD costs around $100–$150. A 2 TB HDD costs around $50, and 20 TB HDDs are available for under $400. For storing video archives, backups, bulk data that isn't accessed randomly, or any workload that prioritizes capacity over speed, HDDs remain the rational choice — and will for the foreseeable future.</p>
 
       <div class="note">
-        <strong>NAS and enterprise HDDs.</strong> Not all HDDs are the same. Consumer drives are rated for 8 hours/day of use. NAS (Network-Attached Storage) drives like the Seagate IronWolf or WD Red are rated for 24/7 operation and carry higher MTBF (mean time between failures) ratings. Enterprise SAS drives add a faster bus interface on top of that. If you're speccing storage for a server, NAS, or any always-on workload, using consumer desktop drives is a false economy â€” the reliability difference is real.
+        <strong>NAS and enterprise HDDs.</strong> Not all HDDs are the same. Consumer drives are rated for 8 hours/day of use. NAS (Network-Attached Storage) drives like the Seagate IronWolf or WD Red are rated for 24/7 operation and carry higher MTBF (mean time between failures) ratings. Enterprise SAS drives add a faster bus interface on top of that. If you're speccing storage for a server, NAS, or any always-on workload, using consumer desktop drives is a false economy — the reliability difference is real.
       </div>
 
       <h2>Virtual Memory</h2>
 
       <p>Here's a practical problem: programs often want more memory than a system physically has. A machine with 16 GB of RAM might be running an operating system, a browser with forty tabs, a video call, a database client, and a few background services simultaneously. Individually they're fine; together they might want 20 GB.</p>
 
-      <p>The solution operating systems have used since the 1960s is <strong>virtual memory</strong>: the OS creates the illusion of a larger address space than physically exists by treating a portion of the storage drive as an overflow area for RAM. When physical RAM fills up, the OS identifies pages of memory that haven't been used recently â€” <em>cold pages</em> â€” and writes them to a reserved area on the drive called a <strong>page file</strong> (Windows) or <strong>swap partition</strong> (Linux/macOS). That RAM is then freed up for something that needs it now. When a process needs a page that was swapped out, the OS fetches it back from disk, potentially swapping out something else in its place.</p>
+      <p>The solution operating systems have used since the 1960s is <strong>virtual memory</strong>: the OS creates the illusion of a larger address space than physically exists by treating a portion of the storage drive as an overflow area for RAM. When physical RAM fills up, the OS identifies pages of memory that haven't been used recently — <em>cold pages</em> — and writes them to a reserved area on the drive called a <strong>page file</strong> (Windows) or <strong>swap partition</strong> (Linux/macOS). That RAM is then freed up for something that needs it now. When a process needs a page that was swapped out, the OS fetches it back from disk, potentially swapping out something else in its place.</p>
 
       <!-- SVG: Virtual memory diagram -->
       <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -585,13 +585,13 @@
         <text x="245" y="106" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" font-weight="700" fill="#4A4640">Page Table</text>
         <text x="245" y="118" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#8A857C">(OS kernel)</text>
 
-        <!-- Arrow: virtual space â†’ page table -->
+        <!-- Arrow: virtual space → page table -->
         <line x1="163" y1="105" x2="196" y2="105" stroke="#4A4640" stroke-width="1.5" marker-end="url(#arr-vm)"/>
 
         <!-- Physical RAM box (top right) -->
         <rect x="328" y="32" width="170" height="95" rx="6" fill="#E3EDE8" stroke="#2E6B4F" stroke-width="1.5"/>
         <text x="413" y="52" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#2E6B4F">Physical RAM</text>
-        <text x="413" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">fast Â· limited</text>
+        <text x="413" y="64" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">fast · limited</text>
         <rect x="340" y="70" width="146" height="11" rx="2" fill="#2E6B4F"/><text x="413" y="79" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="white">Page 0</text>
         <rect x="340" y="84" width="146" height="11" rx="2" fill="#2E6B4F"/><text x="413" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="white">Page 1</text>
         <rect x="340" y="98" width="146" height="11" rx="2" fill="#2E6B4F"/><text x="413" y="107" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="white">Page 3 / Page 5</text>
@@ -599,14 +599,14 @@
         <!-- Disk / swap box (bottom right) -->
         <rect x="328" y="145" width="170" height="75" rx="6" fill="#F5EDE7" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="5,3"/>
         <text x="413" y="164" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" font-weight="700" fill="#C1440E">Disk (Swap)</text>
-        <text x="413" y="176" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">slow Â· large</text>
+        <text x="413" y="176" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">slow · large</text>
         <rect x="340" y="182" width="146" height="11" rx="2" fill="#D4714A"/><text x="413" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="white">Page 2 / Page 4 / Page 6</text>
 
-        <!-- Arrow: page table â†’ RAM -->
+        <!-- Arrow: page table → RAM -->
         <line x1="294" y1="96" x2="328" y2="79" stroke="#2E6B4F" stroke-width="1.5" marker-end="url(#arr-vm)"/>
         <text x="310" y="77" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#2E6B4F">hot pages</text>
 
-        <!-- Arrow: page table â†’ Disk -->
+        <!-- Arrow: page table → Disk -->
         <line x1="294" y1="112" x2="328" y2="168" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-vm-r)"/>
         <text x="305" y="155" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#C1440E">cold pages</text>
 
@@ -617,14 +617,14 @@
         <text x="106" y="232" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">swapped to disk</text>
       </svg>
 
-      <p>From the program's perspective, none of this is visible â€” it sees one large, contiguous block of memory and has no idea which parts are in RAM and which are on disk. The hardware and OS handle the translation transparently through a structure called the <strong>page table</strong>, which maps each virtual address to either a physical RAM location or a disk address.</p>
+      <p>From the program's perspective, none of this is visible — it sees one large, contiguous block of memory and has no idea which parts are in RAM and which are on disk. The hardware and OS handle the translation transparently through a structure called the <strong>page table</strong>, which maps each virtual address to either a physical RAM location or a disk address.</p>
 
-      <p>The problem arises when demand for RAM consistently exceeds supply. If the system is constantly swapping pages in and out â€” because every access touches a page that was just swapped out to make room â€” the drive becomes a bottleneck. This state is called <strong>thrashing</strong>, and it's recognizable: the machine becomes nearly unresponsive, the drive activity light is on solid, and everything grinds. The fix is almost always more RAM.</p>
+      <p>The problem arises when demand for RAM consistently exceeds supply. If the system is constantly swapping pages in and out — because every access touches a page that was just swapped out to make room — the drive becomes a bottleneck. This state is called <strong>thrashing</strong>, and it's recognizable: the machine becomes nearly unresponsive, the drive activity light is on solid, and everything grinds. The fix is almost always more RAM.</p>
 
-      <p>Virtual memory with an SSD is dramatically less painful than with an HDD â€” an NVMe drive's latency is roughly 100Ã— lower â€” but even NVMe paging is orders of magnitude slower than actual RAM. Virtual memory is a safety net, not a performance feature.</p>
+      <p>Virtual memory with an SSD is dramatically less painful than with an HDD — an NVMe drive's latency is roughly 100× lower — but even NVMe paging is orders of magnitude slower than actual RAM. Virtual memory is a safety net, not a performance feature.</p>
 
       <div class="note">
-        <strong>This chapter covers the storage side of virtual memory.</strong> The OS management layer â€” how the kernel manages the page table, schedules page replacement, and handles page faults â€” is covered in Chapter 8 (Operating Systems).
+        <strong>This chapter covers the storage side of virtual memory.</strong> The OS management layer — how the kernel manages the page table, schedules page replacement, and handles page faults — is covered in Chapter 8 (Operating Systems).
       </div>
 
       <h2>Speccing and Choosing Storage</h2>
@@ -689,13 +689,13 @@
 
       <p>For a business, "offsite" typically means cloud backup (AWS S3, Azure Blob, Backblaze B2) or a tape rotation scheme where tapes are stored off premises. For an individual, it can be as simple as an external drive kept at a different location plus cloud sync.</p>
 
-      <p>The rule is a minimum, not a ceiling. Critical data â€” medical records, financial data, legal documents â€” warrants more copies with more geographic separation. The question to ask is: <em>if this building burned down tonight, what data would be gone forever?</em> Whatever the answer is, that data is under-protected.</p>
+      <p>The rule is a minimum, not a ceiling. Critical data — medical records, financial data, legal documents — warrants more copies with more geographic separation. The question to ask is: <em>if this building burned down tonight, what data would be gone forever?</em> Whatever the answer is, that data is under-protected.</p>
 
       <h3>Storage Tiering in Enterprise</h3>
 
-      <p>Large organizations rarely use a single tier of storage. Instead, they implement <strong>storage tiering</strong>: automatically moving data to the appropriate tier based on how frequently it's accessed. Hot data â€” currently active databases, recently accessed files â€” lives on fast NVMe storage. Warm data â€” files accessed occasionally â€” lives on SATA SSDs or high-RPM HDDs. Cold data â€” archives, old backups, compliance records â€” gets pushed to tape or object storage. Tiering software monitors access patterns and handles the movement automatically, optimizing cost without sacrificing performance for active workloads.</p>
+      <p>Large organizations rarely use a single tier of storage. Instead, they implement <strong>storage tiering</strong>: automatically moving data to the appropriate tier based on how frequently it's accessed. Hot data — currently active databases, recently accessed files — lives on fast NVMe storage. Warm data — files accessed occasionally — lives on SATA SSDs or high-RPM HDDs. Cold data — archives, old backups, compliance records — gets pushed to tape or object storage. Tiering software monitors access patterns and handles the movement automatically, optimizing cost without sacrificing performance for active workloads.</p>
 
-      <!-- â”€â”€ Practice Block â”€â”€ -->
+      <!-- ── Practice Block ── -->
       <div class="practice-block">
         <div class="practice-header">
           <span class="practice-label">Quiz</span>
@@ -727,10 +727,10 @@
         <div class="quiz-question" id="q3">
           <div class="q-text">3. What does DDR stand for, and why does it matter?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Dynamic Data Register â€” it means the RAM can dynamically resize its registers.</button>
-            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">B</span> Double Data Rate â€” it transfers data on both edges of each clock cycle, doubling throughput.</button>
-            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> Dual Drive Rate â€” it refers to the ability to use two RAM modules in parallel.</button>
-            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Direct DRAM Register â€” it describes how the CPU accesses RAM without cache.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Dynamic Data Register — it means the RAM can dynamically resize its registers.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">B</span> Double Data Rate — it transfers data on both edges of each clock cycle, doubling throughput.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> Dual Drive Rate — it refers to the ability to use two RAM modules in parallel.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Direct DRAM Register — it describes how the CPU accesses RAM without cache.</button>
           </div>
           <div class="mc-feedback" id="q3-feedback"></div>
         </div>
@@ -769,10 +769,10 @@
         </div>
 
         <div class="quiz-question" id="q7">
-          <div class="q-text">7. A user complains that their computer has become nearly unresponsive â€” everything freezes, the drive light is solid, and it takes minutes to open a document. RAM usage is at 99%. What is most likely happening?</div>
+          <div class="q-text">7. A user complains that their computer has become nearly unresponsive — everything freezes, the drive light is solid, and it takes minutes to open a document. RAM usage is at 99%. What is most likely happening?</div>
           <div class="mc-options">
             <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> The CPU is overheating and throttling.</button>
-            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">B</span> The system is thrashing â€” constantly paging between RAM and disk because RAM is exhausted.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">B</span> The system is thrashing — constantly paging between RAM and disk because RAM is exhausted.</button>
             <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> The SSD is failing and needs to be replaced.</button>
             <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> The operating system is running a scheduled background update.</button>
           </div>
@@ -780,12 +780,12 @@
         </div>
 
         <div class="quiz-question" id="q8">
-          <div class="q-text">8. Your organization's 3-2-1 backup strategy stores one copy on a local NAS and one copy in cloud storage â€” both at the same office location. Is this compliant with the 3-2-1 rule?</div>
+          <div class="q-text">8. Your organization's 3-2-1 backup strategy stores one copy on a local NAS and one copy in cloud storage — both at the same office location. Is this compliant with the 3-2-1 rule?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Yes â€” two different media types are used, satisfying all three requirements.</button>
-            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">B</span> No â€” the rule requires at least one copy stored offsite or off-network; cloud access from the same location doesn't count if the internet connection goes down in a disaster.</button>
-            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> Yes â€” cloud storage is inherently offsite because the servers are not in the building.</button>
-            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> No â€” 3-2-1 requires tape storage as one of the two media types.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Yes — two different media types are used, satisfying all three requirements.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">B</span> No — the rule requires at least one copy stored offsite or off-network; cloud access from the same location doesn't count if the internet connection goes down in a disaster.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> Yes — cloud storage is inherently offsite because the servers are not in the building.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> No — 3-2-1 requires tape storage as one of the two media types.</button>
           </div>
           <div class="mc-feedback" id="q8-feedback"></div>
         </div>
@@ -816,11 +816,11 @@
 
       <nav class="chapter-nav-footer">
         <a href="ch04.html">
-          <span class="nav-direction">â† Previous</span>
+          <span class="nav-direction">← Previous</span>
           <span class="nav-title">Chapter 4: Processors</span>
         </a>
         <a href="ch06.html" class="next">
-          <span class="nav-direction">Next Chapter â†’</span>
+          <span class="nav-direction">Next Chapter →</span>
           <span class="nav-title">I/O &amp; System Architecture</span>
         </a>
       </nav>
@@ -843,10 +843,9 @@
       if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
     });
     fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
-    fb.textContent = isCorrect ? 'âœ“ Correct!' : 'âœ— Not quite â€” the correct answer is highlighted.';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
   }
 </script>
 
 </body>
 </html>
-
