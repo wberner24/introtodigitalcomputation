@@ -180,6 +180,25 @@ window.IDC.widgets['storage-latency'] = {
           color: var(--ink-light);
         }
         .slw-stats strong { color: var(--ink-mid); }
+        .slw-col-headers {
+          display: grid;
+          grid-template-columns: 4px 1fr auto auto;
+          gap: 0 14px;
+          padding: 6px 16px 6px 0;
+          border-bottom: 1px solid var(--border);
+          background: var(--bg-alt);
+        }
+        .slw-col-headers span {
+          font-family: var(--font-body);
+          font-size: 0.7rem;
+          font-weight: 600;
+          color: var(--ink-light);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          white-space: nowrap;
+          text-align: right;
+        }
+        .slw-col-headers span:nth-child(2) { text-align: left; }
         .slw-footer {
           padding: 8px 16px;
           font-size: 0.74rem;
@@ -197,7 +216,18 @@ window.IDC.widgets['storage-latency'] = {
       <div class="slw-widget">
         <div class="slw-header">
           <div class="slw-title">The Latency Scale</div>
-          <div class="slw-subtitle">If a CPU register access took <strong>1 second</strong>, everything else would take&hellip; &nbsp;Click any row to explore.</div>
+          <div class="slw-subtitle">
+            Memory access times are measured in nanoseconds — far too small to feel intuitively.
+            To make the gaps concrete, this table stretches time so that one register access equals <strong>1 second</strong>.
+            Everything else is scaled by the same factor, so you can feel how much longer each tier actually takes.
+            The right column shows the real measured time. <strong>Click any row</strong> to learn more.
+          </div>
+        </div>
+        <div class="slw-col-headers">
+          <span></span>
+          <span></span>
+          <span>If registers = 1 sec</span>
+          <span>Actual latency</span>
         </div>
         ${tiers.map((t, i) => `
           <div class="slw-row" data-idx="${i}">
@@ -220,7 +250,7 @@ window.IDC.widgets['storage-latency'] = {
             </div>
           </div>
         `).join('')}
-        <div class="slw-footer">Latency values are approximate order-of-magnitude figures. Human-scale: register access ≈ 0.3 ns = 1 second.</div>
+        <div class="slw-footer">Latency values are approximate order-of-magnitude figures. Scaling factor: register access ≈ 0.3 ns → 1 second (×3.3 billion).</div>
       </div>
     `;
 

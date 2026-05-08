@@ -520,7 +520,7 @@
       <p>The solution operating systems have used since the 1960s is <strong>virtual memory</strong>: the OS creates the illusion of a larger address space than physically exists by treating a portion of the storage drive as an overflow area for RAM. When physical RAM fills up, the OS identifies pages of memory that haven't been used recently — <em>cold pages</em> — and writes them to a reserved area on the drive called a <strong>page file</strong> (Windows) or <strong>swap partition</strong> (Linux/macOS). That RAM is then freed up for something that needs it now. When a process needs a page that was swapped out, the OS fetches it back from disk, potentially swapping out something else in its place.</p>
 
       <!-- SVG: Virtual memory diagram -->
-      <svg viewBox="0 0 680 215" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+      <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <defs>
           <marker id="arr-vm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
             <path d="M0,0 L0,6 L8,3 z" fill="#4A4640"/>
@@ -530,7 +530,7 @@
           </marker>
         </defs>
 
-        <rect width="680" height="215" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+        <rect width="680" height="240" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Virtual Memory</text>
 
         <!-- Virtual address space box (left) -->
@@ -577,10 +577,10 @@
         <text x="305" y="155" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#C1440E">cold pages</text>
 
         <!-- Legend note at bottom -->
-        <rect x="18" y="198" width="12" height="9" rx="1" fill="#1D4E7A"/>
-        <text x="34" y="206" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">in RAM</text>
-        <rect x="90" y="198" width="12" height="9" rx="1" fill="#B8B0A4"/>
-        <text x="106" y="206" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">swapped to disk</text>
+        <rect x="18" y="224" width="12" height="9" rx="1" fill="#1D4E7A"/>
+        <text x="34" y="232" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">in RAM</text>
+        <rect x="90" y="224" width="12" height="9" rx="1" fill="#B8B0A4"/>
+        <text x="106" y="232" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">swapped to disk</text>
       </svg>
 
       <p>From the program's perspective, none of this is visible — it sees one large, contiguous block of memory and has no idea which parts are in RAM and which are on disk. The hardware and OS handle the translation transparently through a structure called the <strong>page table</strong>, which maps each virtual address to either a physical RAM location or a disk address.</p>
