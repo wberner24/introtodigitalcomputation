@@ -421,7 +421,7 @@
       b.disabled = true;
       if (b === btn && isCorrect)       b.classList.add('correct');
       else if (b === btn && !isCorrect) b.classList.add('incorrect');
-      if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
+      if (!isCorrect && b.onclick.toString().includes(',true)')) b.classList.add('revealed');
     });
     fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
     fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';

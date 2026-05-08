@@ -1168,6 +1168,236 @@ body {
   border-bottom: none;
 }
 
+/* ── Shell Simulator Widget ─────────────────────────────────── */
+.shell-sim {
+  background: #1e1e1e;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  cursor: text;
+  border: 1px solid #3a3a3a;
+}
+
+.shell-titlebar {
+  background: #2d2d2d;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid #3a3a3a;
+}
+
+.shell-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.shell-title {
+  margin-left: 8px;
+  color: #888;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.shell-output {
+  padding: 14px 18px 8px;
+  min-height: 180px;
+  max-height: 380px;
+  overflow-y: auto;
+  color: #d4d4d4;
+  line-height: 1.55;
+}
+
+.shell-line {
+  white-space: pre-wrap;
+  word-break: break-all;
+  min-height: 1em;
+}
+
+.shell-line.shell-echo   { color: #6cb6ff; }
+.shell-line.shell-result { color: #d4d4d4; }
+.shell-line.shell-info   { color: #666; font-style: italic; }
+
+.shell-input-row {
+  display: flex;
+  align-items: center;
+  padding: 6px 18px 10px;
+  border-top: 1px solid #2d2d2d;
+}
+
+.shell-ps1 {
+  color: #28c840;
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.shell-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #d4d4d4;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  caret-color: #28c840;
+  min-width: 0;
+}
+
+/* ── Linux Permissions Widget ───────────────────────────────── */
+.perm-widget {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.perm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.perm-group {
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  padding: 1rem 0.75rem;
+  text-align: center;
+}
+
+.perm-group-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-mid);
+  margin-bottom: 0.75rem;
+}
+
+.perm-toggles {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 0.6rem;
+}
+
+.perm-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  border: 2px solid var(--border-dark);
+  background: var(--bg-card);
+  color: var(--ink-mid);
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.1s, border-color 0.1s, color 0.1s;
+}
+
+.perm-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.perm-btn:not(.active):hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.perm-octal-val {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.perm-output {
+  background: var(--bg-alt);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.perm-notations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.perm-notation {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.perm-label-sm {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--ink-light);
+}
+
+.perm-symbolic,
+.perm-octal-code {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: transparent;
+  padding: 0;
+}
+
+.perm-desc {
+  font-size: 0.88rem;
+  color: var(--ink-mid);
+  line-height: 1.55;
+}
+
+.perm-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.perm-presets-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-light);
+}
+
+.perm-preset {
+  padding: 0.28rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid var(--border-dark);
+  background: var(--bg-card);
+  color: var(--ink-mid);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 0.1s, color 0.1s;
+  font-family: var(--font-body);
+}
+
+.perm-preset:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .perm-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Utility ────────────────────────────────────────────────── */
 .mt-0 { margin-top: 0; }
 .text-center { text-align: center; }

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 8: Operating Systems — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter active"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 08 · Unit 3: Software</div>
+      <h1 class="chapter-title">Operating Systems</h1>
+      <div class="chapter-deco">$</div>
+      <p class="chapter-intro">Chapter 7 explained what an operating system is — the software layer that sits between hardware and applications, managing resources and providing abstractions. This chapter is about real operating systems in the wild: which ones you will actually encounter, how their core components work, and how IT professionals interact with them every day.</p>
+    </header>
+
+    <article class="prose">
+
+      <p>There are three operating system families that matter in professional IT: Windows, macOS, and Linux. They have different origins, different strengths, and different dominant contexts. Understanding which OS lives where — and why — is foundational to working in any IT role.</p>
+
+      <h2>The Big Three</h2>
+
+      <p><strong>Windows</strong> dominates the personal computer market. The vast majority of laptops and desktops shipped to businesses and homes run Windows, which makes it the default platform for end-user support, enterprise software, and productivity tools. Windows Server extends this to the server room, handling Active Directory, file sharing, and many enterprise applications.</p>
+
+      <p><strong>macOS</strong> runs exclusively on Apple hardware. It has carved out a strong position among creative professionals, developers, and in education. Under the hood, macOS is built on a Unix foundation (Darwin/BSD) — meaning its terminal behaves very similarly to Linux. A skill you learn at a macOS terminal almost always transfers directly.</p>
+
+      <p><strong>Linux</strong> is an open-source kernel first released by Linus Torvalds in 1991. Hundreds of <em>distributions</em> — Ubuntu, Debian, Red Hat Enterprise Linux, Fedora, Rocky Linux, and many others — package the Linux kernel with different default software, configuration tools, and support models. Linux is free, modifiable, and runs on nearly anything. It is also the dominant OS for servers, cloud infrastructure, and embedded systems.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Windows</th>
+            <th>macOS</th>
+            <th>Linux</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Desktop share</td>
+            <td>~72%</td>
+            <td>~15%</td>
+            <td>~4%</td>
+          </tr>
+          <tr>
+            <td>Web servers</td>
+            <td>Present</td>
+            <td>Minimal</td>
+            <td>Dominant (~96%)</td>
+          </tr>
+          <tr>
+            <td>Cloud VMs</td>
+            <td>Available</td>
+            <td>Not available</td>
+            <td>Default</td>
+          </tr>
+          <tr>
+            <td>Supercomputers</td>
+            <td>Rare</td>
+            <td>None</td>
+            <td>100% of TOP500</td>
+          </tr>
+          <tr>
+            <td>Cost</td>
+            <td>Licensed (per device)</td>
+            <td>Free (requires Apple hardware)</td>
+            <td>Free and open source</td>
+          </tr>
+          <tr>
+            <td>Package manager</td>
+            <td>winget / Windows Update</td>
+            <td>Homebrew / App Store</td>
+            <td>apt, dnf, pacman, others</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Why Linux?</h2>
+
+      <p>The desktop market share numbers above might make Linux look like a niche curiosity. That picture completely inverts the moment you look beyond personal computers:</p>
+
+      <ul>
+        <li>Over <strong>96%</strong> of the top one million web servers run Linux (W3Techs, 2024)</li>
+        <li><strong>100%</strong> of the TOP500 supercomputers run Linux</li>
+        <li><strong>Android</strong> — the OS on roughly 72% of smartphones — is built on the Linux kernel</li>
+        <li>All major cloud platforms (AWS, Azure, GCP) default to Linux for virtual machines</li>
+        <li>Most network equipment, routers, and embedded devices run Linux-based firmware</li>
+      </ul>
+
+      <p>For IT professionals, Linux is not optional knowledge. It is the environment where most infrastructure lives. You may spend your workday supporting Windows desktops — and still need Linux fluency the moment you need to SSH into a web server, manage a cloud instance, or troubleshoot a firewall appliance. This chapter gives you the foundation.</p>
+
+      <h2>The Kernel</h2>
+
+      <p>Every operating system has a core component called the <strong>kernel</strong>. The kernel runs in a privileged execution mode called <em>kernel space</em>, with direct access to hardware. All other software — your browser, your shell, your scripts — runs in <em>user space</em>, with restricted hardware access. The boundary between them is enforced by the CPU itself.</p>
+
+      <!-- SVG: Kernel / User Space Boundary -->
+      <svg viewBox="0 0 580 228" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:580px;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="580" height="228" fill="#FDFAF4"/>
+
+        <!-- User Space band -->
+        <rect x="10" y="8" width="560" height="86" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
+        <text x="24" y="26" font-size="9" font-weight="700" letter-spacing="0.08em" fill="#2564A0">USER SPACE</text>
+
+        <!-- User space boxes (4 × w=118, gap=14, startX=33) -->
+        <rect x="33" y="38" width="118" height="44" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="92" y="60" text-anchor="middle" dominant-baseline="middle" font-size="9.5" fill="#1A1814">Web Browser</text>
+
+        <rect x="165" y="38" width="118" height="44" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="224" y="60" text-anchor="middle" dominant-baseline="middle" font-size="9.5" fill="#1A1814">Text Editor</text>
+
+        <rect x="297" y="38" width="118" height="44" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="356" y="60" text-anchor="middle" dominant-baseline="middle" font-size="9.5" fill="#1A1814">Python Script</text>
+
+        <rect x="429" y="38" width="118" height="44" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="488" y="60" text-anchor="middle" dominant-baseline="middle" font-size="9.5" fill="#1A1814">Shell (bash)</text>
+
+        <!-- System Call divider -->
+        <line x1="10" y1="100" x2="570" y2="100" stroke="#8A857C" stroke-width="1.5" stroke-dasharray="5,4"/>
+        <text x="290" y="110" text-anchor="middle" font-size="8" fill="#8A857C">&#9650; System Call Interface &#9650;</text>
+
+        <!-- Kernel Space band -->
+        <rect x="10" y="118" width="560" height="68" rx="4" fill="#E3EDE8" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="24" y="134" font-size="9" font-weight="700" letter-spacing="0.08em" fill="#2E6B4F">KERNEL SPACE</text>
+
+        <!-- Kernel boxes (3 × w=160, gap=20, startX=30) -->
+        <rect x="30" y="138" width="160" height="38" rx="3" fill="#FDFAF4" stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="110" y="152" text-anchor="middle" font-size="9.5" fill="#1A1814">Process</text>
+        <text x="110" y="166" text-anchor="middle" font-size="9.5" fill="#1A1814">Scheduler</text>
+
+        <rect x="210" y="138" width="160" height="38" rx="3" fill="#FDFAF4" stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="290" y="152" text-anchor="middle" font-size="9.5" fill="#1A1814">Memory</text>
+        <text x="290" y="166" text-anchor="middle" font-size="9.5" fill="#1A1814">Manager</text>
+
+        <rect x="390" y="138" width="160" height="38" rx="3" fill="#FDFAF4" stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="470" y="152" text-anchor="middle" font-size="9.5" fill="#1A1814">Device</text>
+        <text x="470" y="166" text-anchor="middle" font-size="9.5" fill="#1A1814">Drivers</text>
+
+        <!-- Hardware bar -->
+        <rect x="10" y="193" width="560" height="26" rx="3" fill="#2A2420"/>
+        <text x="290" y="206" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="700" fill="#F5F2EB">HARDWARE — CPU · RAM · Storage · Network Card</text>
+
+        <!-- Caption -->
+        <text x="290" y="222" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">User-space processes request hardware access via system calls. The kernel executes the request and returns the result.</text>
+      </svg>
+
+      <p>When a user-space application needs hardware access — reading a file, sending data over the network, drawing to the screen — it makes a <strong>system call</strong>: a controlled handoff from user space to kernel space. The kernel executes the request with full hardware access, then returns the result to the application. The application never directly touches hardware; it always goes through the kernel.</p>
+
+      <p>The kernel has three primary responsibilities:</p>
+      <ul>
+        <li><strong>Process scheduling</strong> — deciding which program runs on the CPU at any moment, and for how long, so that multiple applications appear to run simultaneously.</li>
+        <li><strong>Memory management</strong> — allocating RAM to each process and enforcing that processes cannot read or write each other's memory. This isolation is why one crashed program doesn't take down the entire system.</li>
+        <li><strong>Hardware access</strong> — providing a uniform interface to hardware through device drivers, so that applications do not need to know the specific details of every device installed in the machine.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Connecting back to Chapter 7:</strong> The kernel space / user space divide is exactly the privilege boundary described in Ch. 7's abstraction stack — the line between the OS Kernel layer and the Device Drivers / OS APIs layers above it. The CPU enforces this boundary in hardware. Code running in kernel space can execute privileged instructions; code in user space cannot.
+      </div>
+
+      <h2>The Shell</h2>
+
+      <p>The <strong>shell</strong> is a program that takes text commands, interprets them, and runs other programs in response. It is the interface between you and the operating system's kernel. The most common shell on Linux systems is <strong>Bash</strong> (Bourne Again SHell), though others like Zsh and Fish are also used.</p>
+
+      <p>When you open a terminal on a Linux desktop, you are running a shell. When you connect to a remote server over <strong>SSH</strong> (Secure Shell), the shell is often the <em>only</em> interface available — there is no desktop, no windows, no mouse. Just a prompt.</p>
+
+      <p>Why don't most production Linux servers run a graphical desktop?</p>
+
+      <ul>
+        <li><strong>Resource overhead.</strong> A full desktop environment (GNOME, KDE) consumes 300–800 MB of RAM and meaningful CPU cycles doing nothing useful for server workloads. On a machine that exists to serve web requests or process data, that is wasted capacity.</li>
+        <li><strong>Remote access.</strong> SSH gives you a fast, encrypted text terminal over any network connection — even a slow one. A full remote desktop requires far more bandwidth and specialized software. The shell works everywhere.</li>
+        <li><strong>Automation.</strong> Shell commands can be scripted. An operation you run on one server can be scripted to run across a thousand servers simultaneously without any human clicking through menus. This is how large-scale infrastructure is actually managed.</li>
+      </ul>
+
+      <p>Learning to navigate confidently in a shell is one of the most transferable technical skills in IT. The commands you learn here work on any Linux server, any macOS machine, and — through Windows Subsystem for Linux — on Windows as well.</p>
+
+      <h2>Basic Shell Commands</h2>
+
+      <p>Every shell session starts with a <strong>prompt</strong> — a line like <code>student@linux:~$</code> — indicating who you are, what machine you're on, and where in the filesystem you currently are. The <code>~</code> symbol is shorthand for your home directory (<code>/home/student</code> in this case). The <code>$</code> means you are a regular user (as opposed to <code>#</code>, which indicates root).</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Command</th>
+            <th>What it does</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>pwd</code></td>
+            <td>Print working directory — shows your current location</td>
+            <td><code>pwd</code> → <code>/home/student</code></td>
+          </tr>
+          <tr>
+            <td><code>ls</code></td>
+            <td>List files and directories at the current location</td>
+            <td><code>ls documents/</code></td>
+          </tr>
+          <tr>
+            <td><code>ls -l</code></td>
+            <td>Long listing — adds permissions, owner, size, and date</td>
+            <td><code>ls -l</code></td>
+          </tr>
+          <tr>
+            <td><code>cd</code></td>
+            <td>Change directory</td>
+            <td><code>cd documents</code> · <code>cd ..</code> · <code>cd ~</code></td>
+          </tr>
+          <tr>
+            <td><code>cat</code></td>
+            <td>Print a file's contents to the screen</td>
+            <td><code>cat notes.txt</code></td>
+          </tr>
+          <tr>
+            <td><code>mkdir</code></td>
+            <td>Create a new directory</td>
+            <td><code>mkdir projects</code></td>
+          </tr>
+          <tr>
+            <td><code>touch</code></td>
+            <td>Create a new empty file</td>
+            <td><code>touch todo.txt</code></td>
+          </tr>
+          <tr>
+            <td><code>cp</code></td>
+            <td>Copy a file to a new location or name</td>
+            <td><code>cp notes.txt notes-backup.txt</code></td>
+          </tr>
+          <tr>
+            <td><code>mv</code></td>
+            <td>Move or rename a file</td>
+            <td><code>mv draft.txt final.txt</code></td>
+          </tr>
+          <tr>
+            <td><code>rm</code></td>
+            <td>Remove (delete) a file — <strong>no recycle bin</strong></td>
+            <td><code>rm old-file.txt</code></td>
+          </tr>
+          <tr>
+            <td><code>rm -r</code></td>
+            <td>Remove a directory and everything inside it</td>
+            <td><code>rm -r old-folder/</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>A few things to know before you start typing:</p>
+      <ul>
+        <li>Linux filenames are <strong>case-sensitive</strong>. <code>Notes.txt</code> and <code>notes.txt</code> are different files.</li>
+        <li><code>rm</code> is permanent. There is no undo, no recycle bin. Double-check before pressing Enter.</li>
+        <li>Use the <strong>up arrow</strong> to recall previous commands. This alone saves significant time.</li>
+        <li>A path starting with <code>/</code> is <em>absolute</em> (from the root of the filesystem). A path without a leading <code>/</code> is <em>relative</em> (from your current location). <code>..</code> means "one directory up."</li>
+      </ul>
+
+      <p>The simulator below has a pre-built home directory to explore. Try navigating into <code>documents/</code>, reading files with <code>cat</code>, creating new directories, and copying files. Use <code>help</code> to see all available commands.</p>
+
+      <div class="widget-card" data-widget-name="Interactive">
+        <div class="widget-title">Linux Shell Simulator</div>
+        <div class="widget-desc">A virtual Linux shell with a pre-populated filesystem. Commands execute against an in-browser filesystem — nothing runs on a real server.</div>
+        <div data-widget="shell-sim"></div>
+      </div>
+
+      <h2>Users and Permissions</h2>
+
+      <p>Linux is a <strong>multi-user operating system</strong>. Every file and directory has an owner, and access to it is controlled by a set of permission rules that apply separately to three groups: the file's owner, the owner's group, and everyone else.</p>
+
+      <h3>root and sudo</h3>
+
+      <p>Every Linux system has a superuser account called <strong>root</strong> — the one account with unrestricted access to everything. On modern systems, the root account is typically kept locked, and administrators use the <code>sudo</code> command ("superuser do") to run individual commands with root-level privileges. This means mistakes with elevated access are narrowly scoped: you only have superuser power for that one command, not for the entire session.</p>
+
+      <p>The convention is to work as a regular user at all times and invoke <code>sudo</code> only when necessary — installing packages, editing system configuration files, or managing users. A common saying in Linux administration: <em>never run as root unless you need to.</em></p>
+
+      <h3>The rwx Permission Model</h3>
+
+      <p>Every file and directory has three permission bits for each of the three groups:</p>
+
+      <ul>
+        <li><strong>r</strong> (read) — view the file's contents, or list a directory's contents</li>
+        <li><strong>w</strong> (write) — modify the file, or create/delete files inside a directory</li>
+        <li><strong>x</strong> (execute) — run the file as a program, or enter a directory with <code>cd</code></li>
+      </ul>
+
+      <p>When you run <code>ls -l</code>, the first column shows permissions in symbolic notation:</p>
+
+      <pre style="background:var(--bg-alt);border-radius:var(--radius);padding:14px 18px;font-family:var(--font-mono);font-size:0.82rem;overflow-x:auto;margin:20px 0">-rw-r--r--  1 student student  89  May  8 09:14  report.txt
+drwxr-xr-x  2 student student  4096  May  8 09:14  documents/</pre>
+
+      <p>Read left to right: the first character is the file type (<code>-</code> for a regular file, <code>d</code> for a directory). The next nine characters are three groups of three — owner permissions, group permissions, and other permissions. <code>-rw-r--r--</code> means the owner can read and write; the group can only read; everyone else can only read.</p>
+
+      <p>The same permissions can be expressed as a three-digit <strong>octal</strong> number. Each bit has a value: r = 4, w = 2, x = 1. Add the values for each group to get its digit. <code>rw-</code> = 4 + 2 = <strong>6</strong>. <code>r--</code> = 4 = <strong>4</strong>. So <code>rw-r--r--</code> = <strong>644</strong>. Octal notation is compact and widely used — you will see it constantly in documentation and commands like <code>chmod 755 script.sh</code>.</p>
+
+      <div class="widget-card" data-widget-name="Interactive">
+        <div class="widget-title">Linux Permissions Explorer</div>
+        <div class="widget-desc">Toggle the read, write, and execute bits for owner, group, and others. Watch the symbolic and octal representations update live.</div>
+        <div data-widget="linux-permissions"></div>
+      </div>
+
+      <h2>Package Management</h2>
+
+      <p>Installing software on Linux works differently than on Windows. Instead of navigating to a vendor's website, downloading a <code>.exe</code>, and clicking through an installation wizard, Linux uses a <strong>package manager</strong> — a command-line tool that fetches, installs, updates, and removes software from curated, cryptographically signed repositories.</p>
+
+      <p>The two most common package managers are <strong>apt</strong> (used on Debian and Ubuntu-family distributions) and <strong>dnf</strong> (used on Red Hat, Fedora, and Rocky Linux). The syntax differs slightly, but the concept is the same.</p>
+
+      <p>Installing the Nginx web server on Ubuntu:</p>
+      <pre style="background:var(--bg-alt);border-radius:var(--radius);padding:14px 18px;font-family:var(--font-mono);font-size:0.82rem;overflow-x:auto;margin:20px 0">sudo apt install nginx</pre>
+
+      <p>That single command downloads Nginx, verifies its cryptographic signature, installs it, and configures it to start on boot. Updating all installed software on the system:</p>
+      <pre style="background:var(--bg-alt);border-radius:var(--radius);padding:14px 18px;font-family:var(--font-mono);font-size:0.82rem;overflow-x:auto;margin:20px 0">sudo apt update &amp;&amp; sudo apt upgrade</pre>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Aspect</th>
+            <th>Linux (apt / dnf)</th>
+            <th>Windows</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Install software</td>
+            <td><code>sudo apt install nginx</code></td>
+            <td>Download .exe from vendor site, run wizard</td>
+          </tr>
+          <tr>
+            <td>Update all software</td>
+            <td><code>sudo apt upgrade</code></td>
+            <td>Windows Update (OS only) + separate updaters per app</td>
+          </tr>
+          <tr>
+            <td>Software source</td>
+            <td>Centralized, official distribution repositories</td>
+            <td>Varies — manufacturer site, app store, internet</td>
+          </tr>
+          <tr>
+            <td>Security verification</td>
+            <td>Cryptographic signatures on every package</td>
+            <td>Varies widely; no universal standard</td>
+          </tr>
+          <tr>
+            <td>Install multiple apps</td>
+            <td><code>sudo apt install vim git curl</code></td>
+            <td>One installer at a time</td>
+          </tr>
+          <tr>
+            <td>Automation / scripting</td>
+            <td>Fully scriptable; runs non-interactively</td>
+            <td>Limited (winget available in Windows 10+)</td>
+          </tr>
+          <tr>
+            <td>Remove software</td>
+            <td><code>sudo apt remove nginx</code></td>
+            <td>Control Panel / Apps &amp; Features</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Windows is catching up:</strong> Microsoft introduced <code>winget</code> (Windows Package Manager) in 2020, bringing command-line package management to Windows. The concept is the same as apt or dnf — install, update, and remove software from the terminal. It is not yet as comprehensive or universal as Linux package repositories, but it signals a recognition that scripted software management matters.
+      </div>
+
+      <h2>Where This Takes You</h2>
+
+      <p>This chapter gave you a working model of real-world operating systems and the practical tools that IT professionals use daily. The conceptual through-line connects directly to Chapter 7's abstraction stack: the kernel is the layer below user space, package managers are the layer above bare installs, and the shell is the universal interface that ties it all together.</p>
+
+      <p><strong>Chapter 9</strong> goes deeper into the filesystem — the tree structure that organizes everything stored on a system, how Linux and Windows organize that tree differently, and how directory services like Active Directory provide identity and access management across networks.</p>
+
+      <p><strong>Chapter 12</strong> (System Administration) returns to everything in this chapter with a hands-on focus: managing users, configuring services, reading logs, and automating routine tasks with shell scripts. The commands you practiced here are the vocabulary you will use there.</p>
+
+      <!-- Quiz -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Quiz</span>
+          <span class="practice-title">Chapter 8 Quiz</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. Which operating system family dominates web servers and cloud infrastructure?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Windows Server</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">B</span> macOS</button>
+            <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">C</span> Linux</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> ChromeOS</button>
+          </div>
+          <div class="mc-feedback" id="q1-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. Which best describes the Linux kernel's role?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> It provides the graphical desktop interface that users interact with.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> It manages processes, memory, and hardware access in a privileged execution mode below all user applications.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> It translates high-level programming languages into machine code.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> It stores user files and organizes them into the directory tree.</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. Which command prints your current location in the filesystem?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> ls</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> cd</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> where</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">D</span> pwd</button>
+          </div>
+          <div class="mc-feedback" id="q3-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. What does <code>ls -l</code> show that <code>ls</code> alone does not?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> Hidden files whose names begin with a dot.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">B</span> File permissions, owner, size, and last-modified date for each entry.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> The contents of each file in the directory.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> Only subdirectories, filtering out regular files.</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. In Linux file permissions, what does the execute (x) bit allow on a regular file?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> Reading the file's contents.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> Modifying the file's contents.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">C</span> Running the file as a program.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> Deleting the file permanently.</button>
+          </div>
+          <div class="mc-feedback" id="q5-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. A file has permissions <code>-rw-r--r--</code>. What can members of the file's group do?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Read and write.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">B</span> Read only.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">C</span> Execute only.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> Nothing — group members have no access to this file.</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. What is the octal notation for the permissions <code>rwxr-x---</code>?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> 775</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">B</span> 750</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> 755</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> 700</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. What is the primary purpose of <code>sudo</code>?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> To permanently switch your terminal session to the root account.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">B</span> To run a single command with root-level privileges without logging in as root.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> To display the superuser's home directory path.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> To install software packages from the terminal.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="q-text">9. Which command installs the Nginx web server on an Ubuntu system?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> install nginx</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">B</span> apt get nginx</button>
+            <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">C</span> sudo apt install nginx</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> yum install nginx</button>
+          </div>
+          <div class="mc-feedback" id="q9-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="q-text">10. Why do most production Linux servers run without a graphical desktop environment?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> Linux does not support graphical applications.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> Server hardware lacks the display output needed for a GUI.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> Desktop environments consume RAM and CPU for no useful server purpose, and SSH already provides full remote access without one.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> Server operating system licenses prohibit GUI software.</button>
+          </div>
+          <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+      </div>
+
+      <nav class="chapter-nav-footer">
+        <a href="ch07.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 7: System vs. Application Software</span>
+        </a>
+        <a href="ch09.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">File Systems &amp; Directory Services</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/shell-sim.js"></script>
+<script src="../widgets/linux-permissions.js"></script>
+
+<script>
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(',true)')) b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>
