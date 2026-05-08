@@ -378,14 +378,6 @@
         <strong>Hex beyond colors.</strong> Hexadecimal appears constantly in IT work — memory addresses, MAC addresses, error codes, cryptographic hashes, network packet dumps. Any time you see a string of 0–9 and A–F values, that's hex. The ability to read it fluently is a genuinely useful professional skill.
       </div>
 
-      <h2>Putting It Together: The Byte Inspector</h2>
-
-      <p>Here's a widget that makes the data types idea tangible. Eight bits, three different interpretations. The bits don't change — only what we decide they <em>mean</em>. Use the R / G / B buttons to choose which color channel the byte controls.</p>
-
-      <div data-widget="byte-inspector"></div>
-
-      <p>This is exactly what we meant at the end of Chapter 1 when we said "that's where data types come in." The bit pattern <span class="bin">01000001</span> is <span class="dec">65</span> as an integer, <strong>A</strong> as an ASCII character, and a particular intensity as a color channel value. Same bits. Different context, different meaning.</p>
-
       <h2>Representing Sound</h2>
 
       <p>Sound is pressure. When a speaker cone pushes forward, it compresses the air in front of it; when it pulls back, it creates a region of lower pressure. Those compressions and rarefactions travel outward as a wave, and when they reach your eardrum, you hear sound. The wave has a shape — a smooth, continuous curve that varies over time.</p>
@@ -838,6 +830,12 @@
       <p>That rule is a <strong>data type</strong>. When software declares an <code>int</code>, it tells the computer: treat these 32 bits as an integer. A <code>char</code> means: treat this byte as an ASCII character. The computer doesn't inherently know the difference. It stores bits. The meaning — and the responsibility for getting it right — belongs to the software.</p>
 
       <p>Hardware stores bits. Software assigns meaning. The boundary between them is where most of the interesting problems in computing live.</p>
+
+      <p>Here's a widget that makes that concrete. Eight bits, three different interpretations — the bits don't change, only what we decide they <em>mean</em>. Use the R / G / B buttons to choose which color channel the byte controls.</p>
+
+      <div data-widget="byte-inspector"></div>
+
+      <p>The bit pattern <span class="bin">01000001</span> is <span class="dec">65</span> as an integer, <strong>A</strong> as an ASCII character, and a particular intensity as a color channel value. Same bits. Different context, different meaning.</p>
 
       <!-- ── Practice Problems ── -->
       <div class="practice-block">
