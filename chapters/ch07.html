@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 7: System vs. Application Software — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter active"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 07 · Unit 3: Software</div>
+      <h1 class="chapter-title">System vs. Application Software</h1>
+      <div class="chapter-deco">&gt;_</div>
+      <p class="chapter-intro">Six chapters in, we have a complete picture of hardware — transistors, logic, CPUs, memory, buses, and I/O. Hardware alone does nothing. Software is the instructions that put it to work. This chapter is about how software is organized, layered, and delivered to the hardware beneath it.</p>
+    </header>
+
+    <article class="prose">
+
+      <p>A modern computer runs millions of lines of code written by thousands of different people who never coordinated directly — and it mostly works. A Python developer writes a line that saves a file. Somewhere below, the operating system gets involved. Somewhere below that, a device driver talks to a storage controller. Somewhere below that, electrons move through NAND flash cells. The Python developer doesn't know about any of that, and they don't need to. This chapter is about how that division of responsibility is organized — and why it works.</p>
+
+      <h2>Abstraction — The Central Idea</h2>
+
+      <p>The single most important concept in software organization is <strong>abstraction</strong>: hiding the complexity of a lower layer behind a clean, simple interface. Each layer in the system exposes exactly what the layer above needs and hides everything below it.</p>
+
+      <div class="definition">
+        <div class="def-term">Abstraction</div>
+        <p>Hiding the implementation details of a lower layer behind a well-defined interface, so that the layer above can do its work without knowing how the layer below operates.</p>
+      </div>
+
+      <p>This is not an accident or a convenience — it is the fundamental design principle that makes modern software possible. Without abstraction, every application developer would need to understand every storage controller, every GPU, every network card that might be installed on any machine their software ever runs on. That's obviously impossible. Abstraction draws clean lines: each layer is responsible for its own domain and provides a stable interface to the layer above, regardless of how the implementation below changes.</p>
+
+      <p>The entire software stack is built on this principle, layer by layer:</p>
+
+      <!-- SVG: The Software Abstraction Stack -->
+      <svg viewBox="0 0 600 292" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:600px;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="600" height="292" fill="#FDFAF4"/>
+
+        <!-- Layer 1: Applications (top — most abstract) -->
+        <rect x="20" y="14" width="560" height="40" rx="3" fill="#FDF0E6" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="34" y="34" dominant-baseline="middle" font-size="11" font-weight="700" fill="#7A2D08">Application Software</text>
+        <text x="572" y="34" dominant-baseline="middle" font-size="8.5" text-anchor="end" fill="#C1440E">Word, Chrome, VS Code, your company's ERP system</text>
+
+        <!-- Layer 2: OS APIs -->
+        <rect x="20" y="58" width="560" height="40" rx="3" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="34" y="78" dominant-baseline="middle" font-size="11" font-weight="700" fill="#1D4E7A">OS APIs &amp; Services</text>
+        <text x="572" y="78" dominant-baseline="middle" font-size="8.5" text-anchor="end" fill="#2564A0">file I/O, networking, display, memory allocation</text>
+
+        <!-- Layer 3: Device Drivers -->
+        <rect x="20" y="102" width="560" height="40" rx="3" fill="#E3EDE8" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="34" y="122" dominant-baseline="middle" font-size="11" font-weight="700" fill="#2E6B4F">Device Drivers</text>
+        <text x="572" y="122" dominant-baseline="middle" font-size="8.5" text-anchor="end" fill="#2E6B4F">GPU driver, NIC driver, USB driver — hardware-specific code</text>
+
+        <!-- Layer 4: OS Kernel -->
+        <rect x="20" y="146" width="560" height="40" rx="3" fill="#E8F0F8" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="34" y="166" dominant-baseline="middle" font-size="11" font-weight="700" fill="#1D4E7A">OS Kernel</text>
+        <text x="572" y="166" dominant-baseline="middle" font-size="8.5" text-anchor="end" fill="#1D4E7A">process, memory, and hardware management — Ch. 8</text>
+
+        <!-- Layer 5: Firmware -->
+        <rect x="20" y="190" width="560" height="40" rx="3" fill="#EDEBE5" stroke="#5A5248" stroke-width="1.5"/>
+        <text x="34" y="210" dominant-baseline="middle" font-size="11" font-weight="700" fill="#4A4640">Firmware (UEFI)</text>
+        <text x="572" y="210" dominant-baseline="middle" font-size="8.5" text-anchor="end" fill="#5A5248">initializes hardware; loads the OS bootloader on startup</text>
+
+        <!-- Layer 6: Hardware (bottom) -->
+        <rect x="20" y="234" width="560" height="40" rx="3" fill="#2A2420" stroke="#1A1410" stroke-width="1.5"/>
+        <text x="34" y="254" dominant-baseline="middle" font-size="11" font-weight="700" fill="#F5F2EB">Hardware</text>
+        <text x="572" y="254" dominant-baseline="middle" font-size="8.5" text-anchor="end" fill="#B8B0A4">CPU, RAM, storage, buses — Ch. 1–6</text>
+
+        <!-- Caption -->
+        <text x="300" y="282" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">Each layer hides the complexity below and provides a clean interface to the layer above. Dependencies flow downward.</text>
+      </svg>
+
+      <p>Each row is a layer of abstraction. An application developer works at the top — calling OS API functions without ever thinking about drivers or hardware. A driver developer works between the OS kernel and specific hardware. A firmware engineer works at the boundary between software and silicon. None of them need to understand the entire stack to do their job. Each layer is responsible for its slice, and honors the contract with the layer above it.</p>
+
+      <h2>System Software vs. Application Software</h2>
+
+      <p>The layers in the stack fall into two broad categories that IT professionals work with daily: <strong>system software</strong> and <strong>application software</strong>.</p>
+
+      <p><strong>System software</strong> manages hardware resources and provides the platform that everything else runs on. It includes the operating system, device drivers, firmware, and system utilities. System software is what IT departments install, configure, patch, and troubleshoot. Users rarely interact with it directly — it operates invisibly beneath the surface.</p>
+
+      <p><strong>Application software</strong> performs tasks for users. Word processors, web browsers, email clients, ERP systems, accounting tools, custom business applications — anything a person actually uses to get work done. Applications run on top of the platform system software provides, and they depend entirely on that platform for access to hardware.</p>
+
+      <div class="note">
+        <strong>Why the distinction matters for troubleshooting:</strong> When something breaks, the first diagnostic question is which layer the problem lives in. A printer that doesn't respond might be a hardware failure, a driver issue, a Windows service that stopped, or a misconfigured application — four completely different problems requiring different fixes. The stack is your map for narrowing down where to look.
+      </div>
+
+      <h2>Firmware and the Boot Sequence</h2>
+
+      <p><strong>Firmware</strong> is software embedded directly in hardware — stored in non-volatile flash memory on the motherboard and other components. Unlike OS software that lives on a drive, firmware ships with the hardware itself and runs before anything else. The firmware that manages the boot process on modern systems is called <strong>UEFI</strong> (Unified Extensible Firmware Interface), which replaced the older <strong>BIOS</strong> (Basic Input/Output System) standard. The underlying concept is the same: a small, privileged program that runs first, checks the hardware, and hands off to the OS.</p>
+
+      <p>Every time a PC is powered on, the same sequence plays out:</p>
+
+      <!-- SVG: Boot Sequence -->
+      <svg viewBox="0 0 530 92" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:530px;margin:20px auto;font-family:var(--font-body,sans-serif)">
+        <defs>
+          <marker id="boot-arr" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+            <path d="M0,0 L0,6 L6,3 z" fill="#8A857C"/>
+          </marker>
+        </defs>
+
+        <!-- Box 1: Power On -->
+        <rect x="10" y="24" width="86" height="44" rx="5" fill="#F6F4F1" stroke="#8A857C" stroke-width="1.5"/>
+        <text x="53" y="37" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#4A4640">Power</text>
+        <text x="53" y="53" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#4A4640">On</text>
+        <!-- Arrow 1 -->
+        <line x1="96" y1="46" x2="112" y2="46" stroke="#8A857C" stroke-width="1.5" marker-end="url(#boot-arr)"/>
+
+        <!-- Box 2: UEFI / POST -->
+        <rect x="114" y="24" width="86" height="44" rx="5" fill="#EDEBE5" stroke="#5A5248" stroke-width="1.5"/>
+        <text x="157" y="37" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#4A4640">UEFI /</text>
+        <text x="157" y="53" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="#5A5248">POST</text>
+        <!-- Arrow 2 -->
+        <line x1="200" y1="46" x2="216" y2="46" stroke="#8A857C" stroke-width="1.5" marker-end="url(#boot-arr)"/>
+
+        <!-- Box 3: Bootloader -->
+        <rect x="218" y="24" width="86" height="44" rx="5" fill="#E8F0F8" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="261" y="37" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="700" fill="#1D4E7A">Boot-</text>
+        <text x="261" y="53" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="700" fill="#1D4E7A">loader</text>
+        <!-- Arrow 3 -->
+        <line x1="304" y1="46" x2="320" y2="46" stroke="#8A857C" stroke-width="1.5" marker-end="url(#boot-arr)"/>
+
+        <!-- Box 4: OS Kernel -->
+        <rect x="322" y="24" width="86" height="44" rx="5" fill="#E3EDE8" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="365" y="37" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#2E6B4F">OS</text>
+        <text x="365" y="53" text-anchor="middle" dominant-baseline="middle" font-size="9.5" font-weight="700" fill="#2E6B4F">Kernel</text>
+        <!-- Arrow 4 -->
+        <line x1="408" y1="46" x2="424" y2="46" stroke="#8A857C" stroke-width="1.5" marker-end="url(#boot-arr)"/>
+
+        <!-- Box 5: Desktop / Login -->
+        <rect x="426" y="24" width="86" height="44" rx="5" fill="#FDF0E6" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="469" y="37" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#7A2D08">Desktop /</text>
+        <text x="469" y="53" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#7A2D08">Login</text>
+      </svg>
+
+      <p><strong>POST</strong> (Power-On Self Test) is UEFI's hardware check: it verifies that the CPU, RAM, and essential devices are present and responsive. A POST failure — signaled by beep codes or an on-screen error — means hardware isn't working before any OS code is involved. The <strong>bootloader</strong> is a tiny program stored on the EFI System Partition of your drive. UEFI finds it, loads it into RAM, and hands over control. The bootloader then finds the OS kernel on disk, loads it, and steps aside. From that point on, the OS is in charge.</p>
+
+      <div class="note">
+        <strong>Firmware updates are security-critical.</strong> UEFI firmware receives patches just like software does — vulnerabilities in firmware can allow attackers to compromise a machine below the OS level, making them invisible to antivirus and persistent across OS reinstalls. <strong>Secure Boot</strong>, a UEFI feature, prevents unsigned code from running during the boot sequence, blocking a class of malware that embeds itself before the OS loads. Keeping firmware updated and Secure Boot enabled are standard hardening steps for enterprise systems.
+      </div>
+
+      <h2>Device Drivers</h2>
+
+      <p>The OS kernel is written to work with hardware through generic, standardized interfaces. A <strong>device driver</strong> is the hardware-specific code that bridges the gap — it sits between the kernel and a particular device and translates generic OS commands into the exact instructions that specific hardware understands. When the OS says "read data from this storage device," the NVMe driver translates that into the precise command sequence the drive's controller expects.</p>
+
+      <p>This design is what makes it possible to plug in a new graphics card from any manufacturer and have it work — as long as a driver exists. The OS doesn't need to know the specifics of the GPU; it calls standard graphics interfaces, and the driver handles the rest. The same principle applies to every device: network cards, printers, webcams, USB audio interfaces. The kernel stays clean and generic; complexity lives in the driver.</p>
+
+      <p>Drivers run at the kernel level — they have privileged access to hardware and memory that normal applications don't. A bug in an application crashes the app. A bug in a driver can corrupt kernel memory and take down the entire system. This is why operating systems require drivers to be digitally <strong>signed</strong> — the OS verifies that the driver came from a known publisher and hasn't been tampered with before allowing it to run at that privilege level.</p>
+
+      <p>For IT support, driver troubleshooting is among the most common hardware-adjacent tasks: a device not responding after installation, incorrect behavior after an OS update, a blue screen tied to a specific driver file. The questions are always the same — is the right driver installed, is it the correct version, is it compatible with this OS release?</p>
+
+      <h2>User Interfaces: GUI and CLI</h2>
+
+      <p>All the layers below — hardware, firmware, kernel, drivers — ultimately exist to deliver computing capability to people. The interface through which people interact with that capability takes two fundamentally different forms: the <strong>graphical user interface (GUI)</strong> and the <strong>command line interface (CLI)</strong>. Both are important. They excel at different things and dominate in different environments.</p>
+
+      <h3>The GUI</h3>
+
+      <p>The GUI — windows, icons, menus, and a pointer (sometimes called the WIMP model) — was pioneered at Xerox PARC in the 1970s and brought to mass-market computing by Apple in 1984 and Microsoft shortly after. Its primary virtue is <strong>discoverability</strong>: a new user can sit down, explore menus, and find features without reading documentation. The interface reveals its capabilities visually. For desktop end users — the people an IT department supports — the GUI is almost always the right interface. It's also the right tool for tasks that are inherently visual: photo editing, document layout, video production. Nobody wants to describe a color palette to a command line.</p>
+
+      <h3>The CLI</h3>
+
+      <p>The CLI — a text prompt where you type commands and read text responses — looks primitive by comparison. It is not. For IT administration, the CLI is more capable in nearly every way that matters professionally:</p>
+
+      <ul>
+        <li><strong>Automation:</strong> A CLI command is just text. A sequence of commands can be saved in a <strong>shell script</strong> and executed identically, every time, on any compatible system. There is no reliable equivalent for GUI operations — you cannot save a sequence of mouse clicks and replay it on a different server.</li>
+        <li><strong>Remote access via SSH:</strong> The CLI works perfectly over an SSH connection — essentially just a text stream — with minimal bandwidth. Managing a server on the other side of the world requires the same network access as sending an email. GUI remote access (VNC, RDP) demands far more bandwidth and degrades badly on high-latency connections.</li>
+        <li><strong>No display required:</strong> Servers don't have monitors. Running a full graphical desktop environment on a machine no one ever sits at wastes CPU, RAM, and power. Servers run headless — no GUI at all — and are administered entirely over the network via CLI.</li>
+        <li><strong>Composability:</strong> CLI tools are designed to chain together. The output of one command can be piped directly as input to the next. A single line like <code>grep "ERROR" /var/log/syslog | sort | uniq -c | sort -rn | head -20</code> finds, counts, deduplicates, sorts, and displays the twenty most frequent error types in a system log — a multi-step task in any GUI tool, done in one line.</li>
+        <li><strong>Reproducibility:</strong> A shell script is documentation. If you configured a server by typing commands, you have an exact record of what was done. If you configured it by clicking through menus, you have nothing — and the next person to touch that server starts from scratch.</li>
+      </ul>
+
+      <table class="data-table" style="margin:24px 0">
+        <thead>
+          <tr>
+            <th>Characteristic</th>
+            <th>GUI</th>
+            <th>CLI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Primary input</td>
+            <td>Mouse and keyboard</td>
+            <td>Keyboard only</td>
+          </tr>
+          <tr>
+            <td>Learning curve</td>
+            <td>Gentle — visual and discoverable</td>
+            <td>Steeper — commands must be learned</td>
+          </tr>
+          <tr>
+            <td>Automation</td>
+            <td>Difficult — hard to script reliably</td>
+            <td>Excellent — commands chain into scripts</td>
+          </tr>
+          <tr>
+            <td>Remote access</td>
+            <td>VNC / RDP — bandwidth-intensive</td>
+            <td>SSH — works over any connection</td>
+          </tr>
+          <tr>
+            <td>Resource overhead</td>
+            <td>High (display server, window manager)</td>
+            <td>Near zero</td>
+          </tr>
+          <tr>
+            <td>Reproducibility</td>
+            <td>Difficult to document exactly</td>
+            <td>Commands are inherently a record</td>
+          </tr>
+          <tr>
+            <td>Dominant in</td>
+            <td>Desktops, end-user workstations</td>
+            <td>Servers, cloud, IT administration</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>The Shell and IT Administration</h3>
+
+      <p>The <strong>shell</strong> is the program that reads your typed commands and passes them to the OS for execution. On Linux and macOS, the most common shell is <strong>bash</strong> (Bourne Again Shell), with <strong>zsh</strong> also widely used. On Windows, the modern administrative shell is <strong>PowerShell</strong>. PowerShell isn't just a command prompt — it's a full scripting environment capable of managing Active Directory, configuring server roles, querying event logs, and automating virtually any Windows administration task. Even in a Windows-only environment, the CLI is how administration scales.</p>
+
+      <p>The practical reality for IT students: a substantial portion of enterprise infrastructure runs on Linux servers, and those servers are administered over SSH. The further your career moves toward infrastructure, cloud, networking, or security, the more central the CLI becomes. The gap between "I know how to use a computer" and "I can administer systems" is, to a significant degree, the CLI.</p>
+
+      <div class="note">
+        <strong>The CLI is the language of modern infrastructure.</strong> AWS, Azure, and Google Cloud all have full-featured CLIs. Kubernetes is administered via <code>kubectl</code>. Git — the version control system used by virtually every software team — is a CLI tool at its core. Docker, Ansible, Terraform — the entire modern infrastructure toolchain is CLI-first. Learning the command line pays dividends across every area of IT work, and the investment compounds over a career.
+      </div>
+
+      <h2>Why Abstraction Matters</h2>
+
+      <p>Step back and look at what the software stack achieves. A spreadsheet developer writes formulas without knowing anything about NAND flash. A database administrator optimizes queries without understanding how a NIC handles packets. A network engineer configures routing without knowing how x86 registers work. Each is an expert in their layer — and can be, precisely because the layers below are abstracted away.</p>
+
+      <p>This division is what lets the software industry operate at the scale it does. There are more lines of code running in production today than any individual could read in thousands of lifetimes. That code was written by people with different specializations, in different languages, for different hardware, across different decades — and it mostly works together because each layer honors its interface with the layer above and below it.</p>
+
+      <p>For IT professionals, the abstraction model has a direct practical use: it tells you where to look when something breaks. Device not recognized? Driver layer. Service won't start? OS layer. Machine won't boot? Firmware or bootloader. Application crashing? Application layer, or possibly the OS API it depends on. The stack is your diagnostic map.</p>
+
+      <p>In Chapter 8, we go inside the OS kernel — the layer that sits beneath all your applications and above all your hardware — and look at how real operating systems: Windows, Linux, and macOS manage the resources everything above them depends on.</p>
+
+      <!-- ── Practice Block ── -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Quiz</span>
+          <span class="practice-title">Chapter 7 Quiz</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. In the context of the software stack, what does "abstraction" mean?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Compressing programs so they occupy less disk space.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> Hiding the complexity of a lower layer behind a clean interface so the layer above doesn't need to know how it works.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> Converting high-level source code into machine instructions the CPU can execute.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> Encrypting data so only authorized software can access it.</button>
+          </div>
+          <div class="mc-feedback" id="q1-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. When a computer is powered on, which component runs first?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> The OS kernel — it initializes hardware and loads device drivers.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> The bootloader — it scans storage for an operating system to load.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">C</span> Firmware (UEFI/BIOS) — it runs POST and prepares hardware before handing off to the bootloader.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Device drivers — they establish communication with peripherals before the OS loads.</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. Which of the following is system software?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> A web browser used to access a company's HR portal.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> A spreadsheet application used by the accounting department.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">C</span> A device driver that translates between the OS kernel and a network card.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> A project management tool hosted in the cloud.</button>
+          </div>
+          <div class="mc-feedback" id="q3-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. A user installs a new graphics card. The display shows very low resolution and no 3D acceleration, but the card is physically seated correctly. What is the most likely cause?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> The PCIe slot is the wrong generation for this GPU.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">B</span> The graphics driver hasn't been installed — the OS is using a generic fallback display driver.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> The UEFI firmware needs to be updated to support the new GPU.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> The GPU requires more PCIe lanes than the motherboard provides.</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. What does POST (Power-On Self Test) do?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> Loads the OS kernel from the bootloader into RAM.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">B</span> Checks that the CPU, RAM, and essential hardware are functional before the OS starts.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> Verifies that all installed device drivers are signed and up to date.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> Initializes the GUI display server so the login screen can render.</button>
+          </div>
+          <div class="mc-feedback" id="q5-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. Why is the CLI preferred over a GUI for managing remote servers?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> CLI software runs faster because it uses a more efficient programming language than GUI software.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> Server hardware cannot run graphical software due to CPU architecture differences.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> CLI requires far less bandwidth, works over SSH, needs no display hardware, and can be automated via scripts.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> GUIs are not secure enough for server environments and are blocked by enterprise firewalls.</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. An IT administrator needs to apply the same configuration change to 300 Linux servers. What is the most efficient approach?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> Remote-desktop into each server one at a time and click through the GUI settings.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">B</span> Write a shell script with the required commands and run it across all servers via SSH.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> Purchase a GUI administration tool that can display all 300 servers on one screen.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> Reinstall the OS on each server from a pre-configured image that includes the new settings.</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. A Windows application cannot run on Linux without modification. What best explains this?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Linux CPUs use a different instruction set architecture than Windows CPUs.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> The .exe file format is incompatible with the Linux filesystem.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> The application calls Windows OS APIs that do not exist in the Linux kernel — the interface between layers differs.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> Linux does not support graphical applications — only command-line programs can run on it.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="q-text">9. Which best describes the role of a device driver?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> It manages the boot sequence and hands off control to the OS kernel after POST.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">B</span> It provides the graphical desktop interface that users interact with.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">C</span> It translates the OS kernel's generic hardware commands into the specific instructions a particular device understands.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> It encrypts data before writing it to storage so only authorized applications can read it.</button>
+          </div>
+          <div class="mc-feedback" id="q9-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="q-text">10. What is the primary purpose of Secure Boot?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> It encrypts the hard drive so OS files cannot be read without the correct key.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">B</span> It prevents unauthorized or unsigned code from running before the OS loads, blocking boot-level malware.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">C</span> It verifies that all device drivers are digitally signed by their manufacturer before installation.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> It backs up firmware settings to the cloud in case of hardware failure.</button>
+          </div>
+          <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+      </div>
+
+      <nav class="chapter-nav-footer">
+        <a href="ch06.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 6: I/O &amp; System Architecture</span>
+        </a>
+        <a href="ch08.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">Operating Systems</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+
+<script>
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>
