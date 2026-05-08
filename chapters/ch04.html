@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 4: Processors — Introduction to Digital Computation</title>
+  <title>Chapter 4: Processors â€” Introduction to Digital Computation</title>
   <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
@@ -14,33 +14,33 @@
     <div class="sidebar-logo">
       <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
       <div class="book-subtitle">A First-Principles Approach</div>
-      <div class="book-author">Wade Berner · SIUE</div>
+      <div class="book-author">Wade Berner Â· SIUE</div>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <div class="nav-unit-label">Unit 1 â€” Foundations</div>
       <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
       <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
       <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <div class="nav-unit-label">Unit 2 â€” Hardware</div>
       <a href="ch04.html" class="nav-chapter active"><span class="ch-num">04</span> Processors</a>
       <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
       <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 3 — Software</div>
+      <div class="nav-unit-label">Unit 3 â€” Software</div>
       <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
       <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
       <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <div class="nav-unit-label">Unit 4 â€” Networks</div>
       <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
       <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <div class="nav-unit-label">Unit 5 â€” Administration</div>
       <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
       <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
       <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
@@ -51,39 +51,39 @@
   <main class="main-content">
 
     <header class="chapter-header">
-      <div class="chapter-eyebrow">Chapter 04 · Unit 2: Hardware</div>
+      <div class="chapter-eyebrow">Chapter 04 Â· Unit 2: Hardware</div>
       <h1 class="chapter-title">Processors</h1>
       <div class="chapter-deco">CPU</div>
-      <p class="chapter-intro">The CPU is often called the "brain" of the computer. That's not wrong, but it's not quite right either. A brain is mysterious and creative. A CPU is something simpler — and in a way, more impressive. It does exactly one thing, over and over, billions of times per second.</p>
+      <p class="chapter-intro">The CPU is often called the "brain" of the computer. That's not wrong, but it's not quite right either. A brain is mysterious and creative. A CPU is something simpler â€” and in a way, more impressive. It does exactly one thing, over and over, billions of times per second.</p>
     </header>
 
     <article class="prose">
 
       <p>We've spent three chapters building up to this moment. We know what bits are, how they exist physically, and how they represent every kind of information. Now it's time to ask: what actually <em>processes</em> all those bits?</p>
 
-      <p>The answer is the <strong>Central Processing Unit</strong>, or <strong>CPU</strong>. And the first thing to understand about a CPU is that it doesn't do anything complicated. It executes instructions — one at a time, in sequence, at extraordinary speed. The complexity we experience as "computing" is nothing more than a very long sequence of very simple operations executed very fast.</p>
+      <p>The answer is the <strong>Central Processing Unit</strong>, or <strong>CPU</strong>. And the first thing to understand about a CPU is that it doesn't do anything complicated. It executes instructions â€” one at a time, in sequence, at extraordinary speed. The complexity we experience as "computing" is nothing more than a very long sequence of very simple operations executed very fast.</p>
 
       <h2>The CPU's One Job: Fetch, Decode, Execute</h2>
 
-      <p>Every CPU ever built — from the chip in a 1970s pocket calculator to the latest processor in a data center — operates on the same fundamental loop. It has three steps, and it repeats them for every single instruction a program contains.</p>
+      <p>Every CPU ever built â€” from the chip in a 1970s pocket calculator to the latest processor in a data center â€” operates on the same fundamental loop. It has three steps, and it repeats them for every single instruction a program contains.</p>
 
-      <p>Step one: <strong>Fetch</strong>. The CPU retrieves the next instruction from memory. It knows where to look because it maintains a register called the <strong>program counter</strong> — a pointer that always holds the memory address of the next instruction to execute.</p>
+      <p>Step one: <strong>Fetch</strong>. The CPU retrieves the next instruction from memory. It knows where to look because it maintains a register called the <strong>program counter</strong> â€” a pointer that always holds the memory address of the next instruction to execute.</p>
 
-      <p>Step two: <strong>Decode</strong>. The instruction arrives as a pattern of bits. The control unit interprets those bits to figure out what operation is being requested — is this an addition? A memory read? A comparison? — and prepares the relevant parts of the CPU to carry it out.</p>
+      <p>Step two: <strong>Decode</strong>. The instruction arrives as a pattern of bits. The control unit interprets those bits to figure out what operation is being requested â€” is this an addition? A memory read? A comparison? â€” and prepares the relevant parts of the CPU to carry it out.</p>
 
       <p>Step three: <strong>Execute</strong>. The operation happens. Numbers get added, memory gets read or written, comparisons get made. When it's done, the program counter advances to the next instruction, and the loop starts over.</p>
 
-      <p>That's it. Fetch, decode, execute. Every app you've ever used, every website you've ever visited, every video you've ever streamed — all of it reduced to this three-step loop, executing billions of times per second. We'll come back to this loop once we've covered what instructions actually look like — at that point the cycle will make much more sense stepped through with a real example.</p>
+      <p>That's it. Fetch, decode, execute. Every app you've ever used, every website you've ever visited, every video you've ever streamed â€” all of it reduced to this three-step loop, executing billions of times per second. We'll come back to this loop once we've covered what instructions actually look like â€” at that point the cycle will make much more sense stepped through with a real example.</p>
 
       <h2>Inside the CPU</h2>
 
-      <p>The CPU isn't a monolith — it's a collection of specialized components that work together to execute that loop. The three main ones are worth knowing.</p>
+      <p>The CPU isn't a monolith â€” it's a collection of specialized components that work together to execute that loop. The three main ones are worth knowing.</p>
 
-      <p>The <strong>Control Unit (CU)</strong> is the coordinator. It manages the fetch and decode steps, reads instructions from memory, interprets them, and orchestrates the rest of the CPU accordingly. It doesn't do math — it directs traffic.</p>
+      <p>The <strong>Control Unit (CU)</strong> is the coordinator. It manages the fetch and decode steps, reads instructions from memory, interprets them, and orchestrates the rest of the CPU accordingly. It doesn't do math â€” it directs traffic.</p>
 
       <p>The <strong>Arithmetic Logic Unit (ALU)</strong> is where computation actually happens. The ALU performs mathematical operations (addition, subtraction, multiplication) and logical operations (AND, OR, NOT, comparisons). When a program adds two numbers, that addition physically happens in the ALU, built from the transistors and logic gates we discussed in Chapters 2 and 3.</p>
 
-      <p>The <strong>Registers</strong> are the CPU's working memory — a small set of extremely fast storage locations that live directly on the processor chip. Registers hold the values the CPU is actively working with: the current instruction, the numbers being added, the result of a calculation. There are typically between 8 and 32 general-purpose registers in a modern CPU, each holding one word of data (32 or 64 bits). They're fast because they're right there on the chip — no waiting for data to travel from RAM.</p>
+      <p>The <strong>Registers</strong> are the CPU's working memory â€” a small set of extremely fast storage locations that live directly on the processor chip. Registers hold the values the CPU is actively working with: the current instruction, the numbers being added, the result of a calculation. There are typically between 8 and 32 general-purpose registers in a modern CPU, each holding one word of data (32 or 64 bits). They're fast because they're right there on the chip â€” no waiting for data to travel from RAM.</p>
 
       <!-- SVG: CPU internal anatomy -->
       <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -99,20 +99,20 @@
         <rect width="680" height="250" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="24" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">Inside the CPU</text>
 
-        <!-- CPU chip outline — well inside the viewBox -->
+        <!-- CPU chip outline â€” well inside the viewBox -->
         <rect x="24" y="36" width="480" height="180" rx="10" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="2" stroke-dasharray="6,3"/>
         <text x="264" y="228" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">CPU Die</text>
 
-        <!-- Control Unit — left column, vertically centered in chip -->
+        <!-- Control Unit â€” left column, vertically centered in chip -->
         <rect x="48" y="62" width="148" height="72" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
         <text x="122" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">CONTROL</text>
         <text x="122" y="103" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1D4E7A">UNIT</text>
         <text x="122" y="120" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fetch &amp; Decode</text>
 
-        <!-- Arrow CU → ALU (horizontal, centered on boxes) -->
+        <!-- Arrow CU â†’ ALU (horizontal, centered on boxes) -->
         <line x1="198" y1="98" x2="228" y2="98" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
 
-        <!-- ALU — right column -->
+        <!-- ALU â€” right column -->
         <rect x="230" y="62" width="148" height="72" rx="6" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="304" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">ARITHMETIC</text>
         <text x="304" y="103" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">LOGIC UNIT</text>
@@ -122,22 +122,22 @@
         <line x1="122" y1="136" x2="122" y2="158" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
         <line x1="304" y1="136" x2="304" y2="158" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr4)"/>
 
-        <!-- Registers — full width at bottom of chip -->
+        <!-- Registers â€” full width at bottom of chip -->
         <rect x="48" y="160" width="430" height="44" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
         <text x="263" y="178" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#5b2d8e">REGISTERS</text>
-        <text x="263" y="194" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fast on-chip storage  ·  R1  R2  R3  ...  ·  Program Counter</text>
+        <text x="263" y="194" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">Fast on-chip storage  Â·  R1  R2  R3  ...  Â·  Program Counter</text>
 
-        <!-- Memory box — outside CPU, right side, with comfortable margin -->
+        <!-- Memory box â€” outside CPU, right side, with comfortable margin -->
         <rect x="558" y="76" width="102" height="62" rx="6" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
         <text x="609" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">MEMORY</text>
         <text x="609" y="117" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">(RAM)</text>
 
-        <!-- CPU ↔ Memory arrows: two separate lines with labels above/below -->
-        <!-- Instructions arrow: CPU → Memory (top line) -->
+        <!-- CPU â†” Memory arrows: two separate lines with labels above/below -->
+        <!-- Instructions arrow: CPU â†’ Memory (top line) -->
         <line x1="506" y1="96" x2="556" y2="96" stroke="#C1440E" stroke-width="1.5" marker-end="url(#arr4r)"/>
         <text x="530" y="90" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8C3009">fetch instr.</text>
 
-        <!-- Data arrow: Memory → CPU (bottom line) -->
+        <!-- Data arrow: Memory â†’ CPU (bottom line) -->
         <line x1="556" y1="112" x2="506" y2="112" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr4r)"/>
         <text x="530" y="126" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8C3009">load/store data</text>
       </svg>
@@ -145,8 +145,8 @@
       <figure class="chapter-photo">
         <img src="../img/ch04-cpu-die.jpg" alt="Labeled die shot of an Intel Core i9-13900K processor showing the distinct functional regions etched in silicon">
         <figcaption>
-          A labeled die shot of the Intel Core i9-13900K (Raptor Lake, 2022). The distinct regions — P-cores, E-cores, cache rings, and the ring bus — correspond directly to the components described above. The entire die is roughly 25 × 10 mm and contains approximately 25 billion transistors.
-          <span class="photo-credit">Photo by JmsDoug &amp; Fritzchens Fritz · <a href="https://commons.wikimedia.org/wiki/File:Intel_Core_i9-13900K_Labelled_Die_Shot.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC0 (Public Domain)</span>
+          A labeled die shot of the Intel Core i9-13900K (Raptor Lake, 2022). The distinct regions â€” P-cores, E-cores, cache rings, and the ring bus â€” correspond directly to the components described above. The entire die is roughly 25 Ã— 10 mm and contains approximately 25 billion transistors.
+          <span class="photo-credit">Photo by JmsDoug &amp; Fritzchens Fritz Â· <a href="https://commons.wikimedia.org/wiki/File:Intel_Core_i9-13900K_Labelled_Die_Shot.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> Â· CC0 (Public Domain)</span>
         </figcaption>
       </figure>
 
@@ -154,9 +154,9 @@
 
       <p>We've said the CPU "executes instructions," but what is an instruction, exactly? Let's be precise.</p>
 
-      <p>An instruction is a single, atomic command to the CPU — the smallest unit of work it can perform. A program written in Python or Java contains thousands of lines of human-readable code, but before it runs, a compiler or interpreter translates all of that into a sequence of binary instructions the CPU can actually execute. Each one is just a pattern of bits.</p>
+      <p>An instruction is a single, atomic command to the CPU â€” the smallest unit of work it can perform. A program written in Python or Java contains thousands of lines of human-readable code, but before it runs, a compiler or interpreter translates all of that into a sequence of binary instructions the CPU can actually execute. Each one is just a pattern of bits.</p>
 
-      <p>Every instruction has two parts. The <strong>opcode</strong> (operation code) is a group of bits at the start that encodes <em>what</em> to do — add, compare, jump to a different instruction, load data from memory. The <strong>operands</strong> are the remaining bits that encode <em>what data to do it to</em> — either the data itself, or the register or memory address where the data lives.</p>
+      <p>Every instruction has two parts. The <strong>opcode</strong> (operation code) is a group of bits at the start that encodes <em>what</em> to do â€” add, compare, jump to a different instruction, load data from memory. The <strong>operands</strong> are the remaining bits that encode <em>what data to do it to</em> â€” either the data itself, or the register or memory address where the data lives.</p>
 
       <!-- SVG: Instruction anatomy -->
       <svg viewBox="0 0 680 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -172,22 +172,22 @@
         <!-- Opcode: bits 15-12 (4 bits) -->
         <rect x="40"  y="36" width="120" height="44" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
         <text x="100" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1D4E7A">0110</text>
-        <text x="100" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 15–12</text>
+        <text x="100" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 15â€“12</text>
 
         <!-- Operand 1: bits 11-8 (4 bits) -->
         <rect x="168" y="36" width="120" height="44" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="228" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1a6b4a">0001</text>
-        <text x="228" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 11–8</text>
+        <text x="228" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 11â€“8</text>
 
         <!-- Operand 2: bits 7-4 (4 bits) -->
         <rect x="296" y="36" width="120" height="44" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="356" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#1a6b4a">0010</text>
-        <text x="356" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 7–4</text>
+        <text x="356" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4A4640">bits 7â€“4</text>
 
         <!-- Unused: bits 3-0 -->
         <rect x="424" y="36" width="120" height="44" rx="4" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="484" y="54"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#B8B0A4">0000</text>
-        <text x="484" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#B8B0A4">bits 3–0 (unused)</text>
+        <text x="484" y="70"  text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" fill="#B8B0A4">bits 3â€“0 (unused)</text>
 
         <!-- Labels below -->
         <text x="100" y="100" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#1D4E7A">OPCODE</text>
@@ -200,37 +200,37 @@
       <p>Modern CPUs support dozens or hundreds of different instruction types. A few fundamental categories are worth knowing:</p>
 
       <ul>
-        <li><strong>Data movement</strong> — <code>MOVE</code>, <code>LOAD</code>, <code>STORE</code>: copy data between registers, or between registers and memory.</li>
-        <li><strong>Arithmetic</strong> — <code>ADD</code>, <code>SUB</code>, <code>MUL</code>: perform mathematical operations on values in registers.</li>
-        <li><strong>Logic</strong> — <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code>: perform bitwise operations on individual bits within a value.</li>
-        <li><strong>Comparison</strong> — <code>CMP</code>: compare two values and set flags in a status register that other instructions can check.</li>
-        <li><strong>Branch/Jump</strong> — <code>JMP</code>, <code>JZ</code>, <code>JNE</code>: change which instruction executes next, conditionally or unconditionally. This is how <code>if</code> statements and loops are implemented at the hardware level.</li>
-        <li><strong>Halt</strong> — <code>HALT</code>: stop execution.</li>
+        <li><strong>Data movement</strong> â€” <code>MOVE</code>, <code>LOAD</code>, <code>STORE</code>: copy data between registers, or between registers and memory.</li>
+        <li><strong>Arithmetic</strong> â€” <code>ADD</code>, <code>SUB</code>, <code>MUL</code>: perform mathematical operations on values in registers.</li>
+        <li><strong>Logic</strong> â€” <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code>: perform bitwise operations on individual bits within a value.</li>
+        <li><strong>Comparison</strong> â€” <code>CMP</code>: compare two values and set flags in a status register that other instructions can check.</li>
+        <li><strong>Branch/Jump</strong> â€” <code>JMP</code>, <code>JZ</code>, <code>JNE</code>: change which instruction executes next, conditionally or unconditionally. This is how <code>if</code> statements and loops are implemented at the hardware level.</li>
+        <li><strong>Halt</strong> â€” <code>HALT</code>: stop execution.</li>
       </ul>
 
-      <p>Every program you've ever run — every if statement, every loop, every function call — is ultimately compiled down into sequences of these simple instruction types. The ALU executes the arithmetic and logic instructions directly. The control unit handles data movement and branches. Together, they implement the full complexity of modern software from this tiny vocabulary.</p>
+      <p>Every program you've ever run â€” every if statement, every loop, every function call â€” is ultimately compiled down into sequences of these simple instruction types. The ALU executes the arithmetic and logic instructions directly. The control unit handles data movement and branches. Together, they implement the full complexity of modern software from this tiny vocabulary.</p>
 
       <h3>Putting It Together: The FDE Cycle on a Real Program</h3>
 
-      <p>Now that you know what instructions are — opcodes, operands, LOAD, STORE, ADD — the fetch-decode-execute cycle is worth seeing in action. The widget below compiles a three-line Python program into six assembly instructions and lets you step through every stage. Memory starts completely empty; every value is written by the program itself. Watch how the program counter, registers, and memory addresses change with each step.</p>
+      <p>Now that you know what instructions are â€” opcodes, operands, LOAD, STORE, ADD â€” the fetch-decode-execute cycle is worth seeing in action. The widget below compiles a three-line Python program into six assembly instructions and lets you step through every stage. Memory starts completely empty; every value is written by the program itself. Watch how the program counter, registers, and memory addresses change with each step.</p>
 
       <div data-widget="fde-cycle"></div>
 
-      <p>A few things to notice. First, memory started blank — nothing exists until a STORE instruction puts it there. Python's <code>a = 5</code> is not a declaration; it is an instruction that writes a value to a physical memory address. Second, the ALU never touched memory directly — data had to be LOADed into registers first, operated on, then STOREd back. Registers are the ALU's only workspace. Third, the program counter incremented by one for every instruction, stepping mechanically from <span class="hex">0x00</span> to <span class="hex">0x06</span>. No instruction was skipped, reordered, or anticipated — just the loop, six times in a row.</p>
+      <p>A few things to notice. First, memory started blank â€” nothing exists until a STORE instruction puts it there. Python's <code>a = 5</code> is not a declaration; it is an instruction that writes a value to a physical memory address. Second, the ALU never touched memory directly â€” data had to be LOADed into registers first, operated on, then STOREd back. Registers are the ALU's only workspace. Third, the program counter incremented by one for every instruction, stepping mechanically from <span class="hex">0x00</span> to <span class="hex">0x06</span>. No instruction was skipped, reordered, or anticipated â€” just the loop, six times in a row.</p>
 
       <h2>Word Size</h2>
 
-      <p>CPUs don't process data one bit at a time — that would be impossibly slow. Instead, they work with fixed-size chunks of bits called <strong>words</strong>. The word size is the natural unit of data the CPU processes in a single operation, and it matches the width of the CPU's general-purpose registers.</p>
+      <p>CPUs don't process data one bit at a time â€” that would be impossibly slow. Instead, they work with fixed-size chunks of bits called <strong>words</strong>. The word size is the natural unit of data the CPU processes in a single operation, and it matches the width of the CPU's general-purpose registers.</p>
 
-      <p>Modern CPUs are <strong>64-bit</strong>, meaning their registers hold 64 bits at a time, they process 64-bit values in a single instruction, and memory addresses are 64 bits wide. This is why your operating system is called "64-bit Windows" or "64-bit Linux." Earlier systems were 32-bit — which is why 32-bit operating systems can only address about 4 GB of RAM (2³² bytes). On a 64-bit system, the theoretical address space is 2⁶⁴ bytes — about 18 exabytes. We won't be running out of that any time soon.</p>
+      <p>Modern CPUs are <strong>64-bit</strong>, meaning their registers hold 64 bits at a time, they process 64-bit values in a single instruction, and memory addresses are 64 bits wide. This is why your operating system is called "64-bit Windows" or "64-bit Linux." Earlier systems were 32-bit â€” which is why 32-bit operating systems can only address about 4 GB of RAM (2Â³Â² bytes). On a 64-bit system, the theoretical address space is 2â¶â´ bytes â€” about 18 exabytes. We won't be running out of that any time soon.</p>
 
       <h2>Logic Gates: From Transistors to Computation</h2>
 
-      <p>We established in Chapter 2 that a transistor is an electrically controlled switch — on or off, representing <span class="bin">1</span> or <span class="bin">0</span>. But a single transistor can only hold one bit. How do you get from "a switch" to "an addition"?</p>
+      <p>We established in Chapter 2 that a transistor is an electrically controlled switch â€” on or off, representing <span class="bin">1</span> or <span class="bin">0</span>. But a single transistor can only hold one bit. How do you get from "a switch" to "an addition"?</p>
 
       <p>The answer is <strong>logic gates</strong>. A logic gate is a small circuit built from two or more transistors that performs a logical operation on its inputs and produces a single output bit. Gates are the bridge between physical transistors and the logical operations the ALU needs to perform.</p>
 
-      <p>There are a handful of fundamental gate types. Each one has a well-defined rule — a <strong>truth table</strong> — that specifies what output it produces for every possible combination of inputs.</p>
+      <p>There are a handful of fundamental gate types. Each one has a well-defined rule â€” a <strong>truth table</strong> â€” that specifies what output it produces for every possible combination of inputs.</p>
 
       <!-- SVG: Logic gates and truth tables -->
       <svg viewBox="0 0 680 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -322,16 +322,16 @@
         <line x1="16" y1="368" x2="664" y2="368" stroke="#D8D2C6" stroke-width="1"/>
       </svg>
 
-      <p>These four gates — NOT, AND, OR, XOR — plus one more called NAND (Not-AND, which outputs 0 only when both inputs are 1) are sufficient to build any digital circuit that can ever exist. This is not an overstatement. Every calculation your computer performs, every piece of data it stores, every comparison it makes — all of it can be reduced to combinations of these five gate types.</p>
+      <p>These four gates â€” NOT, AND, OR, XOR â€” plus one more called NAND (Not-AND, which outputs 0 only when both inputs are 1) are sufficient to build any digital circuit that can ever exist. This is not an overstatement. Every calculation your computer performs, every piece of data it stores, every comparison it makes â€” all of it can be reduced to combinations of these five gate types.</p>
 
       <h2>From Gates to Circuits: Building an Adder</h2>
 
-      <p>A single gate is useful but limited. The real power emerges when you wire gates together into <strong>circuits</strong>. Let's trace exactly how addition happens inside the ALU — starting from individual bits.</p>
+      <p>A single gate is useful but limited. The real power emerges when you wire gates together into <strong>circuits</strong>. Let's trace exactly how addition happens inside the ALU â€” starting from individual bits.</p>
 
       <p>Adding two single bits is simple. There are only four possible cases:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;font-size:0.9rem;">
-        0 + 0 = 0 &nbsp;&nbsp;&nbsp; 0 + 1 = 1 &nbsp;&nbsp;&nbsp; 1 + 0 = 1 &nbsp;&nbsp;&nbsp; 1 + 1 = 10 (binary for 2 — sum=0, carry=1)
+        0 + 0 = 0 &nbsp;&nbsp;&nbsp; 0 + 1 = 1 &nbsp;&nbsp;&nbsp; 1 + 0 = 1 &nbsp;&nbsp;&nbsp; 1 + 1 = 10 (binary for 2 â€” sum=0, carry=1)
       </p>
 
       <p>Notice that 1 + 1 produces two output bits: a <strong>sum</strong> bit and a <strong>carry</strong> bit (the carry is what you "carry over" to the next column, just like carrying a 1 in decimal addition). A circuit that handles this is called a <strong>half adder</strong>, and it's built from exactly two gates:</p>
@@ -352,7 +352,7 @@
         <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Half Adder</text>
 
         <rect x="18" y="30" width="644" height="150" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="340" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER  ·  Adds 2 single bits, outputs SUM and CARRY</text>
+        <text x="340" y="46" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8A857C">HALF ADDER  Â·  Adds 2 single bits, outputs SUM and CARRY</text>
 
         <!-- Input labels -->
         <text x="36" y="82"  font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
@@ -366,7 +366,7 @@
         <rect x="90" y="108" width="72" height="34" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="126" y="130" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">AND</text>
 
-        <!-- A wire: junction at x=62,y=78 → up to XOR top (y=67), down to AND top (y=117) -->
+        <!-- A wire: junction at x=62,y=78 â†’ up to XOR top (y=67), down to AND top (y=117) -->
         <line x1="50" y1="78"  x2="62" y2="78"  stroke="#B8B0A4" stroke-width="1.5"/>
         <circle cx="62" cy="78" r="3" fill="#B8B0A4"/>
         <line x1="62" y1="78"  x2="62" y2="67"  stroke="#B8B0A4" stroke-width="1.5"/>
@@ -374,7 +374,7 @@
         <line x1="62" y1="78"  x2="62" y2="117" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="62" y1="117" x2="90" y2="117" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- B wire: junction at x=68,y=120 → up to XOR bottom (y=83), down to AND bottom (y=133) -->
+        <!-- B wire: junction at x=68,y=120 â†’ up to XOR bottom (y=83), down to AND bottom (y=133) -->
         <line x1="50" y1="120" x2="68" y2="120" stroke="#B8B0A4" stroke-width="1.5"/>
         <circle cx="68" cy="120" r="3" fill="#B8B0A4"/>
         <line x1="68" y1="120" x2="68" y2="83"  stroke="#B8B0A4" stroke-width="1.5"/>
@@ -382,80 +382,80 @@
         <line x1="68" y1="120" x2="68" y2="133" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="68" y1="133" x2="90" y2="133" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- XOR output (y=75) → SUM -->
+        <!-- XOR output (y=75) â†’ SUM -->
         <line x1="162" y1="75" x2="220" y2="75" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
         <text x="226" y="79"  font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#8C3009">SUM</text>
         <text x="226" y="91"  font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A XOR B</text>
 
-        <!-- AND output (y=125) → CARRY -->
+        <!-- AND output (y=125) â†’ CARRY -->
         <line x1="162" y1="125" x2="220" y2="125" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-ha)"/>
         <text x="226" y="129" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">CARRY</text>
         <text x="226" y="141" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">A AND B</text>
 
-        <!-- Example box: y=155, bottom=180, inside panel (30+150=180) ✓ -->
+        <!-- Example box: y=155, bottom=180, inside panel (30+150=180) âœ“ -->
         <rect x="310" y="55" width="350" height="120" rx="4" fill="#EDE9DF" stroke="#D8D2C6" stroke-width="1"/>
         <text x="485" y="80"  text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#4A4640">Truth table</text>
-        <text x="485" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=0, B=0 → SUM=0, CARRY=0</text>
-        <text x="485" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=0, B=1 → SUM=1, CARRY=0</text>
-        <text x="485" y="130" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=1, B=0 → SUM=1, CARRY=0</text>
-        <text x="485" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">A=1, B=1 → SUM=0, CARRY=1</text>
+        <text x="485" y="100" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=0, B=0 â†’ SUM=0, CARRY=0</text>
+        <text x="485" y="115" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=0, B=1 â†’ SUM=1, CARRY=0</text>
+        <text x="485" y="130" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">A=1, B=0 â†’ SUM=1, CARRY=0</text>
+        <text x="485" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">A=1, B=1 â†’ SUM=0, CARRY=1</text>
       </svg>
 
       <!-- SVG 2: Full Adder (standalone) -->
       <!--
         LAYOUT (all coordinates verified before coding):
 
-        ViewBox: 680 × 220
+        ViewBox: 680 Ã— 220
 
         HA1 box:  x=80,  y=55,  w=110, h=50  right=190   A-input y=68,  B-input y=90,  SUM-out y=68,  CARRY-out y=90
         HA2 box:  x=310, y=95,  w=110, h=50  right=420   sum1-input y=108, Cin-input y=130, SUM-out y=108, CARRY-out y=130
         OR box:   x=470, y=55,  w=70,  h=50  right=540   top-input y=68,  bot-input y=92,  output y=80
 
         Wire routing:
-          A   (label x=18,y=66):  x=32,y=65 → x=60,y=65 → y=68 → x=80  (HA1 A-input)
-          B   (label x=18,y=92):  x=32,y=91 → x=65,y=91 → y=90 → x=80  (HA1 B-input)
-          Cin (label x=18,y=160): x=32,y=160 → x=65,y=160 → y=130 → x=310 (HA2 Cin-input)
+          A   (label x=18,y=66):  x=32,y=65 â†’ x=60,y=65 â†’ y=68 â†’ x=80  (HA1 A-input)
+          B   (label x=18,y=92):  x=32,y=91 â†’ x=65,y=91 â†’ y=90 â†’ x=80  (HA1 B-input)
+          Cin (label x=18,y=160): x=32,y=160 â†’ x=65,y=160 â†’ y=130 â†’ x=310 (HA2 Cin-input)
 
-          HA1 SUM (x=190,y=68) → x=210,y=68 → y=108 → x=310  [LANE x=210, label "sum1" at x=213,y=90]
-          HA1 CARRY (x=190,y=90) → x=225,y=90 → y=68 → x=470  [LANE x=225, label "c1" at x=228,y=88]
-            NOTE: y=90→y=68 goes UP (CARRY goes to OR top input). x=225 is between HA1 right (190) and HA2 left (310). Clear of sum1 lane (x=210). ✓
+          HA1 SUM (x=190,y=68) â†’ x=210,y=68 â†’ y=108 â†’ x=310  [LANE x=210, label "sum1" at x=213,y=90]
+          HA1 CARRY (x=190,y=90) â†’ x=225,y=90 â†’ y=68 â†’ x=470  [LANE x=225, label "c1" at x=228,y=88]
+            NOTE: y=90â†’y=68 goes UP (CARRY goes to OR top input). x=225 is between HA1 right (190) and HA2 left (310). Clear of sum1 lane (x=210). âœ“
 
-          HA2 CARRY (x=420,y=130) → x=445,y=130 → y=92 → x=470  [LANE x=445, label "c2" at x=448,y=128]
-            NOTE: y=130→y=92 goes UP (CARRY goes to OR bottom input). x=445 is between HA2 right (420) and OR left (470). ✓
+          HA2 CARRY (x=420,y=130) â†’ x=445,y=130 â†’ y=92 â†’ x=470  [LANE x=445, label "c2" at x=448,y=128]
+            NOTE: y=130â†’y=92 goes UP (CARRY goes to OR bottom input). x=445 is between HA2 right (420) and OR left (470). âœ“
 
-          HA2 SUM (x=420,y=108) → arrow to x=560, label "SUM" at x=566
-            NOTE: y=108 is below OR box bottom (y=55+50=105). y=108 > 105. CLEAR ✓
+          HA2 SUM (x=420,y=108) â†’ arrow to x=560, label "SUM" at x=566
+            NOTE: y=108 is below OR box bottom (y=55+50=105). y=108 > 105. CLEAR âœ“
 
-          OR output (x=540,y=80) → arrow to x=560, label "Cout" at x=566
-            NOTE: y=80, well above SUM wire (y=108). No crossing. ✓
+          OR output (x=540,y=80) â†’ arrow to x=560, label "Cout" at x=566
+            NOTE: y=80, well above SUM wire (y=108). No crossing. âœ“
 
-        Cross-check — does c1 horizontal (y=68, x=225→470) cross HA2 box (x=310–420, y=95–145)? 
-          y=68 < HA2 top (y=95). CLEAR ✓
-        Does Cin wire (y=160→130, x=65) cross HA1 box (x=80–190, y=55–105)?
-          x=65 < HA1 left (x=80). CLEAR ✓
-        Does HA2 SUM arrow (y=108, x=420→560) cross OR box (x=470–540, y=55–105)?
-          y=108 > OR bottom (y=105). CLEAR ✓ (just 3px — add extra safety: drop SUM to y=112)
+        Cross-check â€” does c1 horizontal (y=68, x=225â†’470) cross HA2 box (x=310â€“420, y=95â€“145)? 
+          y=68 < HA2 top (y=95). CLEAR âœ“
+        Does Cin wire (y=160â†’130, x=65) cross HA1 box (x=80â€“190, y=55â€“105)?
+          x=65 < HA1 left (x=80). CLEAR âœ“
+        Does HA2 SUM arrow (y=108, x=420â†’560) cross OR box (x=470â€“540, y=55â€“105)?
+          y=108 > OR bottom (y=105). CLEAR âœ“ (just 3px â€” add extra safety: drop SUM to y=112)
 
         Updated: HA2 SUM-out y=112, Cin-input y=134, HA2 CARRY-out y=134
-        HA2 box y=95,h=50→bottom=145. sum1-input y=108, Cin-input y=132.
+        HA2 box y=95,h=50â†’bottom=145. sum1-input y=108, Cin-input y=132.
         HA2 SUM arrow at y=112 vs OR bottom at y=105: still only 7px. Move OR down:
         
         FINAL SAFE LAYOUT:
-          HA1: x=80, y=45, w=110, h=50  → bottom=95.  A-in y=58, B-in y=80, SUM-out y=58, CARRY-out y=80
-          HA2: x=310, y=115, w=110, h=50 → bottom=165. sum1-in y=128, Cin-in y=150, SUM-out y=128, CARRY-out y=150
-          OR:  x=470, y=45, w=70, h=50  → bottom=95.  top-in y=58, bot-in y=82, output y=70
+          HA1: x=80, y=45, w=110, h=50  â†’ bottom=95.  A-in y=58, B-in y=80, SUM-out y=58, CARRY-out y=80
+          HA2: x=310, y=115, w=110, h=50 â†’ bottom=165. sum1-in y=128, Cin-in y=150, SUM-out y=128, CARRY-out y=150
+          OR:  x=470, y=45, w=70, h=50  â†’ bottom=95.  top-in y=58, bot-in y=82, output y=70
 
-          HA1 SUM (y=58) → x=210,y=58 → y=128 → x=310  label "sum1" x=213,y=95 (midpoint 58→128=93)
-          HA1 CARRY (y=80) → x=225,y=80 → y=58 → x=470  label "c1" x=228,y=78
-            y=80→y=58: goes UP. x=225→x=470: passes OVER HA2 (y=115–165) since y=58 < 115. ✓
+          HA1 SUM (y=58) â†’ x=210,y=58 â†’ y=128 â†’ x=310  label "sum1" x=213,y=95 (midpoint 58â†’128=93)
+          HA1 CARRY (y=80) â†’ x=225,y=80 â†’ y=58 â†’ x=470  label "c1" x=228,y=78
+            y=80â†’y=58: goes UP. x=225â†’x=470: passes OVER HA2 (y=115â€“165) since y=58 < 115. âœ“
 
-          HA2 CARRY (y=150) → x=445,y=150 → y=82 → x=470  label "c2" x=448,y=148
-          HA2 SUM (y=128) → arrow x=420→575  label "SUM" x=581
-            y=128 vs OR bottom y=95: y=128 > 95. ✓
-          OR output (y=70) → arrow x=540→575  label "Cout" x=581
+          HA2 CARRY (y=150) â†’ x=445,y=150 â†’ y=82 â†’ x=470  label "c2" x=448,y=148
+          HA2 SUM (y=128) â†’ arrow x=420â†’575  label "SUM" x=581
+            y=128 vs OR bottom y=95: y=128 > 95. âœ“
+          OR output (y=70) â†’ arrow x=540â†’575  label "Cout" x=581
 
-          Cin wire: x=32,y=170 → x=65,y=170 → y=150 → x=310
-            x=65 < HA1 left (80). ✓
+          Cin wire: x=32,y=170 â†’ x=65,y=170 â†’ y=150 â†’ x=310
+            x=65 < HA1 left (80). âœ“
 
           ViewBox height: HA2 bottom=165, need room for Cin label. Use height=200.
       -->
@@ -467,9 +467,9 @@
         </defs>
         <rect width="680" height="200" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Full Adder</text>
-        <text x="340" y="38" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Two half adders + OR gate — adds 2 bits plus a carry-in</text>
+        <text x="340" y="38" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Two half adders + OR gate â€” adds 2 bits plus a carry-in</text>
 
-        <!-- ── BOXES ── -->
+        <!-- â”€â”€ BOXES â”€â”€ -->
         <!-- HA1: x=80, y=45, w=110, h=50, bottom=95 -->
         <rect x="80" y="45" width="110" height="50" rx="6" fill="#EDE9DF" stroke="#B8B0A4" stroke-width="1.5"/>
         <text x="135" y="67" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="#4A4640">Half Adder 1</text>
@@ -484,28 +484,28 @@
         <rect x="470" y="45" width="70" height="50" rx="6" fill="#ede4f7" stroke="#5b2d8e" stroke-width="1.5"/>
         <text x="505" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#5b2d8e">OR</text>
 
-        <!-- ── INPUT LABELS & WIRES ── -->
-        <!-- A: label y=56, wire at y=58 → HA1 A-input (top third of HA1) -->
+        <!-- â”€â”€ INPUT LABELS & WIRES â”€â”€ -->
+        <!-- A: label y=56, wire at y=58 â†’ HA1 A-input (top third of HA1) -->
         <text x="18" y="61" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">A</text>
         <line x1="32" y1="58" x2="60" y2="58" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="60" y1="58" x2="60" y2="58" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="60" y1="58" x2="80" y2="58" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- B: label y=83, wire at y=80 → HA1 B-input (bottom third of HA1) -->
+        <!-- B: label y=83, wire at y=80 â†’ HA1 B-input (bottom third of HA1) -->
         <text x="18" y="83" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#1D4E7A">B</text>
         <line x1="32" y1="80" x2="65" y2="80" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="65" y1="80" x2="80" y2="80" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- Cin: label y=173, wire at y=150 → HA2 Cin-input (bottom third of HA2) -->
+        <!-- Cin: label y=173, wire at y=150 â†’ HA2 Cin-input (bottom third of HA2) -->
         <!-- x=65 is left of HA1 (x=80), so no crossing with HA1 -->
         <text x="18" y="173" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">Cin</text>
         <line x1="40" y1="170" x2="65" y2="170" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="65" y1="170" x2="65" y2="150" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="65" y1="150" x2="310" y2="150" stroke="#B8B0A4" stroke-width="1.5"/>
 
-        <!-- ── INTERNAL WIRES ── -->
+        <!-- â”€â”€ INTERNAL WIRES â”€â”€ -->
 
-        <!-- HA1 SUM-out (x=190, y=58) → lane x=210 → down to y=128 → right to HA2 sum1-input (x=310, y=128) -->
+        <!-- HA1 SUM-out (x=190, y=58) â†’ lane x=210 â†’ down to y=128 â†’ right to HA2 sum1-input (x=310, y=128) -->
         <!-- Lane x=210. Vertical: y=58 down to y=128. Passes through gap between HA1 bottom (y=95) and HA2 top (y=115). CLEAR. -->
         <line x1="190" y1="58"  x2="210" y2="58"  stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="210" y1="58"  x2="210" y2="128" stroke="#B8B0A4" stroke-width="1.5"/>
@@ -513,50 +513,50 @@
         <!-- "sum1" label: midpoint of vertical is y=(58+128)/2=93, sits in the 20px gap between HA1 bottom (95) and label is just above -->
         <text x="214" y="91" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">sum1</text>
 
-        <!-- HA1 CARRY-out (x=190, y=80) → lane x=225 → UP to y=58 → right to OR top-input (x=470, y=58) -->
-        <!-- Lane x=225. y=80 → y=58 (UP 22px). Horizontal at y=58 goes x=225→470.
+        <!-- HA1 CARRY-out (x=190, y=80) â†’ lane x=225 â†’ UP to y=58 â†’ right to OR top-input (x=470, y=58) -->
+        <!-- Lane x=225. y=80 â†’ y=58 (UP 22px). Horizontal at y=58 goes x=225â†’470.
              Does y=58 horizontal cross HA2 (x=310-420, y=115-165)? y=58 < 115. CLEAR. -->
         <line x1="190" y1="80"  x2="225" y2="80"  stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="225" y1="80"  x2="225" y2="58"  stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="225" y1="58"  x2="470" y2="58"  stroke="#B8B0A4" stroke-width="1.5"/>
         <text x="228" y="78" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c1</text>
 
-        <!-- HA2 CARRY-out (x=420, y=150) → lane x=445 → UP to y=82 → right to OR bot-input (x=470, y=82) -->
-        <!-- Lane x=445. Between HA2 right (420) and OR left (470). y=150 → y=82 (UP 68px). CLEAR of all boxes. -->
+        <!-- HA2 CARRY-out (x=420, y=150) â†’ lane x=445 â†’ UP to y=82 â†’ right to OR bot-input (x=470, y=82) -->
+        <!-- Lane x=445. Between HA2 right (420) and OR left (470). y=150 â†’ y=82 (UP 68px). CLEAR of all boxes. -->
         <line x1="420" y1="150" x2="445" y2="150" stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="445" y1="150" x2="445" y2="82"  stroke="#B8B0A4" stroke-width="1.5"/>
         <line x1="445" y1="82"  x2="470" y2="82"  stroke="#B8B0A4" stroke-width="1.5"/>
         <text x="448" y="148" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">c2</text>
 
-        <!-- ── OUTPUT WIRES ── -->
-        <!-- HA2 SUM-out (x=420, y=128) → arrow right to SUM label -->
+        <!-- â”€â”€ OUTPUT WIRES â”€â”€ -->
+        <!-- HA2 SUM-out (x=420, y=128) â†’ arrow right to SUM label -->
         <!-- y=128 vs OR bottom y=95: 128 > 95, CLEAR of OR box. -->
         <line x1="420" y1="128" x2="568" y2="128" stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-fa)"/>
         <text x="575" y="132" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#8C3009">SUM</text>
 
-        <!-- OR output (x=540, y=70) → arrow right to Cout label -->
+        <!-- OR output (x=540, y=70) â†’ arrow right to Cout label -->
         <line x1="540" y1="70"  x2="568" y2="70"  stroke="#B8B0A4" stroke-width="1.5" marker-end="url(#arr-fa)"/>
         <text x="575" y="74" font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" fill="#5b2d8e">Cout</text>
         <text x="575" y="86" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">(carry out)</text>
 
         <!-- Bottom caption -->
-        <text x="340" y="192" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Eight full adders chained = 8-bit adder circuit — this is literally how your CPU adds numbers</text>
+        <text x="340" y="192" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Eight full adders chained = 8-bit adder circuit â€” this is literally how your CPU adds numbers</text>
       </svg>
 
 
-      <p>A <strong>full adder</strong> extends the half adder by also accepting a <em>carry-in</em> from the previous column — exactly as you carry digits in pencil-and-paper addition. A full adder is built from two half adders plus an OR gate. And here's the payoff: chain eight full adders together and you have an 8-bit adder — a circuit that can add any two 8-bit numbers and produce an 8-bit result with a carry-out. That is literally how your CPU's ALU adds numbers. The same principle scales to 32-bit and 64-bit adders.</p>
+      <p>A <strong>full adder</strong> extends the half adder by also accepting a <em>carry-in</em> from the previous column â€” exactly as you carry digits in pencil-and-paper addition. A full adder is built from two half adders plus an OR gate. And here's the payoff: chain eight full adders together and you have an 8-bit adder â€” a circuit that can add any two 8-bit numbers and produce an 8-bit result with a carry-out. That is literally how your CPU's ALU adds numbers. The same principle scales to 32-bit and 64-bit adders.</p>
 
-      <p>You are now looking at the bottom of the stack. Transistors become gates. Gates become circuits. Circuits become an ALU. The ALU executes instructions. Instructions run your software. This chain — from physics to programs — is what Chapter 2 meant when it said "everything else is built on top of that."</p>
+      <p>You are now looking at the bottom of the stack. Transistors become gates. Gates become circuits. Circuits become an ALU. The ALU executes instructions. Instructions run your software. This chain â€” from physics to programs â€” is what Chapter 2 meant when it said "everything else is built on top of that."</p>
 
       <div class="note">
-        <strong>Want to go deeper?</strong> If this section sparked something for you, check out <a href="https://www.nand2tetris.org" target="_blank" rel="noopener"><em>NAND to Tetris</em></a> — a free online course that walks you through building an entire general-purpose computer from primitive NAND gates up through an operating system.
+        <strong>Want to go deeper?</strong> If this section sparked something for you, check out <a href="https://www.nand2tetris.org" target="_blank" rel="noopener"><em>NAND to Tetris</em></a> â€” a free online course that walks you through building an entire general-purpose computer from primitive NAND gates up through an operating system.
       </div>
 
       <h2>Clock Speed</h2>
 
       <p>In Chapter 2, we introduced clock speed as the frequency at which a CPU's internal oscillator ticks. Let's unpack what that actually means for performance.</p>
 
-      <p>Each tick of the clock is an opportunity to complete one stage of the fetch-decode-execute cycle. A processor running at <strong>3.0 GHz</strong> completes 3 billion ticks per second. With a simplified model where each instruction takes 3 clock cycles (fetch, decode, execute), that's roughly 1 billion instructions per second — though in reality, modern processors use pipelining and other tricks to approach much higher throughput.</p>
+      <p>Each tick of the clock is an opportunity to complete one stage of the fetch-decode-execute cycle. A processor running at <strong>3.0 GHz</strong> completes 3 billion ticks per second. With a simplified model where each instruction takes 3 clock cycles (fetch, decode, execute), that's roughly 1 billion instructions per second â€” though in reality, modern processors use pipelining and other tricks to approach much higher throughput.</p>
 
       <!-- SVG: Clock cycle timeline -->
       <svg viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -616,7 +616,7 @@
         <text x="579" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#1a6b4a">EXECUTE</text>
       </svg>
 
-      <p>So if clock speed is so important, why not just keep cranking it up? In the early 2000s, that's exactly what Intel and AMD were doing — racing past 1 GHz, 2 GHz, 3 GHz. Then around 2004, they hit a wall.</p>
+      <p>So if clock speed is so important, why not just keep cranking it up? In the early 2000s, that's exactly what Intel and AMD were doing â€” racing past 1 GHz, 2 GHz, 3 GHz. Then around 2004, they hit a wall.</p>
 
       <p>The problem is heat. Faster transistors switch faster, but they also dissipate more power as heat. Beyond roughly 4 GHz with conventional silicon, chips start generating so much heat that they become unreliable or outright melt. You can pour more power into a processor, but at some point it becomes a space heater that incidentally does some computing.</p>
 
@@ -626,18 +626,18 @@
 
       <h2>Cores: Width Over Speed</h2>
 
-      <p>When the clock speed wall appeared, the industry's solution was elegant in its simplicity: instead of making one processor faster, put multiple processors on the same chip. Each processor — called a <strong>core</strong> — has its own control unit, ALU, and registers. A four-core chip has four independent fetch-decode-execute loops running simultaneously.</p>
+      <p>When the clock speed wall appeared, the industry's solution was elegant in its simplicity: instead of making one processor faster, put multiple processors on the same chip. Each processor â€” called a <strong>core</strong> â€” has its own control unit, ALU, and registers. A four-core chip has four independent fetch-decode-execute loops running simultaneously.</p>
 
       <div class="definition">
         <div class="def-term">Core</div>
         <p>An independent processing unit within a CPU. Each core has its own control unit, ALU, and registers, and can execute instructions independently. A quad-core processor has four cores; an octa-core has eight.</p>
       </div>
 
-      <p>This is the difference between making a single worker faster versus hiring more workers. Beyond a certain point, one faster worker doesn't help much — more workers in parallel do.</p>
+      <p>This is the difference between making a single worker faster versus hiring more workers. Beyond a certain point, one faster worker doesn't help much â€” more workers in parallel do.</p>
 
-      <p>But there's a catch: not all work benefits equally from parallelism. Some tasks are inherently sequential — step B can't start until step A finishes. Running a spreadsheet calculation that depends on previous results, rendering a single video frame, or booting an operating system all have sequential dependencies that extra cores can't accelerate. Other tasks are <em>embarrassingly parallel</em> — rendering many video frames at once, serving thousands of simultaneous web requests, training an AI model across a large dataset — and scale beautifully with additional cores.</p>
+      <p>But there's a catch: not all work benefits equally from parallelism. Some tasks are inherently sequential â€” step B can't start until step A finishes. Running a spreadsheet calculation that depends on previous results, rendering a single video frame, or booting an operating system all have sequential dependencies that extra cores can't accelerate. Other tasks are <em>embarrassingly parallel</em> â€” rendering many video frames at once, serving thousands of simultaneous web requests, training an AI model across a large dataset â€” and scale beautifully with additional cores.</p>
 
-      <p>As an IT professional, this distinction matters when specifying hardware. A database server handling thousands of concurrent queries needs many cores. A developer's workstation running a single compile job cares more about single-core clock speed. There's no universally "best" processor — only the right processor for the workload.</p>
+      <p>As an IT professional, this distinction matters when specifying hardware. A database server handling thousands of concurrent queries needs many cores. A developer's workstation running a single compile job cares more about single-core clock speed. There's no universally "best" processor â€” only the right processor for the workload.</p>
 
       <!-- SVG: Single core vs multi-core -->
       <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -646,11 +646,11 @@
 
         <!-- Single-core panel: height=150 so caption at y=172 is clear of core box (bottom=132) -->
         <rect x="18" y="34" width="252" height="150" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="144" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">SINGLE-CORE  ·  4.0 GHz</text>
+        <text x="144" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">SINGLE-CORE  Â·  4.0 GHz</text>
         <rect x="46" y="60" width="196" height="72" rx="6" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="2"/>
         <text x="144" y="93" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="13" font-weight="700" fill="#1D4E7A">CORE 1</text>
         <text x="144" y="110" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">4.0 GHz</text>
-        <!-- Caption: core box bottom = 60+72=132, panel bottom = 34+150=184, caption at y=172 → clear -->
+        <!-- Caption: core box bottom = 60+72=132, panel bottom = 34+150=184, caption at y=172 â†’ clear -->
         <text x="144" y="172" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">One instruction stream</text>
 
         <!-- VS label -->
@@ -658,9 +658,9 @@
 
         <!-- Quad-core panel: height=150, starts at x=410 ends at x=662 -->
         <rect x="410" y="34" width="252" height="150" rx="8" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="536" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">QUAD-CORE  ·  3.0 GHz</text>
+        <text x="536" y="52" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#8A857C">QUAD-CORE  Â·  3.0 GHz</text>
 
-        <!-- 2×2 grid: row1 y=60–100, row2 y=108–148. Panel bottom=184, caption at y=172 → clear of row2 bottom=148 -->
+        <!-- 2Ã—2 grid: row1 y=60â€“100, row2 y=108â€“148. Panel bottom=184, caption at y=172 â†’ clear of row2 bottom=148 -->
         <rect x="422" y="60" width="108" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="476" y="84" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 1  3 GHz</text>
 
@@ -673,17 +673,17 @@
         <rect x="542" y="108" width="108" height="40" rx="5" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="596" y="132" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">CORE 4  3 GHz</text>
 
-        <!-- Caption: 24px below last row bottom (148) → y=172 -->
+        <!-- Caption: 24px below last row bottom (148) â†’ y=172 -->
         <text x="536" y="172" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Four parallel instruction streams</text>
       </svg>
 
       <h2>Pipelining: The Assembly Line</h2>
 
-      <p>In 1913, Henry Ford transformed automobile manufacturing with the moving assembly line. Instead of one worker building an entire car start to finish, he broke production into discrete stages — engine installation, wheel mounting, body painting — with each worker specializing in one stage. While one car was getting its wheels, the next car was getting its engine, and the one after that was getting its body. Multiple cars in production simultaneously, each at a different stage.</p>
+      <p>In 1913, Henry Ford transformed automobile manufacturing with the moving assembly line. Instead of one worker building an entire car start to finish, he broke production into discrete stages â€” engine installation, wheel mounting, body painting â€” with each worker specializing in one stage. While one car was getting its wheels, the next car was getting its engine, and the one after that was getting its body. Multiple cars in production simultaneously, each at a different stage.</p>
 
       <p>CPU designers had the same insight decades later. The fetch-decode-execute cycle has distinct stages. Why let a core sit idle during decode when it could already be fetching the next instruction?</p>
 
-      <p><strong>Pipelining</strong> overlaps the execution stages of consecutive instructions. While instruction 2 is being decoded, instruction 3 is being fetched — and instruction 1 is executing. Multiple instructions are in-flight simultaneously, each at a different stage of the pipeline. The individual stages don't get faster, but the throughput — instructions completed per second — increases dramatically.</p>
+      <p><strong>Pipelining</strong> overlaps the execution stages of consecutive instructions. While instruction 2 is being decoded, instruction 3 is being fetched â€” and instruction 1 is executing. Multiple instructions are in-flight simultaneously, each at a different stage of the pipeline. The individual stages don't get faster, but the throughput â€” instructions completed per second â€” increases dramatically.</p>
 
       <!-- SVG: Pipeline vs sequential execution -->
       <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -714,7 +714,7 @@
 
         <!-- SEQUENTIAL -->
         <text x="30" y="65" font-family="'JetBrains Mono',monospace" font-size="8" font-weight="700" fill="#8A857C">SEQ.</text>
-        <!-- Instr 1: cycles 1–3 -->
+        <!-- Instr 1: cycles 1â€“3 -->
         <text x="100" y="82" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 1</text>
         <rect x="140" y="68" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
         <text x="169" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
@@ -722,7 +722,7 @@
         <text x="229" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#5b2d8e">DECODE</text>
         <rect x="260" y="68" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="289" y="81" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
-        <!-- Instr 2: cycles 4–6 -->
+        <!-- Instr 2: cycles 4â€“6 -->
         <text x="100" y="102" font-family="'Source Sans 3',sans-serif" font-size="8" fill="#8A857C">Instr 2</text>
         <rect x="320" y="88" width="58" height="18" rx="3" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
         <text x="349" y="101" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1D4E7A">FETCH</text>
@@ -762,32 +762,32 @@
         <rect x="380" y="184" width="58" height="18" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="409" y="197" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="7" fill="#1a6b4a">EXEC</text>
 
-        <!-- Caption — safely below all blocks (last block bottom = 184+18=202) -->
-        <text x="340" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles — stages overlap</text>
+        <!-- Caption â€” safely below all blocks (last block bottom = 184+18=202) -->
+        <text x="340" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">3 instructions complete in 5 cycles â€” stages overlap</text>
       </svg>
 
       <h3>The Problem with Pipelining: Branch Instructions</h3>
 
-      <p>Pipelining works beautifully when instructions run in a straight sequence. But programs are full of <strong>branches</strong> — if/else statements, loops, function calls — where the next instruction depends on a condition that hasn't been evaluated yet. When the pipeline fetches instruction 3 while instruction 1 is still executing, it doesn't yet know whether instruction 1 will result in a branch to a completely different part of the program. If it does, all the prefetched work gets thrown away.</p>
+      <p>Pipelining works beautifully when instructions run in a straight sequence. But programs are full of <strong>branches</strong> â€” if/else statements, loops, function calls â€” where the next instruction depends on a condition that hasn't been evaluated yet. When the pipeline fetches instruction 3 while instruction 1 is still executing, it doesn't yet know whether instruction 1 will result in a branch to a completely different part of the program. If it does, all the prefetched work gets thrown away.</p>
 
-      <p>Modern CPUs address this with <strong>branch prediction</strong>: sophisticated algorithms that guess which way a branch will go before it executes, and speculatively fetch and execute along the predicted path. If the prediction is correct (modern predictors are right over 95% of the time), execution continues without a hiccup. If wrong, the speculative work is discarded and the pipeline restarts — a costly <em>pipeline flush</em>.</p>
+      <p>Modern CPUs address this with <strong>branch prediction</strong>: sophisticated algorithms that guess which way a branch will go before it executes, and speculatively fetch and execute along the predicted path. If the prediction is correct (modern predictors are right over 95% of the time), execution continues without a hiccup. If wrong, the speculative work is discarded and the pipeline restarts â€” a costly <em>pipeline flush</em>.</p>
 
       <p>This is one reason why clock speed alone doesn't predict real-world performance. Two chips at the same GHz can have very different throughput depending on pipeline depth, prediction accuracy, and how well the software's branch patterns cooperate with the predictor.</p>
 
       <h2>Cache: The Speed Bridge</h2>
 
-      <p>Here's a problem. Modern CPUs can execute instructions at staggering speeds, but they need data and instructions to be fed to them continuously. If a core has to wait for data to arrive from main memory (RAM) every time it needs it, it sits idle — wasting billions of cycles.</p>
+      <p>Here's a problem. Modern CPUs can execute instructions at staggering speeds, but they need data and instructions to be fed to them continuously. If a core has to wait for data to arrive from main memory (RAM) every time it needs it, it sits idle â€” wasting billions of cycles.</p>
 
       <p>The fundamental issue is the speed gap between a CPU and RAM. A CPU register can be read in a single clock cycle. Main memory takes hundreds of clock cycles to respond. That's like a chef who can plate a dish in one second but has to wait three minutes for an ingredient to arrive from a warehouse down the street every time they need something.</p>
 
-      <p>The solution is <strong>cache</strong> — a small, very fast pool of memory built directly onto the CPU chip. Cache stores copies of frequently used data and instructions so the CPU can access them quickly without waiting for RAM. It operates on a simple principle: if you needed something recently, you're likely to need it again soon (<em>temporal locality</em>), and if you needed data at one memory address, you'll probably need nearby addresses too (<em>spatial locality</em>).</p>
+      <p>The solution is <strong>cache</strong> â€” a small, very fast pool of memory built directly onto the CPU chip. Cache stores copies of frequently used data and instructions so the CPU can access them quickly without waiting for RAM. It operates on a simple principle: if you needed something recently, you're likely to need it again soon (<em>temporal locality</em>), and if you needed data at one memory address, you'll probably need nearby addresses too (<em>spatial locality</em>).</p>
 
       <div class="definition">
         <div class="def-term">Cache</div>
         <p>A small, fast memory pool located on or near the CPU chip that stores frequently accessed data. Dramatically reduces the time the CPU spends waiting for data from main memory. Organized in levels (L1, L2, L3) by speed and size.</p>
       </div>
 
-      <p>Cache is organized in levels — L1, L2, and L3 — each trading speed for size:</p>
+      <p>Cache is organized in levels â€” L1, L2, and L3 â€” each trading speed for size:</p>
 
       <!-- SVG: Memory hierarchy pyramid -->
       <svg viewBox="0 0 780 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -801,7 +801,7 @@
         <line x1="30" y1="72"  x2="38" y2="72"  stroke="#D8D2C6" stroke-width="1.5"/>
         <line x1="30" y1="216" x2="38" y2="216" stroke="#D8D2C6" stroke-width="1.5"/>
 
-        <!-- Pyramid: centered at x=300, equal margins left and right within 55–545 range -->
+        <!-- Pyramid: centered at x=300, equal margins left and right within 55â€“545 range -->
         <!-- L1: apex, narrow trapezoid -->
         <polygon points="300,36 250,82 350,82" fill="#1D4E7A"/>
         <text x="300" y="66" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="white">L1</text>
@@ -818,52 +818,52 @@
         <polygon points="120,180 55,228 545,228 480,180" fill="#F0E6DF" stroke="#C1440E" stroke-width="1.5"/>
         <text x="300" y="209" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" font-weight="700" fill="#8C3009">MAIN MEMORY (RAM)</text>
 
-        <!-- Right-side spec labels — start well clear of pyramid right edge (x=545) -->
+        <!-- Right-side spec labels â€” start well clear of pyramid right edge (x=545) -->
         <line x1="352" y1="62"  x2="566" y2="62"  stroke="#D8D2C6" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="570" y="66"  font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">32–64 KB · ~1 cycle</text>
+        <text x="570" y="66"  font-family="'JetBrains Mono',monospace" font-size="9" fill="#1D4E7A">32â€“64 KB Â· ~1 cycle</text>
 
         <line x1="412" y1="108" x2="566" y2="108" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="570" y="112" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2a5f94">256 KB–1 MB · ~4 cycles</text>
+        <text x="570" y="112" font-family="'JetBrains Mono',monospace" font-size="9" fill="#2a5f94">256 KBâ€“1 MB Â· ~4 cycles</text>
 
         <line x1="482" y1="156" x2="566" y2="156" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="570" y="160" font-family="'JetBrains Mono',monospace" font-size="9" fill="#3a7abf">8–64 MB · ~40 cycles</text>
+        <text x="570" y="160" font-family="'JetBrains Mono',monospace" font-size="9" fill="#3a7abf">8â€“64 MB Â· ~40 cycles</text>
 
         <line x1="547" y1="206" x2="566" y2="206" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="570" y="210" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8C3009">8–128 GB · ~200 cycles</text>
+        <text x="570" y="210" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8C3009">8â€“128 GB Â· ~200 cycles</text>
 
         <text x="390" y="252" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Closer to the CPU = faster and smaller. Further away = slower and larger.</text>
       </svg>
 
-      <p><strong>L1 cache</strong> is the smallest and fastest — typically 32–64 KB, accessible in a single clock cycle. There's usually one L1 cache per core. <strong>L2 cache</strong> is larger (256 KB–1 MB) and a few cycles slower, still per-core in most designs. <strong>L3 cache</strong> is shared across all cores on the chip — much larger (8–64 MB on modern desktop processors) but slower than L1 or L2.</p>
+      <p><strong>L1 cache</strong> is the smallest and fastest â€” typically 32â€“64 KB, accessible in a single clock cycle. There's usually one L1 cache per core. <strong>L2 cache</strong> is larger (256 KBâ€“1 MB) and a few cycles slower, still per-core in most designs. <strong>L3 cache</strong> is shared across all cores on the chip â€” much larger (8â€“64 MB on modern desktop processors) but slower than L1 or L2.</p>
 
-      <p>When the CPU needs data, it checks L1 first. If the data isn't there (a <em>cache miss</em>), it checks L2, then L3, then finally RAM. Each level down is dramatically slower. A program with good <em>cache locality</em> — one that accesses memory in predictable patterns that cache can anticipate — can run several times faster than one that thrashes through random memory locations.</p>
+      <p>When the CPU needs data, it checks L1 first. If the data isn't there (a <em>cache miss</em>), it checks L2, then L3, then finally RAM. Each level down is dramatically slower. A program with good <em>cache locality</em> â€” one that accesses memory in predictable patterns that cache can anticipate â€” can run several times faster than one that thrashes through random memory locations.</p>
 
       <div class="note">
-        <strong>Why cache size matters on spec sheets.</strong> When comparing processors, a larger L3 cache often means better real-world performance for workloads that deal with large datasets — databases, video editing, virtual machines. It's not as flashy as clock speed or core count, but for many server workloads it's just as important.
+        <strong>Why cache size matters on spec sheets.</strong> When comparing processors, a larger L3 cache often means better real-world performance for workloads that deal with large datasets â€” databases, video editing, virtual machines. It's not as flashy as clock speed or core count, but for many server workloads it's just as important.
       </div>
 
       <h2>CPU Architectures: x86 vs. ARM</h2>
 
-      <p>Everything we've discussed so far — fetch, decode, execute, cores, cache — is universal to all CPUs. But the specific instruction set a CPU understands varies by architecture. The two dominant families today are <strong>x86</strong> and <strong>ARM</strong>, and as an IT professional you will encounter both constantly.</p>
+      <p>Everything we've discussed so far â€” fetch, decode, execute, cores, cache â€” is universal to all CPUs. But the specific instruction set a CPU understands varies by architecture. The two dominant families today are <strong>x86</strong> and <strong>ARM</strong>, and as an IT professional you will encounter both constantly.</p>
 
-      <p>An <strong>instruction set architecture (ISA)</strong> is the complete vocabulary of instructions a CPU can execute — the specific binary patterns it recognizes and the operations they trigger. Think of it as the CPU's native language. Software compiled for x86 won't run natively on an ARM processor, any more than a book written in French can be read by someone who only speaks Japanese.</p>
+      <p>An <strong>instruction set architecture (ISA)</strong> is the complete vocabulary of instructions a CPU can execute â€” the specific binary patterns it recognizes and the operations they trigger. Think of it as the CPU's native language. Software compiled for x86 won't run natively on an ARM processor, any more than a book written in French can be read by someone who only speaks Japanese.</p>
 
-      <p><strong>x86</strong> (and its 64-bit extension, x86-64 or AMD64) is the architecture behind virtually every desktop PC, laptop, and server for the past four decades. Intel and AMD are the two manufacturers. It's a <strong>CISC</strong> architecture — Complex Instruction Set Computing — meaning it has a large, rich vocabulary of instructions, some of which do quite a lot of work in a single step. This makes it powerful but relatively power-hungry.</p>
+      <p><strong>x86</strong> (and its 64-bit extension, x86-64 or AMD64) is the architecture behind virtually every desktop PC, laptop, and server for the past four decades. Intel and AMD are the two manufacturers. It's a <strong>CISC</strong> architecture â€” Complex Instruction Set Computing â€” meaning it has a large, rich vocabulary of instructions, some of which do quite a lot of work in a single step. This makes it powerful but relatively power-hungry.</p>
 
-      <p><strong>ARM</strong> takes the opposite philosophy. It's a <strong>RISC</strong> architecture — Reduced Instruction Set Computing — with a smaller, simpler vocabulary of instructions. Simpler instructions mean simpler circuits, which means lower power consumption and less heat. For decades ARM dominated mobile and embedded devices for exactly this reason — your phone's processor has always been ARM.</p>
+      <p><strong>ARM</strong> takes the opposite philosophy. It's a <strong>RISC</strong> architecture â€” Reduced Instruction Set Computing â€” with a smaller, simpler vocabulary of instructions. Simpler instructions mean simpler circuits, which means lower power consumption and less heat. For decades ARM dominated mobile and embedded devices for exactly this reason â€” your phone's processor has always been ARM.</p>
 
-      <p>What's changed recently is that ARM has arrived in territory that used to belong exclusively to x86. Apple's M-series chips — powering every Mac since 2020 — are ARM-based and deliver performance that matches or beats x86 chips at a fraction of the power draw. Major cloud providers now offer ARM-based server instances (AWS Graviton, for example) at lower cost per unit of compute. This is not a niche development — it's a fundamental shift in the server market that IT professionals need to understand.</p>
+      <p>What's changed recently is that ARM has arrived in territory that used to belong exclusively to x86. Apple's M-series chips â€” powering every Mac since 2020 â€” are ARM-based and deliver performance that matches or beats x86 chips at a fraction of the power draw. Major cloud providers now offer ARM-based server instances (AWS Graviton, for example) at lower cost per unit of compute. This is not a niche development â€” it's a fundamental shift in the server market that IT professionals need to understand.</p>
 
       <!-- YouTube embed: RISC vs CISC - David Patterson on Lex Fridman -->
       <div style="margin:28px 0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border-dark);box-shadow:0 2px 12px rgba(26,24,20,0.08);">
         <div style="background:var(--ink);padding:10px 16px;display:flex;align-items:center;gap:10px;">
           <span style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Video</span>
-          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">RISC vs. CISC — David Patterson on the Lex Fridman Podcast</span>
+          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">RISC vs. CISC â€” David Patterson on the Lex Fridman Podcast</span>
         </div>
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;">
           <iframe
             src="https://www.youtube.com/embed/NNgdcn4Ux1k"
-            title="RISC vs CISC — David Patterson on Lex Fridman Podcast"
+            title="RISC vs CISC â€” David Patterson on Lex Fridman Podcast"
             style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
@@ -916,18 +916,18 @@
       </svg>
 
       <div class="note">
-        <strong>Software compatibility matters.</strong> When you choose an ARM-based cloud instance or an Apple Silicon Mac for a software project, you need to confirm that your software stack supports ARM. Most modern software does — but legacy enterprise applications, some Windows software running under emulation, and older virtualization tools sometimes don't. Architecture isn't just a hardware decision; it's a software compatibility decision.
+        <strong>Software compatibility matters.</strong> When you choose an ARM-based cloud instance or an Apple Silicon Mac for a software project, you need to confirm that your software stack supports ARM. Most modern software does â€” but legacy enterprise applications, some Windows software running under emulation, and older virtualization tools sometimes don't. Architecture isn't just a hardware decision; it's a software compatibility decision.
       </div>
 
       <h2>Measuring Performance: MIPS, FLOPS, and Benchmarks</h2>
 
-      <p>Clock speed and core count are marketing numbers. They don't tell you how fast a processor will actually run your workload. For that, you need performance metrics — and an understanding of what they do and don't measure.</p>
+      <p>Clock speed and core count are marketing numbers. They don't tell you how fast a processor will actually run your workload. For that, you need performance metrics â€” and an understanding of what they do and don't measure.</p>
 
       <p><strong>MIPS</strong> (Millions of Instructions Per Second) measures how many instructions a processor completes per second. It sounds simple, but it's slippery: not all instructions take the same time, and a RISC chip executing 1,000 simple instructions may accomplish the same work as a CISC chip executing 100 complex ones. MIPS comparisons are only meaningful between chips with the same instruction set.</p>
 
-      <p><strong>FLOPS</strong> (Floating-Point Operations Per Second) measures specifically floating-point arithmetic — the kind used in scientific simulation, 3D graphics, machine learning, and video processing. Modern GPUs are rated in teraFLOPS (trillions of floating-point operations per second) because those workloads are exactly what they're designed for. When a cloud provider advertises a GPU instance for AI training, they'll quote FLOPS.</p>
+      <p><strong>FLOPS</strong> (Floating-Point Operations Per Second) measures specifically floating-point arithmetic â€” the kind used in scientific simulation, 3D graphics, machine learning, and video processing. Modern GPUs are rated in teraFLOPS (trillions of floating-point operations per second) because those workloads are exactly what they're designed for. When a cloud provider advertises a GPU instance for AI training, they'll quote FLOPS.</p>
 
-      <table class="comparison-table">
+      <table class="data-table">
         <thead>
           <tr><th>Metric</th><th>Stands For</th><th>What It Measures</th><th>Best For</th></tr>
         </thead>
@@ -939,7 +939,7 @@
         </tbody>
       </table>
 
-      <p>The most honest measure of CPU performance is a <strong>benchmark</strong> — a standardized test that runs a realistic workload on the processor and measures actual throughput, latency, or both. Benchmarks can be synthetic (a constructed test designed to stress specific components) or real-world (running actual applications). Sites like PassMark, Cinebench, and Geekbench publish benchmark scores for hundreds of CPUs, and they're far more useful than spec sheet numbers when making purchasing decisions.</p>
+      <p>The most honest measure of CPU performance is a <strong>benchmark</strong> â€” a standardized test that runs a realistic workload on the processor and measures actual throughput, latency, or both. Benchmarks can be synthetic (a constructed test designed to stress specific components) or real-world (running actual applications). Sites like PassMark, Cinebench, and Geekbench publish benchmark scores for hundreds of CPUs, and they're far more useful than spec sheet numbers when making purchasing decisions.</p>
 
       <div class="note">
         <strong>The benchmark trap.</strong> Benchmark scores are only meaningful when workloads match. A CPU that tops the single-threaded benchmark charts is the right choice for a developer workstation. It may be entirely wrong for a virtualization host running 50 concurrent VMs, where per-core performance matters less than total core count and memory bandwidth.
@@ -1000,7 +1000,7 @@
         <line x1="312" y1="76" x2="350" y2="76" stroke="#1a6b4a" stroke-width="1" stroke-dasharray="3,2"/>
         <rect x="352" y="62" width="294" height="28" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
         <text x="362" y="73" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a"><tspan font-weight="700">8P = performance cores</tspan>, 8E = efficiency cores.</text>
-        <text x="362" y="84" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">Hybrid design: heavy tasks → P-cores, background → E-cores.</text>
+        <text x="362" y="84" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">Hybrid design: heavy tasks â†’ P-cores, background â†’ E-cores.</text>
 
         <!-- Boost clock annotation -->
         <line x1="312" y1="116" x2="350" y2="116" stroke="#5b2d8e" stroke-width="1" stroke-dasharray="3,2"/>
@@ -1018,18 +1018,18 @@
         <line x1="312" y1="236" x2="350" y2="236" stroke="#1D4E7A" stroke-width="1" stroke-dasharray="3,2"/>
         <rect x="352" y="222" width="294" height="28" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1"/>
         <text x="362" y="233" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A"><tspan font-weight="700">Process node</tspan> = transistor size. Smaller = more transistors,</text>
-        <text x="362" y="244" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">less power, more performance per mm² of silicon.</text>
+        <text x="362" y="244" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1D4E7A">less power, more performance per mmÂ² of silicon.</text>
       </svg>
 
-      <p>A few terms from this spec sheet deserve extra attention. <strong>Base clock</strong> is the sustained speed the chip runs at indefinitely. <strong>Boost clock</strong> is the maximum speed it can reach for short bursts when temperatures allow — the chip throttles back if it gets too hot. <strong>TDP (Thermal Design Power)</strong> measures heat output in watts and determines what cooling solution you need. A 125W TDP chip in a server rack is an entirely different thermal problem than a 15W laptop chip — both factors matter when you're specifying hardware for a real environment.</p>
+      <p>A few terms from this spec sheet deserve extra attention. <strong>Base clock</strong> is the sustained speed the chip runs at indefinitely. <strong>Boost clock</strong> is the maximum speed it can reach for short bursts when temperatures allow â€” the chip throttles back if it gets too hot. <strong>TDP (Thermal Design Power)</strong> measures heat output in watts and determines what cooling solution you need. A 125W TDP chip in a server rack is an entirely different thermal problem than a 15W laptop chip â€” both factors matter when you're specifying hardware for a real environment.</p>
 
       <p>The "8P + 8E" notation on this chip's core count reflects a newer design trend: <strong>heterogeneous cores</strong>. Performance cores (P-cores) are large, fast, and power-hungry, designed for demanding tasks. Efficiency cores (E-cores) are smaller and slower but use a fraction of the power, handling background work. The operating system decides which workload goes where. This is now common in both Intel and Apple Silicon designs.</p>
 
       <h2>Moore's Law and the Future of the CPU</h2>
 
-      <p>In 1965, Gordon Moore — co-founder of Intel — observed that the number of transistors on a chip was doubling approximately every two years, with no increase in cost. This observation, dubbed <strong>Moore's Law</strong>, turned out to be a remarkably accurate prediction for over five decades.</p>
+      <p>In 1965, Gordon Moore â€” co-founder of Intel â€” observed that the number of transistors on a chip was doubling approximately every two years, with no increase in cost. This observation, dubbed <strong>Moore's Law</strong>, turned out to be a remarkably accurate prediction for over five decades.</p>
 
-      <p>The implications were staggering. If transistor count doubles every two years at constant cost, then compute power doubles every two years for the same price. The Intel 4004 processor from 1971 had 2,300 transistors. A modern Apple M3 has over 25 billion. That's roughly 11 million times as many transistors in about 50 years — an almost incomprehensible compounding of capability.</p>
+      <p>The implications were staggering. If transistor count doubles every two years at constant cost, then compute power doubles every two years for the same price. The Intel 4004 processor from 1971 had 2,300 transistors. A modern Apple M3 has over 25 billion. That's roughly 11 million times as many transistors in about 50 years â€” an almost incomprehensible compounding of capability.</p>
 
       <!-- SVG: Moore's Law transistor count timeline -->
       <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -1044,10 +1044,10 @@
         <line x1="60" y1="160" x2="660" y2="160" stroke="#D8D2C6" stroke-width="1"/>
 
         <!-- Y axis labels (log scale approximate positions) -->
-        <text x="54" y="158" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10³</text>
-        <text x="54" y="132" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10⁶</text>
-        <text x="54" y="105" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10⁹</text>
-        <text x="54" y="78"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10¹²</text>
+        <text x="54" y="158" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10Â³</text>
+        <text x="54" y="132" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10â¶</text>
+        <text x="54" y="105" text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10â¹</text>
+        <text x="54" y="78"  text-anchor="end" font-family="'JetBrains Mono',monospace" font-size="7" fill="#8A857C">10Â¹Â²</text>
 
         <!-- Gridlines -->
         <line x1="60" y1="132" x2="660" y2="132" stroke="#EDE9DF" stroke-width="1" stroke-dasharray="3,3"/>
@@ -1100,17 +1100,17 @@
       <figure class="chapter-photo">
         <img src="../img/ch04-silicon-wafer.jpg" alt="A 12-inch silicon wafer showing dozens of processor dies arranged in a grid across its mirror-smooth surface">
         <figcaption>
-          A 300mm (12-inch) silicon wafer before it is cut into individual processor dies. Each of the identical rectangles is a single chip. The iridescent surface is the result of light diffracting off the microscopic circuit patterns etched into the silicon — features just nanometers wide.
-          <span class="photo-credit">Photo by Peellden · <a href="https://commons.wikimedia.org/wiki/File:12-inch_silicon_wafer.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</span>
+          A 300mm (12-inch) silicon wafer before it is cut into individual processor dies. Each of the identical rectangles is a single chip. The iridescent surface is the result of light diffracting off the microscopic circuit patterns etched into the silicon â€” features just nanometers wide.
+          <span class="photo-credit">Photo by Peellden Â· <a href="https://commons.wikimedia.org/wiki/File:12-inch_silicon_wafer.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> Â· CC BY-SA 3.0</span>
         </figcaption>
       </figure>
 
-      <p>Moore's Law has two important companions. <strong>Rock's Law</strong> (named for Arthur Rock, an early Intel investor) observes that the cost of a chip fabrication facility doubles roughly every four years. A state-of-the-art fab today costs over $20 billion to build — so much that only a handful of companies in the world (TSMC, Samsung, Intel) can afford to operate them.</p>
+      <p>Moore's Law has two important companions. <strong>Rock's Law</strong> (named for Arthur Rock, an early Intel investor) observes that the cost of a chip fabrication facility doubles roughly every four years. A state-of-the-art fab today costs over $20 billion to build â€” so much that only a handful of companies in the world (TSMC, Samsung, Intel) can afford to operate them.</p>
 
-      <p>And Moore's Law itself is slowing. At 3–5 nanometer transistor sizes, we're approaching physical limits — transistors so small that quantum effects like electron tunneling cause unpredictable behavior. The doubling cadence has stretched from every 2 years to every 3–4 years. The industry has compensated with architectural innovations (better pipelines, heterogeneous cores, chiplets) and by expanding into 3D stacking — building transistor layers vertically rather than packing them tighter horizontally. But the era of "just shrink the transistor and double the performance" is largely over.</p>
+      <p>And Moore's Law itself is slowing. At 3â€“5 nanometer transistor sizes, we're approaching physical limits â€” transistors so small that quantum effects like electron tunneling cause unpredictable behavior. The doubling cadence has stretched from every 2 years to every 3â€“4 years. The industry has compensated with architectural innovations (better pipelines, heterogeneous cores, chiplets) and by expanding into 3D stacking â€” building transistor layers vertically rather than packing them tighter horizontally. But the era of "just shrink the transistor and double the performance" is largely over.</p>
 
       <div class="note">
-        <strong>Why this matters for IT.</strong> For most of computing history, you could wait two years and buy a dramatically faster machine for the same price. That era is winding down. Hardware procurement decisions now require more careful thought — you can't always count on next year's hardware solving this year's performance problem at the same cost point.
+        <strong>Why this matters for IT.</strong> For most of computing history, you could wait two years and buy a dramatically faster machine for the same price. That era is winding down. Hardware procurement decisions now require more careful thought â€” you can't always count on next year's hardware solving this year's performance problem at the same cost point.
       </div>
 
       <!-- YouTube link card: Jim Keller on Moore's Law (embedding disabled by owner) -->
@@ -1120,7 +1120,7 @@
          onmouseout="this.style.boxShadow='0 2px 12px rgba(26,24,20,0.08)'">
         <div style="background:var(--ink);padding:10px 16px;display:flex;align-items:center;gap:10px;">
           <span style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Video</span>
-          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">Is Moore's Law Dead? — Jim Keller on the Lex Fridman Podcast</span>
+          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">Is Moore's Law Dead? â€” Jim Keller on the Lex Fridman Podcast</span>
         </div>
         <div style="background:#111;display:flex;align-items:center;justify-content:center;padding:36px 24px;gap:24px;">
           <!-- YouTube play button -->
@@ -1130,26 +1130,26 @@
             </svg>
           </div>
           <div>
-            <div style="font-family:var(--font-head);font-size:1rem;font-weight:600;color:white;margin-bottom:6px;">Watch on YouTube ↗</div>
+            <div style="font-family:var(--font-head);font-size:1rem;font-weight:600;color:white;margin-bottom:6px;">Watch on YouTube â†—</div>
             <div style="font-family:var(--font-mono);font-size:0.75rem;color:rgba(255,255,255,0.45);">youtube.com/watch?v=c01BlUDIlK4</div>
           </div>
         </div>
         <div style="padding:10px 16px;background:var(--bg-alt);border-top:1px solid var(--border);">
-          <p style="font-size:0.82rem;color:var(--ink-light);margin:0;font-family:var(--font-body);">Jim Keller designed AMD's Zen architecture (the Ryzen lineup) and has worked at Intel, Apple, and Tesla. His perspective on where Moore's Law is headed — and what it means for computing — is essential viewing.</p>
+          <p style="font-size:0.82rem;color:var(--ink-light);margin:0;font-family:var(--font-body);">Jim Keller designed AMD's Zen architecture (the Ryzen lineup) and has worked at Intel, Apple, and Tesla. His perspective on where Moore's Law is headed â€” and what it means for computing â€” is essential viewing.</p>
         </div>
       </a>
 
       <h2>Beyond the CPU: GPUs and TPUs</h2>
 
-      <p>Everything in this chapter has described a general-purpose CPU — a processor designed to run any kind of sequential computation quickly. But not all problems are sequential, and not all workloads benefit from the CPU's architecture. Two specialized processor types have become essential to modern computing: <strong>GPUs</strong> and <strong>TPUs</strong>.</p>
+      <p>Everything in this chapter has described a general-purpose CPU â€” a processor designed to run any kind of sequential computation quickly. But not all problems are sequential, and not all workloads benefit from the CPU's architecture. Two specialized processor types have become essential to modern computing: <strong>GPUs</strong> and <strong>TPUs</strong>.</p>
 
       <h3>GPUs: Massive Parallelism</h3>
 
-      <p>A <strong>Graphics Processing Unit</strong> was originally designed to render images. Rendering a frame means computing the color of millions of pixels simultaneously — each pixel's calculation is independent of the others, so there's no reason to do them one at a time. A CPU with 16 high-performance cores can tackle 16 things at once. An NVIDIA H100 GPU has over 16,000 smaller cores operating simultaneously.</p>
+      <p>A <strong>Graphics Processing Unit</strong> was originally designed to render images. Rendering a frame means computing the color of millions of pixels simultaneously â€” each pixel's calculation is independent of the others, so there's no reason to do them one at a time. A CPU with 16 high-performance cores can tackle 16 things at once. An NVIDIA H100 GPU has over 16,000 smaller cores operating simultaneously.</p>
 
-      <p>The tradeoff is specialization. A GPU core is far simpler than a CPU core — no deep pipeline, no branch prediction, no out-of-order execution. It's optimized for one thing: performing the same simple arithmetic operation on a large array of numbers in parallel. For that task, it is orders of magnitude faster than a CPU. For most other tasks, the CPU wins.</p>
+      <p>The tradeoff is specialization. A GPU core is far simpler than a CPU core â€” no deep pipeline, no branch prediction, no out-of-order execution. It's optimized for one thing: performing the same simple arithmetic operation on a large array of numbers in parallel. For that task, it is orders of magnitude faster than a CPU. For most other tasks, the CPU wins.</p>
 
-      <p>This same strength turns out to be exactly what modern AI needs. Training a neural network reduces to enormous numbers of matrix multiplications — exactly the kind of embarrassingly parallel arithmetic a GPU excels at. That's why GPU clusters power virtually every AI training workload today. The hardware existed; the workload arrived.</p>
+      <p>This same strength turns out to be exactly what modern AI needs. Training a neural network reduces to enormous numbers of matrix multiplications â€” exactly the kind of embarrassingly parallel arithmetic a GPU excels at. That's why GPU clusters power virtually every AI training workload today. The hardware existed; the workload arrived.</p>
 
       <!-- SVG: CPU vs GPU core comparison -->
       <svg viewBox="0 0 680 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -1158,8 +1158,8 @@
 
         <!-- CPU panel: height=140 so caption at y=168 clears core bottom (98+34=132) by 36px -->
         <rect x="18" y="32" width="300" height="140" rx="6" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="168" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">CPU  ·  Few powerful cores</text>
-        <!-- 8 large core boxes in 2×4 grid -->
+        <text x="168" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">CPU  Â·  Few powerful cores</text>
+        <!-- 8 large core boxes in 2Ã—4 grid -->
         <rect x="30"  y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
         <rect x="96"  y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
         <rect x="162" y="58" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
@@ -1168,15 +1168,15 @@
         <rect x="96"  y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
         <rect x="162" y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
         <rect x="228" y="98" width="56" height="34" rx="4" fill="#DDE8F2" stroke="#1D4E7A" stroke-width="1.5"/>
-        <!-- Caption: core bottom = 132, panel bottom = 172, caption at y=155 → 23px clear of cores, 17px above panel bottom -->
-        <text x="168" y="155" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">8 complex cores — fast at any task</text>
+        <!-- Caption: core bottom = 132, panel bottom = 172, caption at y=155 â†’ 23px clear of cores, 17px above panel bottom -->
+        <text x="168" y="155" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">8 complex cores â€” fast at any task</text>
 
         <!-- GPU panel: same height=140 -->
         <rect x="362" y="32" width="300" height="140" rx="6" fill="#F5F2EB" stroke="#B8B0A4" stroke-width="1.5"/>
-        <text x="512" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">GPU  ·  Thousands of simple cores</text>
+        <text x="512" y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1a6b4a">GPU  Â·  Thousands of simple cores</text>
         <!-- Dense grid of tiny cores -->
         <rect x="374" y="58" width="276" height="74" rx="3" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
-        <!-- 10×4 grid -->
+        <!-- 10Ã—4 grid -->
         <rect x="380" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
         <rect x="406" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
         <rect x="432" y="64" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
@@ -1217,18 +1217,17 @@
         <rect x="562" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
         <rect x="588" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
         <rect x="614" y="112" width="20" height="12" rx="1" fill="#1a6b4a" opacity="0.7"/>
-        <!-- Caption: grid bottom = 132, caption at y=155 → 23px clear -->
-        <text x="512" y="155" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Thousands of simple cores — fast at parallel math</text>
+        <!-- Caption: grid bottom = 132, caption at y=155 â†’ 23px clear -->
+        <text x="512" y="155" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Thousands of simple cores â€” fast at parallel math</text>
       </svg>
 
       <h3>TPUs: Even More Specialized</h3>
 
-      <p>A <strong>Tensor Processing Unit</strong> takes specialization further. Google designed the TPU in 2016 specifically to accelerate the matrix multiplications that neural networks require — it doesn't even try to be a general-purpose chip. Where a GPU is versatile enough to run games, simulations, and video processing as well as AI, a TPU does essentially one thing: multiply large matrices of numbers together as fast as physically possible.</p>
+      <p>A <strong>Tensor Processing Unit</strong> takes specialization further. Google designed the TPU in 2016 specifically to accelerate the matrix multiplications that neural networks require â€” it doesn't even try to be a general-purpose chip. Where a GPU is versatile enough to run games, simulations, and video processing as well as AI, a TPU does essentially one thing: multiply large matrices of numbers together as fast as physically possible.</p>
 
-      <p>The payoff is efficiency. For AI training and inference workloads, TPUs deliver more computation per watt than a GPU, at lower cost per operation at scale. Google's internal AI workloads — Search, Translate, Maps, Gmail — all run on TPUs. Cloud providers now offer TPU instances alongside GPU and CPU instances, and choosing among them is a real infrastructure decision for AI-heavy applications.</p>
+      <p>The payoff is efficiency. For AI training and inference workloads, TPUs deliver more computation per watt than a GPU, at lower cost per operation at scale. Google's internal AI workloads â€” Search, Translate, Maps, Gmail â€” all run on TPUs. Cloud providers now offer TPU instances alongside GPU and CPU instances, and choosing among them is a real infrastructure decision for AI-heavy applications.</p>
 
-      <div class="comparison-table">
-        <table>
+      <table class="data-table">
           <thead>
             <tr>
               <th>Processor</th>
@@ -1241,7 +1240,7 @@
           <tbody>
             <tr>
               <td><strong>CPU</strong></td>
-              <td>4–128</td>
+              <td>4â€“128</td>
               <td>Sequential tasks, complex logic</td>
               <td>Slow at massive parallelism</td>
               <td>Operating systems, general software</td>
@@ -1261,12 +1260,9 @@
               <td>AI training and inference at scale</td>
             </tr>
           </tbody>
-        </table>
-      </div>
+        </table>nn      <p>The broader point is architectural: the right processor depends entirely on the workload. A CPU running a database handles thousands of independent queries â€” parallelism matters, but so does complex branching logic. A GPU rendering a game frame runs millions of nearly-identical shader calculations in lockstep. A TPU training a language model multiplies billion-element matrices over and over. Same underlying physics, radically different designs optimized for different problems.</p>
 
-      <p>The broader point is architectural: the right processor depends entirely on the workload. A CPU running a database handles thousands of independent queries — parallelism matters, but so does complex branching logic. A GPU rendering a game frame runs millions of nearly-identical shader calculations in lockstep. A TPU training a language model multiplies billion-element matrices over and over. Same underlying physics, radically different designs optimized for different problems.</p>
-
-      <!-- ── Practice Problems ── -->
+      <!-- â”€â”€ Practice Problems â”€â”€ -->
       <div class="practice-block">
         <div class="practice-header">
           <span class="practice-label">Quiz</span>
@@ -1342,10 +1338,10 @@
         <div class="quiz-question" id="q7">
           <div class="q-text">7. In the memory hierarchy, which level of cache is the fastest?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">A</span> L1 — smallest and closest to the CPU core</button>
-            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> L2 — a good middle ground between speed and size</button>
-            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> L3 — largest, so it holds the most data ready to use</button>
-            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> RAM — it's closest to the operating system</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">A</span> L1 â€” smallest and closest to the CPU core</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> L2 â€” a good middle ground between speed and size</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> L3 â€” largest, so it holds the most data ready to use</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> RAM â€” it's closest to the operating system</button>
           </div>
           <div class="mc-feedback" id="q7-feedback"></div>
         </div>
@@ -1375,9 +1371,9 @@
         <div class="quiz-question" id="q10">
           <div class="q-text">10. A CPU spec lists a base clock of 3.4 GHz and a boost clock of 5.4 GHz. Under what conditions would the chip run at 5.4 GHz?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> Always — 5.4 GHz is its normal operating speed.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> Always â€” 5.4 GHz is its normal operating speed.</button>
             <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> Only when running ARM-compiled software.</button>
-            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> In short bursts when the chip is cool enough — it throttles back if temperatures rise.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> In short bursts when the chip is cool enough â€” it throttles back if temperatures rise.</button>
             <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> Only when liquid cooling is installed.</button>
           </div>
           <div class="mc-feedback" id="q10-feedback"></div>
@@ -1388,7 +1384,7 @@
           <div class="mc-options">
             <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">A</span> GPUs run at much higher clock speeds than CPUs.</button>
             <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">B</span> AI workloads require complex branching logic that GPUs handle better.</button>
-            <button class="mc-option" onclick="checkMC('q11',this,true)"><span class="mc-letter">C</span> Both graphics and AI training reduce to massive parallel matrix math — the same operation run simultaneously on thousands of values.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,true)"><span class="mc-letter">C</span> Both graphics and AI training reduce to massive parallel matrix math â€” the same operation run simultaneously on thousands of values.</button>
             <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">D</span> GPUs have larger caches than CPUs, which speeds up memory access for large datasets.</button>
           </div>
           <div class="mc-feedback" id="q11-feedback"></div>
@@ -1398,11 +1394,11 @@
 
       <nav class="chapter-nav-footer">
         <a href="ch03.html">
-          <span class="nav-direction">← Previous</span>
+          <span class="nav-direction">â† Previous</span>
           <span class="nav-title">Chapter 3: Data Representation</span>
         </a>
         <a href="ch05.html" class="next">
-          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-direction">Next Chapter â†’</span>
           <span class="nav-title">Memory &amp; Storage</span>
         </a>
       </nav>
@@ -1425,9 +1421,12 @@
       if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
     });
     fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
-    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+    fb.textContent = isCorrect ? 'âœ“ Correct!' : 'âœ— Not quite â€” the correct answer is highlighted.';
   }
 </script>
 
 </body>
 </html>
+
+
+

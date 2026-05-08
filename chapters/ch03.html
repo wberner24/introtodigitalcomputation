@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 3: Data Representation — Introduction to Digital Computation</title>
+  <title>Chapter 3: Data Representation â€” Introduction to Digital Computation</title>
   <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
@@ -14,33 +14,33 @@
     <div class="sidebar-logo">
       <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
       <div class="book-subtitle">A First-Principles Approach</div>
-      <div class="book-author">Wade Berner · SIUE</div>
+      <div class="book-author">Wade Berner Â· SIUE</div>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <div class="nav-unit-label">Unit 1 â€” Foundations</div>
       <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
       <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
       <a href="ch03.html" class="nav-chapter active"><span class="ch-num">03</span> Data Representation</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <div class="nav-unit-label">Unit 2 â€” Hardware</div>
       <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
       <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
       <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 3 — Software</div>
+      <div class="nav-unit-label">Unit 3 â€” Software</div>
       <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
       <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
       <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <div class="nav-unit-label">Unit 4 â€” Networks</div>
       <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
       <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
     </div>
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <div class="nav-unit-label">Unit 5 â€” Administration</div>
       <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
       <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
       <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
@@ -51,7 +51,7 @@
   <main class="main-content">
 
     <header class="chapter-header">
-      <div class="chapter-eyebrow">Chapter 03 · Unit 1: Foundations</div>
+      <div class="chapter-eyebrow">Chapter 03 Â· Unit 1: Foundations</div>
       <h1 class="chapter-title">Data Representation</h1>
       <div class="chapter-deco">01000001</div>
       <p class="chapter-intro">You now know that computers store everything as 1s and 0s. But <em>everything</em> is a big word. Numbers, sure. But what about the letter A? A photograph? A song? An emoji? This chapter is where that question gets its full answer.</p>
@@ -59,53 +59,53 @@
 
     <article class="prose">
 
-      <p>At the end of Chapter 1, we noted that computers represent all information — not just numbers, but text, images, sound, everything — as binary values. And then we said "more on that later." Later is now.</p>
+      <p>At the end of Chapter 1, we noted that computers represent all information â€” not just numbers, but text, images, sound, everything â€” as binary values. And then we said "more on that later." Later is now.</p>
 
       <p>The short version, which we'll spend this entire chapter unpacking: <em>everything is a number, and every number is binary</em>. Pictures are numbers. Letters are numbers. Colors are numbers. The song playing through your earbuds is a very long sequence of numbers. Once you accept that, the rest of this chapter is just working out the details.</p>
 
       <h2>Grouping Bits: The Byte</h2>
 
-      <p>A single bit — a <span class="bin">0</span> or a <span class="bin">1</span> — isn't very useful on its own. It can only represent two states. That's enough for a light switch, but not much else.</p>
+      <p>A single bit â€” a <span class="bin">0</span> or a <span class="bin">1</span> â€” isn't very useful on its own. It can only represent two states. That's enough for a light switch, but not much else.</p>
 
       <p>From the earliest days of computing, engineers settled on grouping bits together into fixed-size chunks. The standard chunk that stuck is eight bits, and we call it a <strong>byte</strong>.</p>
 
       <div class="definition">
         <div class="def-term">Byte</div>
-        <p>A group of 8 bits. The standard unit of digital information. With 8 bits, a byte can represent 2⁸ = <span class="dec">256</span> unique values (<span class="dec">0</span> through <span class="dec">255</span>).</p>
+        <p>A group of 8 bits. The standard unit of digital information. With 8 bits, a byte can represent 2â¸ = <span class="dec">256</span> unique values (<span class="dec">0</span> through <span class="dec">255</span>).</p>
       </div>
 
-      <p>Why 8? Partly history, partly convenience. Eight is a power of 2, which plays nicely with binary arithmetic. And 256 values — <span class="dec">0</span> through <span class="dec">255</span> — turned out to be just enough to cover the English alphabet in both cases, digits, punctuation, and basic control characters. More on that shortly.</p>
+      <p>Why 8? Partly history, partly convenience. Eight is a power of 2, which plays nicely with binary arithmetic. And 256 values â€” <span class="dec">0</span> through <span class="dec">255</span> â€” turned out to be just enough to cover the English alphabet in both cases, digits, punctuation, and basic control characters. More on that shortly.</p>
 
-      <p>From bytes, we build larger units. You've seen all of these before — now you know what they actually mean:</p>
+      <p>From bytes, we build larger units. You've seen all of these before â€” now you know what they actually mean:</p>
 
-      <table class="comparison-table">
+      <table class="data-table">
         <thead><tr><th>Unit</th><th>Symbol</th><th>Approximate Size</th><th>Example</th></tr></thead>
         <tbody>
           <tr><td><strong>Kilobyte</strong></td><td><code>KB</code></td><td>1,024 bytes</td><td>A short text message</td></tr>
-          <tr><td><strong>Megabyte</strong></td><td><code>MB</code></td><td>1,024 KB ≈ 1 million bytes</td><td>A high-res photo</td></tr>
-          <tr><td><strong>Gigabyte</strong></td><td><code>GB</code></td><td>1,024 MB ≈ 1 billion bytes</td><td>A feature film (compressed)</td></tr>
-          <tr><td><strong>Terabyte</strong></td><td><code>TB</code></td><td>1,024 GB ≈ 1 trillion bytes</td><td>A large hard drive</td></tr>
+          <tr><td><strong>Megabyte</strong></td><td><code>MB</code></td><td>1,024 KB â‰ˆ 1 million bytes</td><td>A high-res photo</td></tr>
+          <tr><td><strong>Gigabyte</strong></td><td><code>GB</code></td><td>1,024 MB â‰ˆ 1 billion bytes</td><td>A feature film (compressed)</td></tr>
+          <tr><td><strong>Terabyte</strong></td><td><code>TB</code></td><td>1,024 GB â‰ˆ 1 trillion bytes</td><td>A large hard drive</td></tr>
           <tr><td><strong>Petabyte</strong></td><td><code>PB</code></td><td>1,024 TB</td><td>A large data center storage pool</td></tr>
         </tbody>
       </table>
 
       <div class="note">
-        <strong>Bits vs. bytes — don't get burned.</strong> Storage is measured in <strong>bytes</strong> (B, capital). Network speeds are measured in <strong>bits</strong> per second (b, lowercase). When your internet provider advertises "100 Mbps," that's megabits — not megabytes. A 100 Mbps connection transfers about 12.5 MB per second. This distinction trips up IT professionals regularly — now you won't be one of them.
+        <strong>Bits vs. bytes â€” don't get burned.</strong> Storage is measured in <strong>bytes</strong> (B, capital). Network speeds are measured in <strong>bits</strong> per second (b, lowercase). When your internet provider advertises "100 Mbps," that's megabits â€” not megabytes. A 100 Mbps connection transfers about 12.5 MB per second. This distinction trips up IT professionals regularly â€” now you won't be one of them.
       </div>
 
       <h2>Representing Integers</h2>
 
-      <p>We've been doing this since Chapter 1, but now we can be precise. With 8 bits you can represent integers from <span class="dec">0</span> to <span class="dec">255</span>. With 16 bits, <span class="dec">0</span> to <span class="dec">65,535</span>. With 32 bits, <span class="dec">0</span> to <span class="dec">4,294,967,295</span> — roughly 4.3 billion. The formula: <strong>n bits → 2ⁿ possible values → 0 through 2ⁿ − 1</strong>.</p>
+      <p>We've been doing this since Chapter 1, but now we can be precise. With 8 bits you can represent integers from <span class="dec">0</span> to <span class="dec">255</span>. With 16 bits, <span class="dec">0</span> to <span class="dec">65,535</span>. With 32 bits, <span class="dec">0</span> to <span class="dec">4,294,967,295</span> â€” roughly 4.3 billion. The formula: <strong>n bits â†’ 2â¿ possible values â†’ 0 through 2â¿ âˆ’ 1</strong>.</p>
 
-      <p>This matters practically. IPv4 addresses — the numbers that identify every device on the internet — are 32-bit values. That means there are exactly 2³² ≈ 4.3 billion possible addresses. When the internet was designed in the 1970s, that sounded like plenty. It wasn't. IPv4 address exhaustion is a real, ongoing problem, which is exactly why IPv6 switched to 128-bit addresses (2¹²⁸ has 39 digits — we're not running out of those soon).</p>
+      <p>This matters practically. IPv4 addresses â€” the numbers that identify every device on the internet â€” are 32-bit values. That means there are exactly 2Â³Â² â‰ˆ 4.3 billion possible addresses. When the internet was designed in the 1970s, that sounded like plenty. It wasn't. IPv4 address exhaustion is a real, ongoing problem, which is exactly why IPv6 switched to 128-bit addresses (2Â¹Â²â¸ has 39 digits â€” we're not running out of those soon).</p>
 
-      <p>Integer overflow is a related consequence. If software uses a 32-bit counter and that counter exceeds ~4.3 billion, the value wraps back to zero. This has caused real outages and some famous software failures. The arithmetic is honest — the data type just ran out of room.</p>
+      <p>Integer overflow is a related consequence. If software uses a 32-bit counter and that counter exceeds ~4.3 billion, the value wraps back to zero. This has caused real outages and some famous software failures. The arithmetic is honest â€” the data type just ran out of room.</p>
 
       <h2>Representing Text: ASCII</h2>
 
-      <p>Numbers have an obvious binary representation. But what about the letter A? There's no natural encoding for a letter — someone had to make one up.</p>
+      <p>Numbers have an obvious binary representation. But what about the letter A? There's no natural encoding for a letter â€” someone had to make one up.</p>
 
-      <p>In 1963, a committee of American engineers did exactly that. They created the <strong>American Standard Code for Information Interchange</strong>, or <strong>ASCII</strong> — a table mapping every English character to a number between <span class="dec">0</span> and <span class="dec">127</span>. The table wasn't derived from anything. It was a decision. Uppercase A is <span class="dec">65</span>. Uppercase B is <span class="dec">66</span>. Lowercase a is <span class="dec">97</span>. Space is <span class="dec">32</span>. And so on.</p>
+      <p>In 1963, a committee of American engineers did exactly that. They created the <strong>American Standard Code for Information Interchange</strong>, or <strong>ASCII</strong> â€” a table mapping every English character to a number between <span class="dec">0</span> and <span class="dec">127</span>. The table wasn't derived from anything. It was a decision. Uppercase A is <span class="dec">65</span>. Uppercase B is <span class="dec">66</span>. Lowercase a is <span class="dec">97</span>. Space is <span class="dec">32</span>. And so on.</p>
 
       <p>So when you type the word <strong>Hi</strong>, your computer stores:</p>
 
@@ -129,7 +129,7 @@
       <!-- SVG: ASCII table excerpt -->
       <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <rect width="680" height="180" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="340" y="24" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">ASCII — Selected Values</text>
+        <text x="340" y="24" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="13" font-weight="700" fill="#1A1814">ASCII â€” Selected Values</text>
         <!-- Header row -->
         <rect x="12" y="34" width="656" height="24" rx="3" fill="#1A1814"/>
         <text x="58"  y="50" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" fill="white">Char</text>
@@ -186,16 +186,16 @@
         <!-- Bottom border -->
         <rect x="12" y="158" width="656" height="1" fill="#D8D2C6"/>
 
-        <text x="340" y="174" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Each character maps to a unique number — arbitrarily assigned by the ASCII committee in 1963.</text>
+        <text x="340" y="174" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Each character maps to a unique number â€” arbitrarily assigned by the ASCII committee in 1963.</text>
       </svg>
 
-      <h3>The Limits of ASCII — and the Rise of Unicode</h3>
+      <h3>The Limits of ASCII â€” and the Rise of Unicode</h3>
 
-      <p>ASCII covered English just fine. The rest of the world, not so much. With only 128 values, there's no room for accented characters, non-Latin alphabets, or anything outside the American keyboard. Japanese, Arabic, Hindi, Chinese — none of it fits in 7 bits.</p>
+      <p>ASCII covered English just fine. The rest of the world, not so much. With only 128 values, there's no room for accented characters, non-Latin alphabets, or anything outside the American keyboard. Japanese, Arabic, Hindi, Chinese â€” none of it fits in 7 bits.</p>
 
-      <p>The solution is <strong>Unicode</strong>, a far more ambitious project that assigns a unique number — called a <strong>code point</strong> — to every character in every writing system on earth. Over 149,000 characters and counting.</p>
+      <p>The solution is <strong>Unicode</strong>, a far more ambitious project that assigns a unique number â€” called a <strong>code point</strong> â€” to every character in every writing system on earth. Over 149,000 characters and counting.</p>
 
-      <p>And yes: emoji are Unicode characters. Every emoji you've ever sent has a Unicode code point, which means it has a number, which means it has a binary representation. Your 😂 is, at the machine level, just another pattern of bits.</p>
+      <p>And yes: emoji are Unicode characters. Every emoji you've ever sent has a Unicode code point, which means it has a number, which means it has a binary representation. Your ðŸ˜‚ is, at the machine level, just another pattern of bits.</p>
 
       <!-- SVG: Emoji Unicode diagram -->
       <svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -213,33 +213,33 @@
 
         <line x1="20" y1="72" x2="740" y2="72" stroke="#D8D2C6" stroke-width="1"/>
 
-        <!-- Row 1: 😂  U+1F602 = 128514 = 0001_1111_0110_0000_0010 -->
+        <!-- Row 1: ðŸ˜‚  U+1F602 = 128514 = 0001_1111_0110_0000_0010 -->
         <rect x="20" y="74" width="720" height="32" fill="#F5F2EB"/>
-        <text x="50"  y="95" text-anchor="middle" font-size="18">😂</text>
+        <text x="50"  y="95" text-anchor="middle" font-size="18">ðŸ˜‚</text>
         <text x="170" y="95" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Face with Tears of Joy</text>
         <text x="310" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F602</text>
         <text x="425" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128514</text>
         <text x="600" y="95" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">1 1111 0110 0000 0010</text>
 
-        <!-- Row 2: ❤️  U+2764 = 10084 = 10_0111_0110_0100 -->
+        <!-- Row 2: â¤ï¸  U+2764 = 10084 = 10_0111_0110_0100 -->
         <rect x="20" y="106" width="720" height="32" fill="#FDFAF4"/>
-        <text x="50"  y="127" text-anchor="middle" font-size="18">❤️</text>
+        <text x="50"  y="127" text-anchor="middle" font-size="18">â¤ï¸</text>
         <text x="170" y="127" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Red Heart</text>
         <text x="310" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+2764</text>
         <text x="425" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">10084</text>
         <text x="600" y="127" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">10 0111 0110 0100</text>
 
-        <!-- Row 3: 🔥  U+1F525 = 128293 = 1_1111_0101_0010_0101 -->
+        <!-- Row 3: ðŸ”¥  U+1F525 = 128293 = 1_1111_0101_0010_0101 -->
         <rect x="20" y="138" width="720" height="32" fill="#F5F2EB"/>
-        <text x="50"  y="159" text-anchor="middle" font-size="18">🔥</text>
+        <text x="50"  y="159" text-anchor="middle" font-size="18">ðŸ”¥</text>
         <text x="170" y="159" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Fire</text>
         <text x="310" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F525</text>
         <text x="425" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128293</text>
         <text x="600" y="159" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9"  fill="#C1440E">1 1111 0101 0010 0101</text>
 
-        <!-- Row 4: 👍  U+1F44D = 128077 = 1_1111_0100_0100_1101 -->
+        <!-- Row 4: ðŸ‘  U+1F44D = 128077 = 1_1111_0100_0100_1101 -->
         <rect x="20" y="170" width="720" height="32" fill="#FDFAF4"/>
-        <text x="50"  y="191" text-anchor="middle" font-size="18">👍</text>
+        <text x="50"  y="191" text-anchor="middle" font-size="18">ðŸ‘</text>
         <text x="170" y="191" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="11" fill="#1A1814">Thumbs Up</text>
         <text x="310" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#5b2d8e">U+1F44D</text>
         <text x="425" y="191" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1D4E7A">128077</text>
@@ -249,60 +249,60 @@
         <text x="380" y="220" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">U+ notation means "Unicode code point." Binary shown as raw code point value, grouped in 4-bit nibbles.</text>
       </svg>
 
-      <p>Unicode code points are written in a notation like <span class="uni">U+1F602</span>. That <span class="uni">1F602</span> is a hexadecimal number (more on hex shortly) — in decimal it's <span class="dec">128,514</span>. In binary it's a 17-bit number: <span class="bin">1 1111 0110 0000 0010</span>. Every time you send 😂 in a text message, your phone transmits exactly that bit pattern across the network. Your friend's phone receives it, looks it up in the Unicode table, and renders the face. No magic — just a number, agreed upon by every device on earth.</p>
+      <p>Unicode code points are written in a notation like <span class="uni">U+1F602</span>. That <span class="uni">1F602</span> is a hexadecimal number (more on hex shortly) â€” in decimal it's <span class="dec">128,514</span>. In binary it's a 17-bit number: <span class="bin">1 1111 0110 0000 0010</span>. Every time you send ðŸ˜‚ in a text message, your phone transmits exactly that bit pattern across the network. Your friend's phone receives it, looks it up in the Unicode table, and renders the face. No magic â€” just a number, agreed upon by every device on earth.</p>
 
       <p><strong>UTF-8</strong> is the most common way Unicode is actually stored on disk and transmitted over the network. It's cleverly designed: ASCII characters use exactly one byte each (identical to plain ASCII), while less common characters use two, three, or four bytes as needed. An English text file in UTF-8 is the same size as in ASCII, while still supporting every character and emoji on the planet. It's the dominant encoding on the modern web.</p>
 
       <div class="note">
-        <strong>When encoding goes wrong.</strong> You've seen garbled text like <em>â€™</em> where an apostrophe should be. That's an encoding mismatch — the file was written in UTF-8 but read as Latin-1 (or vice versa). The bits are identical; the interpretation is wrong. Same bit pattern, different data type. Exactly the problem we flagged in Chapter 1.
+        <strong>When encoding goes wrong.</strong> You've seen garbled text like <em>Ã¢â‚¬â„¢</em> where an apostrophe should be. That's an encoding mismatch â€” the file was written in UTF-8 but read as Latin-1 (or vice versa). The bits are identical; the interpretation is wrong. Same bit pattern, different data type. Exactly the problem we flagged in Chapter 1.
       </div>
 
       <h2>Representing Images: Pixels and Bitmaps</h2>
 
-      <p>So far the pattern is holding up. Numbers are stored as binary directly. Text is stored as numbers — an arbitrary but agreed-upon assignment of a code point to every character. Both reduce to bits in the end. But what about something that doesn't feel like a number at all — like a photograph? Images seem fundamentally different. They have shape, color, spatial relationships between things. How do you turn a picture into a string of 1s and 0s?</p>
+      <p>So far the pattern is holding up. Numbers are stored as binary directly. Text is stored as numbers â€” an arbitrary but agreed-upon assignment of a code point to every character. Both reduce to bits in the end. But what about something that doesn't feel like a number at all â€” like a photograph? Images seem fundamentally different. They have shape, color, spatial relationships between things. How do you turn a picture into a string of 1s and 0s?</p>
 
       <p>The answer, as you might suspect by now, is more numbers. A lot of them.</p>
 
-      <p>Let's start with the simplest possible image: pure black and white — no color, no shades of gray, just on or off for each dot.</p>
+      <p>Let's start with the simplest possible image: pure black and white â€” no color, no shades of gray, just on or off for each dot.</p>
 
-      <p>This is a <strong>monochrome bitmap</strong>. Each dot — called a <strong>pixel</strong> (short for "picture element") — is represented by exactly one bit: <span class="bin">1</span> for black, <span class="bin">0</span> for white. A row of 8 pixels is one byte. A grid of 8×8 pixels is 8 bytes — 64 bits of image data.</p>
+      <p>This is a <strong>monochrome bitmap</strong>. Each dot â€” called a <strong>pixel</strong> (short for "picture element") â€” is represented by exactly one bit: <span class="bin">1</span> for black, <span class="bin">0</span> for white. A row of 8 pixels is one byte. A grid of 8Ã—8 pixels is 8 bytes â€” 64 bits of image data.</p>
 
       <div class="definition">
         <div class="def-term">Pixel</div>
-        <p>The smallest unit of a digital image — short for "picture element." In a monochrome image, one pixel = one bit. In a color image, one pixel = three bytes. Every digital image is a grid of pixels.</p>
+        <p>The smallest unit of a digital image â€” short for "picture element." In a monochrome image, one pixel = one bit. In a color image, one pixel = three bytes. Every digital image is a grid of pixels.</p>
       </div>
 
-      <p>The widget below is a live 8×8 monochrome bitmap. Each cell is one pixel, one bit. Click to toggle pixels on and off — watch the binary row values update as you paint.</p>
+      <p>The widget below is a live 8Ã—8 monochrome bitmap. Each cell is one pixel, one bit. Click to toggle pixels on and off â€” watch the binary row values update as you paint.</p>
 
       <div data-widget="bitmap-explorer"></div>
 
-      <p>This is literally how early computer fonts worked. The letters on the first personal computers were stored as 8×8 bitmaps — one byte per row, eight rows per character. Simple, effective, and completely understandable now that you know how it works.</p>
+      <p>This is literally how early computer fonts worked. The letters on the first personal computers were stored as 8Ã—8 bitmaps â€” one byte per row, eight rows per character. Simple, effective, and completely understandable now that you know how it works.</p>
 
       <h2>From Black and White to Color: RGB</h2>
 
-      <p>A one-bit-per-pixel image is limited to exactly two colors. To represent the images we actually use, we need more bits per pixel — and a way to encode color.</p>
+      <p>A one-bit-per-pixel image is limited to exactly two colors. To represent the images we actually use, we need more bits per pixel â€” and a way to encode color.</p>
 
-      <p>Here's the key insight: human eyes have three types of color receptors, sensitive to red, green, and blue light. Every color you can perceive is some mixture of these three signals. Computer displays exploit this directly — each pixel contains three tiny lights, one red, one green, one blue. By varying their brightness independently, the screen can produce any color the human eye can distinguish.</p>
+      <p>Here's the key insight: human eyes have three types of color receptors, sensitive to red, green, and blue light. Every color you can perceive is some mixture of these three signals. Computer displays exploit this directly â€” each pixel contains three tiny lights, one red, one green, one blue. By varying their brightness independently, the screen can produce any color the human eye can distinguish.</p>
 
-      <p>This system is <strong>RGB</strong>. Each channel — Red, Green, Blue — gets one byte: a value from <span class="dec">0</span> (off) to <span class="dec">255</span> (full brightness). Three bytes per pixel, 24 bits total.</p>
+      <p>This system is <strong>RGB</strong>. Each channel â€” Red, Green, Blue â€” gets one byte: a value from <span class="dec">0</span> (off) to <span class="dec">255</span> (full brightness). Three bytes per pixel, 24 bits total.</p>
 
       <!-- RGB Mixer Widget -->
       <div data-widget="rgb-mixer"></div>
 
       <div class="definition">
         <div class="def-term">RGB Color Model</div>
-        <p>Three values — Red, Green, Blue — each from <span class="dec">0</span> to <span class="dec">255</span>. Three bytes (24 bits) per pixel. 256 × 256 × 256 = 16,777,216 possible colors — more than the human eye can distinguish.</p>
+        <p>Three values â€” Red, Green, Blue â€” each from <span class="dec">0</span> to <span class="dec">255</span>. Three bytes (24 bits) per pixel. 256 Ã— 256 Ã— 256 = 16,777,216 possible colors â€” more than the human eye can distinguish.</p>
       </div>
 
       <h2>Hexadecimal: A Better Way to Write Bytes</h2>
 
       <p>If you're a developer specifying a color, you need to communicate three numbers between <span class="dec">0</span> and <span class="dec">255</span>. Writing <code>rgb(193, 68, 14)</code> works, but it's verbose. The industry long ago settled on a more compact notation: <strong>hexadecimal</strong>, or hex.</p>
 
-      <p>Let's build up hex from scratch — same approach as Chapter 1's binary introduction. No shortcuts.</p>
+      <p>Let's build up hex from scratch â€” same approach as Chapter 1's binary introduction. No shortcuts.</p>
 
-      <p>You already know two number bases. <strong>Decimal</strong> is base-10: ten digits (0–9), place values as powers of 10. <strong>Binary</strong> is base-2: two digits (0–1), place values as powers of 2. <strong>Hexadecimal</strong> is base-16: sixteen digits, place values as powers of 16.</p>
+      <p>You already know two number bases. <strong>Decimal</strong> is base-10: ten digits (0â€“9), place values as powers of 10. <strong>Binary</strong> is base-2: two digits (0â€“1), place values as powers of 2. <strong>Hexadecimal</strong> is base-16: sixteen digits, place values as powers of 16.</p>
 
-      <p>The question: what are the sixteen digits? Decimal only needs ten symbols. Hex needs sixteen. We only have ten numeric symbols (0–9), so we borrow the first six letters of the alphabet. The complete set of hex digits:</p>
+      <p>The question: what are the sixteen digits? Decimal only needs ten symbols. Hex needs sixteen. We only have ten numeric symbols (0â€“9), so we borrow the first six letters of the alphabet. The complete set of hex digits:</p>
 
       <table class="place-table" style="margin:24px auto;">
         <tr class="row-digit">
@@ -320,41 +320,41 @@
         </tr>
       </table>
 
-      <p>A = <span class="dec">10</span>. B = <span class="dec">11</span>. C = <span class="dec">12</span>. D = <span class="dec">13</span>. E = <span class="dec">14</span>. F = <span class="dec">15</span>. After F, you've exhausted all sixteen digits and need a new place — exactly like decimal rolls over after 9, or binary rolls over after 1. In hex, you roll over after F.</p>
+      <p>A = <span class="dec">10</span>. B = <span class="dec">11</span>. C = <span class="dec">12</span>. D = <span class="dec">13</span>. E = <span class="dec">14</span>. F = <span class="dec">15</span>. After F, you've exhausted all sixteen digits and need a new place â€” exactly like decimal rolls over after 9, or binary rolls over after 1. In hex, you roll over after F.</p>
 
       <p>So counting in hex goes: <span class="hex">0</span>, <span class="hex">1</span>, <span class="hex">2</span>, <span class="hex">3</span>, <span class="hex">4</span>, <span class="hex">5</span>, <span class="hex">6</span>, <span class="hex">7</span>, <span class="hex">8</span>, <span class="hex">9</span>, <span class="hex">A</span>, <span class="hex">B</span>, <span class="hex">C</span>, <span class="hex">D</span>, <span class="hex">E</span>, <span class="hex">F</span>, <span class="hex">10</span>, <span class="hex">11</span> ... <span class="hex">19</span>, <span class="hex">1A</span>, <span class="hex">1B</span> ... <span class="hex">1F</span>, <span class="hex">20</span> ...</p>
 
-      <p>Place values in hex are powers of 16. The ones place is 16⁰ = <span class="dec">1</span>. The sixteens place is 16¹ = <span class="dec">16</span>. The two-fifty-sixes place is 16² = <span class="dec">256</span>.</p>
+      <p>Place values in hex are powers of 16. The ones place is 16â° = <span class="dec">1</span>. The sixteens place is 16Â¹ = <span class="dec">16</span>. The two-fifty-sixes place is 16Â² = <span class="dec">256</span>.</p>
 
       <h3>Why Hex and Bytes Are a Perfect Match</h3>
 
-      <p>Here's why the computing world adopted hex so enthusiastically: one byte — 8 bits — maps to exactly <em>two</em> hex digits. Always.</p>
+      <p>Here's why the computing world adopted hex so enthusiastically: one byte â€” 8 bits â€” maps to exactly <em>two</em> hex digits. Always.</p>
 
-      <p>One hex digit represents values <span class="dec">0</span>–<span class="dec">15</span>, which is 4 bits (2⁴ = 16). Two hex digits represent values <span class="dec">0</span>–<span class="dec">255</span>, which is exactly 8 bits (2⁸ = 256). So every possible byte value maps to exactly one two-character hex value — from <span class="hex">00</span> to <span class="hex">FF</span>.</p>
+      <p>One hex digit represents values <span class="dec">0</span>â€“<span class="dec">15</span>, which is 4 bits (2â´ = 16). Two hex digits represent values <span class="dec">0</span>â€“<span class="dec">255</span>, which is exactly 8 bits (2â¸ = 256). So every possible byte value maps to exactly one two-character hex value â€” from <span class="hex">00</span> to <span class="hex">FF</span>.</p>
 
       <p>That's the whole appeal. Instead of writing <code>11000001</code> in binary or <span class="dec">193</span> in decimal, you write <span class="hex">C1</span> in hex. Compact, unambiguous, one-to-one with bytes.</p>
 
       <p>Let's translate this textbook's orange (R: <span class="dec">193</span>, G: <span class="dec">68</span>, B: <span class="dec">14</span>) into hex:</p>
 
-      <table class="comparison-table" style="margin:24px 0;">
+      <table class="data-table" style="margin:24px 0;">
         <thead><tr><th>Channel</th><th>Decimal</th><th>Calculation</th><th>Hex</th></tr></thead>
         <tbody>
           <tr>
             <td><strong>Red</strong></td>
             <td><span class="dec">193</span></td>
-            <td>193 ÷ 16 = 12 remainder 1 → C=12, 1=1</td>
+            <td>193 Ã· 16 = 12 remainder 1 â†’ C=12, 1=1</td>
             <td><span class="hex">C1</span></td>
           </tr>
           <tr>
             <td><strong>Green</strong></td>
             <td><span class="dec">68</span></td>
-            <td>68 ÷ 16 = 4 remainder 4 → 4, 4</td>
+            <td>68 Ã· 16 = 4 remainder 4 â†’ 4, 4</td>
             <td><span class="hex">44</span></td>
           </tr>
           <tr>
             <td><strong>Blue</strong></td>
             <td><span class="dec">14</span></td>
-            <td>14 ÷ 16 = 0 remainder 14 → 0, E=14</td>
+            <td>14 Ã· 16 = 0 remainder 14 â†’ 0, E=14</td>
             <td><span class="hex">0E</span></td>
           </tr>
         </tbody>
@@ -364,25 +364,25 @@
 
       <p>To read a hex color code, reverse the process. Take <code>#FF5733</code>:</p>
       <ul>
-        <li><span class="hex">FF</span>: F=15, so 15×16 + 15 = <span class="dec">255</span> → Red at maximum</li>
-        <li><span class="hex">57</span>: 5×16 + 7 = <span class="dec">87</span> → Green at about a third</li>
-        <li><span class="hex">33</span>: 3×16 + 3 = <span class="dec">51</span> → Blue at about a fifth</li>
+        <li><span class="hex">FF</span>: F=15, so 15Ã—16 + 15 = <span class="dec">255</span> â†’ Red at maximum</li>
+        <li><span class="hex">57</span>: 5Ã—16 + 7 = <span class="dec">87</span> â†’ Green at about a third</li>
+        <li><span class="hex">33</span>: 3Ã—16 + 3 = <span class="dec">51</span> â†’ Blue at about a fifth</li>
       </ul>
-      <p>Result: <span style="display:inline-block;width:14px;height:14px;background:#FF5733;border-radius:2px;vertical-align:middle;margin:0 3px;border:1px solid var(--border-dark);"></span> a saturated orange-red. When you see a hex color code, you're not looking at magic — you're looking at three bytes.</p>
+      <p>Result: <span style="display:inline-block;width:14px;height:14px;background:#FF5733;border-radius:2px;vertical-align:middle;margin:0 3px;border:1px solid var(--border-dark);"></span> a saturated orange-red. When you see a hex color code, you're not looking at magic â€” you're looking at three bytes.</p>
 
       <div class="note">
-        <strong>#C1440E is not one hex number — it's three.</strong> A common point of confusion: a CSS color code like <code>#C1440E</code> looks like a single six-digit hex number, but it's actually three two-digit hex values concatenated — <span class="hex">C1</span> (Red), <span class="hex">44</span> (Green), <span class="hex">0E</span> (Blue). The <code>#</code> prefix is a web convention that signals "this is a color code," not a general hex notation. When hex values appear elsewhere in computing — memory addresses, error codes, MAC addresses — they're written with a <code>0x</code> prefix instead. So <code>0xC1</code> is the number <span class="dec">193</span> in hex; <code>#C1440E</code> is a color made of three such bytes. Same digits, different packaging, different prefix to tell them apart.
+        <strong>#C1440E is not one hex number â€” it's three.</strong> A common point of confusion: a CSS color code like <code>#C1440E</code> looks like a single six-digit hex number, but it's actually three two-digit hex values concatenated â€” <span class="hex">C1</span> (Red), <span class="hex">44</span> (Green), <span class="hex">0E</span> (Blue). The <code>#</code> prefix is a web convention that signals "this is a color code," not a general hex notation. When hex values appear elsewhere in computing â€” memory addresses, error codes, MAC addresses â€” they're written with a <code>0x</code> prefix instead. So <code>0xC1</code> is the number <span class="dec">193</span> in hex; <code>#C1440E</code> is a color made of three such bytes. Same digits, different packaging, different prefix to tell them apart.
       </div>
 
       <div class="note">
-        <strong>Hex beyond colors.</strong> Hexadecimal appears constantly in IT work — memory addresses, MAC addresses, error codes, cryptographic hashes, network packet dumps. Any time you see a string of 0–9 and A–F values, that's hex. The ability to read it fluently is a genuinely useful professional skill.
+        <strong>Hex beyond colors.</strong> Hexadecimal appears constantly in IT work â€” memory addresses, MAC addresses, error codes, cryptographic hashes, network packet dumps. Any time you see a string of 0â€“9 and Aâ€“F values, that's hex. The ability to read it fluently is a genuinely useful professional skill.
       </div>
 
       <h2>Representing Sound</h2>
 
-      <p>Sound is pressure. When a speaker cone pushes forward, it compresses the air in front of it; when it pulls back, it creates a region of lower pressure. Those compressions and rarefactions travel outward as a wave, and when they reach your eardrum, you hear sound. The wave has a shape — a smooth, continuous curve that varies over time.</p>
+      <p>Sound is pressure. When a speaker cone pushes forward, it compresses the air in front of it; when it pulls back, it creates a region of lower pressure. Those compressions and rarefactions travel outward as a wave, and when they reach your eardrum, you hear sound. The wave has a shape â€” a smooth, continuous curve that varies over time.</p>
 
-      <p>The simplest sound wave is a <strong>sine wave</strong>: a perfectly smooth, repeating oscillation. Real sounds — a voice, a guitar, a recording of rain — are vastly more complex, but they're all built from combinations of sine waves at different frequencies and amplitudes. This is the underlying math of audio, and it's why the sine wave is the right place to start.</p>
+      <p>The simplest sound wave is a <strong>sine wave</strong>: a perfectly smooth, repeating oscillation. Real sounds â€” a voice, a guitar, a recording of rain â€” are vastly more complex, but they're all built from combinations of sine waves at different frequencies and amplitudes. This is the underlying math of audio, and it's why the sine wave is the right place to start.</p>
 
       <!-- SVG: Sine wave with labeled amplitude and frequency -->
       <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -392,7 +392,7 @@
         <!-- Axes -->
         <line x1="40" y1="95" x2="650" y2="95" stroke="#D8D2C6" stroke-width="1"/>
         <line x1="40" y1="20" x2="40"  y2="170" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="655" y="99" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">time →</text>
+        <text x="655" y="99" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">time â†’</text>
         <text x="8"   y="50" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C" transform="rotate(-90,14,95)">pressure</text>
 
         <!-- Sine wave path (two full cycles) -->
@@ -413,29 +413,29 @@
         <text x="140" y="58" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#C1440E" font-weight="600">Amplitude</text>
         <text x="140" y="70" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">(loudness)</text>
 
-        <!-- Frequency annotation — one full cycle -->
+        <!-- Frequency annotation â€” one full cycle -->
         <line x1="40"  y1="175" x2="400" y2="175" stroke="#1a6b4a" stroke-width="1.5"/>
         <line x1="40"  y1="170" x2="40"  y2="180" stroke="#1a6b4a" stroke-width="1.5"/>
         <line x1="400" y1="170" x2="400" y2="180" stroke="#1a6b4a" stroke-width="1.5"/>
         <text x="220" y="172" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1a6b4a" font-weight="600">1 cycle (period)</text>
-        <text x="220" y="184" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">Frequency = cycles per second (Hz) — pitch</text>
+        <text x="220" y="184" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">Frequency = cycles per second (Hz) â€” pitch</text>
 
         <!-- Zero crossing label -->
         <text x="45" y="88" font-family="'JetBrains Mono',monospace" font-size="8" fill="#8A857C">0</text>
       </svg>
 
-      <p>Two properties define a sound wave. <strong>Amplitude</strong> is the height of the wave — how much the pressure varies. We perceive amplitude as <em>loudness</em>. <strong>Frequency</strong> is how many complete cycles occur per second, measured in <strong>Hertz (Hz)</strong>. We perceive frequency as <em>pitch</em>. Middle A on a piano vibrates at 440 Hz. A bass guitar note might be 80 Hz. A dog whistle is above 20,000 Hz — beyond the range of human hearing.</p>
+      <p>Two properties define a sound wave. <strong>Amplitude</strong> is the height of the wave â€” how much the pressure varies. We perceive amplitude as <em>loudness</em>. <strong>Frequency</strong> is how many complete cycles occur per second, measured in <strong>Hertz (Hz)</strong>. We perceive frequency as <em>pitch</em>. Middle A on a piano vibrates at 440 Hz. A bass guitar note might be 80 Hz. A dog whistle is above 20,000 Hz â€” beyond the range of human hearing.</p>
 
       <p>The problem for a digital computer is that both amplitude and frequency are continuous. The wave doesn't snap between values; it flows smoothly. So how does a discrete machine capture it?</p>
 
       <h3>Sampling: Slicing the Continuous into Discrete</h3>
 
-      <p>The answer is <strong>sampling</strong>: take a measurement of the wave's amplitude at regular intervals, and record each measurement as a number. It's the audio equivalent of the flipbook — a smooth motion becomes a series of still frames. If the frames are close enough together, the eye (or in this case, the ear) perceives continuous motion.</p>
+      <p>The answer is <strong>sampling</strong>: take a measurement of the wave's amplitude at regular intervals, and record each measurement as a number. It's the audio equivalent of the flipbook â€” a smooth motion becomes a series of still frames. If the frames are close enough together, the eye (or in this case, the ear) perceives continuous motion.</p>
 
       <!-- SVG: Continuous wave vs digital samples -->
       <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <rect width="680" height="220" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
-        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Analog Wave → Digital Samples</text>
+        <text x="340" y="20" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Analog Wave â†’ Digital Samples</text>
 
         <!-- Left panel: analog -->
         <rect x="14" y="28" width="308" height="170" rx="6" fill="#F5F2EB" stroke="#D8D2C6" stroke-width="1"/>
@@ -489,14 +489,14 @@
         <text x="512" y="192" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Each dot = one sample = one number stored</text>
 
         <!-- Arrow between panels -->
-        <text x="340" y="118" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="18" fill="#B8B0A4">→</text>
+        <text x="340" y="118" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="18" fill="#B8B0A4">â†’</text>
       </svg>
 
-      <p>Each sample is just a number — the amplitude of the wave at that instant, stored as a binary integer. Two parameters control how faithfully the digital version captures the original:</p>
+      <p>Each sample is just a number â€” the amplitude of the wave at that instant, stored as a binary integer. Two parameters control how faithfully the digital version captures the original:</p>
 
-      <p><strong>Sample rate</strong> is how many measurements we take per second, expressed in Hz or kHz. The higher the sample rate, the more precisely the digital version tracks the original wave's shape. There's a mathematical principle called the <strong>Nyquist theorem</strong> that says you need to sample at least twice the highest frequency you want to capture. Human hearing tops out around 20,000 Hz, so a sample rate of at least 40,000 Hz is needed to capture the full audible range — which is exactly why CD audio uses 44,100 Hz (44.1 kHz). The extra headroom above 40,000 gives engineers room for filtering.</p>
+      <p><strong>Sample rate</strong> is how many measurements we take per second, expressed in Hz or kHz. The higher the sample rate, the more precisely the digital version tracks the original wave's shape. There's a mathematical principle called the <strong>Nyquist theorem</strong> that says you need to sample at least twice the highest frequency you want to capture. Human hearing tops out around 20,000 Hz, so a sample rate of at least 40,000 Hz is needed to capture the full audible range â€” which is exactly why CD audio uses 44,100 Hz (44.1 kHz). The extra headroom above 40,000 gives engineers room for filtering.</p>
 
-      <p><strong>Bit depth</strong> is how many bits are used to store each sample — how precisely each amplitude measurement is recorded. CD audio uses 16-bit samples, giving 2¹⁶ = 65,536 possible amplitude values. More bits means a wider dynamic range — the difference between the quietest and loudest sounds that can be faithfully represented. Professional studio audio often uses 24-bit depth (16 million possible values) to preserve detail during recording and mixing.</p>
+      <p><strong>Bit depth</strong> is how many bits are used to store each sample â€” how precisely each amplitude measurement is recorded. CD audio uses 16-bit samples, giving 2Â¹â¶ = 65,536 possible amplitude values. More bits means a wider dynamic range â€” the difference between the quietest and loudest sounds that can be faithfully represented. Professional studio audio often uses 24-bit depth (16 million possible values) to preserve detail during recording and mixing.</p>
 
       <!-- SVG: Sample rate vs bit depth comparison -->
       <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -510,7 +510,7 @@
         <text x="508" y="47" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="white">BIT DEPTH (bits per sample)</text>
 
         <!-- Left: description -->
-        <text x="28" y="74" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">Controls time resolution —</text>
+        <text x="28" y="74" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">Controls time resolution â€”</text>
         <text x="28" y="88" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">how closely spaced samples are over time.</text>
 
         <!-- Left: examples -->
@@ -525,7 +525,7 @@
         <text x="28" y="172" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8A857C">Higher rate = more faithful wave shape = larger file</text>
 
         <!-- Right: description -->
-        <text x="364" y="74" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">Controls amplitude resolution —</text>
+        <text x="364" y="74" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">Controls amplitude resolution â€”</text>
         <text x="364" y="88" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#4A4640">how precisely each sample's loudness is stored.</text>
 
         <!-- Right: examples -->
@@ -550,30 +550,30 @@
       <p>Put the two together for CD-quality stereo audio:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;">
-        44,100 samples/sec × 16 bits/sample × 2 channels = 1,411,200 bits/sec ≈ <strong>10 MB per minute</strong>
+        44,100 samples/sec Ã— 16 bits/sample Ã— 2 channels = 1,411,200 bits/sec â‰ˆ <strong>10 MB per minute</strong>
       </p>
 
-      <p>One minute of uncompressed CD audio is about 10 MB. A 3-minute song is roughly 30 MB uncompressed. The same song as an MP3 is typically 3–5 MB. That difference — from 30 MB to 4 MB — is the work of compression, which we'll cover shortly.</p>
+      <p>One minute of uncompressed CD audio is about 10 MB. A 3-minute song is roughly 30 MB uncompressed. The same song as an MP3 is typically 3â€“5 MB. That difference â€” from 30 MB to 4 MB â€” is the work of compression, which we'll cover shortly.</p>
 
       <h2>Representing Images and Video</h2>
 
       <p>We established earlier that a color image is a grid of pixels, each stored as three bytes (R, G, B). The file size math follows directly: multiply pixels by bytes per pixel.</p>
 
-      <p>A smartphone photo at 4,000 × 3,000 pixels:</p>
+      <p>A smartphone photo at 4,000 Ã— 3,000 pixels:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;">
-        4,000 × 3,000 pixels × 3 bytes/pixel = 36,000,000 bytes ≈ <strong>36 MB uncompressed</strong>
+        4,000 Ã— 3,000 pixels Ã— 3 bytes/pixel = 36,000,000 bytes â‰ˆ <strong>36 MB uncompressed</strong>
       </p>
 
-      <p>Your phone saves that as a 3–5 MB JPEG. We'll get to exactly how in a moment.</p>
+      <p>Your phone saves that as a 3â€“5 MB JPEG. We'll get to exactly how in a moment.</p>
 
       <p>Video is images in sequence. Film traditionally runs at 24 frames per second; broadcast television at 30; modern gaming and high-frame-rate video at 60 or even 120. Each frame is a complete image. Multiply the per-frame size by the frame rate:</p>
 
       <p style="text-align:center;font-family:var(--font-mono);background:var(--bg-alt);padding:14px;border-radius:var(--radius);border:1px solid var(--border);margin:20px 0;">
-        36 MB/frame × 30 frames/sec = 1,080 MB/sec ≈ <strong>1 GB every second</strong>
+        36 MB/frame Ã— 30 frames/sec = 1,080 MB/sec â‰ˆ <strong>1 GB every second</strong>
       </p>
 
-      <p>A 2-hour movie at that rate would require over 7 terabytes of raw storage. That's clearly impractical — which is why compression isn't optional for video. It's a fundamental requirement.</p>
+      <p>A 2-hour movie at that rate would require over 7 terabytes of raw storage. That's clearly impractical â€” which is why compression isn't optional for video. It's a fundamental requirement.</p>
 
       <!-- SVG: Image resolution and file size comparison -->
       <svg viewBox="0 0 680 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -585,53 +585,53 @@
         <text x="100" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Format</text>
         <text x="230" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Resolution</text>
         <text x="355" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Pixels</text>
-        <text x="475" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">× 3 bytes</text>
+        <text x="475" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Ã— 3 bytes</text>
         <text x="600" y="42" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="white">Uncompressed</text>
 
         <!-- Row 1 -->
         <rect x="14" y="50" width="652" height="22" fill="#F5F2EB"/>
         <text x="100" y="65" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">HD Video Frame</text>
-        <text x="230" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">1,920 × 1,080</text>
+        <text x="230" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">1,920 Ã— 1,080</text>
         <text x="355" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">2,073,600</text>
         <text x="475" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">6,220,800</text>
-        <text x="600" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">≈ 6 MB</text>
+        <text x="600" y="65" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">â‰ˆ 6 MB</text>
 
         <!-- Row 2 -->
         <rect x="14" y="74" width="652" height="22" fill="#FDFAF4"/>
         <text x="100" y="89" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">4K Video Frame</text>
-        <text x="230" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">3,840 × 2,160</text>
+        <text x="230" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">3,840 Ã— 2,160</text>
         <text x="355" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">8,294,400</text>
         <text x="475" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">24,883,200</text>
-        <text x="600" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">≈ 24 MB</text>
+        <text x="600" y="89" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#1D4E7A">â‰ˆ 24 MB</text>
 
         <!-- Row 3 -->
         <rect x="14" y="98" width="652" height="22" fill="#F5F2EB"/>
         <text x="100" y="113" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">12 MP Smartphone Photo</text>
-        <text x="230" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">4,000 × 3,000</text>
+        <text x="230" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">4,000 Ã— 3,000</text>
         <text x="355" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">12,000,000</text>
         <text x="475" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">36,000,000</text>
-        <text x="600" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#C1440E">≈ 36 MB</text>
+        <text x="600" y="113" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#C1440E">â‰ˆ 36 MB</text>
 
         <!-- Row 4 -->
         <rect x="14" y="122" width="652" height="22" fill="#FDFAF4"/>
         <text x="100" y="137" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#1A1814">4K @ 30fps (1 second)</text>
-        <text x="230" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">3,840 × 2,160 × 30</text>
+        <text x="230" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">3,840 Ã— 2,160 Ã— 30</text>
         <text x="355" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">248,832,000</text>
         <text x="475" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" fill="#4A4640">746,496,000</text>
-        <text x="600" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#C1440E">≈ 720 MB/sec</text>
+        <text x="600" y="137" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700" fill="#C1440E">â‰ˆ 720 MB/sec</text>
 
         <text x="340" y="175" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Without compression, modern video is completely impractical to store or transmit.</text>
       </svg>
 
       <h2>Compression: Making Big Data Small</h2>
 
-      <p>Compression is the art of representing the same information using fewer bits. It's not magic — it exploits <em>redundancy</em>. Real-world data, it turns out, is deeply redundant. A photo of a blue sky contains millions of pixels that are nearly the same color. A song has long stretches of similar waveforms. A video has consecutive frames where most of the image hasn't changed at all. Compression algorithms find and eliminate that redundancy.</p>
+      <p>Compression is the art of representing the same information using fewer bits. It's not magic â€” it exploits <em>redundancy</em>. Real-world data, it turns out, is deeply redundant. A photo of a blue sky contains millions of pixels that are nearly the same color. A song has long stretches of similar waveforms. A video has consecutive frames where most of the image hasn't changed at all. Compression algorithms find and eliminate that redundancy.</p>
 
       <p>There are two fundamental types of compression, and the distinction matters enormously in practice.</p>
 
-      <p><strong>Lossless compression</strong> reduces file size without discarding any information. Decompress the file and you get back every single original bit — the result is mathematically identical to what you started with. The tradeoff: lossless compression ratios are modest, typically 2:1 to 4:1. Examples include PNG for images, FLAC for audio, and ZIP for general files.</p>
+      <p><strong>Lossless compression</strong> reduces file size without discarding any information. Decompress the file and you get back every single original bit â€” the result is mathematically identical to what you started with. The tradeoff: lossless compression ratios are modest, typically 2:1 to 4:1. Examples include PNG for images, FLAC for audio, and ZIP for general files.</p>
 
-      <p><strong>Lossy compression</strong> achieves much higher compression ratios by permanently discarding information that humans are unlikely to notice. The decompressed file is <em>not</em> identical to the original — it's an approximation. The art is in choosing what to throw away. Examples include JPEG for images, MP3 for audio, and H.264/HEVC for video.</p>
+      <p><strong>Lossy compression</strong> achieves much higher compression ratios by permanently discarding information that humans are unlikely to notice. The decompressed file is <em>not</em> identical to the original â€” it's an approximation. The art is in choosing what to throw away. Examples include JPEG for images, MP3 for audio, and H.264/HEVC for video.</p>
 
       <!-- SVG: Lossless vs lossy compression diagram -->
       <svg viewBox="0 0 680 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -647,7 +647,7 @@
         <rect width="680" height="230" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
         <text x="340" y="22" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="12" font-weight="700" fill="#1A1814">Lossless vs. Lossy Compression</text>
 
-        <!-- ── LOSSLESS ROW ── -->
+        <!-- â”€â”€ LOSSLESS ROW â”€â”€ -->
         <text x="24" y="44" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#1a6b4a">LOSSLESS</text>
 
         <!-- Box 1: Original -->
@@ -675,17 +675,17 @@
 
         <!-- Result badge -->
         <rect x="382" y="52" width="168" height="40" rx="4" fill="#e0f2ea" stroke="#1a6b4a" stroke-width="1"/>
-        <text x="466" y="69" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#1a6b4a">✓ Bit-for-bit identical</text>
+        <text x="466" y="69" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#1a6b4a">âœ“ Bit-for-bit identical</text>
         <text x="466" y="83" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#1a6b4a">to the original file</text>
 
         <!-- Format examples -->
         <text x="562" y="69" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">PNG</text>
-        <text x="562" y="82" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">FLAC · ZIP</text>
+        <text x="562" y="82" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">FLAC Â· ZIP</text>
 
         <!-- Divider -->
         <line x1="18" y1="114" x2="662" y2="114" stroke="#D8D2C6" stroke-width="1" stroke-dasharray="5,3"/>
 
-        <!-- ── LOSSY ROW ── -->
+        <!-- â”€â”€ LOSSY ROW â”€â”€ -->
         <text x="24" y="134" font-family="'JetBrains Mono',monospace" font-size="10" font-weight="700" fill="#C1440E">LOSSY</text>
 
         <!-- Box 1: Original -->
@@ -716,23 +716,23 @@
 
         <!-- Result badge -->
         <rect x="382" y="142" width="168" height="40" rx="4" fill="#F0E6DF" stroke="#C1440E" stroke-width="1"/>
-        <text x="466" y="159" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#8C3009">✗ Not identical —</text>
+        <text x="466" y="159" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" font-weight="600" fill="#8C3009">âœ— Not identical â€”</text>
         <text x="466" y="173" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#8C3009">perceptually similar</text>
 
         <!-- Format examples -->
         <text x="562" y="158" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">JPEG</text>
-        <text x="562" y="172" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">MP3 · H.264</text>
+        <text x="562" y="172" text-anchor="start" font-family="'JetBrains Mono',monospace" font-size="9" fill="#8A857C">MP3 Â· H.264</text>
 
         <!-- Bottom caption -->
         <line x1="18" y1="202" x2="662" y2="202" stroke="#D8D2C6" stroke-width="1"/>
-        <text x="340" y="218" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Lossy formats permanently discard data during encoding. There is no "decompress" — only decode/render.</text>
+        <text x="340" y="218" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="10" fill="#8A857C">Lossy formats permanently discard data during encoding. There is no "decompress" â€” only decode/render.</text>
       </svg>
 
-      <p>How does lossy compression decide what to throw away? It exploits the limits of human perception. JPEG, for example, converts image data into frequency components (a mathematical technique called the Discrete Cosine Transform) and then discards high-frequency detail that the human visual system is less sensitive to. A smooth blue sky compresses beautifully because the high-frequency information is nearly zero — there's almost nothing to discard. A photo of tree bark compresses poorly because every pixel is genuinely different from its neighbors.</p>
+      <p>How does lossy compression decide what to throw away? It exploits the limits of human perception. JPEG, for example, converts image data into frequency components (a mathematical technique called the Discrete Cosine Transform) and then discards high-frequency detail that the human visual system is less sensitive to. A smooth blue sky compresses beautifully because the high-frequency information is nearly zero â€” there's almost nothing to discard. A photo of tree bark compresses poorly because every pixel is genuinely different from its neighbors.</p>
 
-      <p>MP3 audio compression works similarly, using a model of human hearing called a <strong>psychoacoustic model</strong>. It identifies sounds that would be masked by louder nearby sounds — the way a loud bass note makes it harder to hear a quiet high note at the same moment — and discards the masked data. The listener's brain fills in the gaps. Done well, most people cannot distinguish an MP3 from uncompressed audio in normal listening conditions. Done poorly (at very low bitrates), the artifacts become audible — the "underwater" sound of a badly compressed MP3.</p>
+      <p>MP3 audio compression works similarly, using a model of human hearing called a <strong>psychoacoustic model</strong>. It identifies sounds that would be masked by louder nearby sounds â€” the way a loud bass note makes it harder to hear a quiet high note at the same moment â€” and discards the masked data. The listener's brain fills in the gaps. Done well, most people cannot distinguish an MP3 from uncompressed audio in normal listening conditions. Done poorly (at very low bitrates), the artifacts become audible â€” the "underwater" sound of a badly compressed MP3.</p>
 
-      <p>Video compression goes even further by exploiting temporal redundancy — the fact that consecutive frames in a video are usually very similar. Rather than storing every frame as a complete image, formats like H.264 store a keyframe (a full image) followed by a series of <em>delta frames</em> that only encode what changed. A person talking against a static background has thousands of nearly-identical pixels per frame — only the mouth moves. There's no need to resend those static pixels 30 times per second. This is why a 2-hour movie fits on a 50 GB Blu-ray disc rather than requiring 5,000 GB of raw storage.</p>
+      <p>Video compression goes even further by exploiting temporal redundancy â€” the fact that consecutive frames in a video are usually very similar. Rather than storing every frame as a complete image, formats like H.264 store a keyframe (a full image) followed by a series of <em>delta frames</em> that only encode what changed. A person talking against a static background has thousands of nearly-identical pixels per frame â€” only the mouth moves. There's no need to resend those static pixels 30 times per second. This is why a 2-hour movie fits on a 50 GB Blu-ray disc rather than requiring 5,000 GB of raw storage.</p>
 
       <!-- SVG: Video keyframe vs delta frame -->
       <svg viewBox="0 0 680 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -800,26 +800,26 @@
       </svg>
 
       <div class="note">
-        <strong>Why compression settings matter in IT.</strong> When you're configuring a video surveillance system, choosing a streaming bitrate for a corporate webcast, setting backup compression on a file server, or specifying storage for a media archive, you're making compression decisions. The lossless/lossy distinction, bitrate, and codec choice all have direct implications for storage cost, bandwidth consumption, and quality. These aren't decisions that only developers make — they're everyday IT infrastructure decisions.
+        <strong>Why compression settings matter in IT.</strong> When you're configuring a video surveillance system, choosing a streaming bitrate for a corporate webcast, setting backup compression on a file server, or specifying storage for a media archive, you're making compression decisions. The lossless/lossy distinction, bitrate, and codec choice all have direct implications for storage cost, bandwidth consumption, and quality. These aren't decisions that only developers make â€” they're everyday IT infrastructure decisions.
       </div>
 
-      <!-- YouTube embed: Video Compression as Fast As Possible — Techquickie -->
+      <!-- YouTube embed: Video Compression as Fast As Possible â€” Techquickie -->
       <div style="margin:28px 0;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border-dark);box-shadow:0 2px 12px rgba(26,24,20,0.08);">
         <div style="background:var(--ink);padding:10px 16px;display:flex;align-items:center;gap:10px;">
           <span style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;">Video</span>
-          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">Video Compression as Fast As Possible — Techquickie</span>
+          <span style="font-family:var(--font-head);font-size:0.9rem;color:white;font-weight:600;">Video Compression as Fast As Possible â€” Techquickie</span>
         </div>
         <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;background:#000;">
           <iframe
             src="https://www.youtube.com/embed/qbGQBT2Vwvc"
-            title="Video Compression as Fast As Possible — Techquickie"
+            title="Video Compression as Fast As Possible â€” Techquickie"
             style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
           </iframe>
         </div>
         <div style="padding:10px 16px;background:var(--bg-alt);border-top:1px solid var(--border);">
-          <p style="font-size:0.82rem;color:var(--ink-light);margin:0;font-family:var(--font-body);">A quick visual overview of how video compression works in practice — a good complement to everything covered above.</p>
+          <p style="font-size:0.82rem;color:var(--ink-light);margin:0;font-family:var(--font-body);">A quick visual overview of how video compression works in practice â€” a good complement to everything covered above.</p>
         </div>
       </div>
 
@@ -827,17 +827,17 @@
 
       <p>We've now seen four things a string of bits can represent: an integer, a text character, a color value, and an audio sample. In every case, the bits are just bits. What matters is the agreed-upon rule for interpreting them.</p>
 
-      <p>That rule is a <strong>data type</strong>. When software declares an <code>int</code>, it tells the computer: treat these 32 bits as an integer. A <code>char</code> means: treat this byte as an ASCII character. The computer doesn't inherently know the difference. It stores bits. The meaning — and the responsibility for getting it right — belongs to the software.</p>
+      <p>That rule is a <strong>data type</strong>. When software declares an <code>int</code>, it tells the computer: treat these 32 bits as an integer. A <code>char</code> means: treat this byte as an ASCII character. The computer doesn't inherently know the difference. It stores bits. The meaning â€” and the responsibility for getting it right â€” belongs to the software.</p>
 
       <p>Hardware stores bits. Software assigns meaning. The boundary between them is where most of the interesting problems in computing live.</p>
 
-      <p>Here's a widget that makes that concrete. Eight bits, three different interpretations — the bits don't change, only what we decide they <em>mean</em>. Use the R / G / B buttons to choose which color channel the byte controls.</p>
+      <p>Here's a widget that makes that concrete. Eight bits, three different interpretations â€” the bits don't change, only what we decide they <em>mean</em>. Use the R / G / B buttons to choose which color channel the byte controls.</p>
 
       <div data-widget="byte-inspector"></div>
 
       <p>The bit pattern <span class="bin">01000001</span> is <span class="dec">65</span> as an integer, <strong>A</strong> as an ASCII character, and a particular intensity as a color channel value. Same bits. Different context, different meaning.</p>
 
-      <!-- ── Practice Problems ── -->
+      <!-- â”€â”€ Practice Problems â”€â”€ -->
       <div class="practice-block">
         <div class="practice-header">
           <span class="practice-label">Quiz</span>
@@ -848,8 +848,8 @@
           <div class="q-text">1. How many unique values can a single byte represent?</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q1-input">
-            <button class="btn btn-check" onclick="checkText('q1',['256'],'✓ Correct! 2⁸ = 256 values (0 through 255).','A byte is 8 bits. With n bits you get 2ⁿ combinations.')">Check</button>
-            <button class="btn btn-ghost" onclick="hintText('q1','A byte is 8 bits. With n bits you get 2ⁿ combinations.')">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q1',['256'],'âœ“ Correct! 2â¸ = 256 values (0 through 255).','A byte is 8 bits. With n bits you get 2â¿ combinations.')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q1','A byte is 8 bits. With n bits you get 2â¿ combinations.')">Hint</button>
           </div>
           <div class="q-feedback" id="q1-feedback"></div>
         </div>
@@ -857,9 +857,9 @@
         <div class="quiz-question" id="q2">
           <div class="q-text">2. Your internet provider advertises a 500 Mbps connection. A friend says you can download 500 MB per second. Are they right?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Yes — 500 Mbps means 500 megabytes per second.</button>
-            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> No — 500 Mbps is megabits, not megabytes. That's about 62.5 MB/sec.</button>
-            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> No — 500 Mbps is only 500 kilobytes per second.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Yes â€” 500 Mbps means 500 megabytes per second.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> No â€” 500 Mbps is megabits, not megabytes. That's about 62.5 MB/sec.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> No â€” 500 Mbps is only 500 kilobytes per second.</button>
             <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> It depends on the type of file being downloaded.</button>
           </div>
           <div class="mc-feedback" id="q2-feedback"></div>
@@ -869,7 +869,7 @@
           <div class="q-text">3. What is the decimal ASCII value of the uppercase letter A?</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q3-input">
-            <button class="btn btn-check" onclick="checkText('q3',['65'],'✓ Correct! ASCII 65 = uppercase A.','This has been the running example since Chapter 1.')">Check</button>
+            <button class="btn btn-check" onclick="checkText('q3',['65'],'âœ“ Correct! ASCII 65 = uppercase A.','This has been the running example since Chapter 1.')">Check</button>
             <button class="btn btn-ghost" onclick="hintText('q3','This has been the running example since Chapter 1.')">Hint</button>
           </div>
           <div class="q-feedback" id="q3-feedback"></div>
@@ -880,7 +880,7 @@
           <div class="mc-options">
             <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> ASCII used too many bytes per character, making it inefficient.</button>
             <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> ASCII was a proprietary standard that required licensing fees.</button>
-            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> ASCII only covered English — no room for other languages, scripts, or emoji.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> ASCII only covered English â€” no room for other languages, scripts, or emoji.</button>
             <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> ASCII was incompatible with binary and had to be redesigned.</button>
           </div>
           <div class="mc-feedback" id="q4-feedback"></div>
@@ -890,8 +890,8 @@
           <div class="q-text">5. What is the decimal value of the hex digit <span class="hex">F</span>?</div>
           <div class="q-input-row">
             <input type="text" placeholder="Your answer" id="q5-input">
-            <button class="btn btn-check" onclick="checkText('q5',['15'],'✓ Correct! F is the largest single hex digit, equal to 15.','Hex goes 0–9, then A=10, B=11, C=12, D=13, E=14, F=?')">Check</button>
-            <button class="btn btn-ghost" onclick="hintText('q5','Hex goes 0–9, then A=10, B=11, C=12, D=13, E=14, F=?')">Hint</button>
+            <button class="btn btn-check" onclick="checkText('q5',['15'],'âœ“ Correct! F is the largest single hex digit, equal to 15.','Hex goes 0â€“9, then A=10, B=11, C=12, D=13, E=14, F=?')">Check</button>
+            <button class="btn btn-ghost" onclick="hintText('q5','Hex goes 0â€“9, then A=10, B=11, C=12, D=13, E=14, F=?')">Hint</button>
           </div>
           <div class="q-feedback" id="q5-feedback"></div>
         </div>
@@ -908,7 +908,7 @@
         </div>
 
         <div class="quiz-question" id="q7">
-          <div class="q-text">7. An uncompressed 4000×3000 RGB photo is ~36 MB. Saved as a JPEG it's 4 MB. What accounts for the difference?</div>
+          <div class="q-text">7. An uncompressed 4000Ã—3000 RGB photo is ~36 MB. Saved as a JPEG it's 4 MB. What accounts for the difference?</div>
           <div class="mc-options">
             <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> JPEG uses fewer colors than the RGB model allows.</button>
             <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> JPEG reduces the resolution of the image automatically.</button>
@@ -922,7 +922,7 @@
           <div class="q-text">8. The bit pattern <span class="bin">01000001</span> could mean the integer 65, the letter "A", or a color channel intensity. What determines the correct interpretation?</div>
           <div class="mc-options">
             <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> The operating system detects the correct meaning automatically.</button>
-            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> The value itself — certain numbers can only mean certain things.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> The value itself â€” certain numbers can only mean certain things.</button>
             <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> The data type assigned by the software tells the computer how to interpret the bits.</button>
             <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> The physical storage medium determines the interpretation.</button>
           </div>
@@ -933,11 +933,11 @@
 
       <nav class="chapter-nav-footer">
         <a href="ch02.html">
-          <span class="nav-direction">← Previous</span>
+          <span class="nav-direction">â† Previous</span>
           <span class="nav-title">Chapter 2: Physical Bits</span>
         </a>
         <a href="ch04.html" class="next">
-          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-direction">Next Chapter â†’</span>
           <span class="nav-title">Processors</span>
         </a>
       </nav>
@@ -958,7 +958,7 @@
     const val   = input.value.trim().replace(/^0+(?=\d)/, '');
     if (!val) { fb.className = 'q-feedback hint'; fb.textContent = 'Enter an answer above.'; return; }
     fb.className  = accepted.includes(val) ? 'q-feedback correct' : 'q-feedback incorrect';
-    fb.textContent = accepted.includes(val) ? successMsg : '✗ Not quite — try again, or use the hint.';
+    fb.textContent = accepted.includes(val) ? successMsg : 'âœ— Not quite â€” try again, or use the hint.';
   }
   function hintText(id, hintMsg) {
     const fb = document.getElementById(id + '-feedback');
@@ -974,9 +974,10 @@
       if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
     });
     fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
-    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+    fb.textContent = isCorrect ? 'âœ“ Correct!' : 'âœ— Not quite â€” the correct answer is highlighted.';
   }
 </script>
 
 </body>
 </html>
+

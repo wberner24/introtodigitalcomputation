@@ -1,25 +1,25 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chapter 2: Physical Bits — Introduction to Digital Computation</title>
+  <title>Chapter 2: Physical Bits â€” Introduction to Digital Computation</title>
   <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 
 <div class="site-wrapper">
 
-  <!-- ── Sidebar ── -->
+  <!-- â”€â”€ Sidebar â”€â”€ -->
   <nav class="sidebar" aria-label="Book navigation">
     <div class="sidebar-logo">
       <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
       <div class="book-subtitle">A First-Principles Approach</div>
-      <div class="book-author">Wade Berner · SIUE</div>
+      <div class="book-author">Wade Berner Â· SIUE</div>
     </div>
 
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <div class="nav-unit-label">Unit 1 â€” Foundations</div>
       <a href="ch01.html" class="nav-chapter">
         <span class="ch-num">01</span> Binary
       </a>
@@ -32,7 +32,7 @@
     </div>
 
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <div class="nav-unit-label">Unit 2 â€” Hardware</div>
       <a href="ch04.html" class="nav-chapter">
         <span class="ch-num">04</span> Processors
       </a>
@@ -45,7 +45,7 @@
     </div>
 
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 3 — Software</div>
+      <div class="nav-unit-label">Unit 3 â€” Software</div>
       <a href="ch07.html" class="nav-chapter">
         <span class="ch-num">07</span> System vs. Application Software
       </a>
@@ -58,7 +58,7 @@
     </div>
 
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <div class="nav-unit-label">Unit 4 â€” Networks</div>
       <a href="ch10.html" class="nav-chapter">
         <span class="ch-num">10</span> Networking Fundamentals
       </a>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="nav-unit">
-      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <div class="nav-unit-label">Unit 5 â€” Administration</div>
       <a href="ch12.html" class="nav-chapter">
         <span class="ch-num">12</span> System Administration
       </a>
@@ -86,21 +86,21 @@
     </div>
   </nav>
 
-  <!-- ── Main ── -->
+  <!-- â”€â”€ Main â”€â”€ -->
   <main class="main-content">
 
     <header class="chapter-header">
-      <div class="chapter-eyebrow">Chapter 02 · Unit 1: Foundations</div>
+      <div class="chapter-eyebrow">Chapter 02 Â· Unit 1: Foundations</div>
       <h1 class="chapter-title">Physical Bits</h1>
       <div class="chapter-deco">10110</div>
-      <p class="chapter-intro">A 1 or a 0 is just an idea — a concept that exists in a human brain, on a piece of paper, or in this textbook. But inside a computer, ideas don't live. Electricity does. This chapter is about how the physical world encodes the abstract.</p>
+      <p class="chapter-intro">A 1 or a 0 is just an idea â€” a concept that exists in a human brain, on a piece of paper, or in this textbook. But inside a computer, ideas don't live. Electricity does. This chapter is about how the physical world encodes the abstract.</p>
     </header>
 
     <article class="prose">
 
-      <p>At the end of Chapter 1, we understood <em>what</em> binary is — a number system with two digits — and <em>how</em> to work with it. But we left a big question unanswered: <em>why</em> do computers use binary in the first place?</p>
+      <p>At the end of Chapter 1, we understood <em>what</em> binary is â€” a number system with two digits â€” and <em>how</em> to work with it. But we left a big question unanswered: <em>why</em> do computers use binary in the first place?</p>
 
-      <p>The answer isn't mathematical. It's physical. To understand it, we need to think about how a computer actually stores and moves information — not as ink on paper or pixels on a screen, but as real, measurable properties of the physical world.</p>
+      <p>The answer isn't mathematical. It's physical. To understand it, we need to think about how a computer actually stores and moves information â€” not as ink on paper or pixels on a screen, but as real, measurable properties of the physical world.</p>
 
       <h2>From Concept to Physical Reality</h2>
 
@@ -111,12 +111,12 @@
       <p>Our modern computers use three such phenomena:</p>
 
       <ul>
-        <li><strong>Electrical</strong> — for processing and transmission</li>
-        <li><strong>Magnetic</strong> — for long-term storage</li>
-        <li><strong>Optical</strong> — for removable storage and long-distance transmission</li>
+        <li><strong>Electrical</strong> â€” for processing and transmission</li>
+        <li><strong>Magnetic</strong> â€” for long-term storage</li>
+        <li><strong>Optical</strong> â€” for removable storage and long-distance transmission</li>
       </ul>
 
-      <p>Let's go through each one. We'll spend the most time on electrical representation, because that's where the magic — and the answer to "why binary?" — lives.</p>
+      <p>Let's go through each one. We'll spend the most time on electrical representation, because that's where the magic â€” and the answer to "why binary?" â€” lives.</p>
 
       <h2>Electrical Representation: Processing and Storage</h2>
 
@@ -128,85 +128,85 @@
 
       <div class="definition">
         <div class="def-term">Transistor</div>
-        <p>An electronic switch with no moving parts. A small voltage applied to its gate either allows or blocks the flow of current. The two states — conducting and non-conducting — represent <span class="bin">1</span> and <span class="bin">0</span> respectively.</p>
+        <p>An electronic switch with no moving parts. A small voltage applied to its gate either allows or blocks the flow of current. The two states â€” conducting and non-conducting â€” represent <span class="bin">1</span> and <span class="bin">0</span> respectively.</p>
       </div>
 
-      <p>Now, here's the part that should make your jaw drop a little. The processor in a modern laptop contains somewhere between 10 and 100 <em>billion</em> transistors. Each one is switching between on and off billions of times per second. That is the engine of modern computing — nothing more, nothing less.</p>
+      <p>Now, here's the part that should make your jaw drop a little. The processor in a modern laptop contains somewhere between 10 and 100 <em>billion</em> transistors. Each one is switching between on and off billions of times per second. That is the engine of modern computing â€” nothing more, nothing less.</p>
 
-      <p>Each transistor holds exactly one bit. It is either on (<span class="bin">1</span>) or off (<span class="bin">0</span>). That's the whole trick. The staggering complexity of everything a computer does — running an operating system, rendering video, training an AI model — is ultimately built on billions of tiny switches flipping on and off very, very fast.</p>
+      <p>Each transistor holds exactly one bit. It is either on (<span class="bin">1</span>) or off (<span class="bin">0</span>). That's the whole trick. The staggering complexity of everything a computer does â€” running an operating system, rendering video, training an AI model â€” is ultimately built on billions of tiny switches flipping on and off very, very fast.</p>
 
       <h3>Why Not Ten States?</h3>
 
       <p>This is where the "why binary?" question finally gets its proper answer.</p>
 
-      <p>In theory, a transistor could be designed to hold multiple voltage levels — say, ten distinct levels representing the digits 0 through 9. Then you'd have a decimal computer, and each transistor would store a full decimal digit instead of a measly bit. Wouldn't that be more efficient?</p>
+      <p>In theory, a transistor could be designed to hold multiple voltage levels â€” say, ten distinct levels representing the digits 0 through 9. Then you'd have a decimal computer, and each transistor would store a full decimal digit instead of a measly bit. Wouldn't that be more efficient?</p>
 
       <p>In theory, yes. In practice, it's a disaster. Here's why.</p>
 
-      <p>Voltage in a real circuit is noisy. Temperature fluctuates. Components age. Electrical interference from nearby circuits bleeds in. If you're trying to distinguish between ten precise voltage levels — say, 0.5V, 1.0V, 1.5V, 2.0V, and so on — a little noise is catastrophic. How do you tell 1.0V from 1.1V when your circuit is warm and your neighbor's clock signal is radiating interference?</p>
+      <p>Voltage in a real circuit is noisy. Temperature fluctuates. Components age. Electrical interference from nearby circuits bleeds in. If you're trying to distinguish between ten precise voltage levels â€” say, 0.5V, 1.0V, 1.5V, 2.0V, and so on â€” a little noise is catastrophic. How do you tell 1.0V from 1.1V when your circuit is warm and your neighbor's clock signal is radiating interference?</p>
 
-      <p>Two states, on the other hand, are <em>robust</em>. You don't need to measure a precise voltage — you just need to answer one question: is the voltage high or low? You can draw a threshold line down the middle, call everything above it a <span class="bin">1</span> and everything below it a <span class="bin">0</span>, and tolerate a huge amount of noise without ever misreading a bit. The system is fault-tolerant by design.</p>
+      <p>Two states, on the other hand, are <em>robust</em>. You don't need to measure a precise voltage â€” you just need to answer one question: is the voltage high or low? You can draw a threshold line down the middle, call everything above it a <span class="bin">1</span> and everything below it a <span class="bin">0</span>, and tolerate a huge amount of noise without ever misreading a bit. The system is fault-tolerant by design.</p>
 
       <div class="note">
         <strong>This is the real answer to "why binary?"</strong> Not because two is a mathematically elegant base. Because distinguishing two physical states reliably is an engineering problem that has a clean solution. Distinguishing ten states reliably at the scale of billions of transistors switching billions of times per second is a problem that doesn't.
       </div>
 
-      <!-- ── Widget ── -->
+      <!-- â”€â”€ Widget â”€â”€ -->
       <div data-widget="transistor-toggle"></div>
 
       <figure class="chapter-photo">
         <img src="../img/ch02-transistors.jpg" alt="Several through-hole transistors of varying sizes arranged on a centimeter ruler">
         <figcaption>
-          A handful of discrete transistors — the kind used in electronics labs and hobbyist circuits. Modern processor transistors are billions of times smaller, etched at 3–5 nanometers and invisible to the naked eye.
-          <span class="photo-credit">Photo by Honina · <a href="https://commons.wikimedia.org/wiki/File:Transistor-photo.JPG" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</span>
+          A handful of discrete transistors â€” the kind used in electronics labs and hobbyist circuits. Modern processor transistors are billions of times smaller, etched at 3â€“5 nanometers and invisible to the naked eye.
+          <span class="photo-credit">Photo by Honina Â· <a href="https://commons.wikimedia.org/wiki/File:Transistor-photo.JPG" target="_blank" rel="noopener">Wikimedia Commons</a> Â· CC BY-SA 3.0</span>
         </figcaption>
       </figure>
 
       <h2>Electrical Representation: Transmission</h2>
 
-      <p>So transistors handle storing and processing bits. But what about <em>moving</em> bits — from one component to another inside a computer, or between computers entirely?</p>
+      <p>So transistors handle storing and processing bits. But what about <em>moving</em> bits â€” from one component to another inside a computer, or between computers entirely?</p>
 
-      <p>Here, electricity is still the medium, but the encoding is different. Instead of the static on/off state of a transistor, transmitted bits are represented as a sequence of high and low voltage pulses over time. Think of it like Morse code, but instead of dots and dashes, you have high voltage and low voltage — and instead of a telegraph operator, you have a clock signal coordinating everything.</p>
+      <p>Here, electricity is still the medium, but the encoding is different. Instead of the static on/off state of a transistor, transmitted bits are represented as a sequence of high and low voltage pulses over time. Think of it like Morse code, but instead of dots and dashes, you have high voltage and low voltage â€” and instead of a telegraph operator, you have a clock signal coordinating everything.</p>
 
-      <p>That clock signal is worth understanding. Inside your CPU, a crystal oscillator pulses at a fixed frequency — billions of times per second. Each pulse is one "tick," and on each tick, the processor can sample the voltage on a wire and read it as a <span class="bin">1</span> or a <span class="bin">0</span>. The <strong>clock speed</strong> of a processor — measured in GHz (gigahertz, or billions of cycles per second) — is literally how many times per second it can do this sampling.</p>
+      <p>That clock signal is worth understanding. Inside your CPU, a crystal oscillator pulses at a fixed frequency â€” billions of times per second. Each pulse is one "tick," and on each tick, the processor can sample the voltage on a wire and read it as a <span class="bin">1</span> or a <span class="bin">0</span>. The <strong>clock speed</strong> of a processor â€” measured in GHz (gigahertz, or billions of cycles per second) â€” is literally how many times per second it can do this sampling.</p>
 
       <div class="definition">
         <div class="def-term">Clock Speed</div>
         <p>The frequency at which a processor's internal clock oscillates, measured in GHz (gigahertz). A 3.0 GHz processor completes 3 billion clock cycles per second. Each cycle is an opportunity to read or write a bit. We'll revisit clock speed in depth in Chapter 4.</p>
       </div>
 
-      <p>This is why faster processors aren't magic — they're just switches and wires operating at higher frequencies. The physics is the same. The speed is not.</p>
+      <p>This is why faster processors aren't magic â€” they're just switches and wires operating at higher frequencies. The physics is the same. The speed is not.</p>
 
       <h2>Magnetic Representation</h2>
 
-      <p>Transistors are fast and dense, but they have one significant limitation: they require constant power. Cut the electricity, and the state is gone. This is why your computer loses unsaved work when it crashes — RAM, which is built from transistors, is <em>volatile</em>. It forgets everything when the power goes out.</p>
+      <p>Transistors are fast and dense, but they have one significant limitation: they require constant power. Cut the electricity, and the state is gone. This is why your computer loses unsaved work when it crashes â€” RAM, which is built from transistors, is <em>volatile</em>. It forgets everything when the power goes out.</p>
 
-      <p>For long-term storage — data that needs to survive a power cycle — computers have historically turned to magnetism.</p>
+      <p>For long-term storage â€” data that needs to survive a power cycle â€” computers have historically turned to magnetism.</p>
 
       <p>You're probably familiar with the concept of a magnet having two poles: north and south. A magnetic material can be polarized in one direction or the other, and crucially, it stays that way without any power required. That makes it ideal for storage.</p>
 
-      <p>A <strong>hard disk drive</strong> (HDD) stores bits by magnetizing tiny regions of a spinning metal platter in one of two directions. North = <span class="bin">1</span>. South = <span class="bin">0</span>. (Or vice versa — the convention varies by manufacturer, but the principle is the same.) A read/write head floats nanometers above the platter, detecting and flipping these magnetic orientations as the disk spins beneath it.</p>
+      <p>A <strong>hard disk drive</strong> (HDD) stores bits by magnetizing tiny regions of a spinning metal platter in one of two directions. North = <span class="bin">1</span>. South = <span class="bin">0</span>. (Or vice versa â€” the convention varies by manufacturer, but the principle is the same.) A read/write head floats nanometers above the platter, detecting and flipping these magnetic orientations as the disk spins beneath it.</p>
 
       <div class="definition">
         <div class="def-term">Hard Disk Drive (HDD)</div>
-        <p>A storage device that encodes bits as magnetic orientations on a spinning platter. Non-volatile — data persists without power. Capacity is high and cost per gigabyte is low, but mechanical parts make it slower and more fragile than solid-state alternatives.</p>
+        <p>A storage device that encodes bits as magnetic orientations on a spinning platter. Non-volatile â€” data persists without power. Capacity is high and cost per gigabyte is low, but mechanical parts make it slower and more fragile than solid-state alternatives.</p>
       </div>
 
       <figure class="chapter-photo">
         <img src="../img/ch02-hdd-internals.jpg" alt="Interior of an open hard disk drive showing the magnetic platter and read/write head on its actuator arm">
         <figcaption>
-          Inside a 2.5" hard drive: the mirror-smooth magnetic platter and the read/write head, which floats nanometers above the surface on a cushion of air as the disk spins at thousands of RPM. Any contact between the head and platter — a "head crash" — destroys data instantly.
-          <span class="photo-credit">Photo by Mfield (Matthew Field) · <a href="https://commons.wikimedia.org/wiki/File:Hard_disk_platters_and_head.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</span>
+          Inside a 2.5" hard drive: the mirror-smooth magnetic platter and the read/write head, which floats nanometers above the surface on a cushion of air as the disk spins at thousands of RPM. Any contact between the head and platter â€” a "head crash" â€” destroys data instantly.
+          <span class="photo-credit">Photo by Mfield (Matthew Field) Â· <a href="https://commons.wikimedia.org/wiki/File:Hard_disk_platters_and_head.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> Â· CC BY-SA 3.0</span>
         </figcaption>
       </figure>
 
-      <p>Magnetic tape operates on the same principle — magnetic particles on a long ribbon of film — and remains in use today for archival storage and backup, where cost per gigabyte matters more than access speed. Don't let the retro mental image fool you; tape libraries backing up enterprise data centers are very much a present-day technology.</p>
+      <p>Magnetic tape operates on the same principle â€” magnetic particles on a long ribbon of film â€” and remains in use today for archival storage and backup, where cost per gigabyte matters more than access speed. Don't let the retro mental image fool you; tape libraries backing up enterprise data centers are very much a present-day technology.</p>
 
-      <p>The key property of magnetic storage is <strong>non-volatility</strong>: the magnetic orientation of a region on a platter doesn't care whether the power is on or off. The data just sits there, waiting. This is why your files are still there when you restart your computer — they're encoded as tiny magnets that aren't going anywhere.</p>
+      <p>The key property of magnetic storage is <strong>non-volatility</strong>: the magnetic orientation of a region on a platter doesn't care whether the power is on or off. The data just sits there, waiting. This is why your files are still there when you restart your computer â€” they're encoded as tiny magnets that aren't going anywhere.</p>
 
       <h2>Optical Representation</h2>
 
-      <p>The third physical phenomenon computers use to represent bits is light — specifically, the presence or absence of a reflective surface detectable by a laser.</p>
+      <p>The third physical phenomenon computers use to represent bits is light â€” specifically, the presence or absence of a reflective surface detectable by a laser.</p>
 
       <p>If you've used a CD, DVD, or Blu-ray disc, you've handled optical storage. The surface of a disc is covered in a spiral track of microscopic <em>pits</em> (tiny indentations) and <em>lands</em> (flat areas). A laser in the drive shines onto the spinning disc; a land reflects the light cleanly back to a sensor, while a pit scatters it. Clean reflection = <span class="bin">1</span>. Scattered light = <span class="bin">0</span>.</p>
 
@@ -215,15 +215,15 @@
         <p>Storage media that encodes bits as physical surface features (pits and lands) readable by laser. Examples include CD, DVD, and Blu-ray. Non-volatile and durable, but lower capacity and slower than magnetic or solid-state alternatives.</p>
       </div>
 
-      <p>Optical storage is non-volatile like magnetic storage, but it's generally slower, lower capacity, and less convenient than a hard drive or SSD. Its advantages are durability and portability — a pressed disc (like a commercial movie or software disc) can last decades and survive conditions that would destroy a hard drive.</p>
+      <p>Optical storage is non-volatile like magnetic storage, but it's generally slower, lower capacity, and less convenient than a hard drive or SSD. Its advantages are durability and portability â€” a pressed disc (like a commercial movie or software disc) can last decades and survive conditions that would destroy a hard drive.</p>
 
-      <p>Optical principles also apply to long-distance data transmission. Fiber optic cables transmit bits as pulses of light rather than voltage pulses. The physics differs from disc storage — rather than pits and lands, you have light on and light off — but the underlying idea is the same: two distinguishable states of a physical medium, carrying binary information.</p>
+      <p>Optical principles also apply to long-distance data transmission. Fiber optic cables transmit bits as pulses of light rather than voltage pulses. The physics differs from disc storage â€” rather than pits and lands, you have light on and light off â€” but the underlying idea is the same: two distinguishable states of a physical medium, carrying binary information.</p>
 
       <h2>Putting It Together</h2>
 
       <p>At this point it's worth stepping back and mapping these physical representations to where you actually encounter them in a real computer system. Each has tradeoffs that make it the right tool for a specific job.</p>
 
-      <table class="comparison-table">
+      <table class="data-table">
         <thead>
           <tr>
             <th>Representation</th>
@@ -237,53 +237,53 @@
           <tr>
             <td><strong>Electrical (transistor)</strong></td>
             <td>Voltage state (high/low)</td>
-            <td>Yes — loses data without power</td>
+            <td>Yes â€” loses data without power</td>
             <td>Fastest</td>
             <td>Processing (CPU), RAM</td>
           </tr>
           <tr>
             <td><strong>Electrical (signal)</strong></td>
             <td>Voltage pulses over time</td>
-            <td>N/A — in transit</td>
+            <td>N/A â€” in transit</td>
             <td>Very fast</td>
             <td>Data transmission between components</td>
           </tr>
           <tr>
             <td><strong>Magnetic</strong></td>
             <td>Magnetic pole orientation</td>
-            <td>No — persists without power</td>
+            <td>No â€” persists without power</td>
             <td>Slower</td>
             <td>Long-term storage (HDD, tape)</td>
           </tr>
           <tr>
             <td><strong>Optical</strong></td>
             <td>Laser reflection (pit/land)</td>
-            <td>No — persists without power</td>
+            <td>No â€” persists without power</td>
             <td>Slow</td>
             <td>Removable media, archival, fiber transmission</td>
           </tr>
         </tbody>
       </table>
 
-      <p>Notice the pattern: the fastest representations are volatile, and the slowest are non-volatile. This tradeoff — speed versus persistence — runs through the entire field of computer architecture and is something we'll return to again and again throughout this book, especially in Chapter 5 when we discuss the storage hierarchy.</p>
+      <p>Notice the pattern: the fastest representations are volatile, and the slowest are non-volatile. This tradeoff â€” speed versus persistence â€” runs through the entire field of computer architecture and is something we'll return to again and again throughout this book, especially in Chapter 5 when we discuss the storage hierarchy.</p>
 
       <div class="note">
-        <strong>What about SSDs?</strong> Solid-state drives — the storage in most modern laptops — use a different electrical phenomenon called <em>floating-gate transistors</em> that can trap charge even without power. They're electrical, non-volatile, and fast. We'll cover SSDs properly in Chapter 5. For now, think of them as the technology that challenged the speed/persistence tradeoff.
+        <strong>What about SSDs?</strong> Solid-state drives â€” the storage in most modern laptops â€” use a different electrical phenomenon called <em>floating-gate transistors</em> that can trap charge even without power. They're electrical, non-volatile, and fast. We'll cover SSDs properly in Chapter 5. For now, think of them as the technology that challenged the speed/persistence tradeoff.
       </div>
 
       <h2>One More Thing: Scale</h2>
 
       <p>Before we move on, let's sit with the scale of all this for a moment.</p>
 
-      <p>A modern processor contains on the order of 50 billion transistors etched into a chip roughly the size of a postage stamp. Each transistor is around 3–5 nanometers wide. A human hair is about 80,000 nanometers wide. You could fit roughly 20,000 of the latest transistors across the width of a single strand of hair.</p>
+      <p>A modern processor contains on the order of 50 billion transistors etched into a chip roughly the size of a postage stamp. Each transistor is around 3â€“5 nanometers wide. A human hair is about 80,000 nanometers wide. You could fit roughly 20,000 of the latest transistors across the width of a single strand of hair.</p>
 
-      <p>Each of those 50 billion transistors holds exactly one bit. And the processor switches them at speeds measured in GHz — billions of times per second.</p>
+      <p>Each of those 50 billion transistors holds exactly one bit. And the processor switches them at speeds measured in GHz â€” billions of times per second.</p>
 
       <p>This is what "digital computation" actually means, physically. Not software. Not algorithms. Not AI. At the very bottom: billions of microscopic switches, flipping on and off, representing 1s and 0s in the language we learned in Chapter 1.</p>
 
       <p>Everything else is built on top of that.</p>
 
-      <!-- ── Practice Problems ── -->
+      <!-- â”€â”€ Practice Problems â”€â”€ -->
       <div class="practice-block">
         <div class="practice-header">
           <span class="practice-label">Quiz</span>
@@ -354,10 +354,10 @@
         <div class="quiz-question" id="q6">
           <div class="q-text">6. Ranked from fastest to slowest, which order is correct?</div>
           <div class="mc-options">
-            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">A</span> Optical disc → Magnetic HDD → Transistor (RAM)</button>
-            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">B</span> Magnetic HDD → Transistor (RAM) → Optical disc</button>
-            <button class="mc-option" onclick="checkMC('q6', this, true)"><span class="mc-letter">C</span> Transistor (RAM) → Magnetic HDD → Optical disc</button>
-            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">D</span> Transistor (RAM) → Optical disc → Magnetic HDD</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">A</span> Optical disc â†’ Magnetic HDD â†’ Transistor (RAM)</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">B</span> Magnetic HDD â†’ Transistor (RAM) â†’ Optical disc</button>
+            <button class="mc-option" onclick="checkMC('q6', this, true)"><span class="mc-letter">C</span> Transistor (RAM) â†’ Magnetic HDD â†’ Optical disc</button>
+            <button class="mc-option" onclick="checkMC('q6', this, false)"><span class="mc-letter">D</span> Transistor (RAM) â†’ Optical disc â†’ Magnetic HDD</button>
           </div>
           <div class="mc-feedback" id="q6-feedback"></div>
         </div>
@@ -379,11 +379,11 @@
       <!-- Chapter Nav -->
       <nav class="chapter-nav-footer">
         <a href="ch01.html">
-          <span class="nav-direction">← Previous</span>
+          <span class="nav-direction">â† Previous</span>
           <span class="nav-title">Chapter 1: Binary</span>
         </a>
         <a href="ch03.html" class="next">
-          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-direction">Next Chapter â†’</span>
           <span class="nav-title">Data Representation</span>
         </a>
       </nav>
@@ -407,9 +407,10 @@
         b.classList.add('revealed');
     });
     fb.className  = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
-    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+    fb.textContent = isCorrect ? 'âœ“ Correct!' : 'âœ— Not quite â€” the correct answer is highlighted.';
   }
 </script>
 
 </body>
 </html>
+
