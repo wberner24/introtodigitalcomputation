@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 6: I/O &amp; System Architecture — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter active"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 06 · Unit 2: Hardware</div>
+      <h1 class="chapter-title">I/O &amp; System Architecture</h1>
+      <div class="chapter-deco">PCIe</div>
+      <p class="chapter-intro">You now have a CPU that thinks and memory that holds the work. But a computer that can't accept input or produce output is useless. This chapter is about the plumbing — the buses, controllers, ports, and signals that connect the computing core to everything else.</p>
+    </header>
+
+    <article class="prose">
+
+      <p>Chapters 4 and 5 gave us a picture of a functioning computing core: a processor executing the fetch-decode-execute cycle at billions of operations per second, drawing data from a hierarchy of memory that spans registers and cache all the way down to storage. That picture is accurate, but it describes a machine that exists in isolation — processing whatever data it already has, forever.</p>
+
+      <p>A real computer interacts with the world. You type a key and that keystroke has to reach the CPU. The CPU renders a frame and those pixels have to reach the display. A file download arrives over the network and lands on a drive. Every one of those transactions requires infrastructure that we haven't talked about yet: the buses, controllers, ports, and signaling protocols that form the I/O subsystem. That's what this chapter covers.</p>
+
+      <h2>What Is I/O?</h2>
+
+      <p><strong>Input</strong> is data flowing into the CPU — a keystroke from a keyboard, a mouse movement, a network packet arriving from the internet, or data read from a storage drive into RAM. <strong>Output</strong> is data flowing out — pixels pushed to a display, data written to a drive, packets sent over a network. Storage I/O is both at once: a read operation is input to the CPU; a write is output from it.</p>
+
+      <p>The I/O subsystem is everything between the CPU/RAM core and the outside world: buses, controllers, ports, cables, and protocols. The CPU doesn't connect to a keyboard directly — there are several layers of hardware between them. A keystroke generates an electrical signal at the key switch, which is read by a microcontroller in the keyboard, encoded into a USB data packet, sent over a USB cable, received by a USB host controller, which notifies the CPU via an interrupt. We'll unpack each of those layers in this chapter.</p>
+
+      <h2>Buses — The Shared Pathways</h2>
+
+      <p>A <strong>bus</strong> is a set of shared electrical connections that multiple components use to communicate. Think of it as a highway: multiple vehicles share the same road, and traffic management ensures they don't collide. Every component that wants to send data must wait its turn, transmit, and then yield the bus for the next sender.</p>
+
+      <p>Three types of signals travel over a traditional bus:</p>
+
+      <ul>
+        <li><strong>Data bus:</strong> carries the actual bits being transferred. Width — how many bits run in parallel — determines how much can move per trip. A 64-bit data bus transfers 8 bytes per clock cycle, while a 32-bit bus transfers only 4.</li>
+        <li><strong>Address bus:</strong> specifies <em>where</em> the data should go or come from — which memory address, which device register. The width of the address bus determines the maximum addressable space.</li>
+        <li><strong>Control bus:</strong> coordinates everything else — read vs. write signals, timing pulses, interrupt requests, and bus ownership handshakes. Without control signals, no one would know whose turn it is to talk.</li>
+      </ul>
+
+      <p><strong>Bandwidth</strong> is the product of bus width and clock speed. A 32-bit bus running at 100 MHz can theoretically transfer 400 MB/s. Doubling the width or doubling the clock speed doubles bandwidth — which is exactly why both approaches have been pursued over the decades. In practice, increasing width adds physical wires (and cost), while increasing clock speed raises power consumption and signal integrity challenges.</p>
+
+      <p>Old buses — ISA in the 1980s, PCI in the 1990s — were shared: every device on the bus competed for the same wires at the same time. Modern PCIe replaced the shared model with point-to-point links, giving each device its own dedicated connection to the CPU or chipset. No contention, no taking turns for the wire itself.</p>
+
+      <h2>PCIe — The Expansion Bus</h2>
+
+      <p>PCIe (Peripheral Component Interconnect Express) is the dominant internal bus standard for high-speed expansion hardware. Unlike the old shared PCI bus, PCIe gives each device a dedicated point-to-point serial link. There is no bus contention because each device has its own private channel. The tradeoff for that dedicated bandwidth is that each channel requires physical circuitry — PCIe lanes are a finite resource on any platform.</p>
+
+      <p>PCIe is organized in <strong>lanes</strong>. Each lane is a pair of unidirectional serial connections — one for transmit, one for receive — operating simultaneously. Slots are designated by lane count: ×1, ×4, ×8, or ×16. A GPU in a ×16 slot has sixteen lanes of bandwidth to the CPU. An NVMe SSD in an M.2 slot typically uses ×4. A sound card or simple network interface card might use just ×1. More lanes means more bandwidth — they scale linearly.</p>
+
+      <p>Each PCIe generation roughly doubles the bandwidth per lane by increasing the signaling rate:</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Generation</th>
+            <th>Released</th>
+            <th>Bandwidth per lane</th>
+            <th>×4 slot total</th>
+            <th>×16 slot total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>PCIe 3.0</strong></td>
+            <td>2010</td>
+            <td>~1 GB/s</td>
+            <td>~4 GB/s</td>
+            <td>~16 GB/s</td>
+          </tr>
+          <tr>
+            <td><strong>PCIe 4.0</strong></td>
+            <td>2017</td>
+            <td>~2 GB/s</td>
+            <td>~8 GB/s</td>
+            <td>~32 GB/s</td>
+          </tr>
+          <tr>
+            <td><strong>PCIe 5.0</strong></td>
+            <td>2021</td>
+            <td>~4 GB/s</td>
+            <td>~16 GB/s</td>
+            <td>~64 GB/s</td>
+          </tr>
+          <tr>
+            <td><strong>PCIe 6.0</strong></td>
+            <td>2023</td>
+            <td>~8 GB/s</td>
+            <td>~32 GB/s</td>
+            <td>~128 GB/s</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>PCIe is backward compatible.</strong> A PCIe 4.0 SSD in a PCIe 3.0 slot will run at PCIe 3.0 speeds — still fully functional, just not at full rated speed. Mixing generations is common and safe. When building or upgrading a system, don't worry about mismatch causing damage; the devices will negotiate the highest speed both sides support.
+      </div>
+
+      <h2>The Chipset</h2>
+
+      <p>The CPU can't have unlimited PCIe lanes running directly to every device — each lane requires physical circuitry on the processor die, and die area is expensive and thermally constrained. The solution is the <strong>chipset</strong> — a separate chip on the motherboard that handles the connections that don't need the CPU's direct, maximum-bandwidth attention. On Intel platforms this chip is called the PCH, or Platform Controller Hub.</p>
+
+      <p>The chipset manages:</p>
+
+      <ul>
+        <li><strong>USB ports</strong> — all the external USB connections on the rear panel and front panel headers</li>
+        <li><strong>SATA ports</strong> — for HDDs and SATA SSDs, the legacy spinning-disk interface</li>
+        <li><strong>Audio</strong> — the onboard sound codec and the jacks on the I/O panel</li>
+        <li><strong>Slower PCIe lanes</strong> — for NICs, capture cards, and other expansion cards that don't need the highest possible bandwidth</li>
+      </ul>
+
+      <p>The CPU and chipset communicate over a dedicated high-speed link called <strong>DMI</strong> (Direct Media Interface on Intel platforms). Think of it as a private express lane between the two chips — not as fast as a direct CPU-to-device PCIe connection, but more than sufficient for the chipset's aggregate traffic.</p>
+
+      <div class="note">
+        <strong>A network interface card (NIC) connects to the system via PCIe</strong> — typically ×1 or ×4 through the chipset. The NIC itself translates between the internal PCIe bus and the external Ethernet protocol. We'll cover how that translation works in Chapter 10.
+      </div>
+
+      <p>Over successive CPU generations, more functions that once lived in a separate chipset chip have been absorbed directly onto the CPU die. On many modern systems, USB 3.x and the fastest PCIe 4.0 and 5.0 lanes connect directly to the CPU, with the chipset handling only legacy or lower-priority connections. Some high-end desktop and server platforms have eliminated a separate chipset chip entirely, routing everything through the processor package itself.</p>
+
+      <figure class="chapter-photo">
+        <img src="../img/ch06-motherboard.jpg" alt="An ATX motherboard showing PCIe slots, DIMM slots, chipset, and rear I/O panel">
+        <figcaption>
+          A modern ATX motherboard. The long ×16 PCIe slot (black, near top) is for the GPU. The shorter slots below accept NVMe SSDs, NICs, and other expansion cards. The four DIMM slots (top right) hold RAM modules. The chipset sits under a heatsink near the center-right. The rear I/O panel (left edge) exposes USB, Ethernet, audio, and video ports.
+          <span class="photo-credit">Photo · <a href="https://commons.wikimedia.org/wiki/File:Asus_P8Z77-V_Pro_Motherboard.jpg" target="_blank" rel="noopener">Wikimedia Commons</a> · CC BY-SA 3.0</span>
+        </figcaption>
+      </figure>
+
+      <h2>Ports and External Interfaces</h2>
+
+      <p>Everything discussed so far is internal — buses and controllers that live inside the machine, invisible to the user. The external side — what you can actually see and plug into — is a collection of standardized ports that expose the chipset's and CPU's connectivity to the outside world.</p>
+
+      <p>USB is the dominant external interface standard for peripherals and storage, but its naming history is notoriously confusing: the same interface has been renamed multiple times as speeds increased, and marketing names often differ from the official specification numbers. The widget below cuts through that confusion and gives you the practical information — what to look for on a device and when each standard is the right choice.</p>
+
+      <div data-widget="port-speed"></div>
+
+      <p>At the premium end of the USB-C ecosystem sits <strong>Thunderbolt</strong>, Intel's high-performance interconnect. Thunderbolt always uses a USB-C connector and is backward compatible with USB-C — a Thunderbolt 4 port also works as a regular USB-C port for any USB-C device. The distinguishing mark is a small lightning bolt icon next to the port. TB4 and TB5 ports deliver guaranteed minimum performance levels for video, charging, and daisy-chaining that regular USB-C ports don't have to meet.</p>
+
+      <p>For display output, <strong>HDMI</strong> dominates TVs and the majority of monitors: it's the connector on virtually every consumer display made in the last decade. <strong>DisplayPort</strong> is preferred for high-refresh-rate gaming monitors and supports daisy-chaining multiple monitors from a single port. Both carry audio alongside video. Many modern laptops deliver display output over USB-C using <strong>DisplayPort Alt Mode</strong> — the physical USB-C cable carries a DisplayPort signal, so no separate video cable is needed. HDMI Alt Mode is less common but exists on some phones and tablets.</p>
+
+      <h2>Interrupts and DMA</h2>
+
+      <p>In Chapter 4 we established that the CPU does exactly one thing: it executes the fetch-decode-execute loop, over and over, billions of times per second. That description was accurate, but it left out something important. If the CPU is busy executing instructions continuously, how does it know when a device needs attention? How does a keystroke get processed? How does an arriving network packet get noticed?</p>
+
+      <p>Two answers have been used, and understanding both explains a lot about how operating systems work.</p>
+
+      <p><strong>Polling</strong> is the naive approach: the CPU periodically checks each device. "Do you have input? No. Do you have input? No. Do you have input? Yes — got it." This works, but it wastes CPU cycles on checks that almost always return nothing. A CPU polling a keyboard at 1,000 times per second burns compute on 999 fruitless checks for every one keystroke. Scale that to dozens of devices — drives, network cards, audio controllers, USB hubs — and polling becomes a serious drain on the processor's ability to do useful work.</p>
+
+      <p><strong>Interrupts</strong> invert the relationship: instead of the CPU asking devices, devices tell the CPU when they need attention. A device sends a hardware signal called an <strong>interrupt request (IRQ)</strong>. The CPU receives it, pauses whatever instruction stream it was executing, saves its current state — the values in all its registers and the program counter — jumps to a small handler routine called an <strong>Interrupt Service Routine (ISR)</strong>, runs it, then restores its saved state and resumes exactly where it left off. From the perspective of the program that was interrupted, nothing happened; execution picks up at the next instruction as though nothing had paused it.</p>
+
+      <!-- SVG: Polling vs. Interrupts timing diagram -->
+      <svg viewBox="0 0 540 160" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <rect width="540" height="160" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+
+        <!-- Row labels -->
+        <text x="8" y="33" font-family="'Source Sans 3',sans-serif" font-size="8.5" font-weight="700" fill="#4A4640">Polling</text>
+        <text x="8" y="88" font-family="'Source Sans 3',sans-serif" font-size="8.5" font-weight="700" fill="#4A4640">Interrupts</text>
+
+        <!-- POLLING ROW background -->
+        <rect x="60" y="40" width="465" height="28" rx="3" fill="#EDE9DF"/>
+
+        <!-- Polling: alternating check (gray, w=12) and work (blue, w=38) blocks, x starts at 60 -->
+        <!-- block 1: check x=60 w=12 -->
+        <rect x="60"  y="40" width="12" height="28" rx="1" fill="#B8B0A4"/>
+        <!-- block 1: work x=72 w=38 -->
+        <rect x="72"  y="40" width="38" height="28" rx="1" fill="#1D4E7A99"/>
+        <!-- block 2: check x=110 w=12 -->
+        <rect x="110" y="40" width="12" height="28" rx="1" fill="#B8B0A4"/>
+        <!-- block 2: work x=122 w=38 -->
+        <rect x="122" y="40" width="38" height="28" rx="1" fill="#1D4E7A99"/>
+        <!-- block 3: check x=160 w=12 -->
+        <rect x="160" y="40" width="12" height="28" rx="1" fill="#B8B0A4"/>
+        <!-- block 3: work x=172 w=28 (truncated at event x=200) -->
+        <rect x="172" y="40" width="28" height="28" rx="1" fill="#1D4E7A99"/>
+
+        <!-- Event at x=200 — red vertical line spanning both rows -->
+        <line x1="200" y1="28" x2="200" y2="133" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="200" y="23" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7" font-style="italic" fill="#C1440E">event</text>
+
+        <!-- Polling continues after event: work x=200 w=70 (no response yet — missed this check) -->
+        <rect x="200" y="40" width="70" height="28" rx="1" fill="#1D4E7A99"/>
+        <!-- Polling: check at x=270 -->
+        <rect x="270" y="40" width="12" height="28" rx="1" fill="#B8B0A4"/>
+        <!-- Polling: ISR/response x=282 w=48 orange -->
+        <rect x="282" y="40" width="48" height="28" rx="1" fill="#C1440E"/>
+        <!-- Polling: work resumes x=330 w=195 -->
+        <rect x="330" y="40" width="195" height="28" rx="1" fill="#1D4E7A99"/>
+
+        <!-- Latency annotation for polling -->
+        <line x1="200" y1="74" x2="282" y2="74" stroke="#C1440E" stroke-width="1" marker-end="url(#arr-p)" marker-start="url(#arr-p-l)"/>
+        <text x="241" y="83" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="6.5" fill="#C1440E">latency</text>
+
+        <!-- Arrow markers for latency lines -->
+        <defs>
+          <marker id="arr-p" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto">
+            <path d="M0,0 L0,5 L5,2.5 z" fill="#C1440E"/>
+          </marker>
+          <marker id="arr-p-l" markerWidth="5" markerHeight="5" refX="1" refY="2.5" orient="auto-start-reverse">
+            <path d="M0,0 L0,5 L5,2.5 z" fill="#C1440E"/>
+          </marker>
+        </defs>
+
+        <!-- INTERRUPTS ROW background -->
+        <rect x="60" y="95" width="465" height="28" rx="3" fill="#EDE9DF"/>
+
+        <!-- Interrupts: work from x=60 to x=200 -->
+        <rect x="60"  y="95" width="140" height="28" rx="1" fill="#1D4E7A99"/>
+        <!-- Event at x=200 already drawn -->
+        <!-- Interrupts: ISR immediately at x=200 w=30 -->
+        <rect x="200" y="95" width="30"  height="28" rx="1" fill="#C1440E"/>
+        <!-- Interrupts: work resumes x=230 to x=525 -->
+        <rect x="230" y="95" width="295" height="28" rx="1" fill="#1D4E7A99"/>
+
+        <!-- Near-instant annotation for interrupts -->
+        <line x1="200" y1="129" x2="230" y2="129" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="215" y="139" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="6.5" fill="#2E6B4F">instant</text>
+
+        <!-- Legend -->
+        <rect x="60"  y="145" width="10" height="8" rx="1" fill="#1D4E7A99"/>
+        <text x="74"  y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">CPU work</text>
+        <rect x="145" y="145" width="10" height="8" rx="1" fill="#B8B0A4"/>
+        <text x="159" y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">polling check</text>
+        <rect x="245" y="145" width="10" height="8" rx="1" fill="#C1440E"/>
+        <text x="259" y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">interrupt handler</text>
+        <line x1="360" y1="149" x2="370" y2="149" stroke="#C1440E" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <text x="374" y="152" font-family="'Source Sans 3',sans-serif" font-size="7" fill="#4A4640">external event</text>
+      </svg>
+
+      <p>The interrupt approach is far more efficient. The CPU can run useful work continuously and only context-switch when something actually needs attention — the same logic behind a phone notification instead of you manually refreshing every app every few seconds. Modern systems handle hundreds of thousands of interrupts per second from all their devices combined, but because each ISR is short and the gaps between interrupts are full of useful computation, the overhead is manageable.</p>
+
+      <p>The interrupt controller — called the APIC (Advanced Programmable Interrupt Controller) on modern x86 systems — manages the queue of incoming IRQs, assigns priorities, and delivers them to the appropriate CPU core. Higher-priority interrupts can preempt lower-priority ones. This hardware infrastructure is the foundation that the operating system builds on top of — Chapter 8 covers how the OS uses interrupts for process scheduling, device management, and system calls.</p>
+
+      <p><strong>DMA (Direct Memory Access)</strong> solves a different problem. Interrupts handle the notification challenge — the device tells the CPU something happened. But they create a new bottleneck when a device needs to transfer a large block of data. If reading a file from an NVMe SSD means the CPU must personally ferry every byte from the drive into RAM — loading it into a register, storing it at the target address, repeat — that's tens of thousands of instructions for a task that has nothing to do with the program's actual computation.</p>
+
+      <p>A DMA controller lets a device write data directly into a designated region of RAM without involving the CPU at all. The CPU sets up the transfer — "copy X bytes from this SSD sector to this RAM address" — and then goes back to other work. The DMA controller owns the memory bus for the duration of the transfer, moving data autonomously. When done, it fires an interrupt to notify the CPU. The CPU never touched a single byte of the payload.</p>
+
+      <p>Modern systems use DMA for disk I/O, incoming network packets, GPU transfers, and audio buffers — essentially any bulk data movement. Without DMA, high-speed I/O would consume the majority of CPU cycles simply shuffling data around rather than processing it. The combination of interrupts (for notification) and DMA (for bulk transfer) is what makes it possible to saturate a fast NVMe drive or a 10 Gigabit Ethernet link without saturating the CPU at the same time.</p>
+
+      <h2>System Architecture — The Full Picture</h2>
+
+      <p>We've now covered all the major components: CPU, RAM, PCIe, chipset, and the I/O mechanisms that tie them together. The diagram below shows how they connect.</p>
+
+      <!-- SVG: System Architecture -->
+      <svg viewBox="0 0 555 255" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
+        <!-- Background -->
+        <rect x="0" y="0" width="555" height="255" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
+
+        <!-- RAM box -->
+        <rect x="15" y="15" width="105" height="52" rx="5" fill="#E3EDE8" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="67" y="37" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="10" font-weight="700" fill="#2E6B4F">RAM</text>
+        <text x="67" y="51" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">Main Memory</text>
+
+        <!-- CPU box -->
+        <rect x="175" y="15" width="120" height="52" rx="5" fill="#E8F2FB" stroke="#1D4E7A" stroke-width="1.5"/>
+        <text x="235" y="37" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="10" font-weight="700" fill="#1D4E7A">CPU</text>
+        <text x="235" y="51" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">Processor</text>
+
+        <!-- Chipset box -->
+        <rect x="390" y="15" width="120" height="52" rx="5" fill="#EDEBE5" stroke="#5A5248" stroke-width="1.5"/>
+        <text x="450" y="37" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="9.5" font-weight="700" fill="#5A5248">Chipset</text>
+        <text x="450" y="51" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">(PCH)</text>
+
+        <!-- Connection line RAM → CPU -->
+        <line x1="120" y1="41" x2="175" y2="41" stroke="#4A4640" stroke-width="1.5"/>
+        <text x="147" y="34" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7" font-style="italic" fill="#8A857C">Memory Bus</text>
+
+        <!-- Connection line CPU → Chipset -->
+        <line x1="295" y1="41" x2="390" y2="41" stroke="#4A4640" stroke-width="1.5"/>
+        <text x="342" y="34" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7" font-style="italic" fill="#8A857C">DMI Link</text>
+
+        <!-- PCIe bar (CPU-direct) -->
+        <rect x="90" y="112" width="195" height="12" rx="3" fill="#EEF0FB" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="187" y="121" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" font-weight="700" fill="#1D4E7A">PCIe — CPU Direct</text>
+
+        <!-- CPU → PCIe vertical -->
+        <line x1="235" y1="67" x2="235" y2="112" stroke="#2564A0" stroke-width="1.5"/>
+
+        <!-- GPU box -->
+        <rect x="90" y="145" width="93" height="42" rx="4" fill="#F5EDE7" stroke="#C1440E" stroke-width="1.5"/>
+        <text x="136" y="162" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="9.5" font-weight="700" fill="#C1440E">GPU</text>
+        <text x="136" y="175" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">PCIe ×16</text>
+
+        <!-- NVMe SSD box -->
+        <rect x="202" y="145" width="93" height="42" rx="4" fill="#F5EDE7" stroke="#8C3009" stroke-width="1.5"/>
+        <text x="248" y="162" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="8.5" font-weight="700" fill="#8C3009">NVMe SSD</text>
+        <text x="248" y="175" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">PCIe ×4</text>
+
+        <!-- PCIe → GPU vertical -->
+        <line x1="136" y1="124" x2="136" y2="145" stroke="#2564A0" stroke-width="1.5"/>
+        <!-- PCIe → NVMe vertical -->
+        <line x1="248" y1="124" x2="248" y2="145" stroke="#2564A0" stroke-width="1.5"/>
+
+        <!-- USB box -->
+        <rect x="345" y="145" width="75" height="36" rx="4" fill="#EDEBE5" stroke="#5A5248" stroke-width="1.5"/>
+        <text x="382" y="160" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="9" font-weight="700" fill="#5A5248">USB</text>
+        <text x="382" y="172" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">3.x / 4</text>
+
+        <!-- SATA box -->
+        <rect x="455" y="145" width="75" height="36" rx="4" fill="#EDEBE5" stroke="#5A5248" stroke-width="1.5"/>
+        <text x="492" y="160" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="9" font-weight="700" fill="#5A5248">SATA</text>
+        <text x="492" y="172" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">HDD / SSD</text>
+
+        <!-- NIC box -->
+        <rect x="345" y="198" width="75" height="34" rx="4" fill="#EEF0FB" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="382" y="212" text-anchor="middle" font-family="'Roboto Slab',Georgia,serif" font-size="9" font-weight="700" fill="#2564A0">NIC</text>
+        <text x="382" y="224" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">→ Ch. 10</text>
+
+        <!-- Audio/Other box -->
+        <rect x="455" y="198" width="75" height="34" rx="4" fill="#EDEBE5" stroke="#5A5248" stroke-width="1.5"/>
+        <text x="492" y="212" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="8.5" font-weight="700" fill="#5A5248">Audio &amp;</text>
+        <text x="492" y="224" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7.5" fill="#4A4640">Other I/O</text>
+
+        <!-- Chipset trunk vertical: x=450 y=67 to y=222 -->
+        <line x1="450" y1="67" x2="450" y2="222" stroke="#5A5248" stroke-width="1.5"/>
+        <!-- Chipset → USB right edge: horizontal from x=420 to x=450 at y=163 -->
+        <line x1="420" y1="163" x2="450" y2="163" stroke="#5A5248" stroke-width="1.5"/>
+        <!-- Chipset → SATA left edge: horizontal from x=450 to x=455 at y=163 -->
+        <line x1="450" y1="163" x2="455" y2="163" stroke="#5A5248" stroke-width="1.5"/>
+        <!-- Chipset → NIC right edge: horizontal from x=420 to x=450 at y=215 -->
+        <line x1="420" y1="215" x2="450" y2="215" stroke="#5A5248" stroke-width="1.5"/>
+        <!-- Chipset → Audio left edge: horizontal from x=450 to x=455 at y=215 -->
+        <line x1="450" y1="215" x2="455" y2="215" stroke="#5A5248" stroke-width="1.5"/>
+
+        <!-- Footnote -->
+        <text x="277" y="248" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="7" font-style="italic" fill="#8A857C">GPU and NVMe connect via CPU-direct PCIe lanes. USB, SATA, NIC, and audio route through the chipset.</text>
+      </svg>
+
+      <p>The diagram reveals the two-tier structure of modern system architecture. The CPU connects directly to the components that demand the highest bandwidth: RAM over the memory bus, and the GPU and NVMe SSD via CPU-direct PCIe lanes. The GPU alone can consume 32–64 GB/s of PCIe bandwidth in a modern ×16 slot, and an NVMe SSD can approach 14 GB/s. Routing these through an intermediary chipset would create a chokepoint; they get their own private lanes to the processor.</p>
+
+      <p>Everything else — USB peripherals, SATA drives, the network interface, onboard audio — routes through the chipset via the DMI link. These devices have lower bandwidth demands. A USB 3.2 Gen 2 device peaks at 10 Gbps; even a fast NIC runs at 10 or 25 Gbps. The chipset aggregates all of this traffic and sends it to the CPU over DMI. This division of labor — CPU-direct for latency-sensitive, high-bandwidth devices; chipset-mediated for everything else — is the core design principle of the modern PC platform.</p>
+
+      <!-- ── Practice Block ── -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Quiz</span>
+          <span class="practice-title">Chapter 6 Quiz</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. What does "bus width" determine in a data bus?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> How fast the clock signal runs on the bus.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> How many bits can be transferred simultaneously per clock cycle.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> The physical length of the bus traces on the motherboard.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> The maximum number of devices that can share the bus at once.</button>
+          </div>
+          <div class="mc-feedback" id="q1-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. A ×16 PCIe 4.0 slot delivers roughly how much bandwidth?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> ~2 GB/s</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> ~8 GB/s</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">C</span> ~32 GB/s</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> ~64 GB/s</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. What does the chipset (PCH) primarily handle?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Direct connections to the GPU and NVMe SSD, since they require the most bandwidth.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> All RAM access and cache management on behalf of the CPU.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">C</span> USB, SATA, audio, and lower-speed PCIe connections that don't need direct CPU access.</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Interrupt handling and DMA transfers for all devices on the system.</button>
+          </div>
+          <div class="mc-feedback" id="q3-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. You plug a PCIe 5.0 NVMe SSD into a motherboard that only has PCIe 4.0 slots. What happens?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> The SSD will not be recognized — PCIe generations are not cross-compatible.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> The SSD works at PCIe 5.0 speeds because the drive negotiates upward.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> The SSD works at PCIe 4.0 speeds — functional but not at its full rated speed.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> The SSD works but may damage the motherboard slot over time.</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. What problem does polling have compared to interrupts?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> Polling requires special hardware support that most devices don't have.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> Polling can only check one device at a time, so multi-device systems are impossible.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">C</span> Polling wastes CPU cycles checking devices that usually have nothing to report.</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> Polling introduces higher latency than interrupts because the hardware is slower.</button>
+          </div>
+          <div class="mc-feedback" id="q5-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. A large file is being copied from NVMe SSD to RAM. Which mechanism allows this to happen without consuming most of the CPU's time?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Interrupts — the CPU services an IRQ for each byte transferred.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> The memory bus — it transfers data autonomously without CPU involvement.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> DMA — the DMA controller moves data directly to RAM and notifies the CPU when done.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> The chipset caches the file internally before forwarding it to RAM.</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. A user's laptop has a port with a small lightning bolt icon next to it. What does this indicate?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> A USB 3.2 Gen 2 port capable of 10 Gbps data transfer.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> A fast-charging USB-C port, but only for power — no data transfer.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">C</span> A Thunderbolt port, which supports high-speed data transfer, video output, and device daisy-chaining.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> A DisplayPort Alt Mode port — video output only, no data transfer.</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. Which of the following best describes what an Interrupt Service Routine (ISR) does?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> A background process that periodically checks all devices for pending input.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> A hardware circuit in the CPU that routes incoming signals to the correct register.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> A DMA operation that transfers data to RAM in response to a device request.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">D</span> A short handler routine the CPU runs in response to an IRQ, after which it restores its previous state and resumes what it was doing.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+      </div>
+
+      <nav class="chapter-nav-footer">
+        <a href="ch05.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 5: Memory &amp; Storage</span>
+        </a>
+        <a href="ch07.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">System vs. Application Software</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/port-speed.js"></script>
+
+<script>
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(', true)')) b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>
