@@ -205,6 +205,22 @@
 
       <p>Old buses — ISA in the 1980s, PCI in the 1990s — were shared parallel buses: every device on the bus competed for the same wires at the same time. Modern PCIe replaced that model with dedicated point-to-point serial links, solving both the contention problem and the signal-integrity problem at once.</p>
 
+      <h2>Protocols — The Rules of Communication</h2>
+
+      <p>We've been describing <em>how</em> bits travel — wires, serial signaling, clock cycles. But hardware components also need to agree on <em>what</em> those bits mean. A <strong>protocol</strong> is a formal specification that defines the rules of communication between devices: how data is packaged, what signals mean, how a conversation starts and ends, how errors are detected, and who speaks when. Without a shared protocol, two pieces of hardware would be like two people speaking different languages into the same phone — the signal arrives, but the message is meaningless.</p>
+
+      <p>Every interface name in this chapter — PCIe, USB, SATA, Thunderbolt, HDMI, DisplayPort — is a protocol. The physical connector and the communication rules are defined together in a specification maintained by an industry consortium. When a USB device is plugged into a USB port, both sides already speak the same language: they enumerate, negotiate speeds, and exchange data according to the shared rulebook. Neither device has to improvise.</p>
+
+      <p>Protocols typically specify:</p>
+      <ul>
+        <li><strong>Packet structure</strong> — how bits are grouped into meaningful units, including headers that identify source, destination, and payload type</li>
+        <li><strong>Speed negotiation</strong> — how two devices discover the highest speed both support and agree to use it (this is exactly how PCIe backward compatibility works)</li>
+        <li><strong>Error detection</strong> — checksums or cyclic redundancy checks embedded in packets so the receiver can detect corrupted data and request retransmission</li>
+        <li><strong>Handshaking</strong> — the opening exchange that establishes a connection before data flows</li>
+      </ul>
+
+      <p>This concept extends far beyond internal hardware. The internet runs on protocols — TCP/IP is a layered protocol stack that governs how data is routed, fragmented, and reliably delivered across the globe. We'll cover network protocols in depth in Chapter 10. For now, the key insight is: <em>wherever two systems exchange data, a protocol governs the exchange.</em> The word will recur throughout the rest of this course.</p>
+
       <h2>PCIe — The Expansion Bus</h2>
 
       <p>PCIe (Peripheral Component Interconnect Express) is the dominant internal bus standard for high-speed expansion hardware. Unlike the old shared PCI bus, PCIe gives each device a dedicated point-to-point serial link. There is no bus contention because each device has its own private channel. The tradeoff for that dedicated bandwidth is that each channel requires physical circuitry — PCIe lanes are a finite resource on any platform.</p>
@@ -438,6 +454,28 @@
         <strong>The stack is not just for interrupts.</strong> It is the same mechanism every function call uses. When your code calls a function, the return address and local variables are pushed onto the stack. When the function returns, they are popped off and execution resumes in the caller. Interrupts and function calls are structurally identical at the hardware level — both push state, execute something, and pop state on return. This is why deeply recursive programs can cause a <strong>stack overflow</strong>: enough nested calls fill the reserved stack region and the stack pointer runs out of space.
       </div>
 
+      <h2>How the CPU Sees I/O</h2>
+
+      <p>We've traced a keystroke through USB controllers, interrupt requests, ISRs, and chipset routing. Internally, all of that complexity bottlenecks into something remarkably simple: from the CPU's perspective, every I/O operation is just a <strong>memory read or write</strong>.</p>
+
+      <p>This technique is called <strong>memory-mapped I/O</strong>. The processor's address space — the full range of addresses a 64-bit CPU can reference — is divided between RAM and device registers. Device controllers are assigned specific address ranges outside of RAM. A USB host controller occupies a set of addresses. A network card occupies others. When the OS wants to send data to a device, it writes to that device's address range. When it wants to read what a device received, it reads from that address. There are no special "talk to USB" or "talk to keyboard" instructions in the CPU's instruction set. There is only LOAD and STORE.</p>
+
+      <p>The keystroke example, end to end:</p>
+      <ol>
+        <li>A key is pressed → electrical signal at the key switch</li>
+        <li>The keyboard's microcontroller encodes the keycode into a USB packet</li>
+        <li>The USB host controller receives the packet and writes the keycode to its memory-mapped register</li>
+        <li>The controller fires an IRQ to the CPU</li>
+        <li>The CPU saves machine state, jumps to the ISR, and executes one instruction: <strong>LOAD from a memory address</strong></li>
+        <li>That byte is the keycode — the OS passes it to whatever application has focus</li>
+      </ol>
+
+      <p>The CPU executed a LOAD. It doesn't know or care whether that byte came from RAM, a keyboard controller, a network card, or anywhere else. The address space abstracts away the source entirely. This is why the CPU design from Chapter 4 is so clean: there is only the fetch-decode-execute loop, reading and writing addresses. All the complexity of devices, buses, and protocols lives in the hardware behind those addresses — not in the processor itself. The CPU is as simple as we said it was.</p>
+
+      <div class="note">
+        <strong>Port-mapped I/O</strong> is an older alternative where the CPU has dedicated <code>IN</code> and <code>OUT</code> instructions for talking to devices, using a separate "I/O port" address space rather than the main memory address space. You'll encounter these in older x86 documentation. Modern systems overwhelmingly use memory-mapped I/O, but the instructions still exist for legacy hardware paths.
+      </div>
+
       <h2>System Architecture — The Full Picture</h2>
 
       <p>We've now covered all the major components: CPU, RAM, PCIe, chipset, and the I/O mechanisms that tie them together. The diagram below shows how they connect.</p>
@@ -646,6 +684,28 @@
             <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> Recursive functions bypass the interrupt controller, which causes the CPU to fault.</button>
           </div>
           <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q11">
+          <div class="q-text">11. Which of the following best describes what a communication protocol defines?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">A</span> The physical shape and pin count of the connector used by an interface standard.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,true)"><span class="mc-letter">B</span> The rules governing how devices exchange data — packet structure, speed negotiation, error detection, and handshaking.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">C</span> The firmware embedded in a device controller that manages its internal hardware operations.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">D</span> The number of PCIe lanes allocated to a device by the CPU or chipset.</button>
+          </div>
+          <div class="mc-feedback" id="q11-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q12">
+          <div class="q-text">12. When the CPU processes a keystroke, the ISR ultimately retrieves the keycode by doing what?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q12',this,false)"><span class="mc-letter">A</span> Executing a special IN instruction that reads from the keyboard's dedicated I/O port space.</button>
+            <button class="mc-option" onclick="checkMC('q12',this,false)"><span class="mc-letter">B</span> Polling the USB host controller in a loop until a new byte is ready.</button>
+            <button class="mc-option" onclick="checkMC('q12',this,true)"><span class="mc-letter">C</span> Reading from a memory address — the USB controller writes the keycode to its memory-mapped register, and the CPU loads it like any other memory read.</button>
+            <button class="mc-option" onclick="checkMC('q12',this,false)"><span class="mc-letter">D</span> Asking the chipset to forward the keycode directly into a general-purpose register via the DMI link.</button>
+          </div>
+          <div class="mc-feedback" id="q12-feedback"></div>
         </div>
 
       </div>
