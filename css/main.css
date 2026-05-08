@@ -386,32 +386,37 @@ body {
 
 /* ── Chapter Photo ──────────────────────────────────────────── */
 .chapter-photo {
-  margin: 32px 0;
-  padding: 0;
+  margin: 36px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(26,24,20,0.07);
 }
 .chapter-photo img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 .chapter-photo figcaption {
-  margin-top: 10px;
+  padding: 12px 18px 14px;
   font-size: 0.8rem;
-  color: var(--ink-light);
+  color: var(--ink-mid);
   font-family: var(--font-body);
-  line-height: 1.5;
+  line-height: 1.55;
 }
 .chapter-photo .photo-credit {
   display: block;
-  margin-top: 3px;
+  margin-top: 5px;
+  font-size: 0.73rem;
   color: var(--border-dark);
   font-style: italic;
 }
 .chapter-photo .photo-credit a {
   color: var(--ink-light);
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* ── Note / Aside ───────────────────────────────────────────── */
