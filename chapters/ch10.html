@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 10: Networking Fundamentals — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter active"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 10 · Unit 4: Networks</div>
+      <h1 class="chapter-title">Networking Fundamentals</h1>
+      <div class="chapter-deco">∿</div>
+      <p class="chapter-intro">Every network communication — a web page loading, an email arriving, a login being verified against Active Directory — reduces to bits traveling as physical signals between machines. This chapter builds that picture from the ground up: how signals encode bits on copper, fiber, and radio; how a layered protocol stack turns those signals into structured messages; how IP addressing and DNS make the global internet navigable; and how TCP reliably delivers data across a network that offers no guarantees.</p>
+    </header>
+
+    <article class="prose">
+
+      <h2>What Is a Network?</h2>
+
+      <p>A <strong>network</strong> is any collection of two or more devices connected in a way that allows them to exchange data. That definition covers everything from two laptops on the same Wi-Fi access point to the global internet linking billions of machines across every continent.</p>
+
+      <p>Networks are typically described by their geographic scope. A <strong>LAN</strong> (Local Area Network) connects devices within a single building or campus — a home network, an office floor, a university lab. A <strong>WAN</strong> (Wide Area Network) connects geographically separated LANs — the corporate WAN that links a headquarters to regional offices, or the internet itself, which is the largest WAN ever built. In Chapter 6 you met the NIC — the network interface card that connects a machine to a LAN via PCIe. Everything built on top of that physical connection is what this chapter covers.</p>
+
+      <h2>The OSI Model, TCP/IP, and the 5-Layer Stack</h2>
+
+      <p>Networking is complex enough that engineers decompose it into <strong>layers</strong>. Each layer handles a specific problem and hands off to the layer above or below it, shielding the rest of the stack from the details. This separation of concerns is why a web developer can write HTTP code without knowing anything about how Ethernet frames are constructed, and why a hardware engineer can design a cable standard without caring what protocols run over it.</p>
+
+      <p>Two reference models dominate networking education:</p>
+
+      <p>The <strong>OSI model</strong> (Open Systems Interconnection, developed by ISO in the 1970s–80s) defines seven layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application. OSI was designed as a universal reference framework — a precise theoretical model for how any network protocol stack should be structured. It is thorough and academically rigorous, and you will see it referenced constantly in certification materials and vendor documentation.</p>
+
+      <p>The <strong>TCP/IP model</strong> (developed alongside the protocols that power the internet) is more pragmatic — four layers reflecting how TCP/IP was actually built: Network Access (combining Physical and Data Link), Internet, Transport, and Application (combining Session, Presentation, and Application from OSI). TCP/IP won in practice; OSI won as a teaching tool.</p>
+
+      <p>This course uses a <strong>5-layer hybrid</strong> that combines the best of both: it keeps OSI's useful distinction between Physical and Data Link, it uses TCP/IP's practical Internet layer name, and it merges OSI's Session/Presentation/Application into a single Application layer. This is the model used in the TCP/IP networking course you will take next — building your mental model around it now pays off immediately.</p>
+
+      <!-- SVG: OSI / 5-Layer / TCP-IP comparison -->
+      <svg viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="680" height="330" fill="#FDFAF4"/>
+
+        <!-- Column headers -->
+        <text x="102" y="24" text-anchor="middle" font-size="9.5" font-weight="700" fill="#6A6460">OSI Reference Model</text>
+        <text x="102" y="35" text-anchor="middle" font-size="8" fill="#8A857C">(7 layers)</text>
+
+        <rect x="246" y="6" width="183" height="26" rx="3" fill="#F0E6DF"/>
+        <text x="337" y="21" text-anchor="middle" font-size="9.5" font-weight="700" fill="#8C3009">5-Layer Model</text>
+        <text x="337" y="32" text-anchor="middle" font-size="8" font-weight="600" fill="#C1440E">← used in this course</text>
+
+        <text x="577" y="24" text-anchor="middle" font-size="9.5" font-weight="700" fill="#6A6460">TCP/IP Model</text>
+        <text x="577" y="35" text-anchor="middle" font-size="8" fill="#8A857C">(4 layers)</text>
+
+        <!-- ── Connector fills (gaps between columns) ── -->
+        <!-- Left gap x=190 w=60 -->
+        <rect x="190" y="36" width="60" height="114" fill="#EEF3F8"/>
+        <rect x="190" y="150" width="60" height="38" fill="#E6F4F1"/>
+        <rect x="190" y="188" width="60" height="38" fill="#E8EDE3"/>
+        <rect x="190" y="226" width="60" height="38" fill="#F5EFE6"/>
+        <rect x="190" y="264" width="60" height="40" fill="#F5E8E8"/>
+        <!-- Right gap x=425 w=65 -->
+        <rect x="425" y="36" width="65" height="114" fill="#EEF3F8"/>
+        <rect x="425" y="150" width="65" height="38" fill="#E6F4F1"/>
+        <rect x="425" y="188" width="65" height="38" fill="#E8EDE3"/>
+        <rect x="425" y="226" width="65" height="38" fill="#F5EFE6"/>
+        <rect x="425" y="264" width="65" height="40" fill="#F5E8E8"/>
+
+        <!-- ── OSI Column (x=15, w=175, center=102) ── -->
+        <!-- L7 Application y=36-74 -->
+        <rect x="15" y="36" width="175" height="38" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
+        <text x="102" y="52" text-anchor="middle" font-size="8.5" font-weight="600" fill="#1D4E7A">7 — Application</text>
+        <text x="102" y="66" text-anchor="middle" font-size="7.5" fill="#4A4640">HTTP, SMTP, DNS, FTP</text>
+        <!-- L6 Presentation y=74-112 -->
+        <rect x="15" y="74" width="175" height="38" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
+        <text x="102" y="90" text-anchor="middle" font-size="8.5" font-weight="600" fill="#1D4E7A">6 — Presentation</text>
+        <text x="102" y="104" text-anchor="middle" font-size="7.5" fill="#4A4640">TLS/SSL, encoding, compression</text>
+        <!-- L5 Session y=112-150 -->
+        <rect x="15" y="112" width="175" height="38" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
+        <text x="102" y="128" text-anchor="middle" font-size="8.5" font-weight="600" fill="#1D4E7A">5 — Session</text>
+        <text x="102" y="142" text-anchor="middle" font-size="7.5" fill="#4A4640">Session management, sync</text>
+        <!-- L4 Transport y=150-188 -->
+        <rect x="15" y="150" width="175" height="38" fill="#E6F4F1" stroke="#1A7A6B" stroke-width="1"/>
+        <text x="102" y="166" text-anchor="middle" font-size="8.5" font-weight="600" fill="#1A7A6B">4 — Transport</text>
+        <text x="102" y="180" text-anchor="middle" font-size="7.5" fill="#4A4640">TCP, UDP — ports, reliability</text>
+        <!-- L3 Network y=188-226 -->
+        <rect x="15" y="188" width="175" height="38" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="102" y="204" text-anchor="middle" font-size="8.5" font-weight="600" fill="#2E6B4F">3 — Network</text>
+        <text x="102" y="218" text-anchor="middle" font-size="7.5" fill="#4A4640">IP — logical addressing, routing</text>
+        <!-- L2 Data Link y=226-264 -->
+        <rect x="15" y="226" width="175" height="38" fill="#F5EFE6" stroke="#7A5C1A" stroke-width="1"/>
+        <text x="102" y="242" text-anchor="middle" font-size="8.5" font-weight="600" fill="#7A5C1A">2 — Data Link</text>
+        <text x="102" y="256" text-anchor="middle" font-size="7.5" fill="#4A4640">Ethernet, Wi-Fi — MAC address</text>
+        <!-- L1 Physical y=264-304 -->
+        <rect x="15" y="264" width="175" height="40" fill="#F5E8E8" stroke="#7A3A3A" stroke-width="1"/>
+        <text x="102" y="280" text-anchor="middle" font-size="8.5" font-weight="600" fill="#7A3A3A">1 — Physical</text>
+        <text x="102" y="294" text-anchor="middle" font-size="7.5" fill="#4A4640">Signals, cables, connectors</text>
+
+        <!-- ── 5-Layer Column (x=250, w=175, center=337, bolder borders) ── -->
+        <!-- Application y=36-150 (114px) -->
+        <rect x="250" y="36" width="175" height="114" fill="#EEF3F8" stroke="#2564A0" stroke-width="2"/>
+        <text x="337" y="93" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1D4E7A">5 — Application</text>
+        <text x="337" y="109" text-anchor="middle" font-size="8" fill="#4A4640">HTTP/S, DNS, SMTP, SSH, RDP</text>
+        <!-- Transport y=150-188 -->
+        <rect x="250" y="150" width="175" height="38" fill="#E6F4F1" stroke="#1A7A6B" stroke-width="2"/>
+        <text x="337" y="166" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1A7A6B">4 — Transport</text>
+        <text x="337" y="180" text-anchor="middle" font-size="8" fill="#4A4640">TCP, UDP — ports, reliability</text>
+        <!-- Network y=188-226 -->
+        <rect x="250" y="188" width="175" height="38" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="2"/>
+        <text x="337" y="204" text-anchor="middle" font-size="10.5" font-weight="700" fill="#2E6B4F">3 — Network</text>
+        <text x="337" y="218" text-anchor="middle" font-size="8" fill="#4A4640">IP — logical addressing, routing</text>
+        <!-- Data Link y=226-264 -->
+        <rect x="250" y="226" width="175" height="38" fill="#F5EFE6" stroke="#7A5C1A" stroke-width="2"/>
+        <text x="337" y="242" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7A5C1A">2 — Data Link</text>
+        <text x="337" y="256" text-anchor="middle" font-size="8" fill="#4A4640">Ethernet, Wi-Fi — MAC address</text>
+        <!-- Physical y=264-304 -->
+        <rect x="250" y="264" width="175" height="40" fill="#F5E8E8" stroke="#7A3A3A" stroke-width="2"/>
+        <text x="337" y="280" text-anchor="middle" font-size="10.5" font-weight="700" fill="#7A3A3A">1 — Physical</text>
+        <text x="337" y="294" text-anchor="middle" font-size="8" fill="#4A4640">Bits — signals, cables, media</text>
+
+        <!-- ── TCP/IP Column (x=490, w=175, center=577) ── -->
+        <!-- Application y=36-150 -->
+        <rect x="490" y="36" width="175" height="114" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
+        <text x="577" y="93" text-anchor="middle" font-size="9" font-weight="600" fill="#1D4E7A">Application</text>
+        <text x="577" y="109" text-anchor="middle" font-size="7.5" fill="#4A4640">HTTP, DNS, SMTP, SSH</text>
+        <!-- Transport y=150-188 -->
+        <rect x="490" y="150" width="175" height="38" fill="#E6F4F1" stroke="#1A7A6B" stroke-width="1"/>
+        <text x="577" y="166" text-anchor="middle" font-size="9" font-weight="600" fill="#1A7A6B">Transport</text>
+        <text x="577" y="180" text-anchor="middle" font-size="7.5" fill="#4A4640">TCP, UDP</text>
+        <!-- Internet y=188-226 -->
+        <rect x="490" y="188" width="175" height="38" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="577" y="204" text-anchor="middle" font-size="9" font-weight="600" fill="#2E6B4F">Internet</text>
+        <text x="577" y="218" text-anchor="middle" font-size="7.5" fill="#4A4640">IP, ICMP, routing</text>
+        <!-- Network Access y=226-304 -->
+        <rect x="490" y="226" width="175" height="78" fill="#F5E8E8" stroke="#7A3A3A" stroke-width="1"/>
+        <text x="577" y="259" text-anchor="middle" font-size="9" font-weight="600" fill="#7A3A3A">Network Access</text>
+        <text x="577" y="273" text-anchor="middle" font-size="7.5" fill="#4A4640">Ethernet, Wi-Fi, cables</text>
+        <text x="577" y="287" text-anchor="middle" font-size="7" font-style="italic" fill="#8A857C">(combines Data Link + Physical)</text>
+
+        <!-- Caption -->
+        <text x="340" y="320" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">The 5-layer model keeps OSI's Physical/Data Link split and collapses OSI's Session, Presentation, and Application into one Application layer.</text>
+      </svg>
+
+      <div class="widget-card" data-widget-name="Interactive">
+        <div class="widget-title">5-Layer Model Explorer</div>
+        <div class="widget-desc">Click any layer to see its role, protocols, hardware, and a concrete example.</div>
+        <div data-widget="layer-explorer"></div>
+      </div>
+
+      <h2>Layer 1 — Signals and Physical Media</h2>
+
+      <p>No magic happens at Layer 1. A bit is a physical phenomenon — a measurable change in the real world that a receiver can distinguish as either 0 or 1. What varies is the medium through which that change travels.</p>
+
+      <p><strong>Copper wire (twisted pair)</strong> encodes bits as voltage transitions. A high voltage represents a 1; a low voltage represents a 0. Modern Ethernet uses more sophisticated encoding schemes, but the core idea is the same: the transmitter switches voltage levels at a precise rate, and the receiver samples the wire to reconstruct the bit stream. Gigabit Ethernet does this one billion times per second.</p>
+
+      <p><strong>Fiber optic cable</strong> encodes bits as light pulses. A pulse of light (photon present) is a 1; no pulse is a 0. Because photons travel at the speed of light through glass and are immune to electromagnetic interference, fiber can carry signals over much longer distances and at far higher data rates than copper. Single-mode fiber used in long-haul networks can span hundreds of kilometers without a repeater.</p>
+
+      <p><strong>Wireless (RF)</strong> encodes bits by modulating a radio frequency carrier wave. The transmitter varies the carrier's amplitude, frequency, or phase to represent 0s and 1s — a technique called modulation. The receiver measures those variations and reconstructs the original bit stream. Wi-Fi, cellular, and Bluetooth all use this principle; they differ in which frequencies they use, how densely they pack data into the carrier, and how they share the spectrum among multiple users.</p>
+
+      <!-- SVG: Physical signals — same bits, three media -->
+      <svg viewBox="0 0 680 262" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="680" height="262" fill="#FDFAF4"/>
+        <text x="340" y="17" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1814">The Same Bit Sequence — Three Physical Media</text>
+
+        <!-- Bit value row y=24-46 -->
+        <!-- Column backgrounds -->
+        <rect x="110" y="24" width="90" height="22" rx="2" fill="#DDE8F2"/><text x="155" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4E7A">1</text>
+        <rect x="200" y="24" width="90" height="22" rx="2" fill="#EDE9DF"/><text x="245" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="#6A6460">0</text>
+        <rect x="290" y="24" width="90" height="22" rx="2" fill="#DDE8F2"/><text x="335" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4E7A">1</text>
+        <rect x="380" y="24" width="90" height="22" rx="2" fill="#DDE8F2"/><text x="425" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4E7A">1</text>
+        <rect x="470" y="24" width="90" height="22" rx="2" fill="#EDE9DF"/><text x="515" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="#6A6460">0</text>
+        <rect x="560" y="24" width="90" height="22" rx="2" fill="#DDE8F2"/><text x="605" y="39" text-anchor="middle" font-size="12" font-weight="700" fill="#1D4E7A">1</text>
+
+        <!-- Vertical column dividers (light dashed) -->
+        <line x1="200" y1="24" x2="200" y2="230" stroke="#D8D2C6" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="290" y1="24" x2="290" y2="230" stroke="#D8D2C6" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="380" y1="24" x2="380" y2="230" stroke="#D8D2C6" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="470" y1="24" x2="470" y2="230" stroke="#D8D2C6" stroke-width="0.8" stroke-dasharray="3,3"/>
+        <line x1="560" y1="24" x2="560" y2="230" stroke="#D8D2C6" stroke-width="0.8" stroke-dasharray="3,3"/>
+
+        <!-- ── Row 1: Copper / Voltage ── y=54-110 -->
+        <rect x="110" y="54" width="540" height="56" rx="2" fill="#F0EDEA"/>
+        <!-- Labels -->
+        <text x="104" y="80" text-anchor="end" font-size="9" font-weight="700" fill="#1A1814">Copper</text>
+        <text x="104" y="92" text-anchor="end" font-size="7.5" font-style="italic" fill="#6A6460">voltage</text>
+        <!-- High / Low markers -->
+        <text x="113" y="68" font-size="7" fill="#2564A0">HIGH=1</text>
+        <text x="113" y="104" font-size="7" fill="#6A6460">LOW=0</text>
+        <!-- Square wave: bits 1,0,1,1,0,1 high=66 low=98 -->
+        <path d="M110,66 H200 V98 H290 V66 H470 V98 H560 V66 H650" fill="none" stroke="#2564A0" stroke-width="2.5" stroke-linejoin="miter"/>
+
+        <!-- ── Row 2: Fiber / Light pulses ── y=120-156 -->
+        <!-- Dark background (fiber "cable") -->
+        <rect x="110" y="120" width="540" height="36" rx="2" fill="#1A1814"/>
+        <!-- Labels -->
+        <text x="104" y="138" text-anchor="end" font-size="9" font-weight="700" fill="#1A1814">Fiber</text>
+        <text x="104" y="150" text-anchor="end" font-size="7.5" font-style="italic" fill="#6A6460">light pulse</text>
+        <!-- Light pulses for bit=1 (indices 0,2,3,5) -->
+        <rect x="110" y="120" width="90" height="36" rx="1" fill="#00C8FF" opacity="0.9"/>
+        <rect x="290" y="120" width="90" height="36" rx="1" fill="#00C8FF" opacity="0.9"/>
+        <rect x="380" y="120" width="90" height="36" rx="1" fill="#00C8FF" opacity="0.9"/>
+        <rect x="560" y="120" width="90" height="36" rx="1" fill="#00C8FF" opacity="0.9"/>
+        <!-- ON / OFF labels -->
+        <text x="155" y="141" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003850">ON</text>
+        <text x="245" y="141" text-anchor="middle" font-size="7.5" fill="#5A6580">OFF</text>
+        <text x="335" y="141" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003850">ON</text>
+        <text x="425" y="141" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003850">ON</text>
+        <text x="515" y="141" text-anchor="middle" font-size="7.5" fill="#5A6580">OFF</text>
+        <text x="605" y="141" text-anchor="middle" font-size="7.5" font-weight="700" fill="#003850">ON</text>
+
+        <!-- ── Row 3: Wireless / Modulated carrier ── y=166-222 -->
+        <rect x="110" y="166" width="540" height="56" rx="2" fill="#F0EDEA"/>
+        <!-- Labels -->
+        <text x="104" y="190" text-anchor="end" font-size="9" font-weight="700" fill="#1A1814">Wireless</text>
+        <text x="104" y="202" text-anchor="end" font-size="7.5" font-style="italic" fill="#6A6460">radio wave</text>
+        <!-- Amplitude-modulated carrier (center y=194, A1=16 for 1, A0=5 for 0) -->
+        <path d="M110,194 Q117.5,178 125,194 Q132.5,210 140,194 Q147.5,178 155,194 Q162.5,210 170,194 Q177.5,178 185,194 Q192.5,210 200,194 Q207.5,189 215,194 Q222.5,199 230,194 Q237.5,189 245,194 Q252.5,199 260,194 Q267.5,189 275,194 Q282.5,199 290,194 Q297.5,178 305,194 Q312.5,210 320,194 Q327.5,178 335,194 Q342.5,210 350,194 Q357.5,178 365,194 Q372.5,210 380,194 Q387.5,178 395,194 Q402.5,210 410,194 Q417.5,178 425,194 Q432.5,210 440,194 Q447.5,178 455,194 Q462.5,210 470,194 Q477.5,189 485,194 Q492.5,199 500,194 Q507.5,189 515,194 Q522.5,199 530,194 Q537.5,189 545,194 Q552.5,199 560,194 Q567.5,178 575,194 Q582.5,210 590,194 Q597.5,178 605,194 Q612.5,210 620,194 Q627.5,178 635,194 Q642.5,210 650,194"
+              fill="none" stroke="#C1440E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+
+        <!-- Caption -->
+        <text x="340" y="251" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">The bit pattern 1-0-1-1-0-1 is the same in all three rows. Only the physical phenomenon differs.</text>
+      </svg>
+
+      <h3>Cable Types</h3>
+
+      <p><strong>Twisted pair</strong> is the most common wired Ethernet medium. Each cable contains four pairs of copper wires twisted around each other — the twisting is not decorative. Electromagnetic interference induces equal but opposite noise voltages in both wires of a pair; because the receiver measures only the <em>difference</em> between the two wires (differential signaling), the noise cancels out. Category ratings (Cat5e, Cat6, Cat6A) describe the cable's specifications and the maximum data rate they support at a given distance. All terminate in RJ-45 connectors.</p>
+
+      <p><strong>Fiber optic cable</strong> carries light pulses through a glass or plastic core. <strong>Multimode fiber</strong> (thicker core, ~50–62.5 µm) is used within buildings and data centers — shorter distances up to ~550 m at 10 Gbps. <strong>Single-mode fiber</strong> (narrow core, ~9 µm, one path for light) eliminates signal dispersion and is used for long distances — campus backbones, metropolitan rings, and transoceanic cables. Fiber connectors are LC (small form-factor, common in data centers) or SC (slightly larger, common in telco infrastructure).</p>
+
+      <p><strong>Coaxial cable</strong> has a central copper conductor surrounded by insulation, a braided metal shield, and an outer jacket. Coax was the original Ethernet medium and is still widely used for cable television and broadband internet delivery from the ISP to the home (cable modem). In enterprise networking it has largely been replaced by twisted pair and fiber.</p>
+
+      <h2>IP Addressing</h2>
+
+      <p>An <strong>IP address</strong> is a logical address assigned to a network interface — logical because it is assigned by software and can change, unlike a MAC address which is burned into hardware. Every device that communicates on the internet needs at least one IP address.</p>
+
+      <p><strong>IPv4</strong> addresses are 32 bits long, written as four decimal numbers (octets) separated by dots: <code>192.168.1.100</code>. Each octet represents 8 bits and ranges from 0–255. The 32-bit space allows for approximately 4.3 billion unique addresses — a number that seemed vast in the 1970s but proved inadequate as the internet grew.</p>
+
+      <!-- SVG: IP Address Anatomy -->
+      <svg viewBox="0 0 680 192" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="680" height="192" fill="#FDFAF4"/>
+        <text x="340" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#1A1814">IPv4 Address Anatomy — 192.168.1.100 / 24</text>
+
+        <!-- Octet boxes -->
+        <!-- Box 192 (network) -->
+        <rect x="18" y="30" width="145" height="50" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="90" y="54" text-anchor="middle" font-size="22" font-weight="700" fill="#1A1814">192</text>
+        <text x="90" y="70" text-anchor="middle" font-size="8.5" fill="#2564A0" font-family="'JetBrains Mono',monospace">11000000</text>
+
+        <text x="169" y="57" text-anchor="middle" font-size="20" font-weight="700" fill="#4A4640">.</text>
+
+        <!-- Box 168 (network) -->
+        <rect x="180" y="30" width="145" height="50" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="252" y="54" text-anchor="middle" font-size="22" font-weight="700" fill="#1A1814">168</text>
+        <text x="252" y="70" text-anchor="middle" font-size="8.5" fill="#2564A0" font-family="'JetBrains Mono',monospace">10101000</text>
+
+        <text x="331" y="57" text-anchor="middle" font-size="20" font-weight="700" fill="#4A4640">.</text>
+
+        <!-- Box 1 (network) -->
+        <rect x="342" y="30" width="145" height="50" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="414" y="54" text-anchor="middle" font-size="22" font-weight="700" fill="#1A1814">1</text>
+        <text x="414" y="70" text-anchor="middle" font-size="8.5" fill="#2564A0" font-family="'JetBrains Mono',monospace">00000001</text>
+
+        <text x="493" y="57" text-anchor="middle" font-size="20" font-weight="700" fill="#4A4640">.</text>
+
+        <!-- Box 100 (host — green) -->
+        <rect x="504" y="30" width="158" height="50" rx="4" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="583" y="54" text-anchor="middle" font-size="22" font-weight="700" fill="#1A1814">100</text>
+        <text x="583" y="70" text-anchor="middle" font-size="8.5" fill="#2E6B4F" font-family="'JetBrains Mono',monospace">01100100</text>
+
+        <!-- Network / Host bar -->
+        <rect x="18" y="92" width="631" height="14" rx="2" fill="#2564A0"/>
+        <!-- Override host portion -->
+        <rect x="504" y="92" width="158" height="14" rx="2" fill="#2E6B4F"/>
+        <text x="261" y="102" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">Network — first 24 bits ( /24 )</text>
+        <text x="583" y="102" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">Host</text>
+
+        <!-- Bit count annotation -->
+        <text x="261" y="124" text-anchor="middle" font-size="8" fill="#2564A0">8 bits + 8 bits + 8 bits = 24 bits identify the network segment</text>
+        <text x="583" y="124" text-anchor="middle" font-size="8" fill="#2E6B4F">8 bits identify the device</text>
+
+        <!-- Total / notation -->
+        <text x="340" y="148" text-anchor="middle" font-size="8.5" fill="#4A4640">32 bits total — written as four decimal octets separated by dots (dotted-decimal notation)</text>
+        <text x="340" y="166" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">192.168.0.0 / 16 is a private address range (RFC 1918) — routable only inside local networks, not on the public internet</text>
+      </svg>
+
+      <p>IPv4 reserves three ranges of addresses for private use (RFC 1918) — these addresses can be used freely inside any organization's network but are not routed on the public internet:</p>
+      <ul>
+        <li><code>10.0.0.0 – 10.255.255.255</code> (10.0.0.0/8) — large organizations</li>
+        <li><code>172.16.0.0 – 172.31.255.255</code> (172.16.0.0/12) — medium networks</li>
+        <li><code>192.168.0.0 – 192.168.255.255</code> (192.168.0.0/16) — home and small office networks</li>
+      </ul>
+
+      <p><strong>IPv6</strong> addresses are 128 bits, written as eight groups of four hexadecimal digits: <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code>. The 128-bit space provides approximately 340 undecillion addresses — effectively unlimited. IPv6 deployment has grown steadily as IPv4 addresses have been exhausted; most modern operating systems, devices, and ISPs support both protocols simultaneously (a configuration called dual-stack).</p>
+
+      <h2>Subnets and CIDR</h2>
+
+      <p>A <strong>subnet</strong> is a logical subdivision of a network. Subnetting divides a large address block into smaller segments, each with its own defined range of addresses. Routers forward traffic between subnets; devices on the same subnet communicate directly at Layer 2 without involving a router.</p>
+
+      <p>Subnet boundaries are expressed using <strong>CIDR notation</strong> (Classless Inter-Domain Routing) — a slash followed by the number of bits in the network portion: <code>192.168.1.0/24</code> means the first 24 bits identify the network (leaving 8 bits for host addresses, so 256 addresses with 254 usable). <code>/16</code> leaves 16 bits for hosts (65,536 addresses). <code>/30</code> leaves 2 bits for hosts — exactly four addresses, two usable, common for point-to-point router links.</p>
+
+      <p>Why subnet? Three reasons matter in practice: <strong>broadcast control</strong> (Layer 2 broadcasts are contained within a subnet), <strong>security</strong> (routers can apply access control lists between subnets), and <strong>organization</strong> (subnets can map to physical floors, departments, or functions, making the network easier to manage and troubleshoot).</p>
+
+      <div class="note">
+        <strong>Subnet math shortcut.</strong> A /24 gives you 2<sup>8</sup> = 256 addresses (254 usable — one for the network address, one for broadcast). A /23 doubles it: 512 addresses. A /25 halves it: 128 addresses. Each step up or down in the prefix length by 1 doubles or halves the address count.
+      </div>
+
+      <h2>DNS</h2>
+
+      <p>Computers route traffic using IP addresses. Humans use names. The <strong>Domain Name System</strong> is the internet's distributed phone book — it translates human-readable names like <code>www.example.com</code> into IP addresses like <code>93.184.216.34</code>. As promised in Chapter 9: this is how it works.</p>
+
+      <p>DNS is a <strong>hierarchy</strong>. At the top are the <strong>root name servers</strong> (13 root server clusters worldwide), which know nothing about individual domain names but know where to find the <strong>Top-Level Domain (TLD) servers</strong> responsible for <code>.com</code>, <code>.org</code>, <code>.edu</code>, and country codes. TLD servers know which <strong>authoritative name servers</strong> are responsible for each registered domain. The authoritative server for <code>example.com</code> holds the actual records that map names to IPs.</p>
+
+      <p>When your device needs to resolve a name, it sends a query to a <strong>recursive resolver</strong> — typically provided by your ISP or a public service like Google's 8.8.8.8 or Cloudflare's 1.1.1.1. The resolver does the heavy lifting: it walks down the hierarchy on your behalf, caches the results, and returns the answer.</p>
+
+      <!-- SVG: DNS Resolution Walk -->
+      <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="680" height="300" fill="#FDFAF4"/>
+        <defs>
+          <marker id="arr-dns" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+            <polygon points="0 0, 7 3.5, 0 7" fill="#4A4640"/>
+          </marker>
+        </defs>
+
+        <!-- Actor boxes -->
+        <rect x="8"   y="22" width="112" height="34" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="64"  y="37" text-anchor="middle" font-size="9" font-weight="700" fill="#1D4E7A">Your Device</text>
+        <text x="64"  y="50" text-anchor="middle" font-size="7.5" fill="#4A4640">(stub resolver)</text>
+
+        <rect x="153" y="22" width="148" height="34" rx="4" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="227" y="37" text-anchor="middle" font-size="9" font-weight="700" fill="#2E6B4F">Recursive Resolver</text>
+        <text x="227" y="50" text-anchor="middle" font-size="7.5" fill="#4A4640">ISP / 8.8.8.8 / 1.1.1.1</text>
+
+        <rect x="363" y="22" width="128" height="34" rx="4" fill="#F5EFE6" stroke="#7A5C1A" stroke-width="1.5"/>
+        <text x="427" y="37" text-anchor="middle" font-size="9" font-weight="700" fill="#7A5C1A">Root Name Server</text>
+        <text x="427" y="50" text-anchor="middle" font-size="7.5" fill="#4A4640">(13 clusters worldwide)</text>
+
+        <rect x="549" y="22" width="124" height="34" rx="4" fill="#F5EFE6" stroke="#7A5C1A" stroke-width="1.5"/>
+        <text x="611" y="37" text-anchor="middle" font-size="9" font-weight="700" fill="#7A5C1A">TLD + Authoritative</text>
+        <text x="611" y="50" text-anchor="middle" font-size="7.5" fill="#4A4640">.com + ns1.example.com</text>
+
+        <!-- Lifelines -->
+        <line x1="64"  y1="56" x2="64"  y2="270" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="227" y1="56" x2="227" y2="270" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="427" y1="56" x2="427" y2="270" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="611" y1="56" x2="611" y2="270" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- Arrow 1: Device → Resolver (right) y=76 -->
+        <line x1="68" y1="76" x2="221" y2="76" stroke="#4A4640" stroke-width="1.4" marker-end="url(#arr-dns)"/>
+        <text x="144" y="71" text-anchor="middle" font-size="8" font-weight="600" fill="#1D4E7A">1  www.example.com ?</text>
+
+        <!-- Arrow 2: Resolver → Root (right) y=104 -->
+        <line x1="231" y1="104" x2="421" y2="104" stroke="#4A4640" stroke-width="1.4" marker-end="url(#arr-dns)"/>
+        <text x="326" y="99" text-anchor="middle" font-size="8" fill="#4A4640">2  Who handles .com?</text>
+
+        <!-- Arrow 3: Root → Resolver (left) y=130 -->
+        <line x1="423" y1="130" x2="233" y2="130" stroke="#4A4640" stroke-width="1.4" marker-end="url(#arr-dns)"/>
+        <text x="326" y="125" text-anchor="middle" font-size="8" fill="#4A4640">3  Ask .com TLD server at 192.5.6.30</text>
+
+        <!-- Arrow 4: Resolver → TLD+Auth (right) y=160 -->
+        <line x1="231" y1="160" x2="605" y2="160" stroke="#4A4640" stroke-width="1.4" marker-end="url(#arr-dns)"/>
+        <text x="418" y="155" text-anchor="middle" font-size="8" fill="#4A4640">4  Who is example.com? / What is www?</text>
+        <text x="418" y="167" text-anchor="middle" font-size="7" font-style="italic" fill="#8A857C">(two sequential queries, shown as one)</text>
+
+        <!-- Arrow 5: TLD+Auth → Resolver (left) y=196 -->
+        <line x1="607" y1="196" x2="233" y2="196" stroke="#4A4640" stroke-width="1.4" marker-end="url(#arr-dns)"/>
+        <text x="418" y="191" text-anchor="middle" font-size="8" fill="#4A4640">5  93.184.216.34   (TTL: 3 600 s)</text>
+
+        <!-- Arrow 6: Resolver → Device (left) y=228 -->
+        <line x1="223" y1="228" x2="70" y2="228" stroke="#2E6B4F" stroke-width="1.6" marker-end="url(#arr-dns)"/>
+        <text x="144" y="222" text-anchor="middle" font-size="8" font-weight="600" fill="#2E6B4F">6  93.184.216.34  ✓  (cached 1 hr)</text>
+
+        <text x="340" y="288" text-anchor="middle" font-size="7.5" font-style="italic" fill="#8A857C">Next query for www.example.com skips steps 2–5 — the resolver answers instantly from its cache until the TTL expires.</text>
+      </svg>
+
+      <p>DNS records come in several types. The ones you will encounter most often:</p>
+      <table class="data-table">
+        <thead>
+          <tr><th>Record Type</th><th>Purpose</th><th>Example</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>A</td><td>Maps a hostname to an IPv4 address</td><td><code>www.example.com → 93.184.216.34</code></td></tr>
+          <tr><td>AAAA</td><td>Maps a hostname to an IPv6 address</td><td><code>www.example.com → 2606:2800:…</code></td></tr>
+          <tr><td>CNAME</td><td>Alias — points one name to another name</td><td><code>blog.example.com → www.example.com</code></td></tr>
+          <tr><td>MX</td><td>Mail server for a domain</td><td><code>example.com → mail.example.com (priority 10)</code></td></tr>
+          <tr><td>SRV</td><td>Service location (used by AD, SIP, etc.)</td><td><code>_ldap._tcp.company.com → dc1.company.com:389</code></td></tr>
+          <tr><td>PTR</td><td>Reverse DNS — IP address to hostname</td><td><code>34.216.184.93.in-addr.arpa → www.example.com</code></td></tr>
+          <tr><td>TXT</td><td>Arbitrary text; used for SPF, DKIM, domain verification</td><td><code>"v=spf1 include:…"</code></td></tr>
+        </tbody>
+      </table>
+
+      <h2>TCP and UDP</h2>
+
+      <p>IP gets packets to the right <em>machine</em>. <strong>Port numbers</strong> — 16-bit integers from 0–65535 — get them to the right <em>application</em> on that machine. When your browser connects to a web server, the server listens on port 443 (HTTPS); your browser is assigned a random high port (e.g., 54231) for the reply. The four-tuple (source IP, source port, destination IP, destination port) uniquely identifies every active connection on the network.</p>
+
+      <p><strong>TCP</strong> (Transmission Control Protocol) is <strong>connection-oriented</strong>. Before any data flows, the two sides perform a three-way handshake to establish a connection and agree on initial sequence numbers. TCP then numbers every byte of data, requires acknowledgments, detects lost segments and retransmits them, and reorders out-of-sequence delivery at the receiver. The price of all this reliability is overhead — three round trips to establish, additional round trips to close, retransmission delays when packets are lost. Use TCP when data must arrive complete and in order: web pages, file transfers, email, database queries, SSH sessions.</p>
+
+      <p><strong>UDP</strong> (User Datagram Protocol) is <strong>connectionless</strong>. Each datagram is fired at the destination with no handshake and no acknowledgment. If a datagram is lost, UDP does not notice and does not retransmit. Use UDP when you need low latency or real-time delivery more than you need completeness: video streaming, voice calls, online gaming, DNS queries (a single small request/reply — retrying is faster than establishing TCP).</p>
+
+      <!-- SVG: TCP 3-way handshake -->
+      <svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="680" height="240" fill="#FDFAF4"/>
+        <defs>
+          <marker id="arr-syn" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+            <polygon points="0 0, 7 3.5, 0 7" fill="#2564A0"/>
+          </marker>
+          <marker id="arr-synack" markerWidth="7" markerHeight="7" refX="5.5" refY="3.5" orient="auto">
+            <polygon points="0 0, 7 3.5, 0 7" fill="#2E6B4F"/>
+          </marker>
+        </defs>
+
+        <!-- Actor boxes -->
+        <rect x="28"  y="18" width="140" height="36" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.5"/>
+        <text x="98"  y="34" text-anchor="middle" font-size="10" font-weight="700" fill="#1D4E7A">Client</text>
+        <text x="98"  y="47" text-anchor="middle" font-size="8" fill="#4A4640">initiates connection</text>
+
+        <rect x="512" y="18" width="140" height="36" rx="4" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="582" y="34" text-anchor="middle" font-size="10" font-weight="700" fill="#2E6B4F">Server</text>
+        <text x="582" y="47" text-anchor="middle" font-size="8" fill="#4A4640">accepts connection</text>
+
+        <!-- Lifelines -->
+        <line x1="98"  y1="54" x2="98"  y2="196" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="4,3"/>
+        <line x1="582" y1="54" x2="582" y2="196" stroke="#B8B0A4" stroke-width="1" stroke-dasharray="4,3"/>
+
+        <!-- Arrow 1: SYN (Client → Server) y=82 -->
+        <line x1="103" y1="82" x2="576" y2="82" stroke="#2564A0" stroke-width="1.8" marker-end="url(#arr-syn)"/>
+        <text x="340" y="75" text-anchor="middle" font-size="9" font-weight="700" fill="#2564A0">SYN</text>
+        <text x="340" y="88" text-anchor="middle" font-size="8" fill="#4A4640">seq=1000 · Flags: SYN · "I want to connect"</text>
+
+        <!-- Arrow 2: SYN-ACK (Server → Client) y=128 -->
+        <line x1="577" y1="128" x2="104" y2="128" stroke="#2E6B4F" stroke-width="1.8" marker-end="url(#arr-synack)"/>
+        <text x="340" y="121" text-anchor="middle" font-size="9" font-weight="700" fill="#2E6B4F">SYN-ACK</text>
+        <text x="340" y="134" text-anchor="middle" font-size="8" fill="#4A4640">seq=5000 · ack=1001 · Flags: SYN,ACK · "OK — and I want to connect"</text>
+
+        <!-- Arrow 3: ACK (Client → Server) y=174 -->
+        <line x1="103" y1="174" x2="576" y2="174" stroke="#2564A0" stroke-width="1.8" marker-end="url(#arr-syn)"/>
+        <text x="340" y="167" text-anchor="middle" font-size="9" font-weight="700" fill="#2564A0">ACK</text>
+        <text x="340" y="180" text-anchor="middle" font-size="8" fill="#4A4640">ack=5001 · Flags: ACK · "Got it — connection established"</text>
+
+        <!-- Established labels -->
+        <text x="98"  y="210" text-anchor="middle" font-size="8" font-style="italic" fill="#2564A0">[ESTABLISHED]</text>
+        <text x="582" y="210" text-anchor="middle" font-size="8" font-style="italic" fill="#2E6B4F">[ESTABLISHED]</text>
+
+        <text x="340" y="230" text-anchor="middle" font-size="7.5" font-style="italic" fill="#8A857C">seq = sequence number (tracks bytes sent). ack = acknowledgment number (next byte expected). Data transfer begins after the third handshake.</text>
+      </svg>
+
+      <h2>DHCP</h2>
+
+      <p>For a device to communicate on a network it needs four pieces of configuration: an IP address, a subnet mask, a default gateway (the router's IP), and a DNS server address. A network administrator could configure these manually on every device — but <strong>DHCP</strong> (Dynamic Host Configuration Protocol) automates the process.</p>
+
+      <p>When a device joins a network it broadcasts a discovery message. A DHCP server responds with an offer. The device requests the offered configuration, and the server confirms the lease. This four-step exchange — <strong>Discover → Offer → Request → Acknowledge</strong> (DORA) — completes in milliseconds. The server grants a <strong>lease</strong> for a defined period (often 24 hours for wired clients, shorter for wireless); if the device is still on the network when the lease expires, it renews automatically.</p>
+
+      <p>In enterprise environments, the DHCP server is typically a Windows Server or Linux machine (often the same server running DNS), not the router. The router is configured as a DHCP relay agent, forwarding DORA messages between the client and the server. This allows one central DHCP server to service multiple subnets.</p>
+
+      <h2>Common Ports and Protocols</h2>
+
+      <p>Port numbers below 1024 are called <strong>well-known ports</strong> and are reserved for standard services. Knowing these by heart is as basic to networking as knowing the alphabet — you will see them in firewall rules, network captures, log files, and server configurations daily.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Port</th><th>Protocol</th><th>Transport</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>20 / 21</td><td>FTP</td><td>TCP</td><td>File Transfer Protocol (data / control)</td></tr>
+          <tr><td>22</td><td>SSH</td><td>TCP</td><td>Secure Shell — encrypted remote terminal and file transfer (SCP/SFTP)</td></tr>
+          <tr><td>25</td><td>SMTP</td><td>TCP</td><td>Email delivery between mail servers</td></tr>
+          <tr><td>53</td><td>DNS</td><td>UDP (and TCP for large responses)</td><td>Domain Name System queries</td></tr>
+          <tr><td>67 / 68</td><td>DHCP</td><td>UDP</td><td>Dynamic Host Configuration (server / client)</td></tr>
+          <tr><td>80</td><td>HTTP</td><td>TCP</td><td>Web — unencrypted</td></tr>
+          <tr><td>110</td><td>POP3</td><td>TCP</td><td>Email retrieval (older; downloads and deletes from server)</td></tr>
+          <tr><td>143</td><td>IMAP</td><td>TCP</td><td>Email retrieval (modern; keeps mail on server)</td></tr>
+          <tr><td>389</td><td>LDAP</td><td>TCP</td><td>Directory service queries (Active Directory)</td></tr>
+          <tr><td>443</td><td>HTTPS</td><td>TCP</td><td>Web — encrypted with TLS</td></tr>
+          <tr><td>445</td><td>SMB</td><td>TCP</td><td>Windows file and printer sharing</td></tr>
+          <tr><td>587</td><td>SMTP (submission)</td><td>TCP</td><td>Email submission from client to outgoing mail server</td></tr>
+          <tr><td>636</td><td>LDAPS</td><td>TCP</td><td>LDAP over TLS</td></tr>
+          <tr><td>3389</td><td>RDP</td><td>TCP</td><td>Remote Desktop Protocol — graphical Windows remote access</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Where This Takes You</h2>
+
+      <p><strong>Chapter 11</strong> (Network Architecture &amp; Communication) builds directly on this foundation: VLANs, routing protocols, NAT, firewalls, and how enterprise networks are actually structured. With the layer model, IP addressing, and TCP/UDP internalized, the architecture chapter is a natural extension rather than a new subject.</p>
+
+      <p><strong>Chapter 12</strong> (System Administration) returns to DNS and DHCP from an operational perspective — configuring zones, managing leases, reading resolver logs, and troubleshooting with <code>nslookup</code>, <code>dig</code>, and <code>ping</code>. The concepts built here make the commands immediately sensible rather than incantations.</p>
+
+      <!-- Quiz -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Quiz</span>
+          <span class="practice-title">Chapter 10 Quiz</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. Which layer of the 5-layer model uses MAC addresses to forward frames between devices on the same local network segment?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Physical</button>
+            <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> Data Link</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> Network</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> Transport</button>
+          </div>
+          <div class="mc-feedback" id="q1-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. What physical phenomenon does fiber optic cable use to transmit bits?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Voltage transitions on copper conductors</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> Magnetic field variations along a metallic core</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">C</span> Light pulses through a glass or plastic core</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Amplitude-modulated radio waves</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. Why is twisted pair cable "twisted"?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> To increase the number of conductors in a small form factor</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> To allow multiple signals to travel simultaneously on the same pair</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> To make the cable more flexible and easier to route through walls</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">D</span> To cancel electromagnetic interference — each wire picks up equal but opposite noise, which cancels when the receiver measures the difference</button>
+          </div>
+          <div class="mc-feedback" id="q3-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. A device is assigned the IP address 10.0.4.55 / 24. What is the network address for this subnet?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> 10.0.0.0</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> 10.0.4.55</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> 10.0.4.0</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> 10.0.4.254</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. Which DNS record type maps a domain name to an IPv4 address?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">A</span> A record</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> MX record</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> CNAME record</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> PTR record</button>
+          </div>
+          <div class="mc-feedback" id="q5-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. What is the key difference between TCP and UDP?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> TCP operates at Layer 3; UDP operates at Layer 4</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> TCP is used only for local networks; UDP is used on the internet</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> TCP is connection-oriented and reliable, using acknowledgments and retransmission; UDP is connectionless and trades reliability for lower overhead</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> TCP encrypts data automatically; UDP sends data in plaintext</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. What is the purpose of the first packet in the TCP three-way handshake?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> To acknowledge all data received so far and close the session</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> To transmit the first block of application data</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">C</span> To initiate a connection and synchronize initial sequence numbers with the server</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> To request a DHCP lease from the server</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. What does DHCP provide to a device when it joins a network?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> A MAC address and a public certificate for authentication</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">B</span> An IP address, subnet mask, default gateway, and DNS server address</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> A username and password for network access</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> A hostname and domain name for Active Directory enrollment</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="q-text">9. Which well-known port is used for HTTPS (encrypted web traffic)?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> 80</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">B</span> 22</button>
+            <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">C</span> 443</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> 3389</button>
+          </div>
+          <div class="mc-feedback" id="q9-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="q-text">10. In the DNS resolution process, what is the role of the recursive resolver?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> It stores authoritative records for a specific domain</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> It routes IP packets between the client and the authoritative server</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> It queries the DNS hierarchy on behalf of the client, caches results, and returns the final answer</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> It assigns IP addresses to clients on a local network segment</button>
+          </div>
+          <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+      </div>
+
+      <nav class="chapter-nav-footer">
+        <a href="ch09.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 9: File Systems &amp; Directory Services</span>
+        </a>
+        <a href="ch11.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">Network Architecture &amp; Communication</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/layer-explorer.js"></script>
+
+<script>
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(',true)')) b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>

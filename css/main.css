@@ -1500,6 +1500,25 @@ body {
   .fst-tree-panel { max-height: 200px; border-right: none; border-bottom: 1px solid #3a3a3a; }
 }
 
+/* ── Layer Explorer widget ──────────────────────────────────── */
+.le-widget { display:grid; grid-template-columns:188px 1fr; border:1px solid var(--border-dark); border-radius:var(--radius-lg); overflow:hidden; min-height:290px; }
+.le-stack { background:#1e1e1e; padding:6px 0; }
+.le-layer { display:flex; align-items:center; gap:10px; padding:13px 15px; cursor:pointer; border-left:4px solid transparent; }
+.le-layer:hover { background:rgba(255,255,255,0.06); }
+.le-layer.active { background:rgba(255,255,255,0.09); border-left-color:rgba(255,255,255,0.35); }
+.le-num { width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; color:#fff; }
+.le-layer-name { font-size:0.85rem; font-weight:600; color:#d4d4d4; }
+.le-detail { background:var(--bg-card); padding:18px 22px; overflow-y:auto; }
+.le-detail-placeholder { display:flex; align-items:center; justify-content:center; color:var(--ink-light); font-style:italic; font-size:0.88rem; }
+.le-detail-header { margin-bottom:10px; }
+.le-detail-title { font-size:1.05rem; font-weight:700; margin-bottom:5px; }
+.le-detail-pdu { display:inline-block; padding:2px 10px; border-radius:12px; font-family:var(--font-mono); font-size:0.72rem; font-weight:600; }
+.le-detail-role { font-size:0.88rem; color:var(--ink); line-height:1.6; margin:12px 0 4px; }
+.le-detail-section { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-light); margin:12px 0 3px; }
+.le-detail-value { font-size:0.86rem; color:var(--ink-mid); line-height:1.5; }
+.le-detail-example { font-size:0.84rem; font-style:italic; color:var(--ink-mid); background:var(--bg-alt); border-radius:var(--radius); padding:8px 12px; margin-top:6px; line-height:1.55; }
+@media (max-width:540px) { .le-widget { grid-template-columns:1fr; } .le-stack { border-bottom:1px solid #3a3a3a; max-height:200px; overflow-y:auto; } }
+
 /* ── Utility ────────────────────────────────────────────────── */
 .mt-0 { margin-top: 0; }
 .text-center { text-align: center; }
