@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 11: Network Architecture &amp; Communication — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter active"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 11 · Unit 4: Networks</div>
+      <h1 class="chapter-title">Network Architecture &amp; Communication</h1>
+      <div class="chapter-deco">⬡</div>
+      <p class="chapter-intro">A network is more than cables and protocols — it is an architecture. Devices are organized into roles: some provide services, others consume them. Switches and routers are arranged in tiers so traffic flows efficiently and policy is enforced at the right boundaries. Firewalls, VLANs, and NAT shape which devices can reach which resources. This chapter builds the mental model of how a real organizational network is designed and why each piece exists.</p>
+    </header>
+
+    <h2>Client/Server Architecture</h2>
+
+    <p>The dominant communication model in enterprise computing is <strong>client/server architecture</strong>. The idea is simple: one device, the <strong>server</strong>, provides a specific service and waits for requests. Other devices, the <strong>clients</strong>, initiate connections to consume that service. The server is always available; the client connects when it needs something.</p>
+
+    <div class="definition">
+      <strong>Client/Server Architecture</strong> — a network model in which a dedicated server provides a service and clients initiate requests to consume it. The server listens; the client always goes first.
+    </div>
+
+    <p>The "server" is a role, not necessarily dedicated hardware. Your laptop is acting as a client when it loads a web page. That same laptop could act as a server if it were running software that other devices connect to. In practice, enterprise servers are purpose-built machines with more RAM, faster storage, redundant power supplies, and server-grade operating systems — but the architectural pattern is about roles, not hardware.</p>
+
+    <p>Every service covered in this textbook fits the client/server model:</p>
+
+    <table class="comparison-table">
+      <thead>
+        <tr><th>Service</th><th>Client</th><th>Server</th><th>Protocol</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Web browsing</td><td>Browser (Chrome, Edge)</td><td>Web server (IIS, Apache, nginx)</td><td>HTTP / HTTPS</td></tr>
+        <tr><td>Email</td><td>Outlook, Thunderbird</td><td>Exchange, Postfix</td><td>SMTP, IMAP</td></tr>
+        <tr><td>File sharing</td><td>Windows File Explorer</td><td>Windows File Server</td><td>SMB (port 445)</td></tr>
+        <tr><td>Authentication</td><td>Windows workstation</td><td>Active Directory (Domain Controller)</td><td>Kerberos, LDAP</td></tr>
+        <tr><td>Database</td><td>Application server</td><td>SQL Server, Oracle</td><td>TDS, JDBC</td></tr>
+        <tr><td>IP assignment</td><td>Any new device</td><td>DHCP server</td><td>DHCP</td></tr>
+        <tr><td>Name resolution</td><td>Any device</td><td>DNS server</td><td>DNS</td></tr>
+      </tbody>
+    </table>
+
+    <p>Notice that the model stacks. A web application involves multiple client/server relationships: your browser is a client to the web server; the web server is itself a client to the database server behind it. The same machine plays different roles depending on which relationship you're examining.</p>
+
+    <p><strong>Why enterprises rely on client/server:</strong> Centralization is the key advantage. Instead of storing files on 200 individual workstations, a file server holds everything in one place — backed up nightly, accessible from any authorized device, with permissions enforced centrally. Instead of managing accounts on every PC, Active Directory stores all user accounts on the domain controller — a new hire's account is created once and works everywhere. Patches and updates are applied to the server, and all clients benefit immediately. From an IT management perspective, a network of 200 workstations all pointing at the same server is far easier to maintain, secure, and audit than 200 independent machines each managing their own data and accounts.</p>
+
+    <h2>Peer-to-Peer Architecture</h2>
+
+    <p>In a <strong>peer-to-peer (P2P)</strong> architecture, there is no dedicated server. Every device is simultaneously client and server — it can request resources from others and provide resources in return. The network is decentralized: no single machine coordinates everything, and removing any one node doesn't bring down the system.</p>
+
+    <p>P2P excels at specific problems. <strong>BitTorrent</strong> is the classic example: when you download a file via torrent, you're downloading different pieces from dozens of users simultaneously while uploading the pieces you already have to others. The more people sharing a file, the faster everyone downloads — the opposite of a central server, which slows down as more clients pile on. <strong>Blockchain</strong> technologies like Bitcoin are also P2P at their core — thousands of nodes each hold a copy of the ledger, and there is no single authority that can be shut down or corrupted. Early voice-over-IP services like Skype used P2P to route calls directly between endpoints without a central call server.</p>
+
+    <div class="note">
+      <strong>P2P in the enterprise?</strong> Microsoft's <em>Delivery Optimization</em> feature (Windows 10/11) uses a quiet P2P approach: workstations on the same network share Windows Update packages with each other, reducing both the load on Microsoft's servers and the organization's internet bandwidth. Each PC is simultaneously downloading from and uploading to its neighbors. Active Directory still controls authentication and policy — only the software distribution is P2P.
+    </div>
+
+    <p>Despite its advantages, P2P is rarely chosen for enterprise IT systems:</p>
+
+    <ul>
+      <li><strong>No central management point.</strong> You can't patch a "server" if there is no server. IT administrators need centralized control to push policy changes and respond to incidents.</li>
+      <li><strong>Inconsistent availability.</strong> A file on a central server is always accessible. A file on a peer's laptop is unavailable when that laptop is powered off or off-site.</li>
+      <li><strong>Security and compliance.</strong> Regulations governing sensitive data typically require demonstrable control over where data is stored and who can access it — something P2P makes difficult to audit or enforce.</li>
+    </ul>
+
+    <!-- SVG: Client/Server vs P2P -->
+    <svg viewBox="0 0 680 234" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+      <defs>
+        <marker id="cs-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#777"/>
+        </marker>
+      </defs>
+      <rect width="680" height="234" fill="#FDFAF4"/>
+      <line x1="340" y1="0" x2="340" y2="234" stroke="#E0DAD0" stroke-width="1.5"/>
+
+      <!-- LEFT: Client/Server -->
+      <text x="170" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1814" font-family="'Roboto Slab',serif">Client / Server</text>
+      <text x="170" y="37" text-anchor="middle" font-size="10" font-style="italic" fill="#7A7570" font-family="'Source Sans 3',sans-serif">Centralized</text>
+
+      <!-- Server box -->
+      <rect x="120" y="92" width="100" height="36" rx="5" fill="#1A2F5E"/>
+      <text x="170" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="'Source Sans 3',sans-serif">Server</text>
+
+      <!-- Client boxes -->
+      <rect x="14"  y="46" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
+      <text x="45"  y="65" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+
+      <rect x="264" y="46" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
+      <text x="295" y="65" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+
+      <rect x="14"  y="164" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
+      <text x="45"  y="183" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+
+      <rect x="264" y="164" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
+      <text x="295" y="183" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+
+      <rect x="139" y="198" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
+      <text x="170" y="217" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+
+      <!-- Arrows from clients to server -->
+      <line x1="76"  y1="68"  x2="124" y2="96"  stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
+      <line x1="264" y1="68"  x2="216" y2="96"  stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
+      <line x1="76"  y1="172" x2="124" y2="124" stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
+      <line x1="264" y1="172" x2="216" y2="124" stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
+      <line x1="170" y1="198" x2="170" y2="128" stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
+
+      <!-- RIGHT: Peer-to-Peer -->
+      <text x="510" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1814" font-family="'Roboto Slab',serif">Peer-to-Peer</text>
+      <text x="510" y="37" text-anchor="middle" font-size="10" font-style="italic" fill="#7A7570" font-family="'Source Sans 3',sans-serif">Decentralized</text>
+
+      <!-- Pentagon ring lines (drawn before boxes so boxes render on top) -->
+      <line x1="510" y1="60"  x2="608" y2="108" stroke="#888" stroke-width="1.5"/>
+      <line x1="608" y1="108" x2="572" y2="190" stroke="#888" stroke-width="1.5"/>
+      <line x1="572" y1="190" x2="448" y2="190" stroke="#888" stroke-width="1.5"/>
+      <line x1="448" y1="190" x2="412" y2="108" stroke="#888" stroke-width="1.5"/>
+      <line x1="412" y1="108" x2="510" y2="60"  stroke="#888" stroke-width="1.5"/>
+      <!-- Cross-connections showing mesh -->
+      <line x1="510" y1="60"  x2="572" y2="190" stroke="#B0AAA0" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="608" y1="108" x2="412" y2="108" stroke="#B0AAA0" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- Peer boxes (centered on pentagon vertices) -->
+      <rect x="481" y="46"  width="58" height="28" rx="4" fill="#2E6B4F"/>
+      <text x="510" y="65"  text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <rect x="579" y="94"  width="58" height="28" rx="4" fill="#2E6B4F"/>
+      <text x="608" y="113" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <rect x="543" y="176" width="58" height="28" rx="4" fill="#2E6B4F"/>
+      <text x="572" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <rect x="419" y="176" width="58" height="28" rx="4" fill="#2E6B4F"/>
+      <text x="448" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <rect x="383" y="94"  width="58" height="28" rx="4" fill="#2E6B4F"/>
+      <text x="412" y="113" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+    </svg>
+
+    <h2>How Enterprise Networks Are Structured</h2>
+
+    <p>A network serving a large organization — a university, a corporation, a hospital — can't be a single flat segment where every device sees every other's traffic. Instead, enterprise networks are organized in a <strong>three-tier hierarchy</strong>: a core layer for backbone speed, a distribution layer for policy enforcement, and an access layer where end devices connect. This structure keeps traffic localized, makes troubleshooting straightforward, and allows the network to scale to thousands of devices without redesigning from scratch.</p>
+
+    <p>Use the explorer below to understand the role of each device type in this hierarchy.</p>
+
+    <div data-widget="network-topology"></div>
+
+    <h3>The DMZ</h3>
+
+    <p>Servers that must be reachable from the internet — a public web server, a mail relay, a VPN gateway — create a security problem. Putting them on the internal network gives them direct access to everything inside; putting them directly on the internet leaves them completely exposed. The solution is a <strong>DMZ</strong> (demilitarized zone): a separate network segment behind the perimeter firewall but isolated from the internal LAN. Firewall rules allow specific inbound traffic from the internet to reach DMZ servers, while blocking direct connections from the DMZ to the internal network. If a DMZ server is compromised, the attacker encounters another firewall before reaching internal systems.</p>
+
+    <h2>NAT</h2>
+
+    <p>IPv4's 4.3 billion addresses are not enough for a world with billions of internet-connected devices. <strong>Network Address Translation (NAT)</strong> solves this. When your home router or enterprise firewall connects to the internet, it has one public IP address assigned by the ISP. Every device behind it has a private address (the RFC 1918 ranges: 10.x.x.x, 172.16–31.x.x, 192.168.x.x) that is not routable on the public internet.</p>
+
+    <p>When an internal device sends a packet outbound, the NAT device rewrites the source IP from the private address to the public IP and records the mapping. When the reply arrives, it reverses the translation and delivers the packet to the correct internal device. The internet sees only one IP; internally, hundreds of devices communicate simultaneously through that single address. This is why every device on your home network has an address like 192.168.1.x, yet websites only see your ISP-assigned IP.</p>
+
+    <h2>VLANs</h2>
+
+    <p>By default, every port on a switch belongs to the same network segment — a device in accounting and a device in HR plugged into the same switch can communicate directly at Layer 2. A <strong>VLAN</strong> (Virtual Local Area Network) changes this: it logically divides a physical switch (or a set of interconnected switches) into isolated broadcast domains. A device on the Finance VLAN cannot send frames directly to a device on the Guest VLAN, even if they share the same physical switch. Traffic between VLANs must pass through a Layer 3 device — a router or distribution switch — where firewall rules and access control lists can inspect and control it.</p>
+
+    <p>A typical enterprise network has separate VLANs for employees, servers, guest Wi-Fi, IP phones (Voice VLAN), and network device management. Each VLAN behaves as its own logical network. VLANs are one of the most practical tools in enterprise networking: they give IT the ability to segment traffic for security and performance without running separate physical cable runs for every group.</p>
+
+    <h2>Firewalls</h2>
+
+    <p>A <strong>firewall</strong> inspects packets crossing a network boundary and allows or blocks each one based on an ordered rule set. Rules are evaluated top-to-bottom; the first match wins, and a default deny rule at the bottom blocks everything not explicitly permitted. Most enterprise firewalls use <strong>stateful inspection</strong>: they track active TCP and UDP sessions so that reply packets for connections initiated from inside are automatically allowed back in. This is why you can browse the web through a corporate firewall without the IT team needing to open inbound ports — the firewall knows the reply packets belong to an established outbound session.</p>
+
+    <p>The perimeter firewall at the internet edge is the most visible, but defense in depth requires more. Internal firewalls sit between the DMZ and the internal LAN, between the server VLAN and the employee VLAN, and at other sensitive boundaries. If an attacker penetrates one layer, additional firewalls limit how far they can move laterally through the organization.</p>
+
+    <h2>VPN</h2>
+
+    <p>A <strong>VPN</strong> (Virtual Private Network) creates an encrypted tunnel through the public internet. Traffic inside the tunnel is encrypted — anyone intercepting packets in transit sees only ciphertext. Two configurations are common in enterprise environments:</p>
+
+    <ul>
+      <li><strong>Remote access VPN:</strong> An employee working from home runs a VPN client that establishes an encrypted tunnel to the company's VPN gateway. From a networking perspective, the laptop appears to be physically on the corporate LAN — it can reach internal file servers, printers, and domain controllers as if sitting in the office.</li>
+      <li><strong>Site-to-site VPN:</strong> Two office locations connect their networks permanently via a tunnel between two firewalls or routers. The Chicago and St. Louis offices share resources over the internet without exposing that traffic to interception.</li>
+    </ul>
+
+    <h2>Wireless Networking</h2>
+
+    <p>Wireless (Wi-Fi, IEEE 802.11) operates at Layers 1 and 2 — it is a different physical medium, but the network layer and above work identically. A wireless access point bridges the Wi-Fi segment onto the wired Ethernet network. From the IP layer's perspective, a laptop connected over Wi-Fi and one connected over a cable are both just devices at the access layer.</p>
+
+    <p>The critical difference between home and enterprise wireless is <strong>authentication</strong>. At home, every device joins with the same shared passphrase (a pre-shared key, or PSK). Enterprise Wi-Fi uses <strong>802.1X</strong>: each user authenticates with their own Active Directory username and password. The access point forwards credentials to a <strong>RADIUS server</strong>, which verifies them against Active Directory and signals the AP to admit or reject the device. IT can revoke network access for a specific user account without changing a password that every employee knows — and can see exactly which user is connected to which AP at any moment.</p>
+
+    <h2>Where This Takes You</h2>
+
+    <p><strong>Chapter 12</strong> (System Administration) shifts from architecture to operations — the day-to-day work of keeping these systems running. DNS and DHCP become concrete tasks: configuring zones, managing address pools, reading resolver logs. IP addressing becomes troubleshooting: <code>ipconfig</code>, <code>ping</code>, <code>tracert</code>, <code>nslookup</code>. The network architecture you've built a mental model of here becomes the infrastructure you have to maintain.</p>
+
+    <p>The networking course you'll take after this one starts where this unit leaves off — subnetting at depth, routing protocol configuration, spanning tree, 802.1X and RADIUS deployment, firewall rule writing, and network monitoring tools. The concepts in Chapters 10 and 11 are the foundation that makes those practical skills immediately sensible rather than a collection of disconnected commands.</p>
+
+    <!-- Quiz -->
+    <div class="practice-block">
+      <div class="practice-header">
+        <span class="practice-label">Quiz</span>
+        <span class="practice-title">Chapter 11 Quiz</span>
+      </div>
+
+      <div class="quiz-question" id="q1">
+        <div class="q-text">1. In client/server architecture, which role initiates the connection?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> The server, which reaches out first to register its services with clients</button>
+          <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> The client, which connects to a server that is already listening</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> Both simultaneously via a handshake before roles are assigned</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> The router, which forwards the initial request to the correct server</button>
+        </div>
+        <div class="mc-feedback" id="q1-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q2">
+        <div class="q-text">2. Which of the following is NOT an advantage of client/server architecture over peer-to-peer for enterprise IT?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Centralized access control and security policy enforcement</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> Easier backup — data lives in one place rather than spread across devices</button>
+          <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">C</span> No single point of failure — if one node goes down, others continue</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Consistent application of software patches and configuration changes</button>
+        </div>
+        <div class="mc-feedback" id="q2-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q3">
+        <div class="q-text">3. Which of the following is a real-world example of peer-to-peer architecture?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> A browser loading a page from a company web server</button>
+          <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">B</span> BitTorrent — each downloader simultaneously uploads pieces to other users</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> Active Directory authenticating a user logging into Windows</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> An application server querying a SQL Server database</button>
+        </div>
+        <div class="mc-feedback" id="q3-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q4">
+        <div class="q-text">4. What problem does NAT solve?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> It encrypts traffic between two networks over the public internet</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> It logically divides a switch into multiple isolated broadcast domains</button>
+          <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> It allows many devices with private IP addresses to share a single public IP address</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> It maps domain names to IP addresses so clients can find servers by name</button>
+        </div>
+        <div class="mc-feedback" id="q4-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q5">
+        <div class="q-text">5. What is the primary purpose of a VLAN?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> To connect two separate physical networks at Layer 3</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> To translate private IP addresses to public ones at the network edge</button>
+          <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">C</span> To logically segment a physical network into isolated broadcast domains</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> To encrypt wireless traffic between clients and access points</button>
+        </div>
+        <div class="mc-feedback" id="q5-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q6">
+        <div class="q-text">6. In the 3-tier enterprise network model, which layer directly connects end-user workstations and wireless access points?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Core</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> Distribution</button>
+          <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> Access</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> Perimeter</button>
+        </div>
+        <div class="mc-feedback" id="q6-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q7">
+        <div class="q-text">7. A stateful firewall differs from a basic packet filter in that it:</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> Decrypts and inspects the contents of encrypted HTTPS traffic</button>
+          <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">B</span> Tracks active sessions so that return traffic for established connections is automatically permitted</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> Assigns IP addresses to clients that request them on the local network</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> Blocks all inbound traffic regardless of whether a session was initiated internally</button>
+        </div>
+        <div class="mc-feedback" id="q7-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q8">
+        <div class="q-text">8. Which type of VPN allows an employee working from home to access internal company resources as if physically in the office?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Site-to-site VPN</button>
+          <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">B</span> Remote access VPN</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">C</span> VLAN trunk</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> NAT traversal</button>
+        </div>
+        <div class="mc-feedback" id="q8-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q9">
+        <div class="q-text">9. In enterprise Wi-Fi using 802.1X, what server verifies a user's credentials before the access point admits their device?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> The DHCP server, which assigns an IP only to authenticated devices</button>
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">B</span> The DNS server, which resolves the username to a network address</button>
+          <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">C</span> A RADIUS server, which verifies credentials against Active Directory</button>
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> The core switch, which checks the device's MAC address against a whitelist</button>
+        </div>
+        <div class="mc-feedback" id="q9-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q10">
+        <div class="q-text">10. A web server receives a browser request and queries a database server to build the response. Which statement correctly describes the roles?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> The web server and database server are peers — neither is a client in this exchange</button>
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> The database server is a client to the web server for this transaction</button>
+          <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> The web server acts as a server to the browser and simultaneously as a client to the database</button>
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> The browser is the server because it initiated the original request</button>
+        </div>
+        <div class="mc-feedback" id="q10-feedback"></div>
+      </div>
+
+    </div>
+
+    <nav class="chapter-nav-footer">
+      <a href="ch10.html">
+        <span class="nav-direction">← Previous</span>
+        <span class="nav-title">Chapter 10: Networking Fundamentals</span>
+      </a>
+      <a href="ch12.html" class="next">
+        <span class="nav-direction">Next Chapter →</span>
+        <span class="nav-title">System Administration</span>
+      </a>
+    </nav>
+
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/network-topology.js"></script>
+</body>
+</html>
