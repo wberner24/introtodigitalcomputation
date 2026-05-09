@@ -326,7 +326,6 @@
       });
 
       wrap.addEventListener('click', () => inEl.focus());
-      inEl.focus();
     }
   };
 })();
