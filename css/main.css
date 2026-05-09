@@ -1398,6 +1398,108 @@ body {
   .perm-grid { grid-template-columns: 1fr; }
 }
 
+/* ── Filesystem Tree Widget ─────────────────────────────────── */
+.fst-widget {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 300px;
+}
+
+.fst-tree-panel {
+  background: #1e1e1e;
+  padding: 10px 0;
+  overflow-y: auto;
+  max-height: 440px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-right: 1px solid #3a3a3a;
+}
+
+.fst-node { display: block; }
+
+.fst-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.fst-label:hover  { background: #2a2a2a; }
+.fst-label.active { background: #1d3d5c; }
+
+.fst-toggle {
+  font-size: 0.55rem;
+  color: #666;
+  width: 10px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.fst-name { color: #6cb6ff; font-size: 0.82rem; }
+.fst-label.active .fst-name { color: #fff; }
+
+.fst-detail {
+  background: var(--bg-card);
+  padding: 22px 24px;
+}
+
+.fst-detail-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fst-hint {
+  color: var(--ink-light);
+  font-size: 0.88rem;
+  font-style: italic;
+}
+
+.fst-detail-path {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.fst-detail-desc {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.fst-detail-section {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-light);
+  margin-bottom: 6px;
+}
+
+.fst-detail-examples {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--green);
+  background: var(--bg-alt);
+  padding: 9px 13px;
+  border-radius: var(--radius);
+  line-height: 1.65;
+}
+
+@media (max-width: 580px) {
+  .fst-widget { grid-template-columns: 1fr; grid-template-rows: auto auto; }
+  .fst-tree-panel { max-height: 200px; border-right: none; border-bottom: 1px solid #3a3a3a; }
+}
+
 /* ── Utility ────────────────────────────────────────────────── */
 .mt-0 { margin-top: 0; }
 .text-center { text-align: center; }

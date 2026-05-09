@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 9: File Systems &amp; Directory Services — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter active"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 09 · Unit 3: Software</div>
+      <h1 class="chapter-title">File Systems &amp; Directory Services</h1>
+      <div class="chapter-deco">/</div>
+      <p class="chapter-intro">A file is a name attached to a sequence of bytes on a storage device. A filesystem is the software layer that makes that simple idea work — managing names, hierarchy, permissions, and the mapping from human-readable paths to physical storage blocks. This chapter covers how filesystems are structured, how they differ between operating systems, and how directory services extend the same organizing principle from a single machine to an entire organization.</p>
+    </header>
+
+    <article class="prose">
+
+      <h2>What Is a Filesystem?</h2>
+
+      <p>Chapter 5 described storage hardware — spinning disks and NAND flash — as devices that read and write blocks of data at numeric addresses. A hard drive does not know what a "file" is. It knows sector 0, sector 1, sector 2. The <strong>filesystem</strong> is the software layer, managed by the OS kernel, that imposes structure on top of those raw blocks.</p>
+
+      <p>A filesystem provides three things that raw block storage cannot:</p>
+      <ul>
+        <li><strong>Names.</strong> "report.txt" is a human-readable label the filesystem maps to a specific set of blocks on disk. Change the filename and the same blocks are now called something else.</li>
+        <li><strong>Hierarchy.</strong> Files are organized into directories (folders), which can be nested to arbitrary depth. This tree structure is the mental model most people already have for file storage.</li>
+        <li><strong>Metadata.</strong> For each file, the filesystem tracks size, creation and modification timestamps, ownership, and permissions — all stored separately from the file's actual content.</li>
+      </ul>
+
+      <p>The OS kernel accesses all filesystems through a common interface called the <strong>Virtual File System (VFS)</strong>. The VFS means that an application calling "open this file" does not need to know whether the file lives on an ext4 partition, an NTFS drive, a network share, or even the virtual /proc filesystem — the kernel handles the translation.</p>
+
+      <h2>The Directory Tree</h2>
+
+      <p>Both Linux and Windows organize files into a hierarchical tree, but they make a fundamentally different choice about where that tree starts.</p>
+
+      <p><strong>Linux</strong> has a single root, written as <code>/</code>. Every file on the system — whether it lives on the boot drive, a secondary hard drive, a USB stick, or a network share — appears somewhere under this one unified tree. Attaching a storage device to the tree is called <strong>mounting</strong>: you mount a drive at a directory (its <em>mount point</em>), and from that moment its contents appear as a subdirectory. Unmount it and those files disappear from the tree.</p>
+
+      <p><strong>Windows</strong> assigns a separate letter to each volume: <code>C:\</code> for the system drive, <code>D:\</code> for a secondary drive, and so on. Each drive letter is the root of its own independent tree. There is no single root that contains everything.</p>
+
+      <!-- SVG: Linux vs Windows directory tree -->
+      <svg viewBox="0 0 580 218" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:580px;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="580" height="218" fill="#FDFAF4"/>
+
+        <!-- Left panel: Linux -->
+        <rect x="10" y="8" width="262" height="200" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1"/>
+        <text x="141" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#1D4E7A">Linux</text>
+
+        <!-- Root "/" -->
+        <text x="26" y="52" font-size="12" font-weight="700" fill="#1A1814" font-family="'JetBrains Mono',monospace">/</text>
+        <!-- Trunk -->
+        <line x1="37" y1="54" x2="37" y2="173" stroke="#2564A0" stroke-width="1.2"/>
+
+        <!-- 7 directory branches -->
+        <line x1="37" y1="71"  x2="51" y2="71"  stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="75"  font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">bin/</text>
+
+        <line x1="37" y1="88"  x2="51" y2="88"  stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="92"  font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">etc/</text>
+
+        <line x1="37" y1="105" x2="51" y2="105" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="109" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">home/</text>
+
+        <line x1="37" y1="122" x2="51" y2="122" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="126" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">tmp/</text>
+
+        <line x1="37" y1="139" x2="51" y2="139" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="143" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">usr/</text>
+
+        <line x1="37" y1="156" x2="51" y2="156" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="160" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">var/</text>
+
+        <line x1="37" y1="173" x2="51" y2="173" stroke="#2564A0" stroke-width="1.2"/>
+        <text x="55" y="177" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">dev/</text>
+
+        <text x="141" y="198" text-anchor="middle" font-size="8" font-style="italic" fill="#5A6580">One root — all storage mounted as subdirectories</text>
+
+        <!-- Right panel: Windows -->
+        <rect x="308" y="8" width="262" height="200" rx="4" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="439" y="28" text-anchor="middle" font-size="11" font-weight="700" fill="#2E6B4F">Windows</text>
+
+        <!-- C:\ drive -->
+        <text x="322" y="50" font-size="12" font-weight="700" fill="#1A1814" font-family="'JetBrains Mono',monospace">C:\</text>
+        <line x1="334" y1="52" x2="334" y2="102" stroke="#2E6B4F" stroke-width="1.2"/>
+
+        <line x1="334" y1="68"  x2="348" y2="68"  stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="352" y="72"  font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">Users\</text>
+
+        <line x1="334" y1="85"  x2="348" y2="85"  stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="352" y="89"  font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">Windows\</text>
+
+        <line x1="334" y1="102" x2="348" y2="102" stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="352" y="106" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">Program Files\</text>
+
+        <!-- D:\ drive (separate tree) -->
+        <text x="322" y="136" font-size="12" font-weight="700" fill="#1A1814" font-family="'JetBrains Mono',monospace">D:\</text>
+        <line x1="334" y1="138" x2="334" y2="170" stroke="#2E6B4F" stroke-width="1.2"/>
+
+        <line x1="334" y1="153" x2="348" y2="153" stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="352" y="157" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">Data\</text>
+
+        <line x1="334" y1="170" x2="348" y2="170" stroke="#2E6B4F" stroke-width="1.2"/>
+        <text x="352" y="174" font-size="9.5" fill="#1A1814" font-family="'JetBrains Mono',monospace">Backups\</text>
+
+        <text x="439" y="198" text-anchor="middle" font-size="8" font-style="italic" fill="#3A5A3A">Drive letters (C:, D:) — each volume is a separate tree</text>
+      </svg>
+
+      <p>For IT professionals, the Linux model's flexibility matters in practice: a database partition can be mounted at <code>/var/lib/mysql</code>, a shared NFS volume at <code>/mnt/fileserver</code>, and a user's home directory at <code>/home/alice</code> — all seamlessly integrated into one tree, regardless of which physical device or network location the data actually lives on.</p>
+
+      <h2>Filesystem Formats</h2>
+
+      <p>A filesystem format defines the specific on-disk data structures used to store file metadata and content. Different formats make different tradeoffs around features, compatibility, and performance.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Format</th>
+            <th>Primarily Used On</th>
+            <th>Max File Size</th>
+            <th>Permissions</th>
+            <th>Journaling</th>
+            <th>Cross-Platform</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>ext4</td>
+            <td>Linux (default)</td>
+            <td>16 TB</td>
+            <td>Linux rwx</td>
+            <td>Yes</td>
+            <td>Read-only on macOS; read/write on Windows via drivers</td>
+          </tr>
+          <tr>
+            <td>NTFS</td>
+            <td>Windows (default)</td>
+            <td>16 EB</td>
+            <td>Windows ACLs</td>
+            <td>Yes</td>
+            <td>Read-only on macOS; read/write on Linux via drivers</td>
+          </tr>
+          <tr>
+            <td>FAT32</td>
+            <td>USB drives, legacy devices</td>
+            <td>4 GB</td>
+            <td>None</td>
+            <td>No</td>
+            <td>Universal — readable by virtually every OS and device</td>
+          </tr>
+          <tr>
+            <td>exFAT</td>
+            <td>Flash drives, SD cards</td>
+            <td>16 EB</td>
+            <td>None</td>
+            <td>No</td>
+            <td>Universal on modern systems (Windows, macOS, Linux)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p><strong>Journaling</strong> is a fault-tolerance feature: the filesystem keeps a running log (journal) of changes it is about to make. If the system crashes mid-write, the journal lets the OS replay or discard the incomplete operation on next boot, preventing filesystem corruption. ext4 and NTFS both journal; FAT32 does not, which is why a sudden USB disconnect used to corrupt files.</p>
+
+      <p>The practical takeaway: format USB drives as <strong>exFAT</strong> if they need to move between Windows, Mac, and Linux systems. Use <strong>ext4</strong> for Linux servers. Use <strong>NTFS</strong> for Windows volumes that need permissions.</p>
+
+      <h2>The Linux Filesystem Hierarchy</h2>
+
+      <p>The <strong>Filesystem Hierarchy Standard (FHS)</strong> defines what belongs in each top-level directory on a Linux system. This is not arbitrary — every major Linux distribution follows it, which means you can sit down at an unfamiliar Linux machine and immediately know where to find configuration files, log files, and installed programs.</p>
+
+      <p>IT administrators need to know this map. When something breaks, knowing that logs are in <code>/var/log</code> and configuration is in <code>/etc</code> is the difference between troubleshooting efficiently and hunting blind.</p>
+
+      <div class="widget-card" data-widget-name="Interactive">
+        <div class="widget-title">Linux Filesystem Hierarchy</div>
+        <div class="widget-desc">Click any directory to see what it contains and why it exists.</div>
+        <div data-widget="fs-tree"></div>
+      </div>
+
+      <h2>NTFS Permissions</h2>
+
+      <p>Chapter 8 covered the Linux <code>rwx</code> permission model — nine bits, three groups, clean and simple. Windows NTFS uses a more granular system called <strong>Access Control Lists (ACLs)</strong>.</p>
+
+      <p>Instead of three fixed groups (owner, group, other), an NTFS ACL can contain any number of <strong>Access Control Entries (ACEs)</strong> — one for each specific user or group you want to configure. Each entry specifies a precise combination of permissions:</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>NTFS Permission</th>
+            <th>What it allows</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Full Control</td>
+            <td>Read, write, delete, and change permissions and ownership</td>
+          </tr>
+          <tr>
+            <td>Modify</td>
+            <td>Read, write, and delete — but not change permissions</td>
+          </tr>
+          <tr>
+            <td>Read &amp; Execute</td>
+            <td>Open and run files; list directory contents</td>
+          </tr>
+          <tr>
+            <td>Read</td>
+            <td>View file contents and attributes only</td>
+          </tr>
+          <tr>
+            <td>Write</td>
+            <td>Create and modify files, but not read existing contents</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>NTFS permissions also support <strong>inheritance</strong>: permissions set on a parent folder automatically flow down to files and subfolders within it. This makes large permission structures manageable — set permissions on a department folder once and every file inside inherits them automatically.</p>
+
+      <p>In practice, NTFS permissions in enterprise environments are rarely managed file-by-file. Administrators assign permissions to <em>security groups</em> (e.g., "HR-Staff"), then add users to those groups — the permissions follow. This is exactly the kind of thing Active Directory manages at scale.</p>
+
+      <div class="note">
+        <strong>rwx vs ACL at a glance:</strong> Linux's three-group model is simpler to reason about and administer at the command line. NTFS ACLs are more expressive — you can grant "alice: Read" and "bob: Modify" and "IT-Admins: Full Control" on the same file — but more complex to audit. Neither is universally better; they reflect different design priorities.
+      </div>
+
+      <h2>Directory Services — The Problem They Solve</h2>
+
+      <p>Imagine an IT department managing a company with 50 servers. Without a directory service, every server maintains its own local user database. When a new employee joins, an IT administrator creates that person's account on each of the 50 servers individually. When the employee changes their password, they need to update it on each server — or the admin does it for them, 50 times. When someone leaves the company, deprovisioning means visiting every server to remove the account.</p>
+
+      <p>This is not hypothetical — it is how Unix systems were managed in the 1980s and 1990s, and why every large organization quickly runs into the same problem: <strong>distributed identity management does not scale.</strong></p>
+
+      <p>A <strong>directory service</strong> solves this with a central, network-accessible database of identities. Every server in the organization points to the same directory for authentication. One account, one password, works everywhere. Disable the account in one place and access is revoked on every system immediately.</p>
+
+      <p>A directory service stores more than just usernames and passwords. A complete enterprise directory contains:</p>
+      <ul>
+        <li><strong>User accounts</strong> — credentials, contact information, role, department</li>
+        <li><strong>Security groups</strong> — collections of users that share access rights</li>
+        <li><strong>Computer accounts</strong> — every managed workstation and server as an object in the directory</li>
+        <li><strong>Policies</strong> — configuration rules that apply automatically to users or machines</li>
+        <li><strong>Resource records</strong> — printers, shared drives, application registrations</li>
+      </ul>
+
+      <h2>Active Directory</h2>
+
+      <p>Microsoft's <strong>Active Directory (AD)</strong> is the dominant enterprise directory service. Introduced with Windows 2000, it is deployed in the vast majority of mid-to-large organizations running Windows infrastructure. If you work in IT, you will encounter Active Directory.</p>
+
+      <p>The key structural concepts:</p>
+
+      <p><strong>Domain.</strong> A named administrative boundary — typically the organization's domain name, like <code>company.com</code>. Every user account, computer, and policy lives within a domain. A domain is the basic unit of management in AD.</p>
+
+      <p><strong>Domain Controller (DC).</strong> The server running Active Directory Domain Services (AD DS) — the software that stores and manages the directory database. Organizations run at least two DCs for redundancy. Every time someone logs into a domain-joined machine, their credentials are verified against the DC.</p>
+
+      <p><strong>Organizational Units (OUs).</strong> Containers within a domain used to organize objects. You might have OUs for each department (IT, HR, Sales), or for each office location, or both. OUs are the unit to which Group Policy is applied.</p>
+
+      <p><strong>Group Policy (GPO).</strong> Configuration rules that apply automatically to users and computers in an OU or across the whole domain. GPOs can enforce password complexity requirements, deploy software, configure desktop wallpaper, disable USB ports, map network drives — anything that can be configured on a Windows machine can be managed by a GPO. This is how an IT department configures thousands of machines without touching each one individually.</p>
+
+      <p><strong>Security Groups.</strong> Collections of user accounts. Rather than assigning permissions on a shared drive to fifty individual users, an administrator assigns permissions to a group (e.g., "HR-Staff") and manages membership. Add someone to the group and they immediately have access; remove them and it disappears.</p>
+
+      <!-- SVG: Active Directory Domain Structure -->
+      <svg viewBox="0 0 560 232" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:560px;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+        <rect width="560" height="232" fill="#FDFAF4"/>
+
+        <!-- Domain box -->
+        <rect x="140" y="12" width="280" height="44" rx="5" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1.5"/>
+        <text x="280" y="31" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#1A1814">company.com</text>
+        <text x="280" y="46" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#2E6B4F">Active Directory Domain</text>
+
+        <!-- Lines: domain → OUs -->
+        <!-- Collect point at bottom-center of domain box: (280, 56) -->
+        <line x1="280" y1="56" x2="280" y2="66" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="90"  y1="66" x2="470" y2="66" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="90"  y1="66" x2="90"  y2="80" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="280" y1="66" x2="280" y2="80" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="470" y1="66" x2="470" y2="80" stroke="#8A857C" stroke-width="1.2"/>
+
+        <!-- OU: IT (center x=90) -->
+        <rect x="25" y="80" width="130" height="42" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.2"/>
+        <!-- GPO badge -->
+        <rect x="124" y="73" width="28" height="14" rx="3" fill="#C1440E"/>
+        <text x="138" y="80" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="700" fill="#fff">GPO</text>
+        <text x="90" y="97" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="#1A1814">IT</text>
+        <text x="90" y="112" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="#2564A0">Dept. OU</text>
+
+        <!-- OU: Sales (center x=280) -->
+        <rect x="215" y="80" width="130" height="42" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.2"/>
+        <rect x="314" y="73" width="28" height="14" rx="3" fill="#C1440E"/>
+        <text x="328" y="80" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="700" fill="#fff">GPO</text>
+        <text x="280" y="97" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="#1A1814">Sales</text>
+        <text x="280" y="112" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="#2564A0">Dept. OU</text>
+
+        <!-- OU: HR (center x=470) -->
+        <rect x="405" y="80" width="130" height="42" rx="4" fill="#EEF3F8" stroke="#2564A0" stroke-width="1.2"/>
+        <rect x="504" y="73" width="28" height="14" rx="3" fill="#C1440E"/>
+        <text x="518" y="80" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="700" fill="#fff">GPO</text>
+        <text x="470" y="97" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="#1A1814">HR</text>
+        <text x="470" y="112" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="#2564A0">Dept. OU</text>
+
+        <!-- Lines: OUs → user objects -->
+        <line x1="90"  y1="122" x2="90"  y2="132" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="56"  y1="132" x2="124" y2="132" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="56"  y1="132" x2="56"  y2="148" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="124" y1="132" x2="124" y2="148" stroke="#8A857C" stroke-width="1.2"/>
+
+        <line x1="280" y1="122" x2="280" y2="132" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="246" y1="132" x2="314" y2="132" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="246" y1="132" x2="246" y2="148" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="314" y1="132" x2="314" y2="148" stroke="#8A857C" stroke-width="1.2"/>
+
+        <line x1="470" y1="122" x2="470" y2="132" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="436" y1="132" x2="504" y2="132" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="436" y1="132" x2="436" y2="148" stroke="#8A857C" stroke-width="1.2"/>
+        <line x1="504" y1="132" x2="504" y2="148" stroke="#8A857C" stroke-width="1.2"/>
+
+        <!-- User/PC objects: IT -->
+        <rect x="30"  y="148" width="52" height="28" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1"/>
+        <text x="56"  y="162" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#1A1814">alice</text>
+
+        <rect x="98"  y="148" width="52" height="28" rx="3" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="124" y="162" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#1A1814">srv-01</text>
+
+        <!-- User/PC objects: Sales -->
+        <rect x="220" y="148" width="52" height="28" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1"/>
+        <text x="246" y="162" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#1A1814">carol</text>
+
+        <rect x="288" y="148" width="52" height="28" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1"/>
+        <text x="314" y="162" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#1A1814">dave</text>
+
+        <!-- User/PC objects: HR -->
+        <rect x="410" y="148" width="52" height="28" rx="3" fill="#FDFAF4" stroke="#2564A0" stroke-width="1"/>
+        <text x="436" y="162" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#1A1814">eve</text>
+
+        <rect x="478" y="148" width="52" height="28" rx="3" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="504" y="162" text-anchor="middle" dominant-baseline="middle" font-size="8.5" fill="#1A1814">hr-pc</text>
+
+        <!-- Legend -->
+        <rect x="174" y="192" width="14" height="14" rx="2" fill="#FDFAF4" stroke="#2564A0" stroke-width="1"/>
+        <text x="192" y="199" dominant-baseline="middle" font-size="8" fill="#4A4640">User account</text>
+
+        <rect x="268" y="192" width="14" height="14" rx="2" fill="#E8EDE3" stroke="#2E6B4F" stroke-width="1"/>
+        <text x="286" y="199" dominant-baseline="middle" font-size="8" fill="#4A4640">Computer account</text>
+
+        <rect x="384" y="192" width="28" height="14" rx="3" fill="#C1440E"/>
+        <text x="398" y="199" text-anchor="middle" dominant-baseline="middle" font-size="7" font-weight="700" fill="#fff">GPO</text>
+        <text x="416" y="199" dominant-baseline="middle" font-size="8" fill="#4A4640">Group Policy Object</text>
+
+        <text x="280" y="222" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">OUs organize objects within the domain; GPOs apply configuration settings to all objects in an OU.</text>
+      </svg>
+
+      <h2>LDAP</h2>
+
+      <p><strong>LDAP</strong> (Lightweight Directory Access Protocol) is the protocol used to query and manage directory service databases. Active Directory is built on LDAP — when a workstation authenticates a user against the domain, or when an application looks up a user's group memberships, it is making LDAP queries under the hood.</p>
+
+      <p>IT professionals encounter LDAP most often when configuring applications to authenticate against Active Directory. Almost any enterprise application — email, VPN, ticketing systems, web apps — can be configured to use "LDAP authentication," meaning the application delegates credential verification to the directory service. Users log in with their AD username and password, and no separate account needs to be created inside each application.</p>
+
+      <p>LDAP uses a hierarchical addressing system called a <strong>Distinguished Name (DN)</strong> to uniquely identify every object in the directory:</p>
+
+      <pre style="background:var(--bg-alt);border-radius:var(--radius);padding:14px 18px;font-family:var(--font-mono);font-size:0.8rem;overflow-x:auto;margin:20px 0">cn=alice,ou=IT,dc=company,dc=com</pre>
+
+      <p>Reading right to left: <code>dc=company,dc=com</code> is the domain (<code>company.com</code>), <code>ou=IT</code> is the IT organizational unit, and <code>cn=alice</code> is the common name of the object (Alice's user account). The DN is the full address of that object in the directory tree.</p>
+
+      <p>LDAP communicates over port 389 by default. <strong>LDAPS</strong> (LDAP over TLS) encrypts the connection and runs on port 636 — required in any environment where credential lookups should not travel over the network in plaintext. Active Directory also supports <strong>Kerberos</strong> for authentication in addition to LDAP, which is more secure and is the default for domain-joined Windows machines.</p>
+
+      <div class="note">
+        <strong>Beyond Active Directory:</strong> LDAP is an open standard, and other directory services implement it too. <strong>OpenLDAP</strong> is a popular open-source implementation used on Linux. <strong>Microsoft Entra ID</strong> (formerly Azure Active Directory) is Microsoft's cloud-hosted directory service — it uses modern protocols (OAuth 2.0, OpenID Connect) rather than raw LDAP, but serves the same identity management purpose for cloud-first organizations.
+      </div>
+
+      <h2>DNS and Active Directory</h2>
+
+      <p>Active Directory is tightly coupled to <strong>DNS</strong> (Domain Name System). When a computer needs to find a domain controller — to log in a user, authenticate a machine, or apply Group Policy — it does not use a hardcoded IP address. It queries DNS for special records called <strong>SRV records</strong> that advertise the location of domain controller services.</p>
+
+      <p>In practice, Active Directory typically runs its own internal DNS server, and domain-joined machines point to the DC's IP as their DNS server. This means DNS is not just for browsing websites in an enterprise environment — it is the backbone of identity infrastructure.</p>
+
+      <p>DNS itself — how it works, how names resolve to IP addresses, and how it scales to the global internet — is the subject of Chapter 10. The key point here is that AD and DNS are inseparable in production environments: if DNS is broken, AD authentication breaks with it.</p>
+
+      <h2>Where This Takes You</h2>
+
+      <p><strong>Chapter 10</strong> covers networking fundamentals — how data moves between machines, how IP addressing works, and how DNS resolves names to addresses. With the AD/DNS connection established in this chapter, the networking concepts in Ch10 will immediately have a concrete use case to anchor them.</p>
+
+      <p><strong>Chapter 12</strong> (System Administration) returns to both filesystems and Active Directory with a hands-on focus: managing user accounts and groups in AD, configuring permissions on shared folders, reading and rotating logs in <code>/var/log</code>, and scripting routine administrative tasks.</p>
+
+      <!-- Quiz -->
+      <div class="practice-block">
+        <div class="practice-header">
+          <span class="practice-label">Quiz</span>
+          <span class="practice-title">Chapter 9 Quiz</span>
+        </div>
+
+        <div class="quiz-question" id="q1">
+          <div class="q-text">1. What does a filesystem provide that raw block storage cannot?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Faster read and write speeds for frequently accessed data.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> Human-readable names, a hierarchical directory structure, and metadata like permissions and timestamps.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> Encryption of all file contents before writing to disk.</button>
+            <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> Automatic backup of files to a secondary storage device.</button>
+          </div>
+          <div class="mc-feedback" id="q1-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q2">
+          <div class="q-text">2. What is the fundamental difference between how Linux and Windows organize their filesystems?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Linux supports subdirectories; Windows organizes everything as a flat list of files.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> Windows supports case-sensitive filenames; Linux does not.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">C</span> Linux has a single unified tree rooted at /; Windows assigns a separate tree to each drive letter.</button>
+            <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Linux stores files in binary format; Windows stores them as plain text.</button>
+          </div>
+          <div class="mc-feedback" id="q2-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q3">
+          <div class="q-text">3. Which filesystem format is the default on modern Linux systems and supports both permissions and journaling?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> FAT32</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> NTFS</button>
+            <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> exFAT</button>
+            <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">D</span> ext4</button>
+          </div>
+          <div class="mc-feedback" id="q3-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q4">
+          <div class="q-text">4. Why is FAT32 still commonly used on USB drives despite its 4 GB file size limit?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> It has the best performance of any filesystem format on flash storage.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> It supports Linux-style permissions on any operating system.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">C</span> It is universally readable by virtually every operating system and device.</button>
+            <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> It uses less storage space than other filesystem formats.</button>
+          </div>
+          <div class="mc-feedback" id="q4-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q5">
+          <div class="q-text">5. Where does a Linux system store system-wide configuration files?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> /bin</button>
+            <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">B</span> /etc</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> /var</button>
+            <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> /home</button>
+          </div>
+          <div class="mc-feedback" id="q5-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q6">
+          <div class="q-text">6. The NTFS "Modify" permission allows a user to do which of the following?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Read file contents only — no changes permitted.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> Read and write file contents, but not delete the file.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> Read, write, and delete the file — but not change its permissions.</button>
+            <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> Change the file's permissions and ownership as well as its contents.</button>
+          </div>
+          <div class="mc-feedback" id="q6-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q7">
+          <div class="q-text">7. What core problem does a directory service solve for an IT organization?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> It compresses files stored on the network to reduce bandwidth usage.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">B</span> It centralizes user identity so accounts and passwords are managed once and work everywhere — eliminating per-server account management.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> It provides a firewall to prevent unauthorized users from accessing the network.</button>
+            <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> It automatically backs up user files to a central server each night.</button>
+          </div>
+          <div class="mc-feedback" id="q7-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q8">
+          <div class="q-text">8. In Active Directory, what is an Organizational Unit (OU)?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> A physical server that stores and manages the AD database.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> A security protocol used to encrypt all AD authentication traffic.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> A container used to organize users, computers, and groups within a domain — and to which Group Policy can be applied.</button>
+            <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> A type of user account with limited administrative rights.</button>
+          </div>
+          <div class="mc-feedback" id="q8-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q9">
+          <div class="q-text">9. What is LDAP?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> A filesystem format used by Linux-based directory servers.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">B</span> The protocol used to query and manage directory service databases such as Active Directory.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">C</span> A Windows GUI tool for browsing Active Directory users and computers.</button>
+            <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> A network protocol for synchronizing clocks across domain-joined machines.</button>
+          </div>
+          <div class="mc-feedback" id="q9-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q10">
+          <div class="q-text">10. Why does Active Directory depend on DNS?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> AD uses DNS records to store and replicate user password hashes.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">B</span> DNS provides the graphical interface for browsing AD objects.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">C</span> Clients use DNS SRV records to locate domain controllers when authenticating or joining a domain.</button>
+            <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> DNS encrypts all LDAP queries sent between clients and the domain controller.</button>
+          </div>
+          <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+      </div>
+
+      <nav class="chapter-nav-footer">
+        <a href="ch08.html">
+          <span class="nav-direction">← Previous</span>
+          <span class="nav-title">Chapter 8: Operating Systems</span>
+        </a>
+        <a href="ch10.html" class="next">
+          <span class="nav-direction">Next Chapter →</span>
+          <span class="nav-title">Networking Fundamentals</span>
+        </a>
+      </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/fs-tree.js"></script>
+
+<script>
+  function checkMC(id, btn, isCorrect) {
+    const container = document.getElementById(id);
+    const fb        = document.getElementById(id + '-feedback');
+    container.querySelectorAll('.mc-option').forEach(b => {
+      b.disabled = true;
+      if (b === btn && isCorrect)       b.classList.add('correct');
+      else if (b === btn && !isCorrect) b.classList.add('incorrect');
+      if (!isCorrect && b.onclick.toString().includes(',true)')) b.classList.add('revealed');
+    });
+    fb.className   = isCorrect ? 'mc-feedback correct' : 'mc-feedback incorrect';
+    fb.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite — the correct answer is highlighted.';
+  }
+</script>
+
+</body>
+</html>
