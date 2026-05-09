@@ -547,6 +547,41 @@
         <strong>NAS and enterprise HDDs.</strong> Not all HDDs are the same. Consumer drives are rated for 8 hours/day of use. NAS (Network-Attached Storage) drives like the Seagate IronWolf or WD Red are rated for 24/7 operation and carry higher MTBF (mean time between failures) ratings. Enterprise SAS drives add a faster bus interface on top of that. If you're speccing storage for a server, NAS, or any always-on workload, using consumer desktop drives is a false economy — the reliability difference is real.
       </div>
 
+      <h2>Words vs. Blocks: How Storage Moves Data</h2>
+
+      <p>In Chapter 4 you learned that CPUs operate on <strong>words</strong> — fixed-size chunks whose width matches the register size. A 64-bit processor reads and writes 8 bytes at a time; you can't load half a word into a register. Word size is a fundamental constraint baked into the CPU architecture.</p>
+
+      <p>Storage devices have an exact analogue: the <strong>block</strong>. A storage device doesn't read or write individual bytes — it works in fixed-size chunks. When the OS asks for one byte from a file on disk, the drive reads the entire block containing that byte and returns it all. When the OS writes one byte, the entire block must be rewritten. You cannot access half a block.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>CPU (Ch. 4)</th>
+            <th>Storage Device</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Natural unit</td><td>Word (4 or 8 bytes)</td><td>Block (512 B or 4 KB)</td></tr>
+          <tr><td>Why that size?</td><td>Register width</td><td>Disk geometry / NAND page size</td></tr>
+          <tr><td>Minimum operation</td><td>One word</td><td>One block</td></tr>
+          <tr><td>Granularity set by</td><td>CPU architecture</td><td>Storage hardware</td></tr>
+          <tr><td>Software thinks in</td><td>Bytes (abstracted by compiler)</td><td>Files (abstracted by filesystem)</td></tr>
+        </tbody>
+      </table>
+
+      <p>The block size isn't arbitrary — it follows from the physics of each storage technology:</p>
+      <ul>
+        <li><strong>HDDs.</strong> Seek time and rotational latency mean the overhead of reaching a location is paid whether you then read 1 byte or 512. Since the cost is the same, you might as well read a full sector. Traditional hard drives standardized on <strong>512-byte sectors</strong>; modern drives use <strong>4,096-byte sectors</strong> (called 4K or Advanced Format) for better error correction and larger capacity support.</li>
+        <li><strong>SSDs.</strong> NAND flash physically cannot address individual bytes. Internally, flash is organized into <em>pages</em> (~4 KB, the minimum read/write unit) and <em>erase blocks</em> (~256 KB, the minimum erase unit). Writing a single byte requires reading the surrounding page, modifying it in memory, erasing the erase block, and rewriting the whole thing — a phenomenon called <strong>write amplification</strong> that contributes to both write latency and cell wear.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Size on disk vs. file size.</strong> Because storage is block-based, every file occupies at least one full block even if its content is smaller. A 3-byte text file on a filesystem with 4 KB blocks consumes 4 KB of actual disk space. On Windows, right-clicking a tiny file and checking Properties shows two different sizes: <em>Size</em> (the actual content) and <em>Size on disk</em> (the space the block allocation consumes). This gap — called internal fragmentation — is an unavoidable consequence of block-based storage.
+      </div>
+
+      <p>Blocks are also why the filesystem concept from Chapter 9 is necessary in the first place. A filesystem's core job is to maintain a mapping from human-readable filenames to the specific block addresses on disk where a file's content lives. Without that bookkeeping layer, a storage device is just a flat, unnamed sequence of numbered blocks — fast to read and write, but with no way to find anything.</p>
+
       <h2>Virtual Memory</h2>
 
       <p>Here's a practical problem: programs often want more memory than a system physically has. A machine with 16 GB of RAM might be running an operating system, a browser with forty tabs, a video call, a database client, and a few background services simultaneously. Individually they're fine; together they might want 20 GB.</p>
