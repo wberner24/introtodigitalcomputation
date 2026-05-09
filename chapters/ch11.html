@@ -57,6 +57,8 @@
       <p class="chapter-intro">A network is more than cables and protocols — it is an architecture. Devices are organized into roles: some provide services, others consume them. Switches and routers are arranged in tiers so traffic flows efficiently and policy is enforced at the right boundaries. Firewalls, VLANs, and NAT shape which devices can reach which resources. This chapter builds the mental model of how a real organizational network is designed and why each piece exists.</p>
     </header>
 
+    <article class="prose">
+
     <h2>Client/Server Architecture</h2>
 
     <p>The dominant communication model in enterprise computing is <strong>client/server architecture</strong>. The idea is simple: one device, the <strong>server</strong>, provides a specific service and waits for requests. Other devices, the <strong>clients</strong>, initiate connections to consume that service. The server is always available; the client connects when it needs something.</p>
@@ -107,75 +109,99 @@
     </ul>
 
     <!-- SVG: Client/Server vs P2P -->
-    <svg viewBox="0 0 680 234" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
+    <svg viewBox="0 0 680 262" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
       <defs>
-        <marker id="cs-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-          <polygon points="0 0, 8 3, 0 6" fill="#777"/>
+        <!-- Client → Server directed arrow -->
+        <marker id="cs-arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto">
+          <polygon points="0 0, 7 2.5, 0 5" fill="#8A8480"/>
+        </marker>
+        <!-- P2P bidirectional: auto-start-reverse reverses the start marker only -->
+        <marker id="p2p-arr" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto-start-reverse">
+          <polygon points="0 0, 7 2.5, 0 5" fill="#2E6B4F"/>
+        </marker>
+        <marker id="p2p-cross" markerWidth="7" markerHeight="5" refX="6" refY="2.5" orient="auto-start-reverse">
+          <polygon points="0 0, 7 2.5, 0 5" fill="#5A9B7A"/>
         </marker>
       </defs>
-      <rect width="680" height="234" fill="#FDFAF4"/>
-      <line x1="340" y1="0" x2="340" y2="234" stroke="#E0DAD0" stroke-width="1.5"/>
 
-      <!-- LEFT: Client/Server -->
-      <text x="170" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1814" font-family="'Roboto Slab',serif">Client / Server</text>
-      <text x="170" y="37" text-anchor="middle" font-size="10" font-style="italic" fill="#7A7570" font-family="'Source Sans 3',sans-serif">Centralized</text>
+      <!-- Background -->
+      <rect width="680" height="262" fill="#FDFAF4"/>
 
-      <!-- Server box -->
-      <rect x="120" y="92" width="100" height="36" rx="5" fill="#1A2F5E"/>
-      <text x="170" y="115" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="'Source Sans 3',sans-serif">Server</text>
+      <!-- ══ LEFT PANEL: Client / Server ══ -->
+      <rect x="0"   y="0" width="338" height="44" fill="#1A2F5E"/>
+      <text x="169" y="17" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff" font-family="'Roboto Slab',serif">Client / Server</text>
+      <text x="169" y="33" text-anchor="middle" font-size="9.5"  font-style="italic" fill="rgba(255,255,255,0.58)" font-family="'Source Sans 3',sans-serif">centralized</text>
 
-      <!-- Client boxes -->
-      <rect x="14"  y="46" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
-      <text x="45"  y="65" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+      <!-- Arrows drawn first so server box renders on top -->
+      <line x1="72"  y1="90"  x2="108" y2="106" stroke="#A09890" stroke-width="1.6" marker-end="url(#cs-arr)"/>
+      <line x1="266" y1="90"  x2="230" y2="106" stroke="#A09890" stroke-width="1.6" marker-end="url(#cs-arr)"/>
+      <line x1="72"  y1="186" x2="127" y2="143" stroke="#A09890" stroke-width="1.6" marker-end="url(#cs-arr)"/>
+      <line x1="266" y1="186" x2="211" y2="143" stroke="#A09890" stroke-width="1.6" marker-end="url(#cs-arr)"/>
+      <line x1="169" y1="214" x2="169" y2="143" stroke="#A09890" stroke-width="1.6" marker-end="url(#cs-arr)"/>
 
-      <rect x="264" y="46" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
-      <text x="295" y="65" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+      <!-- Server — larger, prominent -->
+      <rect x="109" y="98" width="120" height="44" rx="6" fill="#1A2F5E"/>
+      <text x="169" y="125" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" font-family="'Source Sans 3',sans-serif">Server</text>
 
-      <rect x="14"  y="164" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
-      <text x="45"  y="183" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+      <!-- Clients -->
+      <rect x="12"  y="76"  width="60" height="28" rx="4" fill="#EDE8DF" stroke="#C5BFB0" stroke-width="1"/>
+      <text x="42"  y="94"  text-anchor="middle" font-size="10.5" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
 
-      <rect x="264" y="164" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
-      <text x="295" y="183" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+      <rect x="266" y="76"  width="60" height="28" rx="4" fill="#EDE8DF" stroke="#C5BFB0" stroke-width="1"/>
+      <text x="296" y="94"  text-anchor="middle" font-size="10.5" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
 
-      <rect x="139" y="198" width="62" height="28" rx="4" fill="#EDE9E0" stroke="#C5BFB2" stroke-width="1"/>
-      <text x="170" y="217" text-anchor="middle" font-size="10" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
+      <rect x="12"  y="172" width="60" height="28" rx="4" fill="#EDE8DF" stroke="#C5BFB0" stroke-width="1"/>
+      <text x="42"  y="190" text-anchor="middle" font-size="10.5" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
 
-      <!-- Arrows from clients to server -->
-      <line x1="76"  y1="68"  x2="124" y2="96"  stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
-      <line x1="264" y1="68"  x2="216" y2="96"  stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
-      <line x1="76"  y1="172" x2="124" y2="124" stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
-      <line x1="264" y1="172" x2="216" y2="124" stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
-      <line x1="170" y1="198" x2="170" y2="128" stroke="#888" stroke-width="1.5" marker-end="url(#cs-arr)"/>
+      <rect x="266" y="172" width="60" height="28" rx="4" fill="#EDE8DF" stroke="#C5BFB0" stroke-width="1"/>
+      <text x="296" y="190" text-anchor="middle" font-size="10.5" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
 
-      <!-- RIGHT: Peer-to-Peer -->
-      <text x="510" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1814" font-family="'Roboto Slab',serif">Peer-to-Peer</text>
-      <text x="510" y="37" text-anchor="middle" font-size="10" font-style="italic" fill="#7A7570" font-family="'Source Sans 3',sans-serif">Decentralized</text>
+      <rect x="139" y="214" width="60" height="28" rx="4" fill="#EDE8DF" stroke="#C5BFB0" stroke-width="1"/>
+      <text x="169" y="232" text-anchor="middle" font-size="10.5" fill="#4A4540" font-family="'Source Sans 3',sans-serif">Client</text>
 
-      <!-- Pentagon ring lines (drawn before boxes so boxes render on top) -->
-      <line x1="510" y1="60"  x2="608" y2="108" stroke="#888" stroke-width="1.5"/>
-      <line x1="608" y1="108" x2="572" y2="190" stroke="#888" stroke-width="1.5"/>
-      <line x1="572" y1="190" x2="448" y2="190" stroke="#888" stroke-width="1.5"/>
-      <line x1="448" y1="190" x2="412" y2="108" stroke="#888" stroke-width="1.5"/>
-      <line x1="412" y1="108" x2="510" y2="60"  stroke="#888" stroke-width="1.5"/>
-      <!-- Cross-connections showing mesh -->
-      <line x1="510" y1="60"  x2="572" y2="190" stroke="#B0AAA0" stroke-width="1" stroke-dasharray="4,3"/>
-      <line x1="608" y1="108" x2="412" y2="108" stroke="#B0AAA0" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- Annotation -->
+      <text x="169" y="254" text-anchor="middle" font-size="8.5" font-style="italic" fill="#9A9490" font-family="'Source Sans 3',sans-serif">arrows show direction of request</text>
 
-      <!-- Peer boxes (centered on pentagon vertices) -->
-      <rect x="481" y="46"  width="58" height="28" rx="4" fill="#2E6B4F"/>
-      <text x="510" y="65"  text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+      <!-- Panel divider -->
+      <line x1="340" y1="0" x2="340" y2="262" stroke="#D4CFC4" stroke-width="1.5"/>
 
-      <rect x="579" y="94"  width="58" height="28" rx="4" fill="#2E6B4F"/>
-      <text x="608" y="113" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+      <!-- ══ RIGHT PANEL: Peer-to-Peer ══ -->
+      <rect x="342" y="0" width="338" height="44" fill="#2E6B4F"/>
+      <text x="511" y="17" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff" font-family="'Roboto Slab',serif">Peer-to-Peer</text>
+      <text x="511" y="33" text-anchor="middle" font-size="9.5"  font-style="italic" fill="rgba(255,255,255,0.58)" font-family="'Source Sans 3',sans-serif">decentralized</text>
 
-      <rect x="543" y="176" width="58" height="28" rx="4" fill="#2E6B4F"/>
-      <text x="572" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+      <!-- Pentagon center (511,150) radius 75 — connections drawn before circles -->
+      <!-- P1(511,75) P2(582,127) P3(555,211) P4(467,211) P5(440,127) -->
 
-      <rect x="419" y="176" width="58" height="28" rx="4" fill="#2E6B4F"/>
-      <text x="448" y="195" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+      <!-- Ring connections (solid, bidirectional) -->
+      <line x1="532" y1="90"  x2="561" y2="112" stroke="#2E6B4F" stroke-width="1.8" marker-start="url(#p2p-arr)" marker-end="url(#p2p-arr)"/>
+      <line x1="574" y1="152" x2="563" y2="186" stroke="#2E6B4F" stroke-width="1.8" marker-start="url(#p2p-arr)" marker-end="url(#p2p-arr)"/>
+      <line x1="529" y1="211" x2="493" y2="211" stroke="#2E6B4F" stroke-width="1.8" marker-start="url(#p2p-arr)" marker-end="url(#p2p-arr)"/>
+      <line x1="459" y1="186" x2="448" y2="152" stroke="#2E6B4F" stroke-width="1.8" marker-start="url(#p2p-arr)" marker-end="url(#p2p-arr)"/>
+      <line x1="461" y1="112" x2="490" y2="90"  stroke="#2E6B4F" stroke-width="1.8" marker-start="url(#p2p-arr)" marker-end="url(#p2p-arr)"/>
 
-      <rect x="383" y="94"  width="58" height="28" rx="4" fill="#2E6B4F"/>
-      <text x="412" y="113" text-anchor="middle" font-size="10" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+      <!-- Cross connections (dashed, bidirectional) -->
+      <line x1="519" y1="100" x2="547" y2="186" stroke="#5A9B7A" stroke-width="1.2" stroke-dasharray="5,3" marker-start="url(#p2p-cross)" marker-end="url(#p2p-cross)"/>
+      <line x1="561" y1="142" x2="488" y2="196" stroke="#5A9B7A" stroke-width="1.2" stroke-dasharray="5,3" marker-start="url(#p2p-cross)" marker-end="url(#p2p-cross)"/>
+
+      <!-- Peer circles (drawn on top of connections) -->
+      <circle cx="511" cy="75"  r="22" fill="#2E6B4F"/>
+      <text   x="511" y="79"   text-anchor="middle" font-size="9.5" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <circle cx="582" cy="127" r="22" fill="#2E6B4F"/>
+      <text   x="582" y="131"  text-anchor="middle" font-size="9.5" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <circle cx="555" cy="211" r="22" fill="#2E6B4F"/>
+      <text   x="555" y="215"  text-anchor="middle" font-size="9.5" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <circle cx="467" cy="211" r="22" fill="#2E6B4F"/>
+      <text   x="467" y="215"  text-anchor="middle" font-size="9.5" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <circle cx="440" cy="127" r="22" fill="#2E6B4F"/>
+      <text   x="440" y="131"  text-anchor="middle" font-size="9.5" font-weight="600" fill="#fff" font-family="'Source Sans 3',sans-serif">Peer</text>
+
+      <!-- Annotation -->
+      <text x="511" y="254" text-anchor="middle" font-size="8.5" font-style="italic" fill="#9A9490" font-family="'Source Sans 3',sans-serif">any node can initiate or respond</text>
     </svg>
 
     <h2>How Enterprise Networks Are Structured</h2>
@@ -359,6 +385,7 @@
       </a>
     </nav>
 
+    </article>
   </main>
 </div>
 
