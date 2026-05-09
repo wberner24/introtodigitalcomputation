@@ -204,6 +204,72 @@
 
       <p>The practical takeaway: format USB drives as <strong>exFAT</strong> if they need to move between Windows, Mac, and Linux systems. Use <strong>ext4</strong> for Linux servers. Use <strong>NTFS</strong> for Windows volumes that need permissions.</p>
 
+      <h2>The File Allocation Table</h2>
+
+      <p>A filesystem's most important job is maintaining a map from filenames to the physical blocks on disk where each file's content lives. Files are not stored in neat contiguous regions — they grow, shrink, and get scattered across many non-adjacent blocks over time. The filesystem needs an index to keep track of it all.</p>
+
+      <p>The most literal version of this index is the <strong>File Allocation Table</strong> — the on-disk structure that gave the FAT12, FAT16, and FAT32 formats their name. The FAT is an array with one entry per block on the disk. Each entry describes the state of that block:</p>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>FAT Entry Value</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>0x000</code></td><td>Free — this block is available for new data</td></tr>
+          <tr><td>A block number <em>N</em></td><td>This file continues at block N (follow the chain)</td></tr>
+          <tr><td>End-of-chain marker</td><td>This is the last block of the file</td></tr>
+          <tr><td>Bad-block marker</td><td>This block is damaged and should not be used</td></tr>
+        </tbody>
+      </table>
+
+      <p>To read a file, the OS finds the file's starting block number (stored in the directory entry), then follows the FAT chain — entry by entry — until it hits the end-of-chain marker. The file's content is the concatenation of all the blocks in that chain, in order.</p>
+
+      <p>Modern filesystems replace the flat FAT array with more efficient structures, but the core idea — a central index mapping files to blocks — is universal:</p>
+      <ul>
+        <li><strong>ext4 (Linux)</strong> uses <strong>inodes</strong>. Each file has one inode that stores its metadata (owner, permissions, timestamps) and a list of the block addresses where its data lives. The directory is just a table of (filename → inode number) mappings.</li>
+        <li><strong>NTFS (Windows)</strong> uses the <strong>Master File Table (MFT)</strong> — a structured database where each record describes one file or directory: its name, timestamps, permissions, and the contiguous runs of blocks containing its data.</li>
+      </ul>
+
+      <p>In every case, this index is what a "filesystem" fundamentally <em>is</em>. Without it, a storage device is just a flat sequence of numbered blocks with no names, no hierarchy, and no way to find anything.</p>
+
+      <h2>What Really Happens When You Delete a File</h2>
+
+      <p>Filesystem operations sound like decisive actions. The underlying mechanics are much simpler — and the gap between what users perceive and what the hardware actually does has real consequences.</p>
+
+      <p><strong>Creating a file:</strong> The OS allocates a free inode (or MFT record), finds free blocks for the content, writes the data to those blocks, records the block addresses in the inode, and adds a (filename → inode) mapping to the directory. The file exists.</p>
+
+      <p><strong>Reading a file:</strong> The OS looks up the filename in the directory to get the inode number, reads the inode to find the block addresses, and reads those blocks in sequence.</p>
+
+      <p><strong>Updating a file:</strong> For changes that fit within existing blocks, the OS reads the block, modifies it in memory, and writes it back. If the file grows, new blocks are allocated and the inode is updated to include them.</p>
+
+      <p><strong>Deleting a file:</strong> The OS removes the filename from the directory and marks the inode and its blocks as <em>free</em> in the allocation table. That is the entire operation. <strong>The bits do not move. The data remains on the storage hardware exactly as it was.</strong></p>
+
+      <div class="note">
+        <strong>What "permanent delete" actually means.</strong> When Windows asks "Are you sure you want to permanently delete this file?" and you click Yes, "permanently" means only that the file skips the Recycle Bin — it is not moved to a holding area first. The underlying delete operation is identical: the directory entry is removed and the blocks are marked free. The content is still on the disk, unchanged, until something else happens to be written to those same physical blocks.
+      </div>
+
+      <p>This is why file recovery software works. Tools like Recuva or PhotoRec scan the disk looking for inode or MFT entries that have been marked free but whose blocks have not yet been overwritten. As long as the operating system has not reused those blocks for new data, the original file content is completely intact and fully recoverable — sometimes hours, days, or even weeks after deletion.</p>
+
+      <h3>Formatting Does Not Delete Your Data</h3>
+
+      <p>A <strong>quick format</strong> in Windows rebuilds the filesystem structures from scratch — it creates a fresh, empty MFT and marks all blocks as free — but writes nothing to the data blocks themselves. A <strong>full format</strong> additionally checks for bad sectors, scanning each block, but still leaves the original data intact underneath. Files deleted before a format are just as recoverable after it.</p>
+
+      <p>The reason is the same engineering logic as deletion: writing zeros to every block would be slow and is unnecessary for normal use — the next write will overwrite them anyway. Performance wins over security as a default.</p>
+
+      <h3>Implications for Hardware Disposal</h3>
+
+      <p>Deleting files and reformatting before selling or recycling a computer does not protect the data on it. Anyone with a recovery tool and a few minutes can retrieve the previous contents. The correct approach depends on the storage technology:</p>
+
+      <ul>
+        <li><strong>HDDs.</strong> Overwrite the entire drive with zeros or random data. One pass is sufficient to defeat software recovery. Tools like DBAN (Darik's Boot and Nuke) automate a full-disk overwrite from a bootable USB drive.</li>
+        <li><strong>SSDs.</strong> Software overwriting is unreliable on flash storage because of <strong>wear leveling</strong> — the SSD controller remaps writes to fresh cells to spread wear evenly, which can leave old data intact in cells that were bypassed. Most SSD manufacturers expose a firmware command called <strong>ATA Secure Erase</strong> that resets the drive at the hardware level and is far more reliable than any software approach.</li>
+        <li><strong>Most secure — physical destruction.</strong> Degaussing (for HDDs) or physical shredding renders data unrecoverable regardless of technique. Required for classified or regulated data disposal.</li>
+      </ul>
+
+      <div class="note">
+        <strong>The satisfying truth.</strong> The reason "delete" doesn't erase bits is not a bug or a conspiracy — it is a deliberate engineering choice that prioritizes performance. A storage device has no concept of "files" at all: it only knows numbered blocks of bytes. The filesystem is just a table telling the OS which blocks belong to which name. Clearing a name from that table takes a fraction of a millisecond; zeroing every block the file occupied might take seconds. Since the blocks will be overwritten soon anyway, the OS skips the work. This is digital computation reduced to first principles: it is all just 1s and 0s sitting in numbered locations, and "deleting" one is as simple — and as incomplete — as crossing a name off a list.
+      </div>
+
       <h2>The Linux Filesystem Hierarchy</h2>
 
       <p>The <strong>Filesystem Hierarchy Standard (FHS)</strong> defines what belongs in each top-level directory on a Linux system. This is not arbitrary — every major Linux distribution follows it, which means you can sit down at an unfamiliar Linux machine and immediately know where to find configuration files, log files, and installed programs.</p>
@@ -531,6 +597,39 @@
             <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> DNS encrypts all LDAP queries sent between clients and the domain controller.</button>
           </div>
           <div class="mc-feedback" id="q10-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q11">
+          <div class="q-text">11. What is the purpose of the File Allocation Table (or its modern equivalents like inodes and the MFT)?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">A</span> It encrypts file contents before writing them to disk.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,true)"><span class="mc-letter">B</span> It maps each filename to the specific blocks on disk where that file's data is stored.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">C</span> It compresses files to reduce the amount of storage they occupy.</button>
+            <button class="mc-option" onclick="checkMC('q11',this,false)"><span class="mc-letter">D</span> It keeps a backup copy of every file in case the original is damaged.</button>
+          </div>
+          <div class="mc-feedback" id="q11-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q12">
+          <div class="q-text">12. When you "permanently delete" a file in Windows (bypassing the Recycle Bin), what does the operating system actually do?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q12',this,false)"><span class="mc-letter">A</span> It immediately overwrites every block the file occupied with zeros.</button>
+            <button class="mc-option" onclick="checkMC('q12',this,false)"><span class="mc-letter">B</span> It moves the file to a hidden system folder that is wiped weekly.</button>
+            <button class="mc-option" onclick="checkMC('q12',this,true)"><span class="mc-letter">C</span> It removes the file's entry from the directory and marks its blocks as free — the data remains on disk until those blocks are overwritten.</button>
+            <button class="mc-option" onclick="checkMC('q12',this,false)"><span class="mc-letter">D</span> It sends the file's blocks to the drive's firmware for scheduled erasure.</button>
+          </div>
+          <div class="mc-feedback" id="q12-feedback"></div>
+        </div>
+
+        <div class="quiz-question" id="q13">
+          <div class="q-text">13. You are preparing to sell your old laptop. You delete all your files and do a full reformat of the drive. Is your personal data now unrecoverable?</div>
+          <div class="mc-options">
+            <button class="mc-option" onclick="checkMC('q13',this,false)"><span class="mc-letter">A</span> Yes — a full format overwrites all data blocks, so nothing can be recovered.</button>
+            <button class="mc-option" onclick="checkMC('q13',this,false)"><span class="mc-letter">B</span> Yes — deleting files permanently removes the bits from the storage hardware.</button>
+            <button class="mc-option" onclick="checkMC('q13',this,true)"><span class="mc-letter">C</span> No — a format rebuilds the filesystem index but leaves data blocks intact; the files remain recoverable until overwritten.</button>
+            <button class="mc-option" onclick="checkMC('q13',this,false)"><span class="mc-letter">D</span> No — but only for SSDs; HDDs are fully cleared by a format.</button>
+          </div>
+          <div class="mc-feedback" id="q13-feedback"></div>
         </div>
 
       </div>

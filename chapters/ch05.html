@@ -551,7 +551,7 @@
 
       <p>In Chapter 4 you learned that CPUs operate on <strong>words</strong> — fixed-size chunks whose width matches the register size. A 64-bit processor reads and writes 8 bytes at a time; you can't load half a word into a register. Word size is a fundamental constraint baked into the CPU architecture.</p>
 
-      <p>Storage devices have an exact analogue: the <strong>block</strong>. A storage device doesn't read or write individual bytes — it works in fixed-size chunks. When the OS asks for one byte from a file on disk, the drive reads the entire block containing that byte and returns it all. When the OS writes one byte, the entire block must be rewritten. You cannot access half a block.</p>
+      <p>Storage devices have an exact analogue: the <strong>block</strong>. A storage device doesn't read or write individual bytes — it works in fixed-size chunks. When the OS asks for one byte from a file on disk, the drive reads the entire block containing that byte and returns it all. When the OS writes one byte, the entire block must be rewritten. You cannot access half a block. On hard disk drives specifically, this hardware-level unit has its own name: a <strong>sector</strong>. "Block" is the general term used across all storage technologies (and by the filesystem layer above); "sector" refers to the physical addressable unit the HDD hardware itself exposes. The two are often the same size, but the distinction matters in documentation and low-level tools.</p>
 
       <table class="data-table">
         <thead>
@@ -562,7 +562,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr><td>Natural unit</td><td>Word (4 or 8 bytes)</td><td>Block (512 B or 4 KB)</td></tr>
+          <tr><td>Natural unit</td><td>Word (4 or 8 bytes)</td><td>Sector / block (512 B or 4 KB)</td></tr>
           <tr><td>Why that size?</td><td>Register width</td><td>Disk geometry / NAND page size</td></tr>
           <tr><td>Minimum operation</td><td>One word</td><td>One block</td></tr>
           <tr><td>Granularity set by</td><td>CPU architecture</td><td>Storage hardware</td></tr>
