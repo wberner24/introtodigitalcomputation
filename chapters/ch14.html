@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 14: Putting It All Together — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter active"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 14 · Unit 5: Administration</div>
+      <h1 class="chapter-title">Putting It All Together</h1>
+      <div class="chapter-deco">&#8594;</div>
+      <p class="chapter-intro">This chapter introduces no new concepts. Instead, it earns all the previous ones — by following a single, concrete scenario from the very first physical signal to the final pixel on a screen, touching every layer of the stack you've studied. By the end, you'll see not just how each piece works in isolation, but why each one must exist for any of the others to function.</p>
+    </header>
+
+    <article class="prose">
+
+    <h2>The Scenario</h2>
+
+    <p>It's Tuesday morning. Alex is an IT generalist at a 50-person company. They sit down at their Windows workstation, open the lid, and type in their domain password. The desktop loads. Alex opens a browser, navigates to the company's internal web application — a project management tool hosted on Azure — and the page appears. The whole thing takes about ten seconds, most of which is Alex typing and the network loading resources.</p>
+
+    <p>Simple, familiar, unremarkable. Except that what just happened involved binary arithmetic, transistor physics, CPU instruction pipelines, RAM volatility, an operating system kernel, a distributed authentication system, Ethernet framing, DNS resolution, TCP handshakes, TLS encryption, packet routing, a cloud hypervisor, and a virtualized web server — all working in concert, invisibly, in under ten seconds.</p>
+
+    <p>Let's follow it.</p>
+
+    <h2>The Physical World</h2>
+
+    <p>Alex presses the letter "E" on the keyboard. The key completes an electrical circuit, generating a signal that the keyboard's microcontroller reads and translates into a <strong>scan code</strong> — a number identifying which physical key was pressed. That scan code travels over USB to the computer, where the OS keyboard driver converts it into a character: the letter E, represented in memory as <span class="bin">01000101</span> — the ASCII binary encoding for uppercase E from Chapter 3.</p>
+
+    <p>At no point in this process does the computer "know" what the letter E looks like. It knows only that a particular pattern of eight bits arrived in a particular register. This is the foundation of all digital computing: every piece of information — characters, images, audio, instructions, network packets — is ultimately a sequence of 1s and 0s, represented physically by transistors holding a charge or not. Chapter 1 explained binary. Chapter 2 explained how those binary states exist in the physical world. Everything that follows is built on that.</p>
+
+    <p>The scan code and keypress event flow to the CPU. The processor is running the Windows OS, which is running dozens of processes simultaneously — or appearing to. The CPU is <strong>context-switching</strong> between them many thousands of times per second, giving each process a slice of time. When a keypress event arrives, the OS interrupt handler fires: the CPU pauses whatever it was doing, saves its state, services the interrupt (reading the keypress and passing it to the focused application), and resumes. This is the fetch-decode-execute cycle from Chapter 4, running at billions of cycles per second, managing the illusion of simultaneous computation.</p>
+
+    <p>The OS and all running processes live in <strong>RAM</strong>. When Alex opened the browser earlier, the OS loaded the browser's executable from the SSD (slow, persistent, cheap) into RAM (fast, volatile, expensive). The CPU's L1 and L2 cache hold the most frequently accessed instructions and data — the hot loops of the browser's event-handling code. The storage hierarchy from Chapter 5 is not an abstraction; it is actively at work in every millisecond of this scenario.</p>
+
+    <h2>The Software Stack</h2>
+
+    <p>Before any of this was possible, the machine had to boot. When Alex opened the laptop lid, the <strong>UEFI firmware</strong> (Chapter 7) ran a power-on self-test, initialized the hardware, located the Windows bootloader on the SSD, and handed off control. The Windows Boot Manager loaded the kernel into RAM, which initialized device drivers, mounted the file system, started system services, and eventually presented the login screen.</p>
+
+    <p>Alex types a password. Windows does not simply compare it to a locally stored password — this machine is joined to a company <strong>Active Directory domain</strong> (Chapter 9). The OS sends the credentials (hashed, never in plaintext) over the network to a <strong>domain controller</strong>, a server that manages authentication for the entire organization. The domain controller verifies the credentials and returns a <strong>Kerberos ticket</strong> — a cryptographically signed token Alex's machine will use to prove its identity to other domain resources without re-entering a password. This is authentication followed immediately by the issuance of authorization tokens: the concepts from Chapter 12, in action.</p>
+
+    <p>Along with the authentication response comes a <strong>Group Policy</strong> update (Chapter 12). The domain controller sends a set of policy objects — configuration rules that govern the machine: which software is installed, which drives are mapped, which security settings are enforced, whether the user can install new applications. This is how IT manages hundreds of machines without touching them individually. Alex's desktop appears, already configured exactly as IT specified, because policy was applied during login.</p>
+
+    <p>Alex opens the browser. The browser is an <strong>application</strong> (Chapter 7) — a program that runs atop the OS, using system calls to access hardware, files, and the network. When Alex types a URL and presses Enter, the browser does not directly send network packets. It calls the OS's networking API, which hands the request to the network stack — a software component of the OS that handles all the protocol work of getting data onto the wire.</p>
+
+    <h2>Onto the Network</h2>
+
+    <p>The browser knows the domain name of the application — something like <code>app.company.com</code> — but the network needs an <strong>IP address</strong>. Before any connection can be made, the OS must resolve the name. It sends a <strong>DNS query</strong> (Chapter 10) to the company's internal DNS server, asking: "What is the IP address for app.company.com?"</p>
+
+    <p>That DNS query leaves Alex's machine as a UDP packet, travels through the <strong>NIC</strong> (the network interface card — a PCIe peripheral from Chapter 6), gets framed as an Ethernet frame with the DNS server's MAC address, and arrives at the office <strong>switch</strong> (Chapter 11). The switch reads the destination MAC address, looks it up in its MAC address table, and forwards the frame out the correct port to the DNS server. The DNS server checks its cache and zone records. If the record is there, it answers immediately. If not, it queries the public DNS hierarchy — root servers, TLD servers, the authoritative name server for company.com — and returns the IP address. The whole process typically completes in under 20 milliseconds.</p>
+
+    <p>Now the browser knows the destination IP. It initiates a <strong>TCP three-way handshake</strong> to establish a connection (Chapter 10): a SYN packet goes out, a SYN-ACK comes back, an ACK goes out. The connection is established. Immediately, a <strong>TLS handshake</strong> follows (Chapter 12): the browser and server negotiate a cipher suite, exchange cryptographic keys, and establish an encrypted channel. Everything from this point forward is unreadable to anyone watching the traffic in transit — packets encrypted with the AES-256-GCM session key. The "S" in HTTPS is this handshake.</p>
+
+    <p>The HTTP request — "GET /projects HTTP/2" — is encrypted and sent. It travels through the NIC, through the switch, to the <strong>router</strong> (Chapter 11). The router looks at the destination IP address, consults its routing table, and forwards the packet to the next hop — the company's internet connection. Before it leaves the internal network, it passes through the <strong>firewall</strong> (Chapter 11). The firewall checks its rule set: outbound port 443 (HTTPS) to an Azure IP address — permitted. The packet exits the company network and enters the ISP's infrastructure, then the broader internet, hopping from router to router, each one consulting its routing table and forwarding toward the destination.</p>
+
+    <h2>The Other End</h2>
+
+    <p>The packet arrives at an <strong>Azure data center</strong> — one of Microsoft's facilities, full of rack-mounted servers (Chapter 12), drawing enormous amounts of power, cooled by industrial HVAC systems. At the network edge, Azure's infrastructure receives the packet and routes it to a <strong>load balancer</strong>, which distributes incoming requests across a pool of web server instances. This is how availability is maintained: no single server handles all traffic, and if one instance fails, the load balancer stops sending requests to it and the others absorb the load.</p>
+
+    <p>The request lands on one of the web server VMs. That VM is a <strong>virtual machine</strong> running on a Type 1 hypervisor — Microsoft Hyper-V running directly on the bare metal (Chapter 13). The physical server underneath might be running 20 or 30 VMs simultaneously, each in strict isolation, each believing it has exclusive access to its allocated CPU cores and RAM. The company's web application runs inside one of those VMs, managed under an IaaS or PaaS agreement — Azure handles the physical infrastructure; the company's developers (or Azure, under PaaS) manage the OS and application.</p>
+
+    <p>The web server process receives Alex's authenticated request. It verifies the Kerberos-based session token (authentication, again), checks whether Alex's account has permission to view the project list (authorization — Chapter 12), queries a managed Azure database for the relevant records, assembles an HTML/CSS/JavaScript response, and sends it back over the same encrypted TLS connection. Somewhere in a cloud monitoring dashboard, this request is logged: timestamp, response time, HTTP status code, user identifier. The sysadmin on-call — if they look — will see it in the event stream.</p>
+
+    <h2>The Response Returns</h2>
+
+    <p>The response packets travel back the same route in reverse. They exit Azure's network, traverse the internet, arrive at the company's ISP, pass through the firewall (inbound traffic on an established connection — permitted), through the router, through the switch, and back to Alex's NIC. The OS hands the bytes to the browser.</p>
+
+    <p>The browser receives what is, at the lowest level, a stream of binary data — bits encoded as electrical signals on the wire (Chapter 2). The NIC reassembles them into Ethernet frames (Chapter 11). The OS network stack strips the Ethernet headers, verifies IP and TCP checksums, decrypts the TLS payload (Chapter 12), and hands the HTTP response body to the browser. The browser reads the HTML — text encoded in UTF-8 (Chapter 3) — parses it into a document object model, fetches referenced CSS stylesheets and JavaScript files (more DNS lookups, more TLS connections, more round trips), executes the JavaScript, and renders pixels to the display.</p>
+
+    <p>Alex sees the project list. The whole process — from pressing Enter to a rendered page — took under two seconds. Most of that was network round trips and the browser loading additional assets. The cryptographic handshakes, DNS resolution, kernel interrupts, hypervisor scheduling, and database queries: milliseconds.</p>
+
+    <p>Every chapter of this book was necessary for that to work. Remove any one piece — the binary encoding, the CPU pipeline, the OS kernel, the network protocol, the firewall, the hypervisor — and the chain breaks.</p>
+
+    <div class="widget-card" data-widget-name="Interactive">
+      <div class="widget-title">The Journey at a Glance</div>
+      <div class="widget-desc">Click any node to see what happened at that step and which chapter covers it.</div>
+      <div data-widget="journey-map"></div>
+    </div>
+
+    <h2>Where You Go From Here</h2>
+
+    <p>This book began with the question of what a digital computer actually is — not how to use one, but what is happening underneath. You now have an answer that runs from transistor physics to cloud infrastructure. That's a foundation most people who work with computers every day don't have, and it will inform every technical decision you make from here on.</p>
+
+    <p>The natural next question is: where do you go deeper? The answer depends on which part of the stack interests you most.</p>
+
+    <p><strong>Systems administration</strong> is the operational core of IT — keeping systems running, patching vulnerabilities, managing users, and responding to incidents. The <strong>CompTIA A+</strong> certification validates the hardware, OS, and troubleshooting knowledge from this book's first two units. <strong>CompTIA Security+</strong> extends Chapter 12's security concepts into a full professional credential. Both are widely recognized entry points for IT careers.</p>
+
+    <p><strong>Networking</strong> goes deeper than Chapters 10 and 11 could go in an introduction — subnetting, routing protocols (OSPF, BGP), VLANs, QoS, and network troubleshooting at scale. <strong>CompTIA Network+</strong> and the Cisco CCNA are the standard credentialing paths. If you want to understand how packets actually move across the internet at a protocol level, these are the right next steps.</p>
+
+    <p><strong>Cloud and infrastructure</strong> is one of the fastest-growing specializations in IT. <strong>AWS Cloud Practitioner</strong> and <strong>Microsoft Azure Fundamentals (AZ-900)</strong> are accessible entry-level certifications that formalize what Chapter 13 introduced. From there, the associate-level certifications (AWS Solutions Architect, Azure Administrator) go deep into the operational and architectural details of each platform.</p>
+
+    <p><strong>Security</strong> spans every layer of this stack — and every layer has vulnerabilities. The attacker who exploits a misconfigured firewall rule, the phishing email that bypasses authentication, the unpatched VM that gets ransomwared — all of them exploit gaps in the systems this book describes. If security interests you, every chapter here is relevant, and <strong>CompTIA Security+</strong> followed by the <strong>CEH</strong> or <strong>OSCP</strong> are well-trodden paths into the field.</p>
+
+    <p>Whatever direction you choose: the fundamentals you've built here do not expire. The binary arithmetic in Chapter 1 is the same arithmetic that runs on quantum computing research hardware. The OSI model thinking from Chapter 10 applies to protocols that didn't exist when the model was written. The first-principles approach — understanding why a system is designed the way it is, not just how to operate it — is what separates professionals who can solve novel problems from those who can only follow known procedures.</p>
+
+    <p>Good luck.</p>
+
+    <!-- Quiz -->
+    <div class="practice-block">
+      <div class="practice-header">
+        <span class="practice-label">Quiz</span>
+        <span class="practice-title">Final Review</span>
+      </div>
+
+      <div class="quiz-question" id="q1">
+        <div class="q-text">1. In the scenario above, Alex's keyboard press generates a scan code that is ultimately stored as a binary value in memory. What does "binary" mean in this context?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Data is stored in groups of eight characters called bytes</button>
+          <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> Each bit has exactly two possible states — 1 or 0 — represented physically by a transistor that is on or off</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> The computer processes two instructions simultaneously using parallel pipelines</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> Memory is divided into two regions: RAM for programs and ROM for the OS</button>
+        </div>
+        <div class="mc-feedback" id="q1-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q2">
+        <div class="q-text">2. The HTML response that Alex's browser receives is encoded in UTF-8. What problem does a character encoding like UTF-8 solve?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> It compresses the HTML file so it transfers faster over the network</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">B</span> It encrypts the content so it cannot be read in transit</button>
+          <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">C</span> It defines which binary number maps to which character, so text can be stored and transmitted as bits and correctly interpreted on any system</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> It converts human-readable URLs into IP addresses</button>
+        </div>
+        <div class="mc-feedback" id="q2-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q3">
+        <div class="q-text">3. The CPU services a keyboard interrupt, saves its state, handles the event, then resumes where it left off. What CPU mechanism does this describe?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Pipelining — overlapping multiple instructions in different stages of execution</button>
+          <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">B</span> Interrupt handling — pausing the current execution context to service a hardware or software event</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">C</span> Cache eviction — flushing stale data from L1 cache before executing new instructions</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Hyper-threading — running two logical threads on a single physical core simultaneously</button>
+        </div>
+        <div class="mc-feedback" id="q3-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q4">
+        <div class="q-text">4. Why does the browser have to load the browser executable from the SSD into RAM before the CPU can run it?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> The SSD is volatile — data would be lost if the CPU read it directly</button>
+          <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">B</span> The CPU can only execute instructions from RAM; storage is too slow and is not directly addressable by the processor</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> The OS encrypts executables on disk, and RAM is needed to decrypt them</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> SSD controllers do not support the PCIe protocol required by the CPU</button>
+        </div>
+        <div class="mc-feedback" id="q4-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q5">
+        <div class="q-text">5. When Alex authenticates at login, Windows contacts a domain controller rather than checking a local password file. What is the primary advantage of this centralized model?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> It is faster — a local lookup would take longer than a network round trip</button>
+          <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">B</span> Accounts, passwords, and permissions can be managed in one place and enforced across all machines — disabling one account immediately revokes access everywhere</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> It eliminates the need for encryption since credentials never leave the corporate network</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> The domain controller stores password hashes on the user's local machine as a backup</button>
+        </div>
+        <div class="mc-feedback" id="q5-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q6">
+        <div class="q-text">6. In the scenario, a DNS query must complete before the HTTP request can be sent. Why can't the browser skip DNS and connect immediately?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> DNS provides authentication — without it, the server would reject the connection</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> DNS establishes the TCP connection that HTTP runs over</button>
+          <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> The network routes packets by IP address, not domain names — DNS translates the human-readable name into the numeric address the network requires</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> DNS negotiates the TLS encryption keys before the connection is opened</button>
+        </div>
+        <div class="mc-feedback" id="q6-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q7">
+        <div class="q-text">7. The web server checks whether Alex is authenticated AND whether Alex's account has permission to view the project list. What two security concepts do these checks represent?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> Encryption and hashing</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> Confidentiality and integrity</button>
+          <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">C</span> Authentication (verifying identity) and authorization (verifying permissions)</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> Non-repudiation and availability</button>
+        </div>
+        <div class="mc-feedback" id="q7-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q8">
+        <div class="q-text">8. The web server VM "believes it has exclusive access" to its hardware, but it is actually sharing a physical server with dozens of other VMs. What makes this isolation possible?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Each VM runs in its own data center rack, physically separated from the others</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> The VMs take turns running, each pausing the others while it executes</button>
+          <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> The hypervisor intercepts each VM's hardware requests and maps them to allocated slices of the physical resources, enforcing strict memory and CPU isolation between VMs</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> VMs run in containers, which provide hardware-level isolation through the Linux kernel</button>
+        </div>
+        <div class="mc-feedback" id="q8-feedback"></div>
+      </div>
+
+    </div>
+
+    <nav class="chapter-nav-footer">
+      <a href="ch13.html">
+        <span class="nav-direction">&#8592; Previous</span>
+        <span class="nav-title">Chapter 13: Virtualization &amp; Cloud Computing</span>
+      </a>
+    </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/journey-map.js"></script>
+</body>
+</html>
