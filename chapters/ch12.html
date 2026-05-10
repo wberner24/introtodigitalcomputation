@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 12: System Administration &amp; Security — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter active"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 12 · Unit 5: Administration</div>
+      <h1 class="chapter-title">System Administration &amp; Security</h1>
+      <div class="chapter-deco">CIA</div>
+      <p class="chapter-intro">Every network you've studied has to be built, maintained, and defended. System administrators keep accounts provisioned, DNS records accurate, patches applied, and backups verified. Information security practitioners protect the confidentiality, integrity, and availability of the systems those administrators run. This chapter covers both sides of the same coin — the operational work and the security principles that shape it.</p>
+    </header>
+
+    <article class="prose">
+
+    <h2>The Sysadmin Role</h2>
+
+    <p>A system administrator is responsible for the health, availability, and security of an organization's IT infrastructure — the servers, the network, the user accounts, the backups, and the services that tie them together. In a small business, one person handles all of it alongside help-desk support. In a large organization, the responsibilities divide: network engineers manage switches and routers; systems engineers manage servers and virtualization; security engineers own firewalls, monitoring, and incident response; help-desk analysts handle end-user requests. Regardless of how the work is divided, the goal is the same — keep things running, keep them secure, and know what to do when something breaks.</p>
+
+    <p>The day-to-day reality mixes planned work with reactive work. Planned work: deploying a new server, onboarding a new employee, applying patches on schedule, testing backups. Reactive work: diagnosing a crashed service, recovering a deleted file, responding to a security incident. Good administrators spend most of their time on the planned side — solid processes shrink the reactive pile.</p>
+
+    <h2>Data Centers</h2>
+
+    <p>Chapter 11 introduced rack-mounted servers. Those racks live somewhere, and that somewhere matters enormously. A <strong>data center</strong> is a purpose-built facility designed to house computing infrastructure continuously — 24 hours a day, 365 days a year, regardless of weather, power fluctuations, or hardware failures. Every design decision is about eliminating single points of failure.</p>
+
+    <p><strong>Power</strong> is the first concern. Data centers connect to the utility grid through multiple independent feeds, backed by banks of <strong>UPS</strong> (uninterruptible power supply) units that bridge the gap during outages, backed by diesel generators that take over within seconds and can run for days. A large enterprise data center might consume as much power as a small town. <strong>Cooling</strong> is the second concern: all that computing generates enormous heat. Precision air conditioning units maintain the room within a narrow temperature range, typically 65–75°F. Modern data centers use a <strong>hot aisle/cold aisle</strong> layout — server racks are arranged so their intake (front) faces one aisle and exhaust (rear) faces another, separating cold intake air from hot exhaust air to maximize cooling efficiency.</p>
+
+    <p>Organizations have three options for where to run their infrastructure: <strong>on-premises</strong> (in a server room they own and operate), <strong>colocation</strong> (renting space in someone else's data center — you own the servers but they provide the building, power, cooling, and connectivity), or <strong>cloud</strong> (renting virtualized compute resources with no physical hardware to manage). Most enterprises use a mix. The video below walks through what a large-scale data center actually looks like.</p>
+
+    <div class="video-wrap">
+      <div class="video-header">
+        <span class="video-label">Video</span>
+        <span class="video-title">Inside a Google Data Center</span>
+      </div>
+      <div class="video-frame">
+        <iframe src="https://www.youtube.com/embed/80aK2_iwMOs" title="Inside a Google Data Center" allowfullscreen></iframe>
+      </div>
+      <div class="video-caption">A tour of a Google data center showing the physical infrastructure: power systems, cooling, server hardware, and the scale of modern cloud computing. Credit: Google.</div>
+    </div>
+
+    <h2>User Account Management</h2>
+
+    <p>Every employee has a user account — a record in <strong>Active Directory (AD)</strong> storing their username, password hash, group memberships, email address, and other attributes. AD is the central authority for authentication and authorization in most Windows-based organizations. When you log in to a Windows workstation at a company, your credentials are verified against AD. When you open a shared drive, AD is consulted to check whether your account belongs to a group with read permission. Every service covered in Chapter 11 — file shares, email, domain login — traces back to an AD account.</p>
+
+    <p>Creating a new account is one of the first tasks a sysadmin learns: create the account in AD with the employee's name, set a temporary password requiring change at first login, add them to the appropriate <strong>security groups</strong>, and assign them a mailbox. Security groups are how permissions are managed at scale. Instead of granting permissions to individual users, you grant them to groups — a "Finance" group gets access to the finance share; an "IT Admins" group gets elevated privileges on servers. A new Finance employee gets added to the Finance group and immediately inherits all Finance permissions. When an employee leaves, you disable the account immediately (revoking all access at once), then delete it after a retention period. <strong>Disable before delete</strong> is standard practice: a disabled account can be re-enabled if you need to access the mailbox or audit history; a deleted account cannot.</p>
+
+    <div class="note">
+      <strong>Principle of Least Privilege.</strong> Users should have exactly the access they need to do their job — no more. An accountant doesn't need admin rights on the domain controller. A contractor doesn't need access to HR files. Over-provisioned accounts are a major attack vector: if a user's credentials are stolen, the attacker inherits everything that user had access to. Auditing group memberships regularly to remove stale permissions is a core sysadmin responsibility.
+    </div>
+
+    <h2>Group Policy</h2>
+
+    <p>Group Policy is Active Directory's mechanism for centrally enforcing settings on every domain-joined machine. A <strong>Group Policy Object (GPO)</strong> is a bundle of settings that is applied when a user logs in or a computer starts up. Common uses: require a screensaver lock after 15 minutes of inactivity; redirect each user's Documents folder to a file server so it's automatically backed up; map shared network drives at login; disable USB storage devices on machines in sensitive areas; enforce password complexity requirements and expiration intervals. One change to a GPO propagates to thousands of machines the next time they check for updates.</p>
+
+    <p>From an end-user perspective, Group Policy is the answer to most "why can't I do this on my work computer?" questions — IT has explicitly prevented it via policy. From a security perspective, Group Policy is one of the most powerful tools available: it enforces baseline security settings across the entire organization without requiring anyone to touch each machine individually.</p>
+
+    <h2>DNS in Practice</h2>
+
+    <p>DNS was covered conceptually in Chapter 10. The sysadmin view is different: you maintain the records. An organization's DNS splits into two zones. <strong>Internal (private) DNS</strong> serves the corporate intranet, resolving names like <code>fileserver.corp.local</code> or <code>mail.corp.local</code> to private IP addresses — these are never exposed to the public internet. <strong>External (public) DNS</strong> is what the internet queries when someone visits your website or delivers email to your domain; it's configured separately and managed through a domain registrar or public DNS hosting provider.</p>
+
+    <p>Every DNS record has a <strong>TTL</strong> (Time to Live) — a number of seconds that resolvers are allowed to cache the answer before querying again. Set TTLs short (300 seconds) before making a major DNS change, so the old record expires quickly and the new one propagates fast. In steady state, long TTLs (86,400 seconds, or one day) reduce query load. Changing a TTL from long to short takes a full TTL cycle before it takes effect — plan ahead.</p>
+
+    <p>The explorer below covers the record types you'll encounter most often. Spend a few minutes clicking through them; DNS record confusion is the cause of a surprising number of email delivery failures and website outages.</p>
+
+    <div class="widget-card" data-widget-name="Interactive">
+      <div class="widget-title">DNS Record Type Explorer</div>
+      <div class="widget-desc">Click any record type to see what it does, an example zone file entry, and practical notes.</div>
+      <div data-widget="dns-records"></div>
+    </div>
+
+    <h2>DHCP in Practice</h2>
+
+    <p>From the sysadmin view, DHCP means configuring <strong>scopes</strong>: the pool of assignable IP addresses, the subnet mask, the default gateway, and the DNS server addresses clients receive. Every time a device joins the network, DHCP hands it an address and a <strong>lease time</strong> — typically 8 hours on a wired corporate network, shorter on guest wireless. When a lease expires, the device renews or is assigned a different address from the pool. Scope sizing matters: a scope with 50 available addresses serving 80 devices will exhaust its pool and leave new devices with no IP. Monitor utilization and expand scopes before they fill up.</p>
+
+    <p><strong>Reservations</strong> break from dynamic assignment without abandoning DHCP. Printers and servers need a consistent IP so users and applications can find them reliably. Rather than manually configuring static addresses on those devices (which bypasses DHCP entirely and risks conflicts), you create a reservation: a rule that says "whenever the device with MAC address aa:bb:cc:dd:ee:ff requests an address, always give it 10.0.1.50." The device still participates in DHCP and automatically receives the correct gateway and DNS settings — it just always gets the same address.</p>
+
+    <h2>Network Troubleshooting</h2>
+
+    <p>When network connectivity fails, a methodical approach beats random clicking. Work from the bottom up: confirm physical layer first (is the cable plugged in? Is the link light on?), then check IP configuration, then test reachability, then test name resolution. Four commands handle most first-line Windows network troubleshooting.</p>
+
+    <p><strong><code>ipconfig /all</code></strong> shows the machine's current IP configuration: address, subnet mask, default gateway, DNS servers, DHCP server, MAC address, and lease expiration. This is the first command to run when something network-related breaks. If the IP address starts with <code>169.254.x.x</code>, the machine failed to obtain a DHCP lease and assigned itself an APIPA address — it has no useful network connectivity and the DHCP problem must be resolved first.</p>
+
+    <p><strong><code>ping</code></strong> sends ICMP echo requests and waits for replies. Successful replies confirm a working Layer 3 path between two hosts. <code>ping 8.8.8.8</code> tests internet connectivity; <code>ping fileserver.corp.local</code> tests both name resolution and connectivity in one command. If ping to an IP address succeeds but ping to a hostname fails, the problem is DNS, not connectivity. Note: some firewalls block ICMP, so no ping response doesn't always mean the host is down.</p>
+
+    <p><strong><code>tracert</code></strong> (Windows) / <code>traceroute</code> (Linux/macOS) shows every router hop along the path to a destination, with round-trip time to each. When ping fails, tracert shows exactly where the path breaks — the last hop that responds is as far as traffic is getting. Each <code>* * *</code> line means a router didn't respond (either it blocks ICMP or it's the failure point).</p>
+
+    <p><strong><code>nslookup</code></strong> queries DNS directly. <code>nslookup google.com</code> asks your configured DNS server to resolve the name and shows the result. If <code>ping google.com</code> fails but <code>ping 8.8.8.8</code> succeeds, DNS is the issue — run <code>nslookup google.com</code> and <code>nslookup google.com 1.1.1.1</code> (querying Cloudflare's public resolver as a comparison) to isolate whether the problem is your DNS server or your network configuration.</p>
+
+    <h2>Patch Management</h2>
+
+    <p>Software has bugs. Some are security vulnerabilities that attackers actively exploit. Vendors release patches to fix them, and the sysadmin's job is to get those patches deployed before attackers get there first. In Windows environments, most organizations run <strong>WSUS</strong> (Windows Server Update Services): a local server that downloads updates from Microsoft and distributes them to internal machines on a controlled schedule. Rather than every workstation independently hitting Microsoft's servers, all downloads flow from WSUS, and IT decides which updates are approved and when they deploy. A typical cycle: patches release on <strong>Patch Tuesday</strong> (the second Tuesday of each month); IT tests them on a small pilot group for a week; if nothing breaks, they approve the updates for broad rollout the following week.</p>
+
+    <p>Critical vulnerabilities break the normal cycle. A severity-critical remote code execution vulnerability might warrant emergency deployment the same night it's disclosed. The 2017 WannaCry ransomware outbreak — which disrupted hospitals, utilities, and corporations across 150 countries — exploited a Windows vulnerability for which Microsoft had released a patch two months earlier. Every affected system was one missed patch cycle away from being protected.</p>
+
+    <h2>Information Security: The CIA Triad</h2>
+
+    <p>Information security (infosec) is organized around a three-part framework called the <strong>CIA triad</strong>. Every security control, every policy, every countermeasure can be understood in terms of which of these three properties it protects.</p>
+
+    <div class="definition">
+      <strong>The CIA Triad</strong> — the three core properties of information security:<br>
+      <strong>Confidentiality</strong> — only authorized parties can access the information.<br>
+      <strong>Integrity</strong> — information has not been altered without authorization.<br>
+      <strong>Availability</strong> — information and systems are accessible when authorized users need them.
+    </div>
+
+    <p><strong>Confidentiality</strong> is protected by encryption (data is unreadable without the key), access controls (only authorized accounts can read a file), and physical security (an attacker who can't reach the hardware can't steal the data). <strong>Integrity</strong> is protected by hashing (a hash of a file reveals any modification), digital signatures (the signature is invalid if the document was tampered with), and audit logs (every change is recorded with who made it and when). <strong>Availability</strong> is protected by redundancy (no single point of failure), backups (recover when systems fail), patch management (keep systems running and secure), and capacity planning (don't let a system run out of disk space).</p>
+
+    <p>The three properties trade off against each other. Strong encryption protects confidentiality — but if you lose the key, availability suffers. Strict access controls protect both confidentiality and integrity — but too many restrictions hurt availability by slowing down legitimate work. Good security design finds the right balance for the organization's specific risk profile rather than maximizing any single property.</p>
+
+    <h2>Authentication and Authorization</h2>
+
+    <p>Two terms that are often confused but mean distinct things:</p>
+
+    <div class="definition">
+      <strong>Authentication</strong> — proving who you are. The system verifies your identity.<br>
+      <strong>Authorization</strong> — determining what you're allowed to do. The system checks your permissions.
+    </div>
+
+    <p>Authentication always comes first. When you type your username and password at a Windows login screen, you are being <em>authenticated</em> — Active Directory verifies that those credentials match a known account. Once authenticated, every resource access triggers <em>authorization</em> — the system checks whether your account (or the groups it belongs to) has permission to read, write, or execute that resource. You can be successfully authenticated but unauthorized to access a specific folder. The error "Access Denied" is an authorization failure, not an authentication failure.</p>
+
+    <p>Traditional authentication relies on a single factor: something you <strong>know</strong> (a password). Passwords have a fundamental weakness — they can be stolen, guessed, phished, or leaked in a data breach without the account owner knowing. <strong>Multi-factor authentication (MFA)</strong> requires two or more factors from different categories:</p>
+
+    <ul>
+      <li><strong>Something you know</strong> — password, PIN, security question</li>
+      <li><strong>Something you have</strong> — a phone running an authenticator app, a hardware security key (YubiKey), a smart card</li>
+      <li><strong>Something you are</strong> — fingerprint, face scan, retina scan (biometrics)</li>
+    </ul>
+
+    <p>MFA doesn't have to be two factors from different categories — it must be from <em>different</em> categories. A password plus a security question is two things you know, not MFA. A password plus a six-digit code from an authenticator app is MFA (know + have). If an attacker steals your password via phishing, MFA stops them at the second factor — they don't have your phone. This is why MFA is one of the highest-impact security controls an organization can deploy. Microsoft's data shows MFA blocks over 99% of automated credential attacks.</p>
+
+    <div class="note">
+      <strong>MFA in practice.</strong> Modern organizations enforce MFA through their identity provider (Azure AD, Okta, etc.). When you log in, the identity provider authenticates your password and then pushes a notification to your registered phone app (Microsoft Authenticator, Google Authenticator, Duo). You approve the notification — that approval proves you have the phone. Some high-security environments use hardware keys (YubiKey) that must be physically plugged in during login, eliminating the phone-intercept risk.
+    </div>
+
+    <h2>Protecting Data: Encryption and Hashing</h2>
+
+    <p>Two cryptographic tools protect data confidentiality and integrity: <strong>encryption</strong> makes data unreadable without a key; <strong>hashing</strong> produces a fixed-length fingerprint that reveals any change to the data. They are fundamentally different operations used for different purposes.</p>
+
+    <h3>Symmetric Encryption</h3>
+
+    <p>In <strong>symmetric encryption</strong>, the same key is used to encrypt and decrypt. The sender and receiver must both possess the same secret key — which means the key must be securely shared before communication can happen. The dominant modern algorithm is <strong>AES</strong> (Advanced Encryption Standard) with a 256-bit key. AES-256 is what protects encrypted hard drives (BitLocker), files, and archived backups. It's fast and extremely strong — a brute-force attack against AES-256 is computationally infeasible with any foreseeable technology.</p>
+
+    <h3>Asymmetric Encryption</h3>
+
+    <p><strong>Asymmetric encryption</strong> uses a mathematically linked key pair: a <strong>public key</strong> that anyone can have, and a <strong>private key</strong> that only you hold. Data encrypted with the public key can only be decrypted with the corresponding private key. This solves the key distribution problem: you publish your public key openly, and anyone can send you an encrypted message that only you can decrypt. The dominant algorithm is <strong>RSA</strong>. In practice, asymmetric encryption is too slow for bulk data, so TLS (HTTPS) uses it only to negotiate a shared symmetric session key — then switches to AES for the actual data transfer. This is called a <strong>hybrid</strong> approach.</p>
+
+    <h3>Hashing</h3>
+
+    <p>A <strong>hash function</strong> takes an input of any length and produces a fixed-length output (the hash or digest). SHA-256 always outputs exactly 256 bits (64 hex characters) regardless of whether the input is one word or an entire database. Hash functions are <strong>one-way</strong>: it is computationally infeasible to reverse a hash back to its original input. They are also <strong>deterministic</strong>: the same input always produces the same hash. And they exhibit the <strong>avalanche effect</strong>: a single character change produces a completely different hash — not just a slightly different one. Hashing protects integrity, not confidentiality: anyone can compute the hash of a file, so hashes aren't secret. What they do is prove a file hasn't changed. When you download software, the developer publishes the SHA-256 hash; you compute the hash of your downloaded file and compare. If they match, the file is exactly what the developer published, byte for byte.</p>
+
+    <p>Hashing is also how passwords are stored securely. A system never stores your actual password — it stores the hash of your password. When you authenticate, the system hashes what you typed and compares it to the stored hash. If they match, your password is correct. Since hashes are one-way, a database breach that exposes the password hashes doesn't directly expose the passwords. Modern password storage adds a random per-user <strong>salt</strong> before hashing, which prevents attackers from pre-computing a table of common password hashes (a <em>rainbow table</em> attack).</p>
+
+    <div class="widget-card" data-widget-name="Interactive">
+      <div class="widget-title">Cryptography Explorer</div>
+      <div class="widget-desc">Try real SHA-256 hashing and AES-256 encryption in your browser. Both use the browser's built-in WebCrypto API — no data leaves your machine.</div>
+      <div data-widget="crypto-explorer"></div>
+    </div>
+
+    <h2>Common Threats</h2>
+
+    <p><strong>Ransomware</strong> is currently the most disruptive threat facing organizations. The attack pattern: malware (typically delivered via a phishing email or an unpatched vulnerability) enters the network, moves laterally to reach file servers and backups, then encrypts everything — making all data inaccessible. The attackers demand payment for the decryption key, sometimes threatening to publish stolen data if the ransom isn't paid. Ransomware attacks the <em>Availability</em> pillar of the CIA triad directly. The defenses are layered: immutable offsite backups (so you can restore without paying), patched systems (so the initial entry is harder), MFA (so stolen credentials don't give attackers full access), and network segmentation (so malware can't move freely from one department to every server). A company that has tested its backups and can restore within its RTO has much more negotiating leverage than one that discovers its backups were also encrypted.</p>
+
+    <p><strong>Phishing</strong> is the most common initial attack vector — a deceptive email designed to steal credentials or trick the recipient into running malware. Spear phishing targets specific individuals using personal details to appear credible (a "message from your CEO" requesting an urgent wire transfer). No technical patch exists for human judgment, which is why organizations layer email filtering (blocking known-malicious senders and attachments), user training (security awareness programs), and MFA (so a stolen password alone isn't enough) together. <strong>Social engineering</strong> is the broader category: manipulating people — not systems — into taking actions that compromise security. A caller pretending to be IT support and asking a user to disable their firewall is social engineering. Technical security is only as strong as the human decisions surrounding it.</p>
+
+    <h2>Backup and Recovery</h2>
+
+    <p>Backups are the last line of defense against data loss from any cause — hardware failure, ransomware, accidental deletion, fire, flood. The industry baseline is the <strong>3-2-1 rule</strong>: keep <strong>3</strong> copies of data, on <strong>2</strong> different types of media, with <strong>1</strong> copy stored offsite. If ransomware encrypts your on-site servers and your on-site backup simultaneously, the offsite copy survives. "Offsite" today often means cloud backup storage — geographically separated from your primary data and, critically, air-gapped from the network so ransomware can't reach it.</p>
+
+    <p>Three backup types offer different tradeoffs between storage cost and restore speed. A <strong>full backup</strong> is a complete copy of all selected data — simplest to restore from but requires the most time and storage. An <strong>incremental backup</strong> copies only data changed since the last backup (full or incremental) — fast and space-efficient, but restoring requires the last full backup plus every incremental since. A <strong>differential backup</strong> copies all data changed since the last <em>full</em> backup — larger than incremental but restoring only requires the last full plus the most recent differential. Most organizations run full backups weekly and incrementals nightly.</p>
+
+    <p>Two business-level metrics define backup requirements. <strong>RPO</strong> (Recovery Point Objective) is how much data loss the organization can tolerate, measured in time: an RPO of 24 hours means backups must run at least daily, and any data created since the last backup is gone after a restore. <strong>RTO</strong> (Recovery Time Objective) is how long the organization can tolerate systems being offline: an RTO of 4 hours means recovery procedures must be fast enough to restore service within 4 hours. A company that has never tested a restore doesn't actually know its RTO — it only knows how long its backups take to run.</p>
+
+    <h2>Monitoring and Alerting</h2>
+
+    <p>You can't fix what you don't know is broken. On Windows, <strong>Event Viewer</strong> is the built-in log viewer. Every significant system event — a user login, a failed authentication attempt, a service crash, a disk error, a Group Policy update — generates an event logged at Information, Warning, or Error severity. After an incident, Event Viewer is the first stop: filter for Errors and Warnings in the time window around the problem and work backward. Security event logs record every authentication attempt; a spike in failed logins is a sign of a brute-force attack or a misconfigured service.</p>
+
+    <p>Most organizations augment Event Viewer with dedicated monitoring tools — <strong>PRTG</strong>, <strong>Zabbix</strong>, <strong>Nagios</strong>, or cloud-based services like <strong>Datadog</strong> — that continuously poll every server and network device for CPU utilization, memory usage, disk space, service status, and network throughput. When a threshold is crossed (disk 85% full, CPU pinned for 10 minutes, a service stopped), the tool sends an alert to whoever is on call. A disk that's 85% full today becomes a crashed application next week when it hits 100%; a well-configured monitoring system catches it first. The goal is to discover problems before users do.</p>
+
+    <h2>Where This Takes You</h2>
+
+    <p><strong>Chapter 13</strong> (Virtualization &amp; Cloud) builds directly on the data center foundation introduced here. Instead of one operating system per physical server, virtualization lets a single rack-mounted machine run dozens of isolated virtual machines simultaneously. This is what makes cloud computing economically viable and what allows organizations to provision a new server in minutes rather than weeks. The servers in that Google data center video are almost entirely running virtual machines.</p>
+
+    <p>The information security concepts introduced here — the CIA triad, authentication and authorization, encryption, and common threats — are the foundation of a dedicated information security course. That course goes deeper: cryptographic protocols (TLS, PKI, certificate chains), network security (IDS/IPS, SIEM, log aggregation), penetration testing methodology, incident response procedures, and compliance frameworks (NIST, ISO 27001, SOC 2). Everything in this chapter is the prerequisite vocabulary for that conversation.</p>
+
+    <!-- Quiz -->
+    <div class="practice-block">
+      <div class="practice-header">
+        <span class="practice-label">Quiz</span>
+        <span class="practice-title">Chapter 12 Quiz</span>
+      </div>
+
+      <div class="quiz-question" id="q1">
+        <div class="q-text">1. After downloading a large software installer, you compute its SHA-256 hash and compare it to the value published on the developer's website. Which property of the CIA triad does this verify?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> Confidentiality — confirming no one else intercepted the download</button>
+          <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> Integrity — confirming the file was not modified or corrupted in transit</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> Availability — confirming the file is accessible and not encrypted</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> Authentication — confirming the developer's identity</button>
+        </div>
+        <div class="mc-feedback" id="q1-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q2">
+        <div class="q-text">2. When you type your username and password to log in to Windows, you are being ______. When the system then checks whether your account can open a specific shared folder, you are being ______.</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Authorized; authenticated</button>
+          <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> Authenticated; authorized</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> Identified; verified</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Validated; provisioned</button>
+        </div>
+        <div class="mc-feedback" id="q2-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q3">
+        <div class="q-text">3. Which of the following correctly represents multi-factor authentication?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> A username and a password — two pieces of information you know</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> A fingerprint and a retinal scan — two biometric factors</button>
+          <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">C</span> A password and a push notification to your phone's authenticator app</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Two separate passwords required in sequence</button>
+        </div>
+        <div class="mc-feedback" id="q3-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q4">
+        <div class="q-text">4. Your company moves its public website to a new server with a different IP address. Which DNS record type must be updated for visitors to reach the new server?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">A</span> A record</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">B</span> MX record</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> TXT record</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> NS record</button>
+        </div>
+        <div class="mc-feedback" id="q4-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q5">
+        <div class="q-text">5. A DHCP reservation is used to:</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> Prevent any IP addresses in a specific range from being assigned to clients</button>
+          <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">B</span> Ensure that a specific device always receives the same IP address based on its MAC address</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">C</span> Reserve bandwidth on a network segment for high-priority devices</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> Store a backup of the DHCP scope configuration on a secondary server</button>
+        </div>
+        <div class="mc-feedback" id="q5-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q6">
+        <div class="q-text">6. You run <code>ping 8.8.8.8</code> and get replies. You then run <code>ping google.com</code> and get "could not find host google.com." What is the most likely cause?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Your default gateway is misconfigured</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> Google's servers are unreachable from your network</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">C</span> Your DHCP lease has expired</button>
+          <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">D</span> DNS resolution is failing on your machine</button>
+        </div>
+        <div class="mc-feedback" id="q6-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q7">
+        <div class="q-text">7. You encrypt a file with a key. Anyone who possesses that same key can decrypt it. This describes:</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">A</span> Symmetric encryption</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> Asymmetric encryption</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">C</span> Hashing</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> Public-key cryptography</button>
+        </div>
+        <div class="mc-feedback" id="q7-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q8">
+        <div class="q-text">8. You change the word "apple" to "Apple" in a document and recompute the SHA-256 hash. The new hash is completely different from the old one. This property of hash functions is called:</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Determinism</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> Collision resistance</button>
+          <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> The avalanche effect</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> One-way irreversibility</button>
+        </div>
+        <div class="mc-feedback" id="q8-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q9">
+        <div class="q-text">9. A ransomware attack encrypts all files on a company's servers, making them inaccessible. Which aspect of the CIA triad does this most directly attack?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> Confidentiality — the files can no longer be kept secret</button>
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">B</span> Integrity — the files have been modified without authorization</button>
+          <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">C</span> Availability — authorized users can no longer access their own data</button>
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> Authentication — users can no longer prove their identities to the system</button>
+        </div>
+        <div class="mc-feedback" id="q9-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q10">
+        <div class="q-text">10. The 3-2-1 backup rule requires three copies of data on two different types of media. What does the "1" refer to?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> One full backup must be verified by restore test each month</button>
+          <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">B</span> One copy must be stored at a separate physical location (offsite)</button>
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">C</span> One backup copy must be encrypted</button>
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> One recovery test must be completed per quarter</button>
+        </div>
+        <div class="mc-feedback" id="q10-feedback"></div>
+      </div>
+
+    </div>
+
+    <nav class="chapter-nav-footer">
+      <a href="ch11.html">
+        <span class="nav-direction">← Previous</span>
+        <span class="nav-title">Chapter 11: Network Architecture &amp; Communication</span>
+      </a>
+      <a href="ch13.html" class="next">
+        <span class="nav-direction">Next Chapter →</span>
+        <span class="nav-title">Virtualization &amp; Cloud</span>
+      </a>
+    </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/dns-records.js"></script>
+<script src="../widgets/crypto-explorer.js"></script>
+</body>
+</html>
