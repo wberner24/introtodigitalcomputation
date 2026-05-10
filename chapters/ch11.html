@@ -54,7 +54,7 @@
       <div class="chapter-eyebrow">Chapter 11 · Unit 4: Networks</div>
       <h1 class="chapter-title">Network Architecture &amp; Communication</h1>
       <div class="chapter-deco">⬡</div>
-      <p class="chapter-intro">A network is more than cables and protocols — it is an architecture. Devices are organized into roles: some provide services, others consume them. Switches and routers are arranged in tiers so traffic flows efficiently and policy is enforced at the right boundaries. Firewalls, VLANs, and NAT shape which devices can reach which resources. This chapter builds the mental model of how a real organizational network is designed and why each piece exists.</p>
+      <p class="chapter-intro">A network is more than cables and protocols — it is an architecture. Some devices provide services; others consume them. Switches, routers, firewalls, and access points each play a specific role in moving traffic safely and efficiently. This chapter builds the mental model of how those pieces fit together and why each one exists.</p>
     </header>
 
     <article class="prose">
@@ -67,7 +67,16 @@
       <strong>Client/Server Architecture</strong> — a network model in which a dedicated server provides a service and clients initiate requests to consume it. The server listens; the client always goes first.
     </div>
 
-    <p>The "server" is a role, not necessarily dedicated hardware. Your laptop is acting as a client when it loads a web page. That same laptop could act as a server if it were running software that other devices connect to. In practice, enterprise servers are purpose-built machines with more RAM, faster storage, redundant power supplies, and server-grade operating systems — but the architectural pattern is about roles, not hardware.</p>
+    <p>At its core, a server is a computer that serves a resource to other computers. That resource might be a web page (web server), a file (file server), an email (mail server), or an IP address (DHCP server). The pattern is always the same: the server holds something other computers need, listens for incoming requests, and delivers the resource on demand. The word "server" names a role — what the machine does — not what it looks like.</p>
+
+    <p>Because "server" names a role, any computer can play it. Your laptop is acting as a client right now when it loads a web page; it would act as a server if you started local web server software and a classmate browsed to your machine. A file server could be a tower PC in the corner of a small office or a virtual machine running in a cloud data center on the other side of the country. The software determines the role; the hardware is secondary.</p>
+
+    <p>In large organizations, however, dedicated server hardware earns its keep. Enterprise servers are typically <strong>rack-mounted</strong>: thin, horizontal computers — often just 1U or 2U (1.75 to 3.5 inches tall) — that slide into floor-to-ceiling metal racks in a temperature-controlled server room. These machines are engineered for continuous operation: redundant power supplies (so a failed power supply doesn't bring the server down), ECC (error-correcting) RAM (so a single-bit memory error doesn't corrupt data), hot-swappable drives, and remote management ports (Dell's iDRAC, HP's iLO) that let administrators reboot or diagnose a server without walking into the room. A single rack can hold dozens of servers and the switches that connect them — all in the space of a wardrobe.</p>
+
+    <figure class="chapter-photo">
+      <img src="../img/ch11_server-rack.jpg" alt="Rows of 1U rack-mounted servers in a server room">
+      <figcaption>Rack-mounted servers in a data center. Each thin horizontal unit slides into a standard 19-inch rack. Photo: Trique303, <a href="https://commons.wikimedia.org/wiki/File:Rack_Servers_Fujitsu_Primergy.jpg" target="_blank">Wikimedia Commons</a>, CC BY-SA 4.0</figcaption>
+    </figure>
 
     <p>Every service covered in this textbook fits the client/server model:</p>
 
@@ -204,17 +213,47 @@
       <text x="511" y="254" text-anchor="middle" font-size="8.5" font-style="italic" fill="#9A9490" font-family="'Source Sans 3',sans-serif">any node can initiate or respond</text>
     </svg>
 
-    <h2>How Enterprise Networks Are Structured</h2>
+    <h2>Network Devices</h2>
 
-    <p>A network serving a large organization — a university, a corporation, a hospital — can't be a single flat segment where every device sees every other's traffic. Instead, enterprise networks are organized in a <strong>three-tier hierarchy</strong>: a core layer for backbone speed, a distribution layer for policy enforcement, and an access layer where end devices connect. This structure keeps traffic localized, makes troubleshooting straightforward, and allows the network to scale to thousands of devices without redesigning from scratch.</p>
-
-    <p>Use the explorer below to understand the role of each device type in this hierarchy.</p>
+    <p>Every network is built from a handful of device types, each with a specific job. A switch connects devices on the same local network; a router connects networks together; a firewall enforces policy at network boundaries; a wireless access point extends the network to wireless clients. Click each device in the diagram below to see what it does, where it sits, and what real-world hardware looks like.</p>
 
     <div data-widget="network-topology"></div>
 
-    <h3>The DMZ</h3>
+    <h3>Switch</h3>
 
-    <p>Servers that must be reachable from the internet — a public web server, a mail relay, a VPN gateway — create a security problem. Putting them on the internal network gives them direct access to everything inside; putting them directly on the internet leaves them completely exposed. The solution is a <strong>DMZ</strong> (demilitarized zone): a separate network segment behind the perimeter firewall but isolated from the internal LAN. Firewall rules allow specific inbound traffic from the internet to reach DMZ servers, while blocking direct connections from the DMZ to the internal network. If a DMZ server is compromised, the attacker encounters another firewall before reaching internal systems.</p>
+    <p>A switch is the hub of your local area network — the device everything wired connects to, directly or indirectly. When a frame arrives at a switch port, the switch reads the destination MAC address and forwards the frame only to the port that MAC address is known to be on. This is smarter than an old-school hub, which sent every frame out every port regardless of destination. Switches learn MAC addresses by watching incoming traffic: when a frame arrives from an unknown source, the switch records which port it came in on and uses that mapping for future traffic. The RJ-45 wall jack in your office connects through conduit to a switch in a nearby wiring closet; everything flows through that switch before reaching the router. Enterprise switches also commonly supply <strong>Power over Ethernet (PoE)</strong>, letting a single Ethernet cable carry both data and power — ideal for wireless access points and IP phones that otherwise require separate power adapters.</p>
+
+    <figure class="chapter-photo">
+      <img src="../img/ch11_switch.jpg" alt="Cisco Catalyst managed switch with multiple Ethernet ports">
+      <figcaption>A managed Ethernet switch. Each port connects to one device (or another switch); the switch learns which MAC address is behind each port. Photo: Alexey Meyev, <a href="https://commons.wikimedia.org/wiki/File:Onp_switch.jpg" target="_blank">Wikimedia Commons</a>, CC BY-SA 4.0</figcaption>
+    </figure>
+
+    <h3>Router</h3>
+
+    <p>A router's job is to move packets between networks. Where a switch connects devices within a single network using MAC addresses (Layer 2), a router connects separate networks using IP addresses (Layer 3). When a packet leaves your internal network for the internet, it hits the router, which reads the destination IP address, consults its routing table, and forwards the packet one hop closer to its destination. Internet traffic crosses a chain of routers — each making its own forwarding decision — until it reaches the target host. At home your ISP-provided gateway combines a router, switch, and wireless AP in one box; in an enterprise these are separate devices. The router is also where <strong>NAT</strong> (Network Address Translation) happens: it translates the private IP addresses of your internal devices (192.168.x.x, 10.x.x.x) to the single public IP your ISP assigned, allowing hundreds of devices to share one internet address.</p>
+
+    <figure class="chapter-photo">
+      <img src="../img/ch11_router.jpg" alt="Linksys consumer wireless router">
+      <figcaption>A consumer-grade router/gateway — the kind provided by an ISP. Enterprise routers are dedicated rack-mounted appliances with no built-in Wi-Fi. Photo: Robert, <a href="https://commons.wikimedia.org/wiki/File:Cisco_2800_series_router_(1).jpg" target="_blank">Wikimedia Commons</a>, CC BY 2.0</figcaption>
+    </figure>
+
+    <h3>Firewall</h3>
+
+    <p>A firewall sits at the boundary between networks — most critically, between your internal network and the internet — and inspects every packet crossing that boundary. Rules specify which traffic is allowed and which is blocked, evaluated in order from top to bottom. The default posture is asymmetric: outbound traffic from inside is allowed; unsolicited inbound traffic from the internet is blocked. Most enterprise firewalls use <strong>stateful inspection</strong>, meaning they track active connections. When your workstation opens a TCP connection to a web server, the firewall records that session. When reply packets arrive from the web server, the firewall recognizes them as belonging to an established session and lets them through automatically — no explicit inbound rule required. Packets that arrive without a matching session entry are dropped.</p>
+
+    <figure class="chapter-photo">
+      <img src="../img/ch11_firewall.jpg" alt="Cisco ASA 5510 firewall appliance">
+      <figcaption>A Cisco ASA firewall appliance. Enterprise firewalls are dedicated rack-mounted devices with multiple network interfaces for different security zones. Photo: Jon 'ShakataGaNai' Davis, <a href="https://commons.wikimedia.org/wiki/File:Cisco_ASA_5510.jpg" target="_blank">Wikimedia Commons</a>, CC BY-SA 3.0</figcaption>
+    </figure>
+
+    <h3>Wireless Access Point</h3>
+
+    <p>A wireless access point is essentially a switch port without a cable. It broadcasts a Wi-Fi signal and bridges wireless devices onto the wired Ethernet network; from the IP layer's perspective, a laptop connected via Wi-Fi and one plugged into the wall are the same — both are just devices hanging off the switch. Enterprise APs are dedicated ceiling-mounted units, not built into the router, and that separation enables stronger authentication. Instead of a shared passphrase that every employee knows and can share, enterprise wireless uses <strong>802.1X</strong>: each user authenticates with their personal Active Directory username and password. The AP passes the credentials to a <strong>RADIUS server</strong>, which checks them against Active Directory and signals the AP to admit or reject the device. IT can revoke a specific employee's wireless access instantly by disabling their account — no password change required — and can see exactly which user was on which AP at any point in time.</p>
+
+    <figure class="chapter-photo">
+      <img src="../img/ch11_ap.jpg" alt="Ubiquiti UniFi ceiling-mounted wireless access point">
+      <figcaption>A ceiling-mounted enterprise wireless access point. A single Ethernet cable (carrying both data and PoE power) connects it back to the switch in a wiring closet. Photo: Sabbo91, <a href="https://commons.wikimedia.org/wiki/File:Access_Point_UniFi.jpg" target="_blank">Wikimedia Commons</a>, CC BY-SA 4.0</figcaption>
+    </figure>
 
     <h2>NAT</h2>
 
@@ -224,15 +263,9 @@
 
     <h2>VLANs</h2>
 
-    <p>By default, every port on a switch belongs to the same network segment — a device in accounting and a device in HR plugged into the same switch can communicate directly at Layer 2. A <strong>VLAN</strong> (Virtual Local Area Network) changes this: it logically divides a physical switch (or a set of interconnected switches) into isolated broadcast domains. A device on the Finance VLAN cannot send frames directly to a device on the Guest VLAN, even if they share the same physical switch. Traffic between VLANs must pass through a Layer 3 device — a router or distribution switch — where firewall rules and access control lists can inspect and control it.</p>
+    <p>By default, every port on a switch belongs to the same network segment — a device in accounting and a device in HR plugged into the same switch can communicate directly at Layer 2. A <strong>VLAN</strong> (Virtual Local Area Network) changes this: it logically divides a physical switch (or a set of interconnected switches) into isolated broadcast domains. A device on the Finance VLAN cannot send frames directly to a device on the Guest VLAN, even if they share the same physical switch. Traffic between VLANs must pass through a Layer 3 device — a router or a switch configured for routing — where access control lists can inspect and control it.</p>
 
-    <p>A typical enterprise network has separate VLANs for employees, servers, guest Wi-Fi, IP phones (Voice VLAN), and network device management. Each VLAN behaves as its own logical network. VLANs are one of the most practical tools in enterprise networking: they give IT the ability to segment traffic for security and performance without running separate physical cable runs for every group.</p>
-
-    <h2>Firewalls</h2>
-
-    <p>A <strong>firewall</strong> inspects packets crossing a network boundary and allows or blocks each one based on an ordered rule set. Rules are evaluated top-to-bottom; the first match wins, and a default deny rule at the bottom blocks everything not explicitly permitted. Most enterprise firewalls use <strong>stateful inspection</strong>: they track active TCP and UDP sessions so that reply packets for connections initiated from inside are automatically allowed back in. This is why you can browse the web through a corporate firewall without the IT team needing to open inbound ports — the firewall knows the reply packets belong to an established outbound session.</p>
-
-    <p>The perimeter firewall at the internet edge is the most visible, but defense in depth requires more. Internal firewalls sit between the DMZ and the internal LAN, between the server VLAN and the employee VLAN, and at other sensitive boundaries. If an attacker penetrates one layer, additional firewalls limit how far they can move laterally through the organization.</p>
+    <p>A typical enterprise network has separate VLANs for employees, servers, guest Wi-Fi, IP phones (Voice VLAN), and network device management. Each VLAN behaves as its own logical network, giving IT the ability to segment traffic for security and performance without running separate physical cable runs for every group.</p>
 
     <h2>VPN</h2>
 
@@ -245,15 +278,13 @@
 
     <h2>Wireless Networking</h2>
 
-    <p>Wireless (Wi-Fi, IEEE 802.11) operates at Layers 1 and 2 — it is a different physical medium, but the network layer and above work identically. A wireless access point bridges the Wi-Fi segment onto the wired Ethernet network. From the IP layer's perspective, a laptop connected over Wi-Fi and one connected over a cable are both just devices at the access layer.</p>
-
-    <p>The critical difference between home and enterprise wireless is <strong>authentication</strong>. At home, every device joins with the same shared passphrase (a pre-shared key, or PSK). Enterprise Wi-Fi uses <strong>802.1X</strong>: each user authenticates with their own Active Directory username and password. The access point forwards credentials to a <strong>RADIUS server</strong>, which verifies them against Active Directory and signals the AP to admit or reject the device. IT can revoke network access for a specific user account without changing a password that every employee knows — and can see exactly which user is connected to which AP at any moment.</p>
+    <p>Wi-Fi (IEEE 802.11) operates at Layers 1 and 2 — a different physical medium, but the network layer and above work identically. The access point covered in the Network Devices section handles the translation between wireless and wired. At home, all devices share a single passphrase (pre-shared key); in enterprise environments, 802.1X and RADIUS replace that shared secret with per-user credentials tied to Active Directory, so access is individual, auditable, and instantly revocable.</p>
 
     <h2>Where This Takes You</h2>
 
-    <p><strong>Chapter 12</strong> (System Administration) shifts from architecture to operations — the day-to-day work of keeping these systems running. DNS and DHCP become concrete tasks: configuring zones, managing address pools, reading resolver logs. IP addressing becomes troubleshooting: <code>ipconfig</code>, <code>ping</code>, <code>tracert</code>, <code>nslookup</code>. The network architecture you've built a mental model of here becomes the infrastructure you have to maintain.</p>
+    <p><strong>Chapter 12</strong> (System Administration) shifts from architecture to operations — the day-to-day work of keeping these systems running. DNS and DHCP become concrete tasks: configuring zones, managing address pools, reading resolver logs. IP addressing becomes troubleshooting: <code>ipconfig</code>, <code>ping</code>, <code>tracert</code>, <code>nslookup</code>. The devices you've seen here — switches, routers, firewalls, access points — become the infrastructure you have to maintain.</p>
 
-    <p>The networking course you'll take after this one starts where this unit leaves off — subnetting at depth, routing protocol configuration, spanning tree, 802.1X and RADIUS deployment, firewall rule writing, and network monitoring tools. The concepts in Chapters 10 and 11 are the foundation that makes those practical skills immediately sensible rather than a collection of disconnected commands.</p>
+    <p>The dedicated networking course that follows this one goes deeper on all of it: subnetting and CIDR notation, routing protocol configuration, VLAN trunking, spanning tree, firewall rule writing, 802.1X and RADIUS deployment, and network monitoring tools. Chapters 10 and 11 give you the conceptual foundation that makes those skills immediately sensible rather than a collection of disconnected commands.</p>
 
     <!-- Quiz -->
     <div class="practice-block">
@@ -318,12 +349,12 @@
       </div>
 
       <div class="quiz-question" id="q6">
-        <div class="q-text">6. In the 3-tier enterprise network model, which layer directly connects end-user workstations and wireless access points?</div>
+        <div class="q-text">6. What does a network switch use to decide which port to forward a frame out of?</div>
         <div class="mc-options">
-          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> Core</button>
-          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">B</span> Distribution</button>
-          <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">C</span> Access</button>
-          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> Perimeter</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> The destination IP address — it routes at Layer 3</button>
+          <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">B</span> The destination MAC address — it forwards at Layer 2</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">C</span> The VLAN tag — it checks which broadcast domain the packet belongs to</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> The TCP port number — it load-balances across available ports</button>
         </div>
         <div class="mc-feedback" id="q6-feedback"></div>
       </div>
