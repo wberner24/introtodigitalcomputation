@@ -1567,6 +1567,33 @@ body {
 .cx-error { color:#c14040; font-size:0.82rem; }
 @media (max-width:600px) { .cx-enc-grid { grid-template-columns:1fr; } .cx-av-grid { grid-template-columns:1fr; } }
 
+/* ── Cloud Responsibility widget ────────────────────────────── */
+.cr-widget { }
+.cr-tabs { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.cr-tab { padding:7px 22px; border-radius:var(--radius); border:1.5px solid var(--border-dark); background:var(--bg-card); font-size:0.88rem; font-weight:600; font-family:var(--font-body); cursor:pointer; color:var(--ink-mid); transition:border-color 0.15s,color 0.15s,background 0.15s; }
+.cr-tab:hover { border-color:var(--accent); color:var(--accent); }
+.cr-tab.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.cr-stack { display:flex; flex-direction:column; gap:5px; margin-bottom:14px; }
+.cr-layer { display:flex; align-items:center; justify-content:space-between; padding:11px 16px; border-radius:var(--radius); cursor:pointer; transition:background 0.25s; user-select:none; border:1.5px solid transparent; }
+.cr-layer[data-owner="provider"] { background:#1A2F5E; }
+.cr-layer[data-owner="customer"] { background:var(--bg-alt); border-color:var(--border-dark); }
+.cr-layer.selected { outline:2px solid var(--accent); outline-offset:2px; }
+.cr-layer-label { font-weight:600; font-size:0.88rem; }
+.cr-layer[data-owner="provider"] .cr-layer-label { color:#fff; }
+.cr-layer[data-owner="customer"] .cr-layer-label { color:var(--ink); }
+.cr-badge { font-size:0.68rem; font-weight:700; padding:2px 10px; border-radius:10px; white-space:nowrap; }
+.cr-layer[data-owner="provider"] .cr-badge { background:rgba(255,255,255,0.15); color:#fff; }
+.cr-layer[data-owner="customer"] .cr-badge { background:var(--accent); color:#fff; }
+.cr-detail { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:16px 20px; }
+.cr-placeholder { color:var(--ink-light); font-style:italic; font-size:0.88rem; display:flex; align-items:center; justify-content:center; min-height:64px; }
+.cr-detail-layer { font-size:1rem; font-weight:700; color:var(--ink); margin-bottom:4px; }
+.cr-detail-desc { font-size:0.86rem; color:var(--ink-mid); line-height:1.6; margin-bottom:10px; }
+.cr-detail-owner-label { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-light); margin-bottom:4px; }
+.cr-detail-note { font-size:0.86rem; color:var(--ink); line-height:1.6; background:var(--bg-alt); border-radius:var(--radius); padding:10px 14px; }
+.cr-legend { display:flex; gap:18px; margin-top:12px; flex-wrap:wrap; }
+.cr-legend-item { display:flex; align-items:center; gap:7px; font-size:0.78rem; color:var(--ink-mid); }
+.cr-legend-swatch { width:14px; height:14px; border-radius:3px; flex-shrink:0; }
+
 /* ── Network Topology widget ────────────────────────────────── */
 .nt-widget { display:flex; flex-direction:column; gap:16px; }
 .nt-diagram { display:flex; justify-content:center; }

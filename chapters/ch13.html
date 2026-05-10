@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chapter 13: Virtualization &amp; Cloud Computing — Introduction to Digital Computation</title>
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <nav class="sidebar" aria-label="Book navigation">
+    <div class="sidebar-logo">
+      <a href="../index.html" class="book-title">Introduction to Digital Computation</a>
+      <div class="book-subtitle">A First-Principles Approach</div>
+      <div class="book-author">Wade Berner · SIUE</div>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 1 — Foundations</div>
+      <a href="ch01.html" class="nav-chapter"><span class="ch-num">01</span> Binary</a>
+      <a href="ch02.html" class="nav-chapter"><span class="ch-num">02</span> Physical Bits</a>
+      <a href="ch03.html" class="nav-chapter"><span class="ch-num">03</span> Data Representation</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 2 — Hardware</div>
+      <a href="ch04.html" class="nav-chapter"><span class="ch-num">04</span> Processors</a>
+      <a href="ch05.html" class="nav-chapter"><span class="ch-num">05</span> Memory &amp; Storage</a>
+      <a href="ch06.html" class="nav-chapter"><span class="ch-num">06</span> I/O &amp; System Architecture</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 3 — Software</div>
+      <a href="ch07.html" class="nav-chapter"><span class="ch-num">07</span> System vs. Application Software</a>
+      <a href="ch08.html" class="nav-chapter"><span class="ch-num">08</span> Operating Systems</a>
+      <a href="ch09.html" class="nav-chapter"><span class="ch-num">09</span> File Systems &amp; Directory Services</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 4 — Networks</div>
+      <a href="ch10.html" class="nav-chapter"><span class="ch-num">10</span> Networking Fundamentals</a>
+      <a href="ch11.html" class="nav-chapter"><span class="ch-num">11</span> Network Architecture &amp; Communication</a>
+    </div>
+    <div class="nav-unit">
+      <div class="nav-unit-label">Unit 5 — Administration</div>
+      <a href="ch12.html" class="nav-chapter"><span class="ch-num">12</span> System Administration</a>
+      <a href="ch13.html" class="nav-chapter active"><span class="ch-num">13</span> Virtualization &amp; Cloud</a>
+      <a href="ch14.html" class="nav-chapter"><span class="ch-num">14</span> Putting It All Together</a>
+    </div>
+    <div class="sidebar-footer">&copy; 2026 Wade Berner<br>Southern Illinois University Edwardsville</div>
+  </nav>
+
+  <main class="main-content">
+
+    <header class="chapter-header">
+      <div class="chapter-eyebrow">Chapter 13 · Unit 5: Administration</div>
+      <h1 class="chapter-title">Virtualization &amp; Cloud Computing</h1>
+      <div class="chapter-deco">VM</div>
+      <p class="chapter-intro">For most of computing history, one server ran one operating system running one workload — and sat mostly idle the rest of the time. Virtualization broke that constraint. Today a single physical server runs dozens of isolated virtual machines simultaneously, and cloud computing lets organizations rent that capacity by the hour from someone else's data center. This chapter explains how both technologies work and why they have reshaped IT entirely.</p>
+    </header>
+
+    <article class="prose">
+
+    <h2>The Problem Virtualization Solves</h2>
+
+    <p>Before virtualization, the standard practice was to dedicate a physical server to a single application. The reasoning was sound: mixing workloads on one machine meant that one runaway process could starve everything else of resources, and a crashed application could destabilize the entire server. Isolation required physical separation. The unintended consequence was data centers full of mostly-idle machines — servers running at 8%, 12%, 15% CPU utilization around the clock, each drawing full power and generating full heat regardless of how little they were actually doing.</p>
+
+    <p>The economics were painful. A server might cost $10,000 to purchase and $3,000 per year in power and cooling to operate, yet spend 90% of its time waiting for work. Provisioning a new server meant submitting a purchase request, waiting weeks for delivery, physically racking and cabling the hardware, installing and configuring an OS, and finally deploying the application — a process that could take a month. IT teams could not respond to business needs at the speed business moved. Virtualization solved both problems at once.</p>
+
+    <h2>Virtual Machines</h2>
+
+    <p>A <strong>virtual machine (VM)</strong> is a software-defined computer — a complete simulated environment that includes virtual CPU cores, virtual RAM, virtual storage, and virtual network interfaces. From the operating system's perspective, the VM looks like real hardware. It boots, runs an OS, executes applications, and crashes, just like a physical machine. The critical difference is that it shares the underlying physical hardware with other VMs, all running simultaneously on the same server.</p>
+
+    <p>The software layer that makes this possible is the <strong>hypervisor</strong>. The hypervisor sits between the physical hardware and the virtual machines and is responsible for creating VMs, allocating physical resources (CPU time, RAM pages, storage I/O) among them, and enforcing strict isolation so that one VM cannot read or interfere with another's memory or processes. A physical server with 64 CPU cores and 512 GB of RAM might comfortably run 20–40 VMs, each believing it has exclusive access to its assigned slice. What used to require 20 physical servers now fits on 2, with utilization rates well above 70%.</p>
+
+    <h3>Type 1 vs. Type 2 Hypervisors</h3>
+
+    <p>Hypervisors come in two architectures. A <strong>Type 1 (bare-metal) hypervisor</strong> runs directly on the physical hardware — there is no host operating system underneath it. The hypervisor itself is effectively the OS of the physical machine, and the virtual machines run on top of it. VMware ESXi, Microsoft Hyper-V, and the Linux KVM kernel module are all Type 1. Because Type 1 hypervisors have direct hardware access with no intermediary, they are fast, efficient, and are used exclusively in production data centers and cloud infrastructure.</p>
+
+    <p>A <strong>Type 2 (hosted) hypervisor</strong> runs as an application inside a conventional host operating system. Windows or macOS runs first; then VMware Workstation, Oracle VirtualBox, or Parallels Desktop runs on top of it, hosting VMs inside an application window. Type 2 hypervisors are convenient for development and testing — a developer can run a Linux VM on their Mac to test a deployment — but the extra layer of the host OS adds overhead that makes Type 2 unsuitable for production.</p>
+
+    <h3>Snapshots and Templates</h3>
+
+    <p>Two VM features with no physical-server equivalent change how IT operates. A <strong>snapshot</strong> captures the complete state of a VM at a point in time — disk contents, RAM contents, CPU state, and configuration. Before applying a risky patch or making a major configuration change, you take a snapshot. If something goes wrong, you revert to the snapshot in minutes. With physical servers, rolling back meant restoring from a backup that might be hours or days old. With VMs, rollback is nearly instant.</p>
+
+    <p>A <strong>template</strong> is a snapshot used as a master image. Instead of building a new server from scratch every time, you build one "golden image" — OS installed, hardened, configured to standard — and clone VMs from it on demand. Provisioning a new server drops from weeks to minutes: clone the template, adjust the hostname and IP, and the VM is ready. This is the operational model that makes cloud computing possible at scale.</p>
+
+    <h2>Containers</h2>
+
+    <p>Virtual machines virtualize hardware — each VM gets a full OS. <strong>Containers</strong> virtualize the operating system instead. Multiple containers run on the same OS kernel, each isolated from the others by the kernel's namespace and control group features. Where a VM packages a complete OS plus an application, a container packages only the application and its dependencies — the runtime, libraries, and configuration files the application needs. Nothing more.</p>
+
+    <p>The result is dramatically lighter. A VM might consume 2–4 GB of disk space and take 60–90 seconds to boot. A container image might be 50–200 MB and start in under a second. A physical server that could comfortably run 20 VMs can run hundreds of containers. <strong>Docker</strong> is the dominant container platform. A <strong>Docker image</strong> is a read-only, layered blueprint — the application code, its runtime, and all its dependencies baked together. A running instance of an image is a <strong>container</strong>. Because the image captures the entire environment, a container that works on a developer's laptop will run identically in production. "It works on my machine" is the oldest excuse in software development; containers largely eliminate it.</p>
+
+    <p>The tradeoff for this efficiency is reduced isolation. Containers share the host OS kernel, so a kernel-level vulnerability could theoretically be exploited across all containers on a host. VMs provide stronger isolation because each has its own kernel — a vulnerability in one VM cannot directly affect others. In practice, organizations use both: containers for application workloads where density and speed matter, VMs (or VMs running containers) where stronger isolation is required, such as multi-tenant environments or sensitive data processing.</p>
+
+    <div class="note">
+      <strong>Kubernetes.</strong> When an organization runs hundreds or thousands of containers across many servers, manually deciding which container runs on which server becomes unmanageable. <strong>Kubernetes</strong> (K8s) is the dominant container orchestration platform — it automates deployment, scaling, load balancing, and self-healing of containerized applications across a cluster of servers. When a container crashes, Kubernetes restarts it automatically. When traffic spikes, Kubernetes spins up more containers. You describe the desired state; Kubernetes continuously works to achieve it.
+    </div>
+
+    <h2>Cloud Computing</h2>
+
+    <p>Cloud computing delivers computing resources — compute, storage, networking, databases, AI services, and more — over the internet, on demand, with pay-as-you-go pricing. Instead of buying servers and operating them in your own data center, you rent capacity from a provider's infrastructure and pay only for what you use, for as long as you use it. Shut down a VM at the end of the day and you stop paying. Spin up 500 servers for a two-hour batch job and pay for two hours of 500 servers.</p>
+
+    <p>The three dominant public cloud providers — <strong>Amazon Web Services (AWS)</strong>, <strong>Microsoft Azure</strong>, and <strong>Google Cloud Platform (GCP)</strong> — collectively operate hundreds of data centers across dozens of geographic regions worldwide. AWS, the pioneer (launched 2006), holds the largest market share and the deepest service catalog. Azure, preferred by enterprises already invested in Microsoft's ecosystem (Active Directory, Microsoft 365, Windows Server), is the second largest. GCP, while third in market share, is the leader in data analytics, AI/ML infrastructure, and Kubernetes (Google built Kubernetes and open-sourced it). Most large enterprises use at least two of the three.</p>
+
+    <h2>The Three Service Models</h2>
+
+    <p>Cloud services are categorized by how much of the technology stack the provider manages versus how much the customer manages. This is called the <strong>shared responsibility model</strong> — and understanding it is essential for knowing what you're signing up for when you choose a cloud service.</p>
+
+    <h3>IaaS — Infrastructure as a Service</h3>
+
+    <p>With IaaS, the provider supplies virtual machines, storage, and networking — the raw infrastructure. You manage everything above that: the operating system, the runtime, the application, and the data. IaaS is the most flexible model and the most responsibility. If a security patch is released for your OS, patching it is your job. If your application has a bug, debugging it is your job. IaaS gives you a VM that looks exactly like a physical server you rented remotely — what you do with it is up to you. Examples: <strong>AWS EC2</strong>, <strong>Azure Virtual Machines</strong>, <strong>Google Compute Engine</strong>.</p>
+
+    <h3>PaaS — Platform as a Service</h3>
+
+    <p>With PaaS, the provider manages the OS and runtime environment in addition to the infrastructure. You deploy your application code and manage your data — the platform handles the rest. You don't choose an OS version, apply patches, or configure web servers. You push code; it runs. PaaS is the right choice when you want to focus on building the application rather than operating the infrastructure that runs it. Examples: <strong>Azure App Service</strong>, <strong>Google App Engine</strong>, <strong>AWS Elastic Beanstalk</strong>, <strong>Heroku</strong>.</p>
+
+    <h3>SaaS — Software as a Service</h3>
+
+    <p>With SaaS, the provider runs and manages the entire application. You log in and use it — there's no code to deploy, no OS to patch, no runtime to configure. SaaS is what most business users interact with every day without realizing it's cloud computing. Examples: <strong>Microsoft 365</strong> (email, Word, Excel, Teams), <strong>Google Workspace</strong> (Gmail, Docs, Drive), <strong>Salesforce</strong> (CRM), <strong>Zoom</strong>, <strong>Slack</strong>. If you use any of these, you are a SaaS customer.</p>
+
+    <p>Most organizations use all three models simultaneously. A company might use Microsoft 365 for email (SaaS), Azure App Service to host their customer-facing web application (PaaS), and Azure Virtual Machines for legacy applications that need OS-level control (IaaS). The widget below visualizes exactly who is responsible for what at each layer of the stack.</p>
+
+    <div class="widget-card" data-widget-name="Interactive">
+      <div class="widget-title">Cloud Shared Responsibility Model</div>
+      <div class="widget-desc">Select a service model to see which layers the provider manages vs. which you manage. Click any layer for details.</div>
+      <div data-widget="cloud-responsibility"></div>
+    </div>
+
+    <h2>Deployment Models</h2>
+
+    <p>Beyond the service model (what is provided), organizations also choose a deployment model (where it runs and who controls the environment).</p>
+
+    <p>A <strong>public cloud</strong> is infrastructure operated by a third-party provider and shared across many organizations simultaneously. AWS, Azure, and GCP are all public clouds. The multi-tenant nature — your VMs run on the same physical hardware as other customers' VMs — is what makes public cloud economical, but it also means you have no visibility into or control over the underlying hardware. The provider's isolation and security controls protect you from other tenants.</p>
+
+    <p>A <strong>private cloud</strong> is cloud infrastructure dedicated exclusively to a single organization. It may run on-premises (in the organization's own data center) or in a colocation facility, but it provides the same self-service provisioning and automation that public cloud does — just for one organization's exclusive use. Private clouds sacrifice the economies of scale of public cloud in exchange for complete control over the environment.</p>
+
+    <p>A <strong>hybrid cloud</strong> connects private and public infrastructure, allowing workloads to move between them. Sensitive data and regulated workloads stay on-premises or in the private cloud; development environments, test systems, and burst capacity spin up in the public cloud on demand. Hybrid is the reality for most large enterprises: they have years of investment in on-premises infrastructure that isn't going away, but they use public cloud for new projects and flexible capacity.</p>
+
+    <h2>The Business Case</h2>
+
+    <p><strong>Capital expenditure vs. operational expenditure.</strong> Traditional IT spending is CapEx: you buy servers every three to five years, depreciate them on the balance sheet, and replace them when they age out. Cloud shifts this to OpEx: a monthly bill, like a utility. Finance departments often prefer OpEx because it's predictable, doesn't require large upfront approvals, and scales directly with business activity rather than being a lump sum purchased in anticipation of future growth.</p>
+
+    <p><strong>Elasticity.</strong> A retailer's IT demand on Black Friday is 10 times their average daily load. With physical servers, they face a choice: buy enough hardware to handle the peak (which sits 90% idle the rest of the year) or be underpowered during their most important sales period. Cloud eliminates this dilemma — scale to 10× capacity for 12 hours, pay for 12 hours of 10× capacity, then scale back down. The same principle applies to any workload with variable demand: batch processing, machine learning training, product launches, seasonal spikes.</p>
+
+    <p><strong>No hardware lifecycle.</strong> Physical servers fail, age out of warranty, and require periodic replacement — a planning and capital cycle that repeats every three to five years. Cloud customers offload this entirely. When AWS upgrades their hardware, you automatically benefit the next time you provision an instance. There is no procurement process, no racking, no cabling, and no e-waste to dispose of.</p>
+
+    <p><strong>Global reach and managed services.</strong> AWS operates 33+ geographic regions. Deploying infrastructure in Tokyo instead of Chicago is a configuration choice, not a six-month project. Cloud providers also offer hundreds of managed services — fully operated databases, message queues, AI model APIs, identity systems, and more — that organizations can adopt without building or operating the underlying infrastructure. A team that would take six months to build and harden a production database can be using a managed cloud database that day.</p>
+
+    <div class="note">
+      <strong>Cloud cost management.</strong> Cloud's pay-as-you-go model is a double-edged sword. Unused resources that aren't shut down keep billing. Over-provisioned instances waste money quietly. Most organizations that move to cloud without disciplined cost governance are surprised by their bills. Cloud providers offer cost management tools (AWS Cost Explorer, Azure Cost Management) and organizations adopt practices like tagging resources by team and project, setting budgets and alerts, and regularly reviewing and right-sizing instances. "Cloud is cheaper" is only true if someone is actively managing the spend.
+    </div>
+
+    <h2>Where This Takes You</h2>
+
+    <p><strong>Chapter 14</strong> (Putting It All Together) traces a complete scenario — from a user typing a URL to the data being served from a cloud database — connecting every concept from this book into a single end-to-end story. The layers you've studied individually (binary, hardware, OS, networking, security, virtualization) all appear in sequence, showing how they interlock in a real system.</p>
+
+    <p>Cloud and virtualization are the foundation of almost every technical career path in modern IT. A systems administrator today is managing VMs and containers, not physical servers. A developer deploys to a cloud platform, not a machine in a closet. A security engineer is auditing cloud IAM policies, not unlocking physical server racks. Whether you go deep in infrastructure, security, development, or data, what you've learned in this chapter is the scaffolding every modern technical role is built on.</p>
+
+    <!-- Quiz -->
+    <div class="practice-block">
+      <div class="practice-header">
+        <span class="practice-label">Quiz</span>
+        <span class="practice-title">Chapter 13 Quiz</span>
+      </div>
+
+      <div class="quiz-question" id="q1">
+        <div class="q-text">1. What is the primary function of a hypervisor?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">A</span> To compress virtual machine disk images to reduce storage consumption</button>
+          <button class="mc-option" onclick="checkMC('q1',this,true)"><span class="mc-letter">B</span> To create and manage virtual machines, allocating physical hardware resources among them</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">C</span> To route network traffic between virtual machines on the same host</button>
+          <button class="mc-option" onclick="checkMC('q1',this,false)"><span class="mc-letter">D</span> To back up VM snapshots to remote storage automatically</button>
+        </div>
+        <div class="mc-feedback" id="q1-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q2">
+        <div class="q-text">2. A developer uses Oracle VirtualBox on their Windows laptop to run a Linux VM for testing. What type of hypervisor is VirtualBox?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">A</span> Type 1 (bare-metal) — it runs directly on the hardware</button>
+          <button class="mc-option" onclick="checkMC('q2',this,true)"><span class="mc-letter">B</span> Type 2 (hosted) — it runs as an application inside the host OS</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">C</span> Type 1, because it uses hardware virtualization extensions in the CPU</button>
+          <button class="mc-option" onclick="checkMC('q2',this,false)"><span class="mc-letter">D</span> Neither — VirtualBox is a container runtime, not a hypervisor</button>
+        </div>
+        <div class="mc-feedback" id="q2-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q3">
+        <div class="q-text">3. Before applying a major OS patch to a production VM, a sysadmin takes a snapshot. Why?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">A</span> Snapshots are required by the hypervisor before any configuration changes</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">B</span> To compress the VM's disk before adding patch files</button>
+          <button class="mc-option" onclick="checkMC('q3',this,true)"><span class="mc-letter">C</span> To capture a point-in-time state so the VM can be instantly reverted if the patch causes problems</button>
+          <button class="mc-option" onclick="checkMC('q3',this,false)"><span class="mc-letter">D</span> Snapshots replicate the VM to a backup server in case the primary host fails</button>
+        </div>
+        <div class="mc-feedback" id="q3-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q4">
+        <div class="q-text">4. How do containers differ from virtual machines in the most fundamental way?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">A</span> Containers can only run Linux workloads; VMs can run any OS</button>
+          <button class="mc-option" onclick="checkMC('q4',this,true)"><span class="mc-letter">B</span> Containers share the host OS kernel; VMs each run their own full operating system</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">C</span> Containers require more disk space than VMs because they bundle all dependencies</button>
+          <button class="mc-option" onclick="checkMC('q4',this,false)"><span class="mc-letter">D</span> Containers run on Type 2 hypervisors; VMs run on Type 1 hypervisors</button>
+        </div>
+        <div class="mc-feedback" id="q4-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q5">
+        <div class="q-text">5. A company uses Microsoft 365 for email, Teams, and Word. Which cloud service model best describes Microsoft 365?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">A</span> IaaS — Microsoft provides the servers; the company installs Office</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">B</span> PaaS — Microsoft manages the runtime; the company deploys its own email application</button>
+          <button class="mc-option" onclick="checkMC('q5',this,true)"><span class="mc-letter">C</span> SaaS — Microsoft manages everything; the company logs in and uses the applications</button>
+          <button class="mc-option" onclick="checkMC('q5',this,false)"><span class="mc-letter">D</span> Hybrid — some components run on-premises, others in the cloud</button>
+        </div>
+        <div class="mc-feedback" id="q5-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q6">
+        <div class="q-text">6. A startup wants to deploy a web application without managing OS patches, web server configuration, or runtime updates. Which service model fits?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">A</span> IaaS — they provision VMs and control the full stack</button>
+          <button class="mc-option" onclick="checkMC('q6',this,true)"><span class="mc-letter">B</span> PaaS — they deploy code; the platform manages the infrastructure and runtime</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">C</span> SaaS — they use a vendor-provided application</button>
+          <button class="mc-option" onclick="checkMC('q6',this,false)"><span class="mc-letter">D</span> Private cloud — they need dedicated infrastructure for compliance</button>
+        </div>
+        <div class="mc-feedback" id="q6-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q7">
+        <div class="q-text">7. In the shared responsibility model, which layer is ALWAYS the customer's responsibility regardless of whether they use IaaS, PaaS, or SaaS?</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">A</span> The operating system</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">B</span> The application</button>
+          <button class="mc-option" onclick="checkMC('q7',this,true)"><span class="mc-letter">C</span> The data</button>
+          <button class="mc-option" onclick="checkMC('q7',this,false)"><span class="mc-letter">D</span> The runtime and middleware</button>
+        </div>
+        <div class="mc-feedback" id="q7-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q8">
+        <div class="q-text">8. A retailer scales their cloud infrastructure to 10× normal capacity for Black Friday, then scales back to normal the next day. This cloud characteristic is called:</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">A</span> Redundancy</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">B</span> Multi-tenancy</button>
+          <button class="mc-option" onclick="checkMC('q8',this,true)"><span class="mc-letter">C</span> Elasticity</button>
+          <button class="mc-option" onclick="checkMC('q8',this,false)"><span class="mc-letter">D</span> High availability</button>
+        </div>
+        <div class="mc-feedback" id="q8-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q9">
+        <div class="q-text">9. A hospital keeps patient records on its own private cloud for compliance, but runs development and test environments on AWS. This is an example of:</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">A</span> Public cloud</button>
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">B</span> Private cloud</button>
+          <button class="mc-option" onclick="checkMC('q9',this,true)"><span class="mc-letter">C</span> Hybrid cloud</button>
+          <button class="mc-option" onclick="checkMC('q9',this,false)"><span class="mc-letter">D</span> Multi-cloud</button>
+        </div>
+        <div class="mc-feedback" id="q9-feedback"></div>
+      </div>
+
+      <div class="quiz-question" id="q10">
+        <div class="q-text">10. Moving from buying servers every five years to paying a monthly cloud bill shifts IT spending from CapEx to ______.</div>
+        <div class="mc-options">
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">A</span> RevEx</button>
+          <button class="mc-option" onclick="checkMC('q10',this,true)"><span class="mc-letter">B</span> OpEx</button>
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">C</span> NetEx</button>
+          <button class="mc-option" onclick="checkMC('q10',this,false)"><span class="mc-letter">D</span> SaaS credits</button>
+        </div>
+        <div class="mc-feedback" id="q10-feedback"></div>
+      </div>
+
+    </div>
+
+    <nav class="chapter-nav-footer">
+      <a href="ch12.html">
+        <span class="nav-direction">← Previous</span>
+        <span class="nav-title">Chapter 12: System Administration &amp; Security</span>
+      </a>
+      <a href="ch14.html" class="next">
+        <span class="nav-direction">Next Chapter →</span>
+        <span class="nav-title">Putting It All Together</span>
+      </a>
+    </nav>
+
+    </article>
+  </main>
+</div>
+
+<script src="../js/main.js"></script>
+<script src="../widgets/cloud-responsibility.js"></script>
+</body>
+</html>
