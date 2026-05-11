@@ -53,11 +53,13 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 05 · Unit 2: Hardware</div>
       <h1 class="chapter-title">Memory &amp; Storage</h1>
-      <div class="chapter-deco">DRAM</div>
-      <p class="chapter-intro">A CPU that can't get data fast enough is just an expensive space heater. Everything the processor touches — instructions, inputs, results — has to live somewhere. This chapter is about where that somewhere is, what it costs, and why the answer is never just one place.</p>
+      <div class="chapter-deco">00101</div>
+      <p class="chapter-intro">Everything the processor touches — instructions, inputs, results — has to live somewhere. This chapter is about where that somewhere is, what it costs, and why the answer is never just one place.</p>
     </header>
 
     <article class="prose">
+
+      <p>A CPU that can't get data fast enough is just an expensive space heater.</p>
 
       <p>In Chapter 4 we introduced the memory hierarchy as a way to explain cache: the CPU needs data faster than RAM can deliver it, so we build small, fast pools of memory close to the processor. But we stopped at the L3 cache. That was only the top of the ladder.</p>
 
@@ -65,6 +67,7 @@
 
       <p>Understanding that tradeoff — and knowing which tier belongs in which situation — is a core competency for anyone who specifies, maintains, or troubleshoots IT systems.</p>
 
+      <!-- EDITOR NOTE: "Primary vs. Secondary Storage" section currently appears before the hierarchy table — consider whether moving it after would help readers see the full landscape first before learning the conceptual split. -->
       <h2>Primary vs. Secondary Storage</h2>
 
       <p>Before we look at the full hierarchy, it helps to understand the most important conceptual split in the whole field: the difference between <strong>primary</strong> and <strong>secondary</strong> storage.</p>
@@ -215,7 +218,7 @@
       <p>How wide those addresses can be determines the maximum RAM a system can hold. A <strong>32-bit</strong> processor has 32-bit addresses, giving a theoretical maximum of 2<sup>32</sup> bytes — exactly 4 GB. That's why 32-bit operating systems cap out at 4 GB of RAM, no matter how many sticks you install. A <strong>64-bit</strong> processor has 64-bit addresses: 2<sup>64</sup> bytes, or about 18 exabytes of theoretical address space. Current hardware doesn't come close to that ceiling — we're limited by the physical number of address pins on the CPU and memory modules — but for practical purposes, 64-bit systems have no meaningful RAM limit for the foreseeable future.</p>
 
       <div class="note">
-        <strong>Hexadecimal and memory addresses.</strong> Memory addresses are almost always written in hexadecimal (hex) — the base-16 notation you encountered in Chapter 3. A 64-bit address like <span class="hex">0x00007FF8A3C40000</span> is far more compact than its decimal equivalent (140,708,220,649,472) and maps cleanly onto groups of four bits. Whenever you see <code>0x</code> in front of a number in a debugger, crash log, or system utility, you're looking at a memory address or offset.
+        <strong>Hexadecimal and memory addresses.</strong> Memory addresses are almost always written in hex — the base-16 notation you encountered in Chapter 3. A 64-bit address like <span class="hex">0x00007FF8A3C40000</span> is far more compact than its decimal equivalent (140,708,220,649,472) and maps cleanly onto groups of four bits. Whenever you see <code>0x</code> in front of a number in a debugger, crash log, or system utility, you're looking at a memory address or offset.
       </div>
 
       <div class="definition">
@@ -415,7 +418,9 @@
 
       <p>Back in Chapter 2, we mentioned solid-state drives in a note box and said: <em>they use floating-gate transistors that can trap charge even without power, and we'll cover them properly in Chapter 5.</em> That time has come.</p>
 
-      <p>An SSD stores data using a type of transistor with an extra layer called a <strong>floating gate</strong>. Unlike a normal transistor, which loses its charge state when power is removed, a floating gate is completely surrounded by insulating material. Electrons can be forced onto the gate using a high voltage pulse (a write operation), and because they're trapped by the insulator, they stay there indefinitely — even without power. To erase a bit, a reverse voltage pulse sweeps the electrons back off. This is how NAND flash memory achieves the holy grail: non-volatile, fast, and solid-state (no moving parts).</p>
+      <p>An SSD stores data using a type of transistor with an extra layer called a <strong>floating gate</strong>. Unlike a normal transistor, which loses its charge state when power is removed, a floating gate is completely surrounded by insulating material. Electrons can be forced onto the gate using a high voltage pulse (a write operation), and because they're trapped by the insulator, they stay there indefinitely — even without power. To erase a bit, a reverse voltage pulse sweeps the electrons back off.</p>
+
+      <p>When power is removed, a normal transistor forgets. A floating-gate transistor doesn't. That's how NAND flash combines three properties that used to be mutually exclusive: non-volatile, fast, and solid-state with no moving parts.</p>
 
       <div class="definition">
         <div class="def-term">NAND Flash</div>
@@ -521,7 +526,7 @@
         </tbody>
       </table>
 
-      <p>The SATA interface was designed in the early 2000s for spinning hard drives. It works fine for SSDs, but the bus maxes out at around 550 MB/s — far below what modern NAND flash can deliver. NVMe (Non-Volatile Memory Express) is a protocol purpose-built for flash storage, connecting directly to the CPU via PCIe lanes, the same high-speed bus used by graphics cards. The result is 5–10× higher sequential throughput and meaningfully lower latency. For any system purchased today, NVMe is the default choice; SATA is mainly relevant when upgrading an older machine that lacks M.2 slots.</p>
+      <p>The SATA interface was designed in the early 2000s for spinning hard drives. It works fine for SSDs, but the bus maxes out at around 550 MB/s — far below what modern NAND flash can deliver. NVMe (Non-Volatile Memory Express) is a protocol designed specifically for flash storage from the ground up, connecting directly to the CPU via PCIe lanes, the same high-speed bus used by graphics cards. The result is 5–10× higher sequential throughput and meaningfully lower latency. For any system purchased today, NVMe is the default choice; SATA is mainly relevant when upgrading an older machine that lacks M.2 slots.</p>
 
       <div class="note">
         <strong>M.2 is a form factor, not an interface.</strong> M.2 is the small rectangular slot found in most modern laptops and motherboards — about the size of a stick of gum. An M.2 slot can carry either SATA or NVMe traffic. When you're speccing a drive, check that the M.2 slot on the motherboard supports NVMe (PCIe), not just SATA. A drive and slot can be physically compatible but limited to SATA speeds if the slot doesn't have PCIe lanes routed to it.
@@ -574,11 +579,11 @@
         </tbody>
       </table>
 
-      <p>The block size isn't arbitrary — it follows from the physics of each storage technology:</p>
-      <ul>
-        <li><strong>HDDs.</strong> Seek time and rotational latency mean the overhead of reaching a location is paid whether you then read 1 byte or 512. Since the cost is the same, you might as well read a full sector. Traditional hard drives standardized on <strong>512-byte sectors</strong>; modern drives use <strong>4,096-byte sectors</strong> (called 4K or Advanced Format) for better error correction and larger capacity support.</li>
-        <li><strong>SSDs.</strong> NAND flash physically cannot address individual bytes. Internally, flash is organized into <em>pages</em> (~4 KB, the minimum read/write unit) and <em>erase blocks</em> (~256 KB, the minimum erase unit). Writing a single byte requires reading the surrounding page, modifying it in memory, erasing the erase block, and rewriting the whole thing — a phenomenon called <strong>write amplification</strong> that contributes to both write latency and cell wear.</li>
-      </ul>
+      <p>The block size isn't arbitrary — it follows from the physics of each storage technology.</p>
+
+      <p>On a hard disk drive, seek time and rotational latency mean the overhead of reaching a location is paid whether you then read 1 byte or 512. Since the cost is the same, you might as well read a full sector. Traditional hard drives standardized on <strong>512-byte sectors</strong>; modern drives use <strong>4,096-byte sectors</strong> (called 4K or Advanced Format) for better error correction and larger capacity support.</p>
+
+      <p>SSDs have a different reason. NAND flash physically cannot address individual bytes. Internally, flash is organized into <em>pages</em> (~4 KB, the minimum read/write unit) and <em>erase blocks</em> (~256 KB, the minimum erase unit). Writing a single byte requires reading the surrounding page, modifying it in memory, erasing the erase block, and rewriting the whole thing — a phenomenon called <strong>write amplification</strong> that contributes to both write latency and cell wear.</p>
 
       <div class="note">
         <strong>Size on disk vs. file size.</strong> Because storage is block-based, every file occupies at least one full block even if its content is smaller. A 3-byte text file on a filesystem with 4 KB blocks consumes 4 KB of actual disk space. On Windows, right-clicking a tiny file and checking Properties shows two different sizes: <em>Size</em> (the actual content) and <em>Size on disk</em> (the space the block allocation consumes). This gap — called internal fragmentation — is an unavoidable consequence of block-based storage.
@@ -589,6 +594,8 @@
       <h2>Virtual Memory</h2>
 
       <p>Here's a practical problem: programs often want more memory than a system physically has. A machine with 16 GB of RAM might be running an operating system, a browser with forty tabs, a video call, a database client, and a few background services simultaneously. Individually they're fine; together they might want 20 GB.</p>
+
+      <p>From the program's perspective, it has more RAM than physically exists. The OS is lying. That's the whole trick.</p>
 
       <p>The solution operating systems have used since the 1960s is <strong>virtual memory</strong>: the OS creates the illusion of a larger address space than physically exists by treating a portion of the storage drive as an overflow area for RAM. When physical RAM fills up, the OS identifies pages of memory that haven't been used recently — <em>cold pages</em> — and writes them to a reserved area on the drive called a <strong>page file</strong> (Windows) or <strong>swap partition</strong> (Linux/macOS). That RAM is then freed up for something that needs it now. When a process needs a page that was swapped out, the OS fetches it back from disk, potentially swapping out something else in its place.</p>
 
@@ -730,9 +737,7 @@
 
       <p>The rule is a minimum, not a ceiling. Critical data — medical records, financial data, legal documents — warrants more copies with more geographic separation. The question to ask is: <em>if this building burned down tonight, what data would be gone forever?</em> Whatever the answer is, that data is under-protected.</p>
 
-      <h3>Storage Tiering in Enterprise</h3>
-
-      <p>Large organizations rarely use a single tier of storage. Instead, they implement <strong>storage tiering</strong>: automatically moving data to the appropriate tier based on how frequently it's accessed. Hot data — currently active databases, recently accessed files — lives on fast NVMe storage. Warm data — files accessed occasionally — lives on SATA SSDs or high-RPM HDDs. Cold data — archives, old backups, compliance records — gets pushed to tape or object storage. Tiering software monitors access patterns and handles the movement automatically, optimizing cost without sacrificing performance for active workloads.</p>
+      <p>Large organizations rarely use a single tier of storage. They implement <strong>storage tiering</strong>: software that monitors access patterns and automatically moves data to the appropriate tier. Hot data — currently active databases, recently accessed files — lives on fast NVMe storage. Warm data — files accessed occasionally — lives on SATA SSDs or high-RPM HDDs. Cold data — archives, old backups, compliance records — gets pushed to tape or object storage. The movement happens transparently, optimizing cost without sacrificing performance for the workloads that actually need it.</p>
 
       <!-- ── Practice Block ── -->
       <div class="practice-block">

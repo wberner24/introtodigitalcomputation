@@ -53,7 +53,7 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 13 · Unit 5: Administration</div>
       <h1 class="chapter-title">Virtualization &amp; Cloud Computing</h1>
-      <div class="chapter-deco">VM</div>
+      <div class="chapter-deco">01101</div>
       <p class="chapter-intro">For most of computing history, one server ran one operating system running one workload — and sat mostly idle the rest of the time. Virtualization broke that constraint. Today a single physical server runs dozens of isolated virtual machines simultaneously, and cloud computing lets organizations rent that capacity by the hour from someone else's data center. This chapter explains how both technologies work and why they have reshaped IT entirely.</p>
     </header>
 
@@ -73,9 +73,9 @@
 
     <h3>Type 1 vs. Type 2 Hypervisors</h3>
 
-    <p>Hypervisors come in two architectures. A <strong>Type 1 (bare-metal) hypervisor</strong> runs directly on the physical hardware — there is no host operating system underneath it. The hypervisor itself is effectively the OS of the physical machine, and the virtual machines run on top of it. VMware ESXi, Microsoft Hyper-V, and the Linux KVM kernel module are all Type 1. Because Type 1 hypervisors have direct hardware access with no intermediary, they are fast, efficient, and are used exclusively in production data centers and cloud infrastructure.</p>
+    <p>Hypervisors come in two architectures. A <strong>Type 1 (bare-metal) hypervisor</strong> runs directly on the physical hardware — there is no host operating system underneath it. The hypervisor itself is effectively the OS of the physical machine, and the virtual machines run on top of it. VMware ESXi, Microsoft Hyper-V, and the Linux KVM kernel module are all examples. With direct hardware access and no intermediary, they are fast, efficient, and used exclusively in production data centers and cloud infrastructure.</p>
 
-    <p>A <strong>Type 2 (hosted) hypervisor</strong> runs as an application inside a conventional host operating system. Windows or macOS runs first; then VMware Workstation, Oracle VirtualBox, or Parallels Desktop runs on top of it, hosting VMs inside an application window. Type 2 hypervisors are convenient for development and testing — a developer can run a Linux VM on their Mac to test a deployment — but the extra layer of the host OS adds overhead that makes Type 2 unsuitable for production.</p>
+    <p>A <strong>Type 2 (hosted) hypervisor</strong> runs as an application inside a conventional host operating system. Windows or macOS runs first; then VMware Workstation, Oracle VirtualBox, or Parallels Desktop runs on top of it, hosting VMs inside an application window. This is convenient for development and testing — a developer can run a Linux VM on their Mac to test a deployment — but the extra layer of the host OS adds overhead that makes it unsuitable for production.</p>
 
     <h3>Snapshots and Templates</h3>
 
@@ -99,11 +99,13 @@
 
     <p>Cloud computing delivers computing resources — compute, storage, networking, databases, AI services, and more — over the internet, on demand, with pay-as-you-go pricing. Instead of buying servers and operating them in your own data center, you rent capacity from a provider's infrastructure and pay only for what you use, for as long as you use it. Shut down a VM at the end of the day and you stop paying. Spin up 500 servers for a two-hour batch job and pay for two hours of 500 servers.</p>
 
-    <p>The three dominant public cloud providers — <strong>Amazon Web Services (AWS)</strong>, <strong>Microsoft Azure</strong>, and <strong>Google Cloud Platform (GCP)</strong> — collectively operate hundreds of data centers across dozens of geographic regions worldwide. AWS, the pioneer (launched 2006), holds the largest market share and the deepest service catalog. Azure, preferred by enterprises already invested in Microsoft's ecosystem (Active Directory, Microsoft 365, Windows Server), is the second largest. GCP, while third in market share, is the leader in data analytics, AI/ML infrastructure, and Kubernetes (Google built Kubernetes and open-sourced it). Most large enterprises use at least two of the three.</p>
+    <p>The three dominant public cloud providers — <strong>Amazon Web Services (AWS)</strong>, <strong>Microsoft Azure</strong>, and <strong>Google Cloud Platform (GCP)</strong> — collectively operate hundreds of data centers across dozens of geographic regions worldwide. AWS, the pioneer (launched 2006), holds the largest market share and the widest range of services. Azure, preferred by enterprises already invested in Microsoft's ecosystem (Active Directory, Microsoft 365, Windows Server), is the second largest. GCP, while third in market share, is the leader in data analytics, AI/ML infrastructure, and Kubernetes (Google built Kubernetes and open-sourced it). Most large enterprises use at least two of the three.</p>
 
     <h2>The Three Service Models</h2>
 
-    <p>Cloud services are categorized by how much of the technology stack the provider manages versus how much the customer manages. This is called the <strong>shared responsibility model</strong> — and understanding it is essential for knowing what you're signing up for when you choose a cloud service.</p>
+    <p>Imagine you want to run a web application. The most extreme version of doing everything yourself is to buy a server, install an OS, install a web server, deploy your code, and answer your phone at 3 AM when it crashes. The most extreme version of doing nothing yourself is to log into someone else's pre-built application and use it. In between those two extremes is a spectrum, and cloud providers have given the points on that spectrum names.</p>
+
+    <p>The categorization comes down to how much of the technology stack the provider manages versus how much the customer manages — the <strong>shared responsibility model</strong>.</p>
 
     <h3>IaaS — Infrastructure as a Service</h3>
 
@@ -149,11 +151,7 @@
       <strong>Cloud cost management.</strong> Cloud's pay-as-you-go model is a double-edged sword. Unused resources that aren't shut down keep billing. Over-provisioned instances waste money quietly. Most organizations that move to cloud without disciplined cost governance are surprised by their bills. Cloud providers offer cost management tools (AWS Cost Explorer, Azure Cost Management) and organizations adopt practices like tagging resources by team and project, setting budgets and alerts, and regularly reviewing and right-sizing instances. "Cloud is cheaper" is only true if someone is actively managing the spend.
     </div>
 
-    <h2>Where This Takes You</h2>
-
-    <p><strong>Chapter 14</strong> (Putting It All Together) traces a complete scenario — from a user typing a URL to the data being served from a cloud database — connecting every concept from this book into a single end-to-end story. The layers you've studied individually (binary, hardware, OS, networking, security, virtualization) all appear in sequence, showing how they interlock in a real system.</p>
-
-    <p>Cloud and virtualization are the foundation of almost every technical career path in modern IT. A systems administrator today is managing VMs and containers, not physical servers. A developer deploys to a cloud platform, not a machine in a closet. A security engineer is auditing cloud IAM policies, not unlocking physical server racks. Whether you go deep in infrastructure, security, development, or data, what you've learned in this chapter is the scaffolding every modern technical role is built on.</p>
+    <p>Chapter 14 follows a single request — a login, a click, a page load — all the way through the stack, from the keypress to the cloud VM that answers it.</p>
 
     <!-- Quiz -->
     <div class="practice-block">

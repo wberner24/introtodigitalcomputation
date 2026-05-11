@@ -53,11 +53,13 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 11 · Unit 4: Networks</div>
       <h1 class="chapter-title">Network Architecture &amp; Communication</h1>
-      <div class="chapter-deco">⬡</div>
+      <div class="chapter-deco">01011</div>
       <p class="chapter-intro">A network is more than cables and protocols — it is an architecture. Some devices provide services; others consume them. Switches, routers, firewalls, and access points each play a specific role in moving traffic safely and efficiently. This chapter builds the mental model of how those pieces fit together and why each one exists.</p>
     </header>
 
     <article class="prose">
+
+    <p>Chapter 10 was about how bits move. This chapter is about who's asking for them, who's answering, and who is between them deciding whether they're allowed to talk at all.</p>
 
     <h2>Client/Server Architecture</h2>
 
@@ -71,7 +73,7 @@
 
     <p>Because "server" names a role, any computer can play it. Your laptop is acting as a client right now when it loads a web page; it would act as a server if you started local web server software and a classmate browsed to your machine. A file server could be a tower PC in the corner of a small office or a virtual machine running in a cloud data center on the other side of the country. The software determines the role; the hardware is secondary.</p>
 
-    <p>In large organizations, however, dedicated server hardware earns its keep. Enterprise servers are typically <strong>rack-mounted</strong>: thin, horizontal computers — often just 1U or 2U (1.75 to 3.5 inches tall) — that slide into floor-to-ceiling metal racks in a temperature-controlled server room. These machines are engineered for continuous operation: redundant power supplies (so a failed power supply doesn't bring the server down), ECC (error-correcting) RAM (so a single-bit memory error doesn't corrupt data), hot-swappable drives, and remote management ports (Dell's iDRAC, HP's iLO) that let administrators reboot or diagnose a server without walking into the room. A single rack can hold dozens of servers and the switches that connect them — all in the space of a wardrobe.</p>
+    <p>In large organizations, however, dedicated server hardware earns its keep. Enterprise servers are typically <strong>rack-mounted</strong>: thin, horizontal computers — often just 1U or 2U (1.75 to 3.5 inches tall) — that slide into floor-to-ceiling metal racks in a temperature-controlled server room. These machines are built to run for years without stopping: redundant power supplies (so a failed power supply doesn't bring the server down), ECC (error-correcting) RAM (so a single-bit memory error doesn't corrupt data), hot-swappable drives, and remote management ports (Dell's iDRAC, HP's iLO) that let administrators reboot or diagnose a server without walking into the room. A single rack can hold dozens of servers and the switches that connect them — all in the space of a wardrobe.</p>
 
     <figure class="chapter-photo">
       <img src="../img/ch11_server-rack.jpg" alt="Rows of 1U rack-mounted servers in a server room">
@@ -109,13 +111,7 @@
       <strong>P2P in the enterprise?</strong> Microsoft's <em>Delivery Optimization</em> feature (Windows 10/11) uses a quiet P2P approach: workstations on the same network share Windows Update packages with each other, reducing both the load on Microsoft's servers and the organization's internet bandwidth. Each PC is simultaneously downloading from and uploading to its neighbors. Active Directory still controls authentication and policy — only the software distribution is P2P.
     </div>
 
-    <p>Despite its advantages, P2P is rarely chosen for enterprise IT systems:</p>
-
-    <ul>
-      <li><strong>No central management point.</strong> You can't patch a "server" if there is no server. IT administrators need centralized control to push policy changes and respond to incidents.</li>
-      <li><strong>Inconsistent availability.</strong> A file on a central server is always accessible. A file on a peer's laptop is unavailable when that laptop is powered off or off-site.</li>
-      <li><strong>Security and compliance.</strong> Regulations governing sensitive data typically require demonstrable control over where data is stored and who can access it — something P2P makes difficult to audit or enforce.</li>
-    </ul>
+    <p>Despite its advantages, P2P is rarely chosen for enterprise IT systems. You can't patch a "server" if there is no server, and IT administrators need a central point to push policy changes and respond to incidents. Availability is inconsistent: a file on a central server is always reachable, but a file on a peer's laptop is unavailable when that laptop is powered off or off-site. And regulations governing sensitive data typically require demonstrable control over where data is stored and who can access it — something P2P makes difficult to audit or enforce.</p>
 
     <!-- SVG: Client/Server vs P2P -->
     <svg viewBox="0 0 680 262" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
@@ -282,13 +278,17 @@
 
     <h2>Wireless Networking</h2>
 
-    <p>Wi-Fi (IEEE 802.11) operates at Layers 1 and 2 — a different physical medium, but the network layer and above work identically. The access point covered in the Network Devices section handles the translation between wireless and wired. At home, all devices share a single passphrase (pre-shared key); in enterprise environments, 802.1X and RADIUS replace that shared secret with per-user credentials tied to Active Directory, so access is individual, auditable, and instantly revocable.</p>
+    <p>The access point is the device. The radio waves it broadcasts are the medium — and the medium has rules of its own.</p>
 
-    <h2>Where This Takes You</h2>
+    <p>Wi-Fi (IEEE 802.11) operates on two main frequency bands: <strong>2.4 GHz</strong> and <strong>5 GHz</strong>. Newer hardware also uses 6 GHz (Wi-Fi 6E), but most networks you encounter still live on the first two. The choice between bands is a tradeoff between range and speed. Lower frequencies travel farther and pass through walls more easily; higher frequencies carry more data but attenuate faster and struggle with obstacles. A laptop sitting next to the access point is better off on 5 GHz; a phone two rooms and three drywall partitions away will usually do better on 2.4 GHz.</p>
 
-    <p><strong>Chapter 12</strong> (System Administration) shifts from architecture to operations — the day-to-day work of keeping these systems running. DNS and DHCP become concrete tasks: configuring zones, managing address pools, reading resolver logs. IP addressing becomes troubleshooting: <code>ipconfig</code>, <code>ping</code>, <code>tracert</code>, <code>nslookup</code>. The devices you've seen here — switches, routers, firewalls, access points — become the infrastructure you have to maintain.</p>
+    <p>Each band is divided into <strong>channels</strong> — narrow slices of the spectrum that access points actually transmit on. The 2.4 GHz band is famously crowded: only three non-overlapping channels (1, 6, and 11 in North America), shared with microwave ovens, Bluetooth devices, baby monitors, and every neighbor's router. The 5 GHz band offers far more non-overlapping channels and less interference, which is the other reason it's faster in practice. In an apartment building, the difference is the difference between a usable connection and a useless one.</p>
 
-    <p>The dedicated networking course that follows this one goes deeper on all of it: subnetting and CIDR notation, routing protocol configuration, VLAN trunking, spanning tree, firewall rule writing, 802.1X and RADIUS deployment, and network monitoring tools. Chapters 10 and 11 give you the conceptual foundation that makes those skills immediately sensible rather than a collection of disconnected commands.</p>
+    <p>Signal strength matters too. Wi-Fi signal attenuates with distance and with anything it has to pass through — drywall is mild, brick is bad, a refrigerator full of water is worse, and a steel-reinforced concrete wall is essentially opaque. Enterprise deployments don't rely on a single powerful AP; they use many lower-power APs spread across the ceiling, each covering a small area, and let clients roam between them as users walk through the building. That's why an office of any size has a dozen identical white discs mounted overhead rather than one giant antenna in the server room.</p>
+
+    <p>Authentication is the other half of the story, and it's where home and enterprise diverge sharply. At home, all devices share a single passphrase (pre-shared key) — anyone who knows it gets in, and revoking access means changing the password and reconnecting every device in the house. In enterprise environments, 802.1X and RADIUS replace that shared secret with per-user credentials tied to Active Directory, so access is individual, auditable, and instantly revocable. When an employee leaves, IT disables the account and that person is off the Wi-Fi the moment their device tries to reauthenticate. No one else has to change a password.</p>
+
+    <p>Chapter 12 is about the people and procedures that keep all of this running — the sysadmin who provisions the accounts, patches the servers, and gets paged at 3 AM when something breaks.</p>
 
     <!-- Quiz -->
     <div class="practice-block">

@@ -53,22 +53,19 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 09 · Unit 3: Software</div>
       <h1 class="chapter-title">File Systems &amp; Directory Services</h1>
-      <div class="chapter-deco">/</div>
+      <div class="chapter-deco">01001</div>
       <p class="chapter-intro">A file is a name attached to a sequence of bytes on a storage device. A filesystem is the software layer that makes that simple idea work — managing names, hierarchy, permissions, and the mapping from human-readable paths to physical storage blocks. This chapter covers how filesystems are structured, how they differ between operating systems, and how directory services extend the same organizing principle from a single machine to an entire organization.</p>
     </header>
 
     <article class="prose">
 
+      <p>A file is a name attached to a sequence of bytes on a storage device. That's it. Everything else a filesystem appears to do — folders, permissions, ownership, the whole tree — is software bookkeeping on top of that one simple idea.</p>
+
       <h2>What Is a Filesystem?</h2>
 
       <p>Chapter 5 described storage hardware — spinning disks and NAND flash — as devices that read and write blocks of data at numeric addresses. A hard drive does not know what a "file" is. It knows sector 0, sector 1, sector 2. The <strong>filesystem</strong> is the software layer, managed by the OS kernel, that imposes structure on top of those raw blocks.</p>
 
-      <p>A filesystem provides three things that raw block storage cannot:</p>
-      <ul>
-        <li><strong>Names.</strong> "report.txt" is a human-readable label the filesystem maps to a specific set of blocks on disk. Change the filename and the same blocks are now called something else.</li>
-        <li><strong>Hierarchy.</strong> Files are organized into directories (folders), which can be nested to arbitrary depth. This tree structure is the mental model most people already have for file storage.</li>
-        <li><strong>Metadata.</strong> For each file, the filesystem tracks size, creation and modification timestamps, ownership, and permissions — all stored separately from the file's actual content.</li>
-      </ul>
+      <p>It does this by providing three things raw block storage cannot. The first is <strong>names</strong>: "report.txt" is a human-readable label that the filesystem maps to a specific set of blocks on disk — change the filename and the same blocks are now called something else. The second is <strong>hierarchy</strong>: files are organized into directories (folders), which can be nested to arbitrary depth, giving you the tree structure most people already have as a mental model for file storage. The third is <strong>metadata</strong>: for each file, the filesystem tracks size, creation and modification timestamps, ownership, and permissions — all stored separately from the file's actual content.</p>
 
       <p>The OS kernel accesses all filesystems through a common interface called the <strong>Virtual File System (VFS)</strong>. The VFS means that an application calling "open this file" does not need to know whether the file lives on an ext4 partition, an NTFS drive, a network share, or even the virtual /proc filesystem — the kernel handles the translation.</p>
 
@@ -147,7 +144,7 @@
         <text x="439" y="198" text-anchor="middle" font-size="8" font-style="italic" fill="#3A5A3A">Drive letters (C:, D:) — each volume is a separate tree</text>
       </svg>
 
-      <p>For IT professionals, the Linux model's flexibility matters in practice: a database partition can be mounted at <code>/var/lib/mysql</code>, a shared NFS volume at <code>/mnt/fileserver</code>, and a user's home directory at <code>/home/alice</code> — all seamlessly integrated into one tree, regardless of which physical device or network location the data actually lives on.</p>
+      <p>For IT professionals, the Linux model's flexibility matters in practice: a database partition can be mounted at <code>/var/lib/mysql</code>, a shared NFS volume at <code>/mnt/fileserver</code>, and a user's home directory at <code>/home/alice</code> — all appearing as one tree, regardless of which physical device or network location the data actually lives on.</p>
 
       <h2>Filesystem Formats</h2>
 
@@ -224,11 +221,7 @@
 
       <p>To read a file, the OS finds the file's starting block number (stored in the directory entry), then follows the FAT chain — entry by entry — until it hits the end-of-chain marker. The file's content is the concatenation of all the blocks in that chain, in order.</p>
 
-      <p>Modern filesystems replace the flat FAT array with more efficient structures, but the core idea — a central index mapping files to blocks — is universal:</p>
-      <ul>
-        <li><strong>ext4 (Linux)</strong> uses <strong>inodes</strong>. Each file has one inode that stores its metadata (owner, permissions, timestamps) and a list of the block addresses where its data lives. The directory is just a table of (filename → inode number) mappings.</li>
-        <li><strong>NTFS (Windows)</strong> uses the <strong>Master File Table (MFT)</strong> — a structured database where each record describes one file or directory: its name, timestamps, permissions, and the contiguous runs of blocks containing its data.</li>
-      </ul>
+      <p>Modern filesystems replace the flat FAT array with more efficient structures, but the core idea — a central index mapping files to blocks — is universal. On Linux, <strong>ext4</strong> uses <strong>inodes</strong>: each file has one inode that stores its metadata (owner, permissions, timestamps) and a list of the block addresses where its data lives, and the directory is just a table of (filename → inode number) mappings. On Windows, <strong>NTFS</strong> uses the <strong>Master File Table (MFT)</strong> — a structured database where each record describes one file or directory: its name, timestamps, permissions, and the contiguous runs of blocks containing its data.</p>
 
       <p>In every case, this index is what a "filesystem" fundamentally <em>is</em>. Without it, a storage device is just a flat sequence of numbered blocks with no names, no hierarchy, and no way to find anything.</p>
 
@@ -354,11 +347,11 @@
 
       <p><strong>Domain Controller (DC).</strong> The server running Active Directory Domain Services (AD DS) — the software that stores and manages the directory database. Organizations run at least two DCs for redundancy. Every time someone logs into a domain-joined machine, their credentials are verified against the DC.</p>
 
-      <p><strong>Organizational Units (OUs).</strong> Containers within a domain used to organize objects. You might have OUs for each department (IT, HR, Sales), or for each office location, or both. OUs are the unit to which Group Policy is applied.</p>
+      <p><strong>Security Groups.</strong> A directory full of individual user accounts is not, by itself, very useful — the reason you want one in the first place is to manage <em>permissions</em> at scale, and you do that with groups. A security group is a collection of user accounts. Rather than assigning permissions on a shared drive to fifty individual users, an administrator assigns permissions to a group (e.g., "HR-Staff") and manages membership. Add someone to the group and they immediately have access; remove them and it disappears. Groups are the answer to "how do I give the right people the right access without losing my mind."</p>
+
+      <p><strong>Organizational Units (OUs).</strong> Once you have users and groups, you need a way to organize them. OUs are containers within a domain used to do exactly that. You might have OUs for each department (IT, HR, Sales), or for each office location, or both. OUs are also the unit to which Group Policy is applied — which is why they exist as a separate concept from groups in the first place.</p>
 
       <p><strong>Group Policy (GPO).</strong> Configuration rules that apply automatically to users and computers in an OU or across the whole domain. GPOs can enforce password complexity requirements, deploy software, configure desktop wallpaper, disable USB ports, map network drives — anything that can be configured on a Windows machine can be managed by a GPO. This is how an IT department configures thousands of machines without touching each one individually.</p>
-
-      <p><strong>Security Groups.</strong> Collections of user accounts. Rather than assigning permissions on a shared drive to fifty individual users, an administrator assigns permissions to a group (e.g., "HR-Staff") and manages membership. Add someone to the group and they immediately have access; remove them and it disappears.</p>
 
       <!-- SVG: Active Directory Domain Structure -->
       <svg viewBox="0 0 560 232" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
@@ -462,7 +455,7 @@
 
       <p>Reading right to left: <code>dc=company,dc=com</code> is the domain (<code>company.com</code>), <code>ou=IT</code> is the IT organizational unit, and <code>cn=alice</code> is the common name of the object (Alice's user account). The DN is the full address of that object in the directory tree.</p>
 
-      <p>LDAP communicates over port 389 by default. <strong>LDAPS</strong> (LDAP over TLS) encrypts the connection and runs on port 636 — required in any environment where credential lookups should not travel over the network in plaintext. Active Directory also supports <strong>Kerberos</strong> for authentication in addition to LDAP, which is more secure and is the default for domain-joined Windows machines.</p>
+      <p>LDAP communicates over port 389 by default. Plain LDAP sends credentials over the wire in cleartext — <strong>LDAPS</strong> (LDAP over TLS) wraps it in TLS and runs on port 636, for the same reason HTTPS matters over HTTP. Active Directory also supports <strong>Kerberos</strong> for authentication in addition to LDAP, which is more secure and is the default for domain-joined Windows machines.</p>
 
       <div class="note">
         <strong>Beyond Active Directory:</strong> LDAP is an open standard, and other directory services implement it too. <strong>OpenLDAP</strong> is a popular open-source implementation used on Linux. <strong>Microsoft Entra ID</strong> (formerly Azure Active Directory) is Microsoft's cloud-hosted directory service — it uses modern protocols (OAuth 2.0, OpenID Connect) rather than raw LDAP, but serves the same identity management purpose for cloud-first organizations.
@@ -476,11 +469,7 @@
 
       <p>DNS itself — how it works, how names resolve to IP addresses, and how it scales to the global internet — is the subject of Chapter 10. The key point here is that AD and DNS are inseparable in production environments: if DNS is broken, AD authentication breaks with it.</p>
 
-      <h2>Where This Takes You</h2>
-
-      <p><strong>Chapter 10</strong> covers networking fundamentals — how data moves between machines, how IP addressing works, and how DNS resolves names to addresses. With the AD/DNS connection established in this chapter, the networking concepts in Ch10 will immediately have a concrete use case to anchor them.</p>
-
-      <p><strong>Chapter 12</strong> (System Administration) returns to both filesystems and Active Directory with a hands-on focus: managing user accounts and groups in AD, configuring permissions on shared folders, reading and rotating logs in <code>/var/log</code>, and scripting routine administrative tasks.</p>
+      <p>Chapter 10 asks a different question entirely: now that we know how files and accounts are managed on one machine, what happens when those machines need to talk to each other?</p>
 
       <!-- Quiz -->
       <div class="practice-block">
