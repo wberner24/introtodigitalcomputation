@@ -955,6 +955,14 @@ body {
   font-weight: 600;
 }
 
+.index-hero .hero-version {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-light);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+
 .unit-section {
   width: 100%;
   max-width: var(--col-width);
