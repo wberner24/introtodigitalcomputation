@@ -514,7 +514,7 @@
         b.classList.add('incorrect');
         // Reveal the correct one
         container.querySelectorAll('.mc-option').forEach(ob => {
-          if (ob.onclick.toString().includes('true')) ob.classList.add('revealed');
+          if ((ob.getAttribute('onclick') || '').endsWith('true)')) ob.classList.add('revealed');
         });
       }
     });
