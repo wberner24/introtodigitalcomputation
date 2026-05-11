@@ -1057,10 +1057,54 @@ body {
     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
   }
 
+  html { font-size: 16px; }
+
   .main-content { margin-left: 0; padding: 60px 20px 60px; }
   .chapter-deco { display: none; }
+
+  /* Chapter header */
+  .chapter-header { padding: 40px 0 32px; }
+  .chapter-title  { font-size: 2rem; }
+  .chapter-intro  { font-size: 1rem; }
+
+  /* Index hero */
+  .index-hero     { padding: 48px 0 36px; }
+  .index-hero h1  { font-size: 2.2rem; }
+
+  /* Widget cards */
+  .widget-card { padding: 18px 18px; }
+
+  /* Make tables scrollable rather than overflowing */
+  .data-table,
+  .place-table,
+  .comparison-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Prevent long mono strings from breaking layout */
+  .prose code, code { word-break: break-all; }
+
+  /* Widgets */
   .converter-grid { grid-template-columns: 1fr; }
   .converter-arrow { transform: rotate(90deg); }
+
+  /* Chapter nav footer: stack on small tablets */
+  .chapter-nav-footer { gap: 24px; }
+}
+
+/* ── Small phones ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  html { font-size: 15px; }
+
+  .main-content { padding: 56px 14px 56px; }
+
+  .chapter-title { font-size: 1.7rem; }
+  .index-hero h1 { font-size: 1.8rem; }
+
+  .widget-card { padding: 14px 14px; }
+  .practice-block { padding: 18px 16px; }
+
+  /* Stack prev/next nav vertically */
+  .chapter-nav-footer { flex-direction: column; gap: 16px; }
+  .chapter-nav-footer a.next { text-align: left; }
 }
 
 /* ── Multiple Choice ────────────────────────────────────────── */
