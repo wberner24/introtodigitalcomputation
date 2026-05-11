@@ -159,6 +159,11 @@ body {
   color: rgba(255,255,255,0.25);
   line-height: 1.5;
 }
+.sidebar-version {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.18);
+}
 
 /* ── Main Content Area ──────────────────────────────────────── */
 .main-content {
