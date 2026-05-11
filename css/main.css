@@ -607,11 +607,6 @@ body {
   color: var(--ink);
 }
 
-.place-table .row-digit td.bit-1 {
-  background: var(--accent-light);
-  color: var(--accent-dark);
-}
-
 .place-table .row-place td {
   font-size: 0.78rem;
   background: var(--bg-alt);
