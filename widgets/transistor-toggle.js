@@ -1,7 +1,7 @@
 /* ============================================================
    WIDGET: transistor-toggle
-   Interactive transistor switch — click to toggle ON/OFF,
-   watch voltage state and bit value update live.
+   Transistor as a simple 3-lead switch. Control signal (left)
+   opens or closes the path from Power (top) to Ground (bottom).
    ============================================================ */
 
 (function () {
@@ -10,268 +10,288 @@
     container.innerHTML = `
       <div class="widget-card" data-widget-name="Interactive">
         <div class="widget-title">Transistor: The Physical Bit</div>
-        <div class="widget-desc">Click the switch to open or close the circuit. Watch what happens to the voltage — and the bit value it represents.</div>
+        <div class="widget-desc">Click the button to flip the control signal and see how the transistor responds.</div>
 
-        <div class="transistor-demo">
+        <div class="tt-wrap">
 
-          <!-- Circuit diagram -->
-          <div class="circuit-wrap">
-            <svg class="circuit-svg" viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <!-- SVG diagram -->
+          <svg class="tt-svg" viewBox="0 0 280 224" xmlns="http://www.w3.org/2000/svg">
 
-              <!-- Power supply label -->
-              <text x="160" y="18" text-anchor="middle" class="svg-label">+V (Power)</text>
+            <!-- Power -->
+            <text x="96" y="13" text-anchor="middle" class="tt-lbl">Power</text>
 
-              <!-- Top wire from power to transistor -->
-              <line x1="160" y1="24" x2="160" y2="72" class="wire wire-top" id="wire-top"/>
+            <!-- Top wire: power → transistor -->
+            <line x1="96" y1="18" x2="96" y2="80" class="tt-wire" id="tt-wire-top"/>
 
-              <!-- Transistor body -->
-              <rect x="130" y="72" width="60" height="40" rx="6" class="transistor-body" id="transistor-body"/>
-              <text x="160" y="97" text-anchor="middle" class="svg-transistor-label">transistor</text>
+            <!-- Output tap -->
+            <circle cx="96" cy="46" r="5" class="tt-tap" id="tt-tap"/>
+            <!-- Output branch line -->
+            <line x1="101" y1="46" x2="164" y2="46" class="tt-wire tt-wire-out" id="tt-wire-out"/>
+            <!-- Output label -->
+            <text x="168" y="42" class="tt-lbl">Output</text>
+            <text x="168" y="54" class="tt-lbl tt-out-val" id="tt-out-val">HIGH → 1</text>
 
-              <!-- Switch / Gate input (left side) -->
-              <line x1="60" y1="92" x2="130" y2="92" class="wire wire-gate" id="wire-gate"/>
-              <text x="52" y="88" text-anchor="end" class="svg-label" id="gate-label">OPEN</text>
-              <text x="52" y="100" text-anchor="end" class="svg-label svg-label-small">(gate)</text>
+            <!-- Transistor body -->
+            <rect x="66" y="80" width="60" height="48" rx="7" class="tt-body" id="tt-body"/>
+            <text x="96" y="109" text-anchor="middle" class="tt-body-lbl">transistor</text>
 
-              <!-- Bottom wire from transistor to ground -->
-              <line x1="160" y1="112" x2="160" y2="160" class="wire wire-bottom" id="wire-bottom"/>
+            <!-- Control wire -->
+            <line x1="12" y1="104" x2="66" y2="104" class="tt-wire tt-wire-ctrl" id="tt-wire-ctrl"/>
+            <text x="8" y="97" text-anchor="end" class="tt-lbl">Control</text>
+            <text x="8" y="113" text-anchor="end" class="tt-lbl tt-ctrl-val" id="tt-ctrl-val">LOW</text>
 
-              <!-- Ground symbol -->
-              <line x1="136" y1="160" x2="184" y2="160" class="wire ground-line"/>
-              <line x1="143" y1="167" x2="177" y2="167" class="wire ground-line"/>
-              <line x1="150" y1="174" x2="170" y2="174" class="wire ground-line"/>
-              <text x="160" y="192" text-anchor="middle" class="svg-label">Ground (0V)</text>
+            <!-- Bottom wire: transistor → ground -->
+            <line x1="96" y1="128" x2="96" y2="178" class="tt-wire" id="tt-wire-bot"/>
 
-              <!-- Output tap (right side) -->
-              <line x1="190" y1="92" x2="260" y2="92" class="wire wire-output" id="wire-output"/>
-              <text x="264" y="88" class="svg-label">Output</text>
-              <text x="264" y="100" class="svg-label svg-label-small" id="output-label">HIGH (1)</text>
+            <!-- Ground symbol -->
+            <line x1="74"  y1="178" x2="118" y2="178" class="tt-gnd"/>
+            <line x1="80"  y1="185" x2="112" y2="185" class="tt-gnd"/>
+            <line x1="87"  y1="192" x2="105" y2="192" class="tt-gnd"/>
+            <text x="96" y="210" text-anchor="middle" class="tt-lbl">Ground</text>
 
-              <!-- Voltage indicator circle -->
-              <circle cx="160" cy="92" r="0" fill="none"/>
-            </svg>
-          </div>
+          </svg>
 
-          <!-- State readout -->
-          <div class="transistor-readout">
-            <div class="readout-row">
-              <div class="readout-item">
-                <div class="readout-label">Switch</div>
-                <div class="readout-value" id="switch-state">OPEN</div>
+          <!-- Readout + controls -->
+          <div class="tt-panel">
+            <div class="tt-readout">
+              <div class="tt-stat">
+                <div class="tt-stat-lbl">Control signal</div>
+                <div class="tt-stat-val" id="tt-ctrl-disp">LOW</div>
               </div>
-              <div class="readout-item">
-                <div class="readout-label">Transistor</div>
-                <div class="readout-value" id="transistor-state">OFF</div>
-              </div>
-              <div class="readout-item">
-                <div class="readout-label">Output Voltage</div>
-                <div class="readout-value" id="voltage-state">HIGH</div>
-              </div>
-              <div class="readout-item highlight" id="bit-readout">
-                <div class="readout-label">Bit Value</div>
-                <div class="readout-value bit-value" id="bit-value">1</div>
+              <div class="tt-readout-arrow">→</div>
+              <div class="tt-stat tt-stat-bit" id="tt-stat-bit">
+                <div class="tt-stat-lbl">Bit value</div>
+                <div class="tt-bit" id="tt-bit">1</div>
               </div>
             </div>
 
-            <button class="btn btn-accent toggle-btn" id="toggle-btn" onclick="IDC_transistorToggle()">
-              Close Switch (Turn ON)
+            <button class="btn btn-accent tt-btn" id="tt-btn">
+              Set control signal HIGH
             </button>
 
-            <div class="transistor-explain" id="transistor-explain">
-              The switch is <strong>open</strong> — no current flows through the transistor. The output line reads <strong>HIGH voltage</strong>, which the computer interprets as a <strong>1</strong>.
-            </div>
+            <p class="tt-explain" id="tt-explain">
+              Control is <strong>LOW</strong> — the transistor is off. No current flows.
+              The output wire stays at high voltage, which the computer reads as a <strong>1</strong>.
+            </p>
           </div>
 
         </div>
       </div>
     `;
 
-    // Inject scoped styles
-    if (!document.getElementById('transistor-styles')) {
-      const style = document.createElement('style');
-      style.id = 'transistor-styles';
-      style.textContent = `
-        .transistor-demo {
+    /* ── Scoped styles ── */
+    if (!document.getElementById('tt-styles')) {
+      const s = document.createElement('style');
+      s.id = 'tt-styles';
+      s.textContent = `
+        .tt-wrap {
           display: flex;
-          gap: 24px;
-          align-items: flex-start;
+          gap: 28px;
+          align-items: center;
           flex-wrap: wrap;
         }
-        .circuit-wrap {
-          flex: 0 0 auto;
-        }
-        .circuit-svg {
-          width: 320px;
+        .tt-svg {
+          width: 280px;
           max-width: 100%;
           height: auto;
-          display: block;
+          flex-shrink: 0;
+          overflow: visible;
         }
-        .svg-label {
+        .tt-lbl {
           font-family: var(--font-mono);
           font-size: 10px;
           fill: var(--ink-mid);
         }
-        .svg-label-small {
-          font-size: 9px;
-          fill: var(--ink-light);
+        .tt-out-val {
+          font-weight: 700;
+          fill: var(--accent-dark);
+          transition: fill 0.3s;
         }
-        .svg-transistor-label {
+        .tt-out-val.low {
+          fill: var(--blue);
+        }
+        .tt-ctrl-val {
+          font-weight: 700;
+          fill: var(--ink);
+          transition: fill 0.3s;
+        }
+        .tt-body-lbl {
           font-family: var(--font-mono);
           font-size: 9px;
           fill: var(--ink-light);
         }
-        .wire {
+        .tt-wire {
           stroke: var(--border-dark);
           stroke-width: 2.5;
           stroke-linecap: round;
-          transition: stroke 0.4s ease, stroke-width 0.4s ease;
+          transition: stroke 0.35s;
         }
-        .wire.active {
+        .tt-wire.live {
           stroke: var(--accent);
-          stroke-width: 3.5;
         }
-        .ground-line {
+        .tt-wire-ctrl.live {
+          stroke: var(--accent);
+        }
+        .tt-wire-out.live-out {
+          stroke: var(--border-dark);
+        }
+        .tt-tap {
+          fill: var(--bg-card);
+          stroke: var(--border-dark);
+          stroke-width: 2;
+          transition: fill 0.35s, stroke 0.35s;
+        }
+        .tt-tap.live {
+          fill: var(--accent-light);
+          stroke: var(--accent);
+        }
+        .tt-gnd {
           stroke: var(--ink-mid);
           stroke-width: 2;
           stroke-linecap: round;
         }
-        .transistor-body {
+        .tt-body {
           fill: var(--bg-alt);
           stroke: var(--border-dark);
           stroke-width: 2;
-          transition: fill 0.4s ease, stroke 0.4s ease;
+          transition: fill 0.35s, stroke 0.35s;
         }
-        .transistor-body.active {
+        .tt-body.on {
           fill: var(--accent-light);
           stroke: var(--accent);
         }
-        .transistor-readout {
+        .tt-panel {
           flex: 1;
-          min-width: 220px;
+          min-width: 200px;
         }
-        .readout-row {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 10px;
+        .tt-readout {
+          display: flex;
+          align-items: center;
+          gap: 12px;
           margin-bottom: 16px;
         }
-        .readout-item {
+        .tt-readout-arrow {
+          font-size: 1.2rem;
+          color: var(--ink-light);
+        }
+        .tt-stat {
           background: var(--bg-alt);
           border: 1px solid var(--border);
           border-radius: var(--radius);
-          padding: 10px 14px;
+          padding: 10px 16px;
+          flex: 1;
+          text-align: center;
           transition: background 0.3s, border-color 0.3s;
         }
-        .readout-item.highlight {
+        .tt-stat-bit {
           background: var(--accent-light);
           border-color: rgba(193,68,14,0.3);
         }
-        .readout-item.highlight.off {
+        .tt-stat-bit.zero {
           background: var(--blue-light);
           border-color: rgba(29,78,122,0.3);
         }
-        .readout-label {
+        .tt-stat-lbl {
           font-family: var(--font-mono);
-          font-size: 0.62rem;
+          font-size: 0.6rem;
           letter-spacing: 0.1em;
           text-transform: uppercase;
           color: var(--ink-light);
           margin-bottom: 4px;
         }
-        .readout-value {
+        .tt-stat-val {
           font-family: var(--font-mono);
           font-size: 0.95rem;
-          font-weight: 600;
+          font-weight: 700;
           color: var(--ink);
           transition: color 0.3s;
         }
-        .bit-value {
-          font-size: 1.6rem;
+        .tt-bit {
+          font-family: var(--font-mono);
+          font-size: 2rem;
+          font-weight: 700;
           color: var(--accent-dark);
+          line-height: 1;
           transition: color 0.3s;
         }
-        .bit-value.zero {
-          color: var(--blue);
-        }
-        .toggle-btn {
+        .tt-bit.zero { color: var(--blue); }
+        .tt-btn {
           width: 100%;
           margin-bottom: 14px;
-          padding: 11px;
+          padding: 10px;
           font-size: 0.82rem;
         }
-        .transistor-explain {
+        .tt-explain {
           font-size: 0.88rem;
           color: var(--ink-mid);
           line-height: 1.6;
           padding: 12px 14px;
           background: var(--bg-alt);
-          border-radius: var(--radius);
           border: 1px solid var(--border);
-          min-height: 60px;
+          border-radius: var(--radius);
+          margin: 0;
           transition: all 0.3s;
         }
       `;
-      document.head.appendChild(style);
+      document.head.appendChild(s);
     }
 
-    // State
-    let isOn = false;
-    window.IDC_transistorToggle = function() { toggle(); };
+    /* ── State ── */
+    let high = false;
 
-    function toggle() {
-      isOn = !isOn;
+    const btn       = container.querySelector('#tt-btn');
+    const ctrlDisp  = container.querySelector('#tt-ctrl-disp');
+    const ctrlVal   = container.querySelector('#tt-ctrl-val');
+    const outVal    = container.querySelector('#tt-out-val');
+    const bitEl     = container.querySelector('#tt-bit');
+    const statBit   = container.querySelector('#tt-stat-bit');
+    const explain   = container.querySelector('#tt-explain');
+    const body      = container.querySelector('#tt-body');
+    const tap       = container.querySelector('#tt-tap');
+    const wireTop   = container.querySelector('#tt-wire-top');
+    const wireBot   = container.querySelector('#tt-wire-bot');
+    const wireCtrl  = container.querySelector('#tt-wire-ctrl');
 
-      const btn         = container.querySelector('#toggle-btn');
-      const switchState = container.querySelector('#switch-state');
-      const transState  = container.querySelector('#transistor-state');
-      const voltState   = container.querySelector('#voltage-state');
-      const bitValue    = container.querySelector('#bit-value');
-      const bitReadout  = container.querySelector('#bit-readout');
-      const explain     = container.querySelector('#transistor-explain');
-      const transBody   = container.querySelector('#transistor-body');
-      const gateLabel   = container.querySelector('#gate-label');
-      const outputLabel = container.querySelector('#output-label');
-      const wireTop     = container.querySelector('#wire-top');
-      const wireBottom  = container.querySelector('#wire-bottom');
-      const wireOutput  = container.querySelector('#wire-output');
-
-      if (isOn) {
-        // Switch closed — transistor ON — current flows — output LOW — bit = 0
-        btn.textContent = 'Open Switch (Turn OFF)';
-        switchState.textContent = 'CLOSED';
-        transState.textContent = 'ON';
-        voltState.textContent = 'LOW';
-        bitValue.textContent = '0';
-        bitValue.classList.add('zero');
-        bitReadout.classList.add('off');
-        gateLabel.textContent = 'CLOSED';
-        outputLabel.textContent = 'LOW (0)';
-        transBody.classList.add('active');
-        wireTop.classList.add('active');
-        wireBottom.classList.add('active');
-        wireOutput.classList.remove('active');
-        explain.innerHTML = `The switch is <strong>closed</strong> — current flows through the transistor to ground. The output line is pulled <strong>LOW</strong> (near 0V), which the computer interprets as a <strong>0</strong>.`;
+    function update() {
+      if (high) {
+        /* Control HIGH → transistor ON → current flows → output LOW → bit 0 */
+        btn.textContent      = 'Set control signal LOW';
+        ctrlDisp.textContent = 'HIGH';
+        ctrlVal.textContent  = 'HIGH';
+        outVal.textContent   = 'LOW → 0';
+        bitEl.textContent    = '0';
+        outVal.classList.add('low');
+        bitEl.classList.add('zero');
+        statBit.classList.add('zero');
+        body.classList.add('on');
+        tap.classList.remove('live');
+        wireTop.classList.add('live');
+        wireBot.classList.add('live');
+        wireCtrl.classList.add('live');
+        explain.innerHTML = `Control is <strong>HIGH</strong> — the transistor is on. Current flows straight through to ground, pulling the output wire low. The computer reads that as a <strong>0</strong>.`;
       } else {
-        // Switch open — transistor OFF — no current — output HIGH — bit = 1
-        btn.textContent = 'Close Switch (Turn ON)';
-        switchState.textContent = 'OPEN';
-        transState.textContent = 'OFF';
-        voltState.textContent = 'HIGH';
-        bitValue.textContent = '1';
-        bitValue.classList.remove('zero');
-        bitReadout.classList.remove('off');
-        gateLabel.textContent = 'OPEN';
-        outputLabel.textContent = 'HIGH (1)';
-        transBody.classList.remove('active');
-        wireTop.classList.remove('active');
-        wireBottom.classList.remove('active');
-        wireOutput.classList.remove('active');
-        explain.innerHTML = `The switch is <strong>open</strong> — no current flows through the transistor. The output line reads <strong>HIGH voltage</strong>, which the computer interprets as a <strong>1</strong>.`;
+        /* Control LOW → transistor OFF → no current → output HIGH → bit 1 */
+        btn.textContent      = 'Set control signal HIGH';
+        ctrlDisp.textContent = 'LOW';
+        ctrlVal.textContent  = 'LOW';
+        outVal.textContent   = 'HIGH → 1';
+        bitEl.textContent    = '1';
+        outVal.classList.remove('low');
+        bitEl.classList.remove('zero');
+        statBit.classList.remove('zero');
+        body.classList.remove('on');
+        tap.classList.remove('live');
+        wireTop.classList.remove('live');
+        wireBot.classList.remove('live');
+        wireCtrl.classList.remove('live');
+        explain.innerHTML = `Control is <strong>LOW</strong> — the transistor is off. No current flows. The output wire stays at high voltage, which the computer reads as a <strong>1</strong>.`;
       }
     }
+
+    btn.addEventListener('click', () => { high = !high; update(); });
+    update();
   }
 
-  // Register immediately
   window.IDC = window.IDC || { widgets: {} };
   window.IDC.widgets['transistor-toggle'] = { render };
 
