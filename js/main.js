@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   highlightCurrentChapter();
   renderAllWidgets();
   initSectionAnchors();
+  initMobileNav();
 });
 
 // ── Sidebar: Highlight current chapter ───────────────────────
@@ -111,6 +112,43 @@ function revealAnswer(el, answer) {
   if (!feedback) return;
   feedback.className = 'q-feedback hint';
   feedback.textContent = `Answer: ${answer}`;
+}
+
+// ── Mobile Nav Toggle ─────────────────────────────────────────
+function initMobileNav() {
+  const sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+
+  const toggle = document.createElement('button');
+  toggle.className = 'sidebar-toggle';
+  toggle.setAttribute('aria-label', 'Open navigation');
+  toggle.innerHTML = '&#9776;';
+  document.body.appendChild(toggle);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+  document.body.appendChild(overlay);
+
+  function openNav() {
+    sidebar.classList.add('open');
+    overlay.classList.add('open');
+    toggle.setAttribute('aria-label', 'Close navigation');
+  }
+
+  function closeNav() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('open');
+    toggle.setAttribute('aria-label', 'Open navigation');
+  }
+
+  toggle.addEventListener('click', () =>
+    sidebar.classList.contains('open') ? closeNav() : openNav()
+  );
+  overlay.addEventListener('click', closeNav);
+
+  sidebar.querySelectorAll('.nav-chapter').forEach(link => {
+    link.addEventListener('click', closeNav);
+  });
 }
 
 // Export helpers for widget scripts
