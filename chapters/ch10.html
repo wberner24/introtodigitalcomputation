@@ -53,11 +53,13 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 10 · Unit 4: Networks</div>
       <h1 class="chapter-title">Networking Fundamentals</h1>
-      <div class="chapter-deco">∿</div>
+      <div class="chapter-deco">01010</div>
       <p class="chapter-intro">Every network communication — a web page loading, an email arriving, a login being verified against Active Directory — reduces to bits traveling as physical signals between machines. This chapter builds that picture from the ground up: how signals encode bits on copper, fiber, and radio; how a layered protocol stack turns those signals into structured messages; how IP addressing and DNS make the global internet navigable; and how TCP reliably delivers data across a network that offers no guarantees.</p>
     </header>
 
     <article class="prose">
+
+      <p>When data leaves your laptop and arrives at a server on the other side of the world, how many things had to go right? A USB device sending a single byte to its own host computer is hard enough — Chapter 6 covered the controllers, the interrupts, the memory map. Now imagine doing the same thing across a continent, between machines that have never met.</p>
 
       <h2>What Is a Network?</h2>
 
@@ -65,17 +67,29 @@
 
       <p>Networks are typically described by their geographic scope. A <strong>LAN</strong> (Local Area Network) connects devices within a single building or campus — a home network, an office floor, a university lab. A <strong>WAN</strong> (Wide Area Network) connects geographically separated LANs — the corporate WAN that links a headquarters to regional offices, or the internet itself, which is the largest WAN ever built. In Chapter 6 you met the NIC — the network interface card that connects a machine to a LAN via PCIe. Everything built on top of that physical connection is what this chapter covers.</p>
 
-      <h2>The OSI Model, TCP/IP, and the 5-Layer Stack</h2>
+      <h2>Why Layers?</h2>
 
-      <p>Networking is complex enough that engineers decompose it into <strong>layers</strong>. Each layer handles a specific problem and hands off to the layer above or below it, shielding the rest of the stack from the details. This separation of concerns is why a web developer can write HTTP code without knowing anything about how Ethernet frames are constructed, and why a hardware engineer can design a cable standard without caring what protocols run over it.</p>
+      <p>Before we name any specific model, ask the more basic question: why do networks need layers at all? Why not one big specification that covers everything from the voltage on the wire to the format of an email?</p>
 
-      <p>Two reference models dominate networking education:</p>
+      <p>The short version: nobody could build that. The team that designs an Ethernet cable is not the team that writes a web browser, and the team that runs a fiber backbone across the Pacific is yet a third group. Each of them needs to do their job without holding the whole stack in their head. Layering is what makes that possible — each layer handles one problem and hands off cleanly to the layer above or below.</p>
 
-      <p>The <strong>OSI model</strong> (Open Systems Interconnection, developed by ISO in the 1970s–80s) defines seven layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application. OSI was designed as a universal reference framework — a precise theoretical model for how any network protocol stack should be structured. It is thorough and academically rigorous, and you will see it referenced constantly in certification materials and vendor documentation.</p>
+      <p>Layers also let pieces change independently. The TCP packet that carries this page works whether the link beneath it is copper Ethernet, fiber, or Wi-Fi — because TCP doesn't know or care what's underneath. Swap the physical medium and the layers above it never notice. That's the payoff of hiding the details: a web developer can write HTTP without knowing how a wire encodes a 1, and a cable manufacturer can ship a new Cat6A spec without changing a single line of HTTP.</p>
 
-      <p>The <strong>TCP/IP model</strong> (developed alongside the protocols that power the internet) is more pragmatic — four layers reflecting how TCP/IP was actually built: Network Access (combining Physical and Data Link), Internet, Transport, and Application (combining Session, Presentation, and Application from OSI). TCP/IP won in practice; OSI won as a teaching tool.</p>
+      <p>The model used in this book has five layers, from the wire up to your browser:</p>
 
-      <p>This course uses a <strong>5-layer hybrid</strong> that combines the best of both: it keeps OSI's useful distinction between Physical and Data Link, it uses TCP/IP's practical Internet layer name, and it merges OSI's Session/Presentation/Application into a single Application layer. This is the model used in the TCP/IP networking course you will take next — building your mental model around it now pays off immediately.</p>
+      <ol>
+        <li><strong>Physical</strong> — bits as signals on a medium (copper, fiber, radio).</li>
+        <li><strong>Data Link</strong> — frames between directly connected devices, addressed by MAC.</li>
+        <li><strong>Network</strong> — packets routed across networks, addressed by IP.</li>
+        <li><strong>Transport</strong> — connections and ports between applications (TCP, UDP).</li>
+        <li><strong>Application</strong> — the protocols you actually name out loud (HTTP, DNS, SMTP, SSH).</li>
+      </ol>
+
+      <p>The rest of this chapter walks up that stack, one layer at a time.</p>
+
+      <div class="note">
+        <strong>Two other models you'll encounter.</strong> The <strong>OSI model</strong> (7 layers — a conceptual standard developed by ISO in the 1970s–80s) and the <strong>TCP/IP model</strong> (4 layers — the original internet model) are the two reference frameworks you'll see in certifications and vendor docs. This chapter uses a 5-layer hybrid that maps cleanly to both. The names differ; the concepts are the same. The diagram below shows all three side by side so you can translate between them at a glance.
+      </div>
 
       <!-- SVG: OSI / 5-Layer / TCP-IP comparison -->
       <svg viewBox="0 0 680 330" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
@@ -293,6 +307,8 @@
         </figcaption>
       </figure>
 
+      <p>With the physical layer in mind, we can now ask how the software layers above it move data from one machine to a specific other machine — and that starts with addresses.</p>
+
       <h2>IP Addressing</h2>
 
       <p>An <strong>IP address</strong> is a logical address assigned to a network interface — logical because it is assigned by software and can change, unlike a MAC address which is burned into hardware. Every device that communicates on the internet needs at least one IP address.</p>
@@ -347,12 +363,7 @@
         <text x="340" y="166" text-anchor="middle" font-size="8" font-style="italic" fill="#8A857C">192.168.0.0 / 16 is a private address range (RFC 1918) — routable only inside local networks, not on the public internet</text>
       </svg>
 
-      <p>IPv4 reserves three ranges of addresses for private use (RFC 1918) — these addresses can be used freely inside any organization's network but are not routed on the public internet:</p>
-      <ul>
-        <li><code>10.0.0.0 – 10.255.255.255</code> (10.0.0.0/8) — large organizations</li>
-        <li><code>172.16.0.0 – 172.31.255.255</code> (172.16.0.0/12) — medium networks</li>
-        <li><code>192.168.0.0 – 192.168.255.255</code> (192.168.0.0/16) — home and small office networks</li>
-      </ul>
+      <p>IPv4 reserves three ranges of addresses for private use (RFC 1918) — these addresses can be used freely inside any organization's network but are not routed on the public internet. The largest range, <code>10.0.0.0/8</code>, is typically used by large organizations; <code>172.16.0.0/12</code> covers <code>172.16.0.0</code> through <code>172.31.255.255</code> and shows up in medium-sized networks; <code>192.168.0.0/16</code> is the range you'll recognize from every home and small-office router you've ever logged into.</p>
 
       <p><strong>IPv6</strong> addresses are 128 bits, written as eight groups of four hexadecimal digits: <code>2001:0db8:85a3:0000:0000:8a2e:0370:7334</code>. The 128-bit space provides approximately 340 undecillion addresses — effectively unlimited. IPv6 deployment has grown steadily as IPv4 addresses have been exhausted; most modern operating systems, devices, and ISPs support both protocols simultaneously (a configuration called dual-stack).</p>
 
@@ -370,7 +381,7 @@
 
       <h2>DNS</h2>
 
-      <p>Computers route traffic using IP addresses. Humans use names. The <strong>Domain Name System</strong> is the internet's distributed phone book — it translates human-readable names like <code>www.example.com</code> into IP addresses like <code>93.184.216.34</code>. As promised in Chapter 9: this is how it works.</p>
+      <p>IP addresses say where data is going; DNS is what translates the name you type into one of those addresses. Computers route traffic using IP addresses. Humans use names. The <strong>Domain Name System</strong> is the internet's distributed phone book — it translates human-readable names like <code>www.example.com</code> into IP addresses like <code>93.184.216.34</code>. As promised in Chapter 9: this is how it works.</p>
 
       <p>DNS is a <strong>hierarchy</strong>. At the top are the <strong>root name servers</strong> (13 root server clusters worldwide), which know nothing about individual domain names but know where to find the <strong>Top-Level Domain (TLD) servers</strong> responsible for <code>.com</code>, <code>.org</code>, <code>.edu</code>, and country codes. TLD servers know which <strong>authoritative name servers</strong> are responsible for each registered domain. The authoritative server for <code>example.com</code> holds the actual records that map names to IPs.</p>
 
@@ -447,10 +458,12 @@
           <tr><td>CNAME</td><td>Alias — points one name to another name</td><td><code>blog.example.com → www.example.com</code></td></tr>
           <tr><td>MX</td><td>Mail server for a domain</td><td><code>example.com → mail.example.com (priority 10)</code></td></tr>
           <tr><td>SRV</td><td>Service location (used by AD, SIP, etc.)</td><td><code>_ldap._tcp.company.com → dc1.company.com:389</code></td></tr>
-          <tr><td>PTR</td><td>Reverse DNS — IP address to hostname</td><td><code>34.216.184.93.in-addr.arpa → www.example.com</code></td></tr>
+          <tr><td>PTR</td><td>Reverse DNS — IP address to hostname. Mail servers check PTR records to confirm that a sending IP matches the domain it claims; a missing or mismatched PTR is a red flag for spam filters.</td><td><code>34.216.184.93.in-addr.arpa → www.example.com</code></td></tr>
           <tr><td>TXT</td><td>Arbitrary text; used for SPF, DKIM, domain verification</td><td><code>"v=spf1 include:…"</code></td></tr>
         </tbody>
       </table>
+
+      <p>Names resolve to addresses; addresses get packets to the right machine. The remaining question is which application on that machine should receive them — and that's what the transport layer answers.</p>
 
       <h2>TCP and UDP</h2>
 
@@ -507,6 +520,8 @@
         <text x="340" y="230" text-anchor="middle" font-size="7.5" font-style="italic" fill="#8A857C">seq = sequence number (tracks bytes sent). ack = acknowledgment number (next byte expected). Data transfer begins after the third handshake.</text>
       </svg>
 
+      <p>We've assumed all along that a device <em>has</em> an IP address, a gateway, and a DNS server. Where do those settings come from? On most networks, they're handed out automatically the moment a device plugs in.</p>
+
       <h2>DHCP</h2>
 
       <p>For a device to communicate on a network it needs four pieces of configuration: an IP address, a subnet mask, a default gateway (the router's IP), and a DNS server address. A network administrator could configure these manually on every device — but <strong>DHCP</strong> (Dynamic Host Configuration Protocol) automates the process.</p>
@@ -517,7 +532,7 @@
 
       <h2>Common Ports and Protocols</h2>
 
-      <p>Port numbers below 1024 are called <strong>well-known ports</strong> and are reserved for standard services. Knowing these by heart is as basic to networking as knowing the alphabet — you will see them in firewall rules, network captures, log files, and server configurations daily.</p>
+      <p>Memorizing the common port numbers is the kind of thing that takes ten minutes and marks you as someone who knows what they're talking about for the rest of your career. Port numbers below 1024 are called <strong>well-known ports</strong> and are reserved for standard services. You'll see them in firewall rules, network captures, log files, and server configurations daily.</p>
 
       <table class="data-table">
         <thead>
@@ -541,11 +556,7 @@
         </tbody>
       </table>
 
-      <h2>Where This Takes You</h2>
-
-      <p><strong>Chapter 11</strong> (Network Architecture &amp; Communication) builds directly on this foundation: VLANs, routing protocols, NAT, firewalls, and how enterprise networks are actually structured. With the layer model, IP addressing, and TCP/UDP internalized, the architecture chapter is a natural extension rather than a new subject.</p>
-
-      <p><strong>Chapter 12</strong> (System Administration) returns to DNS and DHCP from an operational perspective — configuring zones, managing leases, reading resolver logs, and troubleshooting with <code>nslookup</code>, <code>dig</code>, and <code>ping</code>. The concepts built here make the commands immediately sensible rather than incantations.</p>
+      <p>Chapter 11 takes the protocols you just learned and puts them inside actual buildings — the switches in your wiring closet, the firewall at the network edge, the access point above your desk.</p>
 
       <!-- Quiz -->
       <div class="practice-block">

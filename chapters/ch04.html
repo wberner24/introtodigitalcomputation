@@ -53,13 +53,15 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 04 · Unit 2: Hardware</div>
       <h1 class="chapter-title">Processors</h1>
-      <div class="chapter-deco">CPU</div>
+      <div class="chapter-deco">00100</div>
       <p class="chapter-intro">The CPU is often called the "brain" of the computer. That's not wrong, but it's not quite right either. A brain is mysterious and creative. A CPU is something simpler — and in a way, more impressive. It does exactly one thing, over and over, billions of times per second.</p>
     </header>
 
     <article class="prose">
 
-      <p>We've spent three chapters building up to this moment. We know what bits are, how they exist physically, and how they represent every kind of information. Now it's time to ask: what actually <em>processes</em> all those bits?</p>
+      <p>50 billion transistors. 3 to 5 nanometers wide. Switching billions of times per second, in lockstep. That's a modern processor — and the thing it actually does, underneath all the marketing, is breathtakingly simple.</p>
+
+      <p>We've spent three chapters building up to this moment. We know what bits are, how they exist physically, and how they represent every kind of information. Now it's time to ask what actually <em>processes</em> all those bits.</p>
 
       <p>The answer is the <strong>Central Processing Unit</strong>, or <strong>CPU</strong>. And the first thing to understand about a CPU is that it doesn't do anything complicated. It executes instructions — one at a time, in sequence, at extraordinary speed. The complexity we experience as "computing" is nothing more than a very long sequence of very simple operations executed very fast.</p>
 
@@ -197,16 +199,7 @@
         <text x="292" y="113" text-anchor="middle" font-family="'Source Sans 3',sans-serif" font-size="9" fill="#4A4640">What data to use: Register 1, Register 2</text>
       </svg>
 
-      <p>Modern CPUs support dozens or hundreds of different instruction types. A few fundamental categories are worth knowing:</p>
-
-      <ul>
-        <li><strong>Data movement</strong> — <code>MOVE</code>, <code>LOAD</code>, <code>STORE</code>: copy data between registers, or between registers and memory.</li>
-        <li><strong>Arithmetic</strong> — <code>ADD</code>, <code>SUB</code>, <code>MUL</code>: perform mathematical operations on values in registers.</li>
-        <li><strong>Logic</strong> — <code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code>: perform bitwise operations on individual bits within a value.</li>
-        <li><strong>Comparison</strong> — <code>CMP</code>: compare two values and set flags in a status register that other instructions can check.</li>
-        <li><strong>Branch/Jump</strong> — <code>JMP</code>, <code>JZ</code>, <code>JNE</code>: change which instruction executes next, conditionally or unconditionally. This is how <code>if</code> statements and loops are implemented at the hardware level.</li>
-        <li><strong>Halt</strong> — <code>HALT</code>: stop execution.</li>
-      </ul>
+      <p>Modern CPUs support dozens or hundreds of different instruction types, but a handful of categories cover most of what a program actually does. <strong>Data movement</strong> instructions — <code>MOVE</code>, <code>LOAD</code>, <code>STORE</code> — copy data between registers, or between registers and memory. <strong>Arithmetic</strong> instructions like <code>ADD</code>, <code>SUB</code>, and <code>MUL</code> perform math on values held in registers, while <strong>logic</strong> instructions (<code>AND</code>, <code>OR</code>, <code>NOT</code>, <code>XOR</code>) do the same for individual bits. <strong>Comparison</strong> instructions such as <code>CMP</code> check two values and set flags in a status register that later instructions can read. <strong>Branch</strong> and <strong>jump</strong> instructions — <code>JMP</code>, <code>JZ</code>, <code>JNE</code> — change which instruction runs next, either unconditionally or based on those flags. This is how <code>if</code> statements and loops are implemented at the hardware level. And <code>HALT</code> stops execution entirely.</p>
 
       <p>Every program you've ever run — every if statement, every loop, every function call — is ultimately compiled down into sequences of these simple instruction types. The ALU executes the arithmetic and logic instructions directly. The control unit handles data movement and branches. Together, they implement the full complexity of modern software from this tiny vocabulary.</p>
 
@@ -226,7 +219,7 @@
 
       <h2>Logic Gates: From Transistors to Computation</h2>
 
-      <p>We established in Chapter 2 that a transistor is an electrically controlled switch — on or off, representing <span class="bin">1</span> or <span class="bin">0</span>. But a single transistor can only hold one bit. How do you get from "a switch" to "an addition"?</p>
+      <p>We established in Chapter 2 that a transistor is an electrically controlled switch — on or off, representing <span class="bin">1</span> or <span class="bin">0</span>, and that each transistor holds exactly one bit. How do you get from "a switch" to "an addition"?</p>
 
       <p>The answer is <strong>logic gates</strong>. A logic gate is a small circuit built from two or more transistors that performs a logical operation on its inputs and produces a single output bit. Gates are the bridge between physical transistors and the logical operations the ALU needs to perform.</p>
 
@@ -334,12 +327,7 @@
         0 + 0 = 0 &nbsp;&nbsp;&nbsp; 0 + 1 = 1 &nbsp;&nbsp;&nbsp; 1 + 0 = 1 &nbsp;&nbsp;&nbsp; 1 + 1 = 10 (binary for 2 — sum=0, carry=1)
       </p>
 
-      <p>Notice that 1 + 1 produces two output bits: a <strong>sum</strong> bit and a <strong>carry</strong> bit (the carry is what you "carry over" to the next column, just like carrying a 1 in decimal addition). A circuit that handles this is called a <strong>half adder</strong>, and it's built from exactly two gates:</p>
-
-      <ul>
-        <li>An <strong>XOR gate</strong> produces the sum bit (1 when inputs differ, 0 when same)</li>
-        <li>An <strong>AND gate</strong> produces the carry bit (1 only when both inputs are 1)</li>
-      </ul>
+      <p>Notice that 1 + 1 produces two output bits: a <strong>sum</strong> bit and a <strong>carry</strong> bit (the carry is what you "carry over" to the next column, just like carrying a 1 in decimal addition). A circuit that handles this is called a <strong>half adder</strong>, and it's built from exactly two gates. An <strong>XOR gate</strong> produces the sum bit — 1 when the inputs differ, 0 when they match. An <strong>AND gate</strong> produces the carry bit, which is 1 only when both inputs are 1. That's the whole circuit.</p>
 
       <!-- SVG 1: Half Adder (standalone) -->
       <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
@@ -626,7 +614,7 @@
 
       <h2>Cores: Width Over Speed</h2>
 
-      <p>When the clock speed wall appeared, the industry's solution was elegant in its simplicity: instead of making one processor faster, put multiple processors on the same chip. Each processor — called a <strong>core</strong> — has its own control unit, ALU, and registers. A four-core chip has four independent fetch-decode-execute loops running simultaneously.</p>
+      <p>When the clock speed wall appeared, the industry's solution was to stop making one processor faster and start putting more of them on the same chip. Each processor — called a <strong>core</strong> — has its own control unit, ALU, and registers. A four-core chip has four independent fetch-decode-execute loops running simultaneously.</p>
 
       <div class="definition">
         <div class="def-term">Core</div>
@@ -869,6 +857,7 @@
         <div class="video-caption">David Patterson co-invented RISC architecture and won the Turing Award for it. This clip is a masterclass on the fundamental tradeoff from one of the people who shaped it.</div>
       </div>
 
+      <!-- EDITOR NOTE: CISC vs RISC table mixes technical and market axes — consider splitting into two separate tables or picking one comparison axis. -->
       <!-- SVG: x86 vs ARM comparison table -->
       <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;margin:28px 0;display:block;">
         <rect width="680" height="190" rx="8" fill="#FDFAF4" stroke="#D8D2C6" stroke-width="1.5"/>
@@ -1120,7 +1109,7 @@
             <div class="video-url">youtube.com/watch?v=c01BlUDIlK4</div>
           </div>
         </div>
-        <div class="video-caption">Jim Keller designed AMD's Zen architecture and has worked at Intel, Apple, and Tesla. His perspective on where Moore's Law is headed — and what it means for computing — is essential viewing.</div>
+        <div class="video-caption">Jim Keller designed AMD's Zen architecture and has worked at Intel, Apple, and Tesla. He walks through where Moore's Law is headed and what it means for computing.</div>
       </a>
 
       <h2>Beyond the CPU: GPUs and TPUs</h2>
@@ -1207,6 +1196,7 @@
 
       <h3>TPUs: Even More Specialized</h3>
 
+      <!-- EDITOR NOTE: TPU throughput statistic needed — add a specific public figure (e.g., from Google's published benchmarks) to make the jaw-dropping number concrete. -->
       <p>A <strong>Tensor Processing Unit</strong> takes specialization further. Google designed the TPU in 2016 specifically to accelerate the matrix multiplications that neural networks require — it doesn't even try to be a general-purpose chip. Where a GPU is versatile enough to run games, simulations, and video processing as well as AI, a TPU does essentially one thing: multiply large matrices of numbers together as fast as physically possible.</p>
 
       <p>The payoff is efficiency. For AI training and inference workloads, TPUs deliver more computation per watt than a GPU, at lower cost per operation at scale. Google's internal AI workloads — Search, Translate, Maps, Gmail — all run on TPUs. Cloud providers now offer TPU instances alongside GPU and CPU instances, and choosing among them is a real infrastructure decision for AI-heavy applications.</p>

@@ -53,33 +53,25 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 06 · Unit 2: Hardware</div>
       <h1 class="chapter-title">I/O &amp; System Architecture</h1>
-      <div class="chapter-deco">PCIe</div>
+      <div class="chapter-deco">00110</div>
       <p class="chapter-intro">You now have a CPU that thinks and memory that holds the work. But a computer that can't accept input or produce output is useless. This chapter is about the plumbing — the buses, controllers, ports, and signals that connect the computing core to everything else.</p>
     </header>
 
     <article class="prose">
 
-      <p>Chapters 4 and 5 gave us a picture of a functioning computing core: a processor executing the fetch-decode-execute cycle at billions of operations per second, drawing data from a hierarchy of memory that spans registers and cache all the way down to storage. That picture is accurate, but it describes a machine that exists in isolation — processing whatever data it already has, forever.</p>
+      <p>The CPU from Chapter 4 thinks. The memory from Chapter 5 remembers. A computer that does only those two things is useless to anyone except itself.</p>
 
-      <p>A real computer interacts with the world. You type a key and that keystroke has to reach the CPU. The CPU renders a frame and those pixels have to reach the display. A file download arrives over the network and lands on a drive. Every one of those transactions requires infrastructure that we haven't talked about yet: the buses, controllers, ports, and signaling protocols that form the I/O subsystem. That's what this chapter covers.</p>
+      <p>A real computer interacts with the world. You type a key and that keystroke has to reach the CPU. The CPU renders a frame and those pixels have to reach the display. A file download arrives over the network and lands on a drive. Every one of those transactions requires infrastructure we haven't talked about yet: the buses, controllers, ports, and signaling protocols that form the I/O subsystem. That's what this chapter covers.</p>
 
       <h2>What Is I/O?</h2>
 
-      <p><strong>Input</strong> is data flowing into the CPU — a keystroke from a keyboard, a mouse movement, a network packet arriving from the internet, or data read from a storage drive into RAM. <strong>Output</strong> is data flowing out — pixels pushed to a display, data written to a drive, packets sent over a network. Storage I/O is both at once: a read operation is input to the CPU; a write is output from it.</p>
-
-      <p>The I/O subsystem is everything between the CPU/RAM core and the outside world: buses, controllers, ports, cables, and protocols. The CPU doesn't connect to a keyboard directly — there are several layers of hardware between them. A keystroke generates an electrical signal at the key switch, which is read by a microcontroller in the keyboard, encoded into a USB data packet, sent over a USB cable, received by a USB host controller, which notifies the CPU via an interrupt. We'll unpack each of those layers in this chapter.</p>
+      <p><strong>Input</strong> is data flowing into the CPU — a keystroke, a mouse movement, a network packet, a byte read from a drive into RAM. <strong>Output</strong> is data flowing out — pixels pushed to a display, bytes written to a drive, packets sent over a network. Storage I/O is both at once: a read is input to the CPU; a write is output from it. The I/O subsystem is everything sitting between the CPU/RAM core and the outside world — the buses, controllers, ports, cables, and protocols that get a keystroke from a key switch all the way to a program. We'll follow that chain end to end — from key to screen — by the end of this chapter.</p>
 
       <h2>Buses — The Shared Pathways</h2>
 
       <p>A <strong>bus</strong> is a set of shared electrical connections that multiple components use to communicate. Think of it as a highway: multiple vehicles share the same road, and traffic management ensures they don't collide. Every component that wants to send data must wait its turn, transmit, and then yield the bus for the next sender.</p>
 
-      <p>Three types of signals travel over a traditional bus:</p>
-
-      <ul>
-        <li><strong>Data bus:</strong> carries the actual bits being transferred. Width — how many bits run in parallel — determines how much can move per trip. A 64-bit data bus transfers 8 bytes per clock cycle, while a 32-bit bus transfers only 4.</li>
-        <li><strong>Address bus:</strong> specifies <em>where</em> the data should go or come from — which memory address, which device register. The width of the address bus determines the maximum addressable space.</li>
-        <li><strong>Control bus:</strong> coordinates everything else — read vs. write signals, timing pulses, interrupt requests, and bus ownership handshakes. Without control signals, no one would know whose turn it is to talk.</li>
-      </ul>
+      <p>Three kinds of signals travel over a traditional bus. The <strong>data bus</strong> carries the actual bits — its width determines how many can move per trip, so a 64-bit data bus moves 8 bytes per clock cycle while a 32-bit bus moves only 4. The <strong>address bus</strong> says where the bits are going (or coming from) — which memory address, which device register — and its width caps the total addressable space. The <strong>control bus</strong> handles everything else: read or write, timing pulses, interrupt requests, whose turn it is to talk. Without all three, the bits move but no one knows what to do with them.</p>
 
       <p><strong>Bandwidth</strong> is the product of bus width and clock speed. A 32-bit bus running at 100 MHz can theoretically transfer 400 MB/s. Doubling the width or doubling the clock speed doubles bandwidth — which is exactly why both approaches have been pursued over the decades. In practice, increasing width adds physical wires (and cost), while increasing clock speed raises power consumption and signal integrity challenges.</p>
 
@@ -291,7 +283,7 @@
 
       <h2>The Chipset</h2>
 
-      <p>The CPU can't have unlimited PCIe lanes running directly to every device — each lane requires physical circuitry on the processor die, and die area is expensive and thermally constrained. The solution is the <strong>chipset</strong> — a separate chip on the motherboard that handles the connections that don't need the CPU's direct, maximum-bandwidth attention. On Intel platforms this chip is called the PCH, or Platform Controller Hub.</p>
+      <p>The CPU can't have unlimited PCIe lanes running directly to every device — each lane requires physical circuitry on the processor die, and die area is expensive and thermally constrained. The solution is the <strong>chipset</strong> — a separate chip on the motherboard that handles the connections that don't need the CPU's direct, maximum-bandwidth attention. On Intel platforms this chip is called the PCH, or Platform Controller Hub. AMD systems have an equivalent — the Fusion Controller Hub (FCH), or simply the platform controller — performing the same role.</p>
 
       <p>The chipset manages:</p>
 
@@ -431,7 +423,7 @@
       <p>When an interrupt fires, the CPU can't simply abandon what it was doing — it needs to resume at precisely the right point afterward. That means every piece of the CPU's current working context has to be preserved before the ISR runs. This snapshot is called the <strong>machine state</strong> (also called the CPU context). It includes:</p>
 
       <ul>
-        <li><strong>General-purpose registers</strong> — the values in RAX, RBX, RCX, and the rest that the interrupted program was using as scratch space</li>
+        <li><strong>General-purpose registers</strong> — the values in RAX, RBX, RCX, and the rest that the interrupted program was using as scratch space (these register names are x86-specific — other architectures use different names, but every CPU has the same concept)</li>
         <li><strong>The program counter</strong> — the address of the next instruction that was about to execute</li>
         <li><strong>The flags register</strong> — status bits set by the last arithmetic or comparison operation (zero flag, carry flag, sign flag, etc.) that a branch instruction may be about to read</li>
       </ul>

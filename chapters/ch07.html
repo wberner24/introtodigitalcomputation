@@ -53,24 +53,36 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 07 · Unit 3: Software</div>
       <h1 class="chapter-title">System vs. Application Software</h1>
-      <div class="chapter-deco">&gt;_</div>
+      <div class="chapter-deco">00111</div>
       <p class="chapter-intro">Six chapters in, we have a complete picture of hardware — transistors, logic, CPUs, memory, buses, and I/O. Hardware alone does nothing. Software is the instructions that put it to work. This chapter is about how software is organized, layered, and delivered to the hardware beneath it.</p>
     </header>
 
     <article class="prose">
 
-      <p>A modern computer runs millions of lines of code written by thousands of different people who never coordinated directly — and it mostly works. A Python developer writes a line that saves a file. Somewhere below, the operating system gets involved. Somewhere below that, a device driver talks to a storage controller. Somewhere below that, electrons move through NAND flash cells. The Python developer doesn't know about any of that, and they don't need to. This chapter is about how that division of responsibility is organized — and why it works.</p>
+      <p>When you click "Save" in a word processor, the word processor doesn't know how an SSD works. It calls into the OS, which doesn't really know either — it calls the driver. The driver knows how to talk to one specific kind of storage controller, and nothing else. Four pieces of software, none of which knows what the others know, and your document gets saved correctly anyway. That's not luck. That's abstraction.</p>
+
+      <p>Six chapters of hardware are behind us. Transistors, logic gates, CPUs, memory, buses, I/O — every layer of silicon up to the point where a machine is, in principle, ready to do work. But hardware on its own does nothing. It needs instructions. This chapter is about how those instructions are organized into layers, how each layer hides the one below it, and why the whole arrangement holds together when no single person could possibly understand all of it.</p>
 
       <h2>Abstraction — The Central Idea</h2>
 
-      <p>The single most important concept in software organization is <strong>abstraction</strong>: hiding the complexity of a lower layer behind a clean, simple interface. Each layer in the system exposes exactly what the layer above needs and hides everything below it.</p>
+      <p><em>Why would we want to hide complexity in the first place?</em></p>
+
+      <p>It seems backwards. If you're writing software, you'd think knowing more about the machine would help, not hurt. And in narrow cases it does. But step back to the scale of the industry, and the picture inverts. There are thousands of storage devices on the market. Hundreds of GPUs. Network cards from a dozen vendors, each with their own quirks, each replaced by a new model every couple of years. No human being can hold all of that in their head, and no team of humans can either.</p>
+
+      <p>So consider what happens if we <em>don't</em> hide the complexity. If every application had to know how every storage device worked, no application would ever run on new hardware without being rewritten. Buy a new SSD, and your word processor stops saving files. Install a new GPU, and your web browser stops rendering. Every piece of software in the world would need a patch for every piece of hardware in the world — a combinatorial nightmare that grows worse every year. The industry would seize up.</p>
+
+      <p>The short version: hiding complexity isn't laziness. It's the only way the numbers work out.</p>
+
+      <p>That's what <strong>abstraction</strong> is — hiding the complexity of a lower layer behind a clean, simple interface. Each layer in the system exposes exactly what the layer above needs and hides everything below it.</p>
 
       <div class="definition">
         <div class="def-term">Abstraction</div>
         <p>Hiding the implementation details of a lower layer behind a well-defined interface, so that the layer above can do its work without knowing how the layer below operates.</p>
       </div>
 
-      <p>This is not an accident or a convenience — it is the fundamental design principle that makes modern software possible. Without abstraction, every application developer would need to understand every storage controller, every GPU, every network card that might be installed on any machine their software ever runs on. That's obviously impossible. Abstraction draws clean lines: each layer is responsible for its own domain and provides a stable interface to the layer above, regardless of how the implementation below changes.</p>
+      <p>This is not an accident or a convenience — it is the design principle that makes modern software possible. Abstraction draws clean lines: each layer is responsible for its own domain and provides a stable interface to the layer above, regardless of how the implementation below changes. The application keeps working when the SSD changes because the application never knew about the SSD in the first place. It only knew about the OS interface for saving files, and the OS interface didn't change.</p>
+
+      <p>Hiding information turns out to be the right engineering call precisely <em>because</em> nobody can know everything. The contract between layers is what lets specialists do specialist work. The driver writer becomes an expert in one storage controller. The OS developer becomes an expert in interfaces, not in devices. The application developer becomes an expert in users, not in hardware. None of them need each other's expertise — they only need each other's interfaces. That's the trade, and the modern software industry runs on it.</p>
 
       <p>The entire software stack is built on this principle, layer by layer:</p>
 
@@ -269,13 +281,13 @@
 
       <h2>Why Abstraction Matters</h2>
 
-      <p>Step back and look at what the software stack achieves. A spreadsheet developer writes formulas without knowing anything about NAND flash. A database administrator optimizes queries without understanding how a NIC handles packets. A network engineer configures routing without knowing how x86 registers work. Each is an expert in their layer — and can be, precisely because the layers below are abstracted away.</p>
+      <p>For IT professionals, the abstraction model has an immediate, practical use: it tells you where to look when something breaks. Device not recognized? Driver layer. Service won't start? OS layer. Machine won't boot? Firmware or bootloader. Application crashing? Application layer, or possibly the OS API it depends on. The stack is your diagnostic map, and most troubleshooting is a matter of figuring out which layer the symptom belongs to.</p>
 
-      <p>This division is what lets the software industry operate at the scale it does. There are more lines of code running in production today than any individual could read in thousands of lifetimes. That code was written by people with different specializations, in different languages, for different hardware, across different decades — and it mostly works together because each layer honors its interface with the layer above and below it.</p>
+      <p>But there is something larger going on too, and it's worth sitting with for a moment. A spreadsheet developer writes formulas without knowing anything about NAND flash. A database administrator optimizes queries without understanding how a NIC handles packets. A network engineer configures routing without knowing how x86 registers work. Each is an expert in their layer — and can be, precisely because the layers below are abstracted away.</p>
 
-      <p>For IT professionals, the abstraction model has a direct practical use: it tells you where to look when something breaks. Device not recognized? Driver layer. Service won't start? OS layer. Machine won't boot? Firmware or bootloader. Application crashing? Application layer, or possibly the OS API it depends on. The stack is your diagnostic map.</p>
+      <p>Multiply that across an industry. Code is written by people with different specializations, in different languages, for different hardware, across different decades — and it mostly works together because each layer honors its interface with the layer above and below it. The system holds because the contracts hold. In the next chapter we go inside the OS kernel — the layer that sits beneath all your applications and above all your hardware — and look at how Windows, Linux, and macOS each manage the resources everything above them depends on.</p>
 
-      <p>In Chapter 8, we go inside the OS kernel — the layer that sits beneath all your applications and above all your hardware — and look at how real operating systems: Windows, Linux, and macOS manage the resources everything above them depends on.</p>
+      <p>There are more lines of code running in production today than any individual could read in thousands of lifetimes. None of it was written by one person. None of it was coordinated by one team. And almost all of it runs anyway, every second of every day, because of one idea built into every layer: tell the layer above what you do, hide everything else, and don't break the contract. That's what abstraction is for. The only reason any of it works is that each piece only needs to know its own layer.</p>
 
       <!-- ── Practice Block ── -->
       <div class="practice-block">

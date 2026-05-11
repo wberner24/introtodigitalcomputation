@@ -53,13 +53,15 @@
     <header class="chapter-header">
       <div class="chapter-eyebrow">Chapter 08 · Unit 3: Software</div>
       <h1 class="chapter-title">Operating Systems</h1>
-      <div class="chapter-deco">$</div>
-      <p class="chapter-intro">Chapter 7 explained what an operating system is — the software layer that sits between hardware and applications, managing resources and providing abstractions. This chapter is about real operating systems in the wild: which ones you will actually encounter, how their core components work, and how IT professionals interact with them every day.</p>
+      <div class="chapter-deco">01000</div>
+      <p class="chapter-intro">Three operating systems run almost every machine you'll ever touch in IT. This chapter is about which one lives where, why, and how you talk to each of them.</p>
     </header>
 
     <article class="prose">
 
-      <p>There are three operating system families that matter in professional IT: Windows, macOS, and Linux. They have different origins, different strengths, and different dominant contexts. Understanding which OS lives where — and why — is foundational to working in any IT role.</p>
+      <p>There are three operating systems most IT professionals will spend their careers with: Windows, macOS, and Linux. One of them dominates the desktops you support. A different one dominates the servers you'll administer. Knowing which is which — and why — is the start of this chapter.</p>
+
+      <p>They have different origins, different strengths, and different dominant contexts. Chapter 7 already covered what an operating system <em>is</em> in the abstract — the layer between hardware and applications. This chapter is about the three real ones you'll actually encounter, how their core pieces work, and how IT professionals interact with them every day.</p>
 
       <h2>The Big Three</h2>
 
@@ -120,7 +122,9 @@
 
       <h2>Open Source vs. Closed Source</h2>
 
-      <p>One of the most meaningful distinctions in the OS table above isn't feature sets or market share — it's <em>who owns the code</em>. Windows and macOS are <strong>closed source</strong> (proprietary): the source code is private, owned by the vendor, and users receive only the compiled software. Linux is <strong>open source</strong>: the source code is publicly available, and anyone is free to read it, modify it, and distribute their own version under the terms of its license.</p>
+      <p>In practice, most organizations use both. The interesting question isn't which model is "better" — it's which one fits which job.</p>
+
+      <p>The distinction itself is about <em>who owns the code</em>. Windows and macOS are <strong>closed source</strong> (proprietary): the source code is private, owned by the vendor, and users receive only the compiled software. Linux is <strong>open source</strong>: the source code is publicly available, and anyone is free to read it, modify it, and distribute their own version under the terms of its license.</p>
 
       <p>Open source does not mean free of charge. Red Hat Enterprise Linux, for example, is open source but sold with paid support contracts worth thousands of dollars per server per year. The important freedoms are access to the code and the right to modify it — not the price tag. The phrase often used is <em>"free as in freedom, not necessarily free as in beer."</em></p>
 
@@ -171,45 +175,25 @@
         </tbody>
       </table>
 
-      <p>From a business perspective, neither model is universally better — the right choice depends on the organization's priorities, technical capacity, and existing infrastructure.</p>
+      <p>Open source tends to win when cost or flexibility is the driver. Deploying 500 Linux servers carries no per-seat license cost; the same deployment on Windows Server can run into hundreds of thousands of dollars. If the software doesn't do exactly what the business needs, an open source codebase can be forked and modified — a proprietary vendor's answer is "wait for the next release," or "pay for a custom feature." Avoiding vendor lock-in is its own kind of insurance: if a proprietary vendor raises prices, discontinues a product, or goes out of business, migration is painful. With open source, there is always an escape route, and in regulated industries the code can be audited line by line.</p>
 
-      <p><strong>Organizations tend to choose open source when:</strong></p>
-      <ul>
-        <li><strong>Cost at scale is a concern.</strong> Deploying 500 Linux servers carries no per-seat license cost. The same deployment on Windows Server can run into hundreds of thousands of dollars in licensing alone.</li>
-        <li><strong>Customization is required.</strong> If the software doesn't do exactly what the business needs, an open source codebase can be forked and modified. A proprietary vendor's answer is "wait for the next release" — or "pay for a custom feature."</li>
-        <li><strong>Avoiding vendor lock-in is a priority.</strong> If a proprietary vendor raises prices, discontinues a product, or goes out of business, migrating away can be enormously disruptive. Open source alternatives ensure there is always an escape route.</li>
-        <li><strong>Security auditability matters.</strong> In regulated industries, some organizations need to verify what their software actually does. With open source, the code can be reviewed line by line.</li>
-      </ul>
+      <p>Closed source tends to win when accountability and integration are the driver. Open source software typically comes with no warranty and no SLA; when something breaks at 2 a.m., a paid vendor contract means someone is contractually obligated to help fix it. A shop already running Microsoft 365, Azure Active Directory, and Teams will usually find that Windows Server fits in with less friction than a Linux alternative. Some compliance frameworks in healthcare, finance, and government effectively require vendor-supported software, and smaller organizations without a dedicated Linux administrator often find that a managed product is cheaper in total even when the license isn't.</p>
 
-      <p><strong>Organizations tend to choose closed source when:</strong></p>
-      <ul>
-        <li><strong>Dedicated support and accountability are required.</strong> Open source software typically comes with no warranty and no SLA. If something breaks at 2 a.m., a paid vendor contract means there is someone contractually obligated to help fix it. For mission-critical systems, that accountability has real value.</li>
-        <li><strong>Ecosystem integration simplifies operations.</strong> A business already running Microsoft 365, Azure Active Directory, and Teams may find that Windows Server integrates far more smoothly than Linux alternatives — reducing IT labor even if licensing costs are higher.</li>
-        <li><strong>Regulatory compliance specifies vendor-supported software.</strong> Some industries (healthcare, finance, government) have compliance frameworks that require software to be on a vendor's official support lifecycle. Running an unsupported or community-maintained OS may not pass an audit.</li>
-        <li><strong>Internal technical capacity is limited.</strong> Open source flexibility comes with the expectation that someone on staff can configure, maintain, and troubleshoot it. Smaller organizations without dedicated Linux administrators may find that a managed, vendor-supported product reduces total operational cost even if the license fee is higher.</li>
-      </ul>
-
-      <div class="note">
-        <strong>In practice, most organizations use both.</strong> A company might run Linux on all its web servers (cost, scale, flexibility), Windows on employee desktops (support, integration, familiarity), an open source database like PostgreSQL for applications (cost, customization), and a proprietary ERP system (vendor support, compliance). The decision is made service by service, not once for the whole organization.
-      </div>
+      <p>This is why most real-world environments are mixed. A typical company runs Linux on its web servers, Windows on employee desktops, an open source database like PostgreSQL underneath the apps, and a proprietary ERP system on top of all of it. The decision gets made service by service — not once for the whole organization.</p>
 
       <h2>Why Linux?</h2>
 
-      <p>The desktop market share numbers above might make Linux look like a niche curiosity. That picture completely inverts the moment you look beyond personal computers:</p>
+      <p>For IT professionals, Linux is not optional knowledge. The desktop market share numbers above might make it look like a niche curiosity — 4% of laptops is hardly intimidating. That picture inverts completely the moment you look anywhere other than a personal computer.</p>
 
-      <ul>
-        <li>Over <strong>96%</strong> of the top one million web servers run Linux (W3Techs, 2024)</li>
-        <li><strong>100%</strong> of the TOP500 supercomputers run Linux</li>
-        <li><strong>Android</strong> — the OS on roughly 72% of smartphones — is built on the Linux kernel</li>
-        <li>All major cloud platforms (AWS, Azure, GCP) default to Linux for virtual machines</li>
-        <li>Most network equipment, routers, and embedded devices run Linux-based firmware</li>
-      </ul>
+      <p>Over 96% of the top one million web servers run Linux. 100% of the TOP500 supercomputers run Linux. Android — the OS on roughly 72% of smartphones — is built on the Linux kernel. Every major cloud platform (AWS, Azure, GCP) defaults to Linux for virtual machines, and most network equipment, routers, and embedded devices run Linux-based firmware under the hood.</p>
 
-      <p>For IT professionals, Linux is not optional knowledge. It is the environment where most infrastructure lives. You may spend your workday supporting Windows desktops — and still need Linux fluency the moment you need to SSH into a web server, manage a cloud instance, or troubleshoot a firewall appliance. This chapter gives you the foundation.</p>
+      <p>It is, in short, the environment where most infrastructure actually lives. You may spend your workday supporting Windows desktops and still need Linux fluency the moment you have to SSH into a web server, manage a cloud instance, or troubleshoot a firewall appliance. This chapter gives you the foundation.</p>
 
       <h2>The Kernel</h2>
 
-      <p>Every operating system has a core component called the <strong>kernel</strong>. The kernel runs in a privileged execution mode called <em>kernel space</em>, with direct access to hardware. All other software — your browser, your shell, your scripts — runs in <em>user space</em>, with restricted hardware access. The boundary between them is enforced by the CPU itself.</p>
+      <p>Underneath every operating system, no matter how user-friendly its desktop, is a kernel — the piece of software that actually talks to the hardware. Everything else negotiates with the kernel.</p>
+
+      <p>The kernel runs in a privileged execution mode called <em>kernel space</em>, with direct access to hardware. All other software — your browser, your shell, your scripts — runs in <em>user space</em>, with restricted hardware access. The boundary between them is enforced by the CPU itself. This is the abstraction hierarchy from Chapter 7 in practice: each layer knows only what the layer below it presents.</p>
 
       <!-- SVG: Kernel / User Space Boundary -->
       <svg viewBox="0 0 580 242" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;margin:24px auto;font-family:var(--font-body,sans-serif);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden">
@@ -263,16 +247,7 @@
 
       <p>When a user-space application needs hardware access — reading a file, sending data over the network, drawing to the screen — it makes a <strong>system call</strong>: a controlled handoff from user space to kernel space. The kernel executes the request with full hardware access, then returns the result to the application. The application never directly touches hardware; it always goes through the kernel.</p>
 
-      <p>The kernel has three primary responsibilities:</p>
-      <ul>
-        <li><strong>Process scheduling</strong> — deciding which program runs on the CPU at any moment, and for how long, so that multiple applications appear to run simultaneously.</li>
-        <li><strong>Memory management</strong> — allocating RAM to each process and enforcing that processes cannot read or write each other's memory. This isolation is why one crashed program doesn't take down the entire system.</li>
-        <li><strong>Hardware access</strong> — providing a uniform interface to hardware through device drivers, so that applications do not need to know the specific details of every device installed in the machine.</li>
-      </ul>
-
-      <div class="note">
-        <strong>Connecting back to Chapter 7:</strong> The kernel space / user space divide is exactly the privilege boundary described in Ch. 7's abstraction stack — the line between the OS Kernel layer and the Device Drivers / OS APIs layers above it. The CPU enforces this boundary in hardware. Code running in kernel space can execute privileged instructions; code in user space cannot.
-      </div>
+      <p>The kernel has three primary responsibilities, and once you see them, you see what an OS really is. <strong>Process scheduling</strong> decides which program runs on the CPU at any moment, and for how long, so that multiple applications appear to run simultaneously on a CPU that can really only do one thing at a time. <strong>Memory management</strong> allocates RAM to each process and enforces that processes cannot read or write each other's memory — the isolation that keeps one crashed program from taking down the entire system. <strong>Hardware access</strong> provides a uniform interface to hardware through device drivers, so that an application doesn't need to know the specific details of every device installed in the machine. The CPU itself enforces the privilege boundary in hardware: code in kernel space can execute privileged instructions; code in user space cannot.</p>
 
       <h2>The Shell</h2>
 
@@ -280,13 +255,7 @@
 
       <p>When you open a terminal on a Linux desktop, you are running a shell. When you connect to a remote server over <strong>SSH</strong> (Secure Shell), the shell is often the <em>only</em> interface available — there is no desktop, no windows, no mouse. Just a prompt.</p>
 
-      <p>Why don't most production Linux servers run a graphical desktop?</p>
-
-      <ul>
-        <li><strong>Resource overhead.</strong> A full desktop environment (GNOME, KDE) consumes 300–800 MB of RAM and meaningful CPU cycles doing nothing useful for server workloads. On a machine that exists to serve web requests or process data, that is wasted capacity.</li>
-        <li><strong>Remote access.</strong> SSH gives you a fast, encrypted text terminal over any network connection — even a slow one. A full remote desktop requires far more bandwidth and specialized software. The shell works everywhere.</li>
-        <li><strong>Automation.</strong> Shell commands can be scripted. An operation you run on one server can be scripted to run across a thousand servers simultaneously without any human clicking through menus. This is how large-scale infrastructure is actually managed.</li>
-      </ul>
+      <p>Most production Linux servers run without a graphical desktop at all. There are three reasons for this, and they reinforce each other. A full desktop environment like GNOME or KDE consumes 300–800 MB of RAM and meaningful CPU cycles doing nothing useful for server workloads — on a machine whose job is to serve web requests or process data, that's just wasted capacity. SSH already gives you a fast, encrypted text terminal over any network connection, even a slow one, where a remote desktop would demand far more bandwidth and specialized software. And shell commands can be scripted: an operation you run on one server can be run across a thousand simultaneously, with no human clicking through menus. That's how large-scale infrastructure is actually managed.</p>
 
       <p>Learning to navigate confidently in a shell is one of the most transferable technical skills in IT. The commands you learn here work on any Linux server, any macOS machine, and — through Windows Subsystem for Linux — on Windows as well.</p>
 
@@ -475,13 +444,7 @@ drwxr-xr-x  2 student student  4096  May  8 09:14  documents/</pre>
         <strong>Windows is catching up:</strong> Microsoft introduced <code>winget</code> (Windows Package Manager) in 2020, bringing command-line package management to Windows. The concept is the same as apt or dnf — install, update, and remove software from the terminal. It is not yet as comprehensive or universal as Linux package repositories, but it signals a recognition that scripted software management matters.
       </div>
 
-      <h2>Where This Takes You</h2>
-
-      <p>This chapter gave you a working model of real-world operating systems and the practical tools that IT professionals use daily. The conceptual through-line connects directly to Chapter 7's abstraction stack: the kernel is the layer below user space, package managers are the layer above bare installs, and the shell is the universal interface that ties it all together.</p>
-
-      <p><strong>Chapter 9</strong> goes deeper into the filesystem — the tree structure that organizes everything stored on a system, how Linux and Windows organize that tree differently, and how directory services like Active Directory provide identity and access management across networks.</p>
-
-      <p><strong>Chapter 12</strong> (System Administration) returns to everything in this chapter with a hands-on focus: managing users, configuring services, reading logs, and automating routine tasks with shell scripts. The commands you practiced here are the vocabulary you will use there.</p>
+      <p>Chapter 9 zooms in on one specific part of the OS's job: how the file tree actually gets stored on disk, who owns what, and how the same model scales to manage a whole organization's worth of accounts and machines.</p>
 
       <!-- Quiz -->
       <div class="practice-block">
