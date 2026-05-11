@@ -15,7 +15,7 @@
         <div class="tt-wrap">
 
           <!-- SVG diagram -->
-          <svg class="tt-svg" viewBox="0 0 280 224" xmlns="http://www.w3.org/2000/svg">
+          <svg class="tt-svg" viewBox="-20 0 300 224" xmlns="http://www.w3.org/2000/svg">
 
             <!-- Power -->
             <text x="96" y="13" text-anchor="middle" class="tt-lbl">Power</text>
