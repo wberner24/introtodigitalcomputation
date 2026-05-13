@@ -1,7 +1,7 @@
 /* ============================================================
    WIDGET: transistor-toggle
-   Transistor as a simple 3-lead switch. Control signal (left)
-   opens or closes the path from Power (top) to Ground (bottom).
+   Transistor as a simple 3-lead switch: Output (top),
+   Control (left), Ground (bottom).
    ============================================================ */
 
 (function () {
@@ -15,27 +15,20 @@
         <div class="tt-wrap">
 
           <!-- SVG diagram -->
-          <svg class="tt-svg" viewBox="-20 0 300 224" xmlns="http://www.w3.org/2000/svg">
+          <svg class="tt-svg" viewBox="-20 0 200 224" xmlns="http://www.w3.org/2000/svg">
 
-            <!-- Power -->
-            <text x="96" y="13" text-anchor="middle" class="tt-lbl">Power</text>
+            <!-- Output (top lead) -->
+            <text x="96" y="13" text-anchor="middle" class="tt-lbl">Output</text>
+            <text x="96" y="26" text-anchor="middle" class="tt-lbl tt-out-val" id="tt-out-val">HIGH → 1</text>
 
-            <!-- Top wire: power → transistor -->
-            <line x1="96" y1="18" x2="96" y2="80" class="tt-wire" id="tt-wire-top"/>
-
-            <!-- Output tap -->
-            <circle cx="96" cy="46" r="5" class="tt-tap" id="tt-tap"/>
-            <!-- Output branch line -->
-            <line x1="101" y1="46" x2="164" y2="46" class="tt-wire tt-wire-out" id="tt-wire-out"/>
-            <!-- Output label -->
-            <text x="168" y="42" class="tt-lbl">Output</text>
-            <text x="168" y="54" class="tt-lbl tt-out-val" id="tt-out-val">HIGH → 1</text>
+            <!-- Top wire: output → transistor -->
+            <line x1="96" y1="30" x2="96" y2="80" class="tt-wire" id="tt-wire-top"/>
 
             <!-- Transistor body -->
             <rect x="66" y="80" width="60" height="48" rx="7" class="tt-body" id="tt-body"/>
             <text x="96" y="109" text-anchor="middle" class="tt-body-lbl">transistor</text>
 
-            <!-- Control wire -->
+            <!-- Control wire (left lead) -->
             <line x1="12" y1="104" x2="66" y2="104" class="tt-wire tt-wire-ctrl" id="tt-wire-ctrl"/>
             <text x="8" y="97" text-anchor="end" class="tt-lbl">Control</text>
             <text x="8" y="113" text-anchor="end" class="tt-lbl tt-ctrl-val" id="tt-ctrl-val">LOW</text>
@@ -71,7 +64,7 @@
 
             <p class="tt-explain" id="tt-explain">
               Control is <strong>LOW</strong> — the transistor is off. No current flows.
-              The output wire stays at high voltage, which the computer reads as a <strong>1</strong>.
+              The output stays high, which the computer reads as a <strong>1</strong>.
             </p>
           </div>
 
@@ -91,7 +84,7 @@
           flex-wrap: wrap;
         }
         .tt-svg {
-          width: 280px;
+          width: 200px;
           max-width: 100%;
           height: auto;
           flex-shrink: 0;
@@ -127,22 +120,6 @@
           transition: stroke 0.35s;
         }
         .tt-wire.live {
-          stroke: var(--accent);
-        }
-        .tt-wire-ctrl.live {
-          stroke: var(--accent);
-        }
-        .tt-wire-out.live-out {
-          stroke: var(--border-dark);
-        }
-        .tt-tap {
-          fill: var(--bg-card);
-          stroke: var(--border-dark);
-          stroke-width: 2;
-          transition: fill 0.35s, stroke 0.35s;
-        }
-        .tt-tap.live {
-          fill: var(--accent-light);
           stroke: var(--accent);
         }
         .tt-gnd {
@@ -239,18 +216,17 @@
     /* ── State ── */
     let high = false;
 
-    const btn       = container.querySelector('#tt-btn');
-    const ctrlDisp  = container.querySelector('#tt-ctrl-disp');
-    const ctrlVal   = container.querySelector('#tt-ctrl-val');
-    const outVal    = container.querySelector('#tt-out-val');
-    const bitEl     = container.querySelector('#tt-bit');
-    const statBit   = container.querySelector('#tt-stat-bit');
-    const explain   = container.querySelector('#tt-explain');
-    const body      = container.querySelector('#tt-body');
-    const tap       = container.querySelector('#tt-tap');
-    const wireTop   = container.querySelector('#tt-wire-top');
-    const wireBot   = container.querySelector('#tt-wire-bot');
-    const wireCtrl  = container.querySelector('#tt-wire-ctrl');
+    const btn      = container.querySelector('#tt-btn');
+    const ctrlDisp = container.querySelector('#tt-ctrl-disp');
+    const ctrlVal  = container.querySelector('#tt-ctrl-val');
+    const outVal   = container.querySelector('#tt-out-val');
+    const bitEl    = container.querySelector('#tt-bit');
+    const statBit  = container.querySelector('#tt-stat-bit');
+    const explain  = container.querySelector('#tt-explain');
+    const body     = container.querySelector('#tt-body');
+    const wireTop  = container.querySelector('#tt-wire-top');
+    const wireBot  = container.querySelector('#tt-wire-bot');
+    const wireCtrl = container.querySelector('#tt-wire-ctrl');
 
     function update() {
       if (high) {
@@ -264,11 +240,10 @@
         bitEl.classList.add('zero');
         statBit.classList.add('zero');
         body.classList.add('on');
-        tap.classList.remove('live');
         wireTop.classList.add('live');
         wireBot.classList.add('live');
         wireCtrl.classList.add('live');
-        explain.innerHTML = `Control is <strong>HIGH</strong> — the transistor is on. Current flows straight through to ground, pulling the output wire low. The computer reads that as a <strong>0</strong>.`;
+        explain.innerHTML = `Control is <strong>HIGH</strong> — the transistor is on. Current flows through to ground, pulling the output low. The computer reads that as a <strong>0</strong>.`;
       } else {
         /* Control LOW → transistor OFF → no current → output HIGH → bit 1 */
         btn.textContent      = 'Set control signal HIGH';
@@ -280,11 +255,10 @@
         bitEl.classList.remove('zero');
         statBit.classList.remove('zero');
         body.classList.remove('on');
-        tap.classList.remove('live');
         wireTop.classList.remove('live');
         wireBot.classList.remove('live');
         wireCtrl.classList.remove('live');
-        explain.innerHTML = `Control is <strong>LOW</strong> — the transistor is off. No current flows. The output wire stays at high voltage, which the computer reads as a <strong>1</strong>.`;
+        explain.innerHTML = `Control is <strong>LOW</strong> — the transistor is off. No current flows. The output stays high, which the computer reads as a <strong>1</strong>.`;
       }
     }
 
