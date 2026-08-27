@@ -151,6 +151,11 @@ body {
 
 .nav-chapter.active .ch-num { opacity: 1; }
 
+/* ── TEMP: hide ch02–14 from sidebar ── */
+.nav-unit ~ .nav-unit { display: none; }
+.nav-chapter ~ .nav-chapter { display: none; }
+/* ── END TEMP ── */
+
 .sidebar-footer {
   margin-top: auto;
   padding: 12px 20px;
