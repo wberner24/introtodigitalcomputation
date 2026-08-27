@@ -152,8 +152,8 @@ body {
 .nav-chapter.active .ch-num { opacity: 1; }
 
 /* ── TEMP: hide ch02–14 from sidebar ── */
-.nav-unit:not(:first-of-type) { display: none; }
-.nav-unit:first-of-type .nav-chapter:nth-child(n+3) { display: none; }
+.nav-unit ~ .nav-unit { display: none; }
+.nav-chapter ~ .nav-chapter { display: none; }
 /* ── END TEMP ── */
 
 .sidebar-footer {
